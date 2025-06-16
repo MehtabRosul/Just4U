@@ -32,19 +32,6 @@ const HeroCarousel = () => (
   </section>
 );
 
-const ManualBannerSlot = () => (
-  <section className="my-8 sm:my-12">
-    <div className="container mx-auto">
-       <div className="bg-black border border-border rounded-lg p-6 sm:p-8 text-center h-[100px] flex flex-col justify-center items-center mx-auto" style={{maxWidth: '300px'}}>
-        <h2 className="font-headline text-lg sm:text-xl font-semibold text-white mb-2">Manual Banner Slot</h2>
-        <Button asChild variant="link" className="text-primary hover:text-primary/80">
-          <Link href="/products">Shop Now <ArrowRight className="ml-1 h-4 w-4"/></Link>
-        </Button>
-      </div>
-    </div>
-  </section>
-);
-
 const SmartFinderPanel = () => {
   const [priceRange, setPriceRange] = useState([50, 300]);
   return (
@@ -295,7 +282,6 @@ export default function HomePage()
   return (
     <div className="space-y-12 md:space-y-16">
       <HeroCarousel />
-      <ManualBannerSlot />
       <SmartFinderPanel />
       <OccasionSpotlight />
       <TopCurations />
