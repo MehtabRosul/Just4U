@@ -9,15 +9,15 @@ import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle, SheetClose 
 import { SiteLogo } from './SiteLogo';
 import { useWishlist } from '@/hooks/useWishlist';
 import { Badge } from '@/components/ui/badge';
-import { NavMenu } from './NavMenu'; // Fallback or mobile menu specific nav
-import { GLOBAL_NAV_LINKS } from '@/config/site'; // For mobile menu content
+import { NavMenu } from './NavMenu'; 
+import { GLOBAL_NAV_LINKS } from '@/config/site'; 
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { wishlist } = useWishlist();
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border bg-[var(--primary-header-bg)] shadow-sm">
+    <header className="sticky top-0 z-50 w-full border-b border-border bg-[var(--primary-header-bg)] bg-opacity-75 backdrop-blur-md shadow-sm">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         {/* Mobile Menu Trigger - shown first for mobile layout flow */}
         <div className="lg:hidden">
@@ -32,9 +32,7 @@ export default function Header() {
               <SheetHeader className="flex flex-row justify-between items-center p-4 border-b">
                  <SiteLogo hideTagline />
                  <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
-                 <SheetClose asChild>
-                    <Button variant="ghost" size="icon"><X className="h-5 w-5"/></Button>
-                 </SheetClose>
+                 {/* Default SheetClose is provided by SheetContent, no need for custom one here to avoid overlap */}
               </SheetHeader>
               <div className="p-4 space-y-4">
                 {/* Mobile Search Bar */}
@@ -51,7 +49,6 @@ export default function Header() {
                 </div>
               </div>
               <div className="flex-grow p-4 overflow-y-auto">
-                {/* Using NavMenu which might take GLOBAL_NAV_LINKS or a simplified version for mobile */}
                 <NavMenu isMobile onLinkClick={() => setIsMobileMenuOpen(false)} navLinks={GLOBAL_NAV_LINKS} />
               </div>
             </SheetContent>
@@ -92,7 +89,7 @@ export default function Header() {
             </Link>
             <Link href="/account" passHref> {/* Assuming /account for user profile */}
               <Button variant="ghost" size="icon" className="text-foreground hover:text-primary">
-                <UserIcon className="h-5 w-5 sm:h-6 sm:w-6" /> {/* Changed from Lock to UserIcon */}
+                <UserIcon className="h-5 w-5 sm:h-6 sm:w-6" />
                 <span className="sr-only">Account</span>
               </Button>
             </Link>
