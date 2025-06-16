@@ -1,7 +1,7 @@
 
 "use client"; // Top-level client component for state management (modal)
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react'; // Added useMemo
 import type { Product } from '@/lib/types';
 import { CATEGORIES, PRODUCTS } from '@/lib/data';
 import { SectionTitle } from '@/components/shared/SectionTitle';
@@ -15,11 +15,18 @@ import Image from 'next/image';
 export default function HomePage() {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
-  const trendingProducts = PRODUCTS.filter(p => p.trending).slice(0, 4);
-  // Mock personalized recommendations: pick a few random products, not already trending
-  const personalizedProducts = PRODUCTS.filter(p => !p.trending)
+  const trendingProducts = useMemo(() => PRODUCTS.filter(p => p.trending).slice(0, 4), []);
+  
+  const personalizedProducts = useMemo(() => PRODUCTS.filter(p => !p.trending)
     .sort(() => 0.5 - Math.random()) // Shuffle
-    .slice(0, 4);
+    .slice(0, 4), []);
+
+  const featuredDeals = useMemo(() => {
+    // Pick some non-trending products, or products with a hypothetical discount
+    return PRODUCTS.filter(p => !p.trending && p.price < 50) // Example: items under $50 not in trending
+      .sort(() => 0.5 - Math.random())
+      .slice(0, 4);
+  }, []);
 
   const handleViewDetails = (product: Product) => {
     setSelectedProduct(product);
@@ -33,18 +40,16 @@ export default function HomePage() {
     <div className="space-y-12 md:space-y-16">
       {/* Hero Section */}
       <section className="relative bg-background py-12 md:py-20 lg:py-24 overflow-hidden">
-        <div className="relative z-10">
-          <div>
+        <div className="relative z-10 text-center">
             <h1 className="font-headline text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-4">
               Buy Custom Gifts & Surprise your Recipients
             </h1>
-            <p className="text-lg sm:text-xl text-foreground/80 mb-8 max-w-xl">
+            <p className="text-lg sm:text-xl text-foreground/80 mb-8 max-w-xl mx-auto">
               Most trusted personalized gifting brand for all occasions
             </p>
-            <Button asChild size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-lg transition-transform hover:scale-105 rounded-full">
+            <Button asChild size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-lg transition-transform hover:scale-105 rounded-full px-8 py-3">
               <Link href="/products">Shop Now</Link>
             </Button>
-          </div>
         </div>
       </section>
 
@@ -58,22 +63,41 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Featured Deals Section - NEW */}
+      {featuredDeals.length > 0 && (
+        <section>
+          <SectionTitle>Featured Deals</SectionTitle>
+          <ProductList products={featuredDeals} onViewDetails={handleViewDetails} />
+           <div className="mt-8 text-center">
+            <Button asChild variant="outline" className="text-primary border-primary hover:bg-accent hover:text-accent-foreground">
+              <Link href="/products?sort=price_asc">View More Deals</Link>
+            </Button>
+          </div>
+        </section>
+      )}
+
       {/* Trending Gifts Section */}
-      <section>
-        <SectionTitle>Trending Gifts</SectionTitle>
-        <ProductList products={trendingProducts} onViewDetails={handleViewDetails} />
-        <div className="mt-8 text-center">
-          <Button asChild variant="outline" className="text-primary border-primary hover:bg-accent hover:text-accent-foreground">
-            <Link href="/products?sort=trending">View More Trending</Link>
-          </Button>
-        </div>
-      </section>
+      {trendingProducts.length > 0 && (
+        <section>
+          <SectionTitle>Trending Gifts</SectionTitle>
+          <ProductList products={trendingProducts} onViewDetails={handleViewDetails} />
+          <div className="mt-8 text-center">
+            <Button asChild variant="outline" className="text-primary border-primary hover:bg-accent hover:text-accent-foreground">
+              <Link href="/products?sort=trending">View More Trending</Link>
+            </Button>
+          </div>
+        </section>
+      )}
+      
 
       {/* Personalized Recommendations Section */}
-      <section>
-        <SectionTitle>Recommended For You</SectionTitle>
-        <ProductList products={personalizedProducts} onViewDetails={handleViewDetails} />
-      </section>
+      {personalizedProducts.length > 0 && (
+         <section>
+          <SectionTitle>Recommended For You</SectionTitle>
+          <ProductList products={personalizedProducts} onViewDetails={handleViewDetails} />
+        </section>
+      )}
+
 
       {/* Product Detail Modal */}
       {selectedProduct && (

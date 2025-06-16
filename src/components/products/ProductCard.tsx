@@ -1,3 +1,4 @@
+
 "use client";
 
 import Image from 'next/image';
@@ -6,6 +7,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import { Button } from '@/components/ui/button';
 import type { Product } from '@/lib/types';
 import { WishlistButton } from '@/components/features/WishlistButton';
+import { StarRating } from '@/components/shared/StarRating'; // Added
 import { cn } from '@/lib/utils';
 import { ExternalLink } from 'lucide-react';
 
@@ -15,6 +17,10 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, onViewDetails }: ProductCardProps) {
+  const averageRating = product.reviews && product.reviews.length > 0
+    ? product.reviews.reduce((acc, review) => acc + review.rating, 0) / product.reviews.length
+    : 0;
+
   return (
     <Card className="group flex flex-col overflow-hidden rounded-lg shadow-lg transition-all duration-300 ease-in-out hover:shadow-xl hover:scale-[1.02] bg-card">
       <CardHeader className="p-0 relative">
@@ -37,23 +43,29 @@ export function ProductCard({ product, onViewDetails }: ProductCardProps) {
           </div>
         )}
       </CardHeader>
-      <CardContent className="p-4 flex-grow">
+      <CardContent className="p-4 flex-grow flex flex-col">
         <Link href={`/products/${product.slug}`} className="block" onClick={(e) => { if(onViewDetails) { e.preventDefault(); onViewDetails(product); }}}>
           <CardTitle className="font-headline text-lg leading-tight mb-1 hover:text-accent transition-colors">
             {product.name}
           </CardTitle>
         </Link>
-        <p className="text-sm text-muted-foreground line-clamp-2">{product.description}</p>
+        {averageRating > 0 && (
+          <div className="mb-2 flex items-center">
+            <StarRating rating={averageRating} starSize="h-5 w-5" />
+            <span className="ml-2 text-sm text-muted-foreground">({product.reviews?.length} review{product.reviews?.length === 1 ? "" : "s"})</span>
+          </div>
+        )}
+        <p className="text-sm text-muted-foreground line-clamp-2 flex-grow">{product.description}</p>
       </CardContent>
-      <CardFooter className="p-4 flex justify-between items-center border-t border-border">
+      <CardFooter className="p-4 flex flex-col sm:flex-row justify-between items-center border-t border-border space-y-2 sm:space-y-0">
         <p className="text-xl font-semibold text-accent">
           ${product.price.toFixed(2)}
         </p>
         <Button 
           size="sm" 
           onClick={() => onViewDetails && onViewDetails(product)} 
-          variant="outline" 
-          className="hover:bg-accent hover:text-accent-foreground transition-colors"
+          variant="secondary" // Changed from outline to secondary for red background
+          className="hover:bg-accent/90 transition-colors w-full sm:w-auto" // Ensure accent is red
         >
           View Details
         </Button>
