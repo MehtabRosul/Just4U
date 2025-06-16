@@ -77,7 +77,7 @@ export default function Header() {
         {/* Desktop & Mobile Quick Access Icons */}
         <div className="flex items-center space-x-2 sm:space-x-3">
             <Link href="/wishlist" passHref>
-              <Button variant="ghost" size="icon" className="relative text-foreground hover:text-primary">
+              <Button variant="ghost" size="icon" className="relative text-foreground hover:text-primary hover:bg-accent/10 rounded-full">
                 <Heart className="h-5 w-5 sm:h-6 sm:w-6" />
                 {wishlist.length > 0 && (
                   <Badge variant="destructive" className="absolute -top-1 -right-1 h-4 w-4 sm:h-5 sm:w-5 p-0 flex items-center justify-center text-xs">
@@ -88,13 +88,13 @@ export default function Header() {
               </Button>
             </Link>
             <Link href="/account" passHref> {/* Assuming /account for user profile */}
-              <Button variant="ghost" size="icon" className="text-foreground hover:text-primary">
+              <Button variant="ghost" size="icon" className="text-foreground hover:text-primary hover:bg-accent/10 rounded-full">
                 <UserIcon className="h-5 w-5 sm:h-6 sm:w-6" />
                 <span className="sr-only">Account</span>
               </Button>
             </Link>
             <Link href="/cart" passHref>
-              <Button variant="ghost" size="icon" className="text-foreground hover:text-primary">
+              <Button variant="ghost" size="icon" className="text-foreground hover:text-primary hover:bg-accent/10 rounded-full">
                 <ShoppingCart className="h-5 w-5 sm:h-6 sm:w-6" />
                 <span className="sr-only">Cart</span>
               </Button>
