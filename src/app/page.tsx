@@ -1,11 +1,10 @@
 
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import type { Product, Occasion, GiftType, Recipient } from '@/lib/types';
 import { PRODUCTS, OCCASIONS_LIST, GIFT_TYPES_LIST, RECIPIENTS_LIST } from '@/lib/data';
 import { SectionTitle } from '@/components/shared/SectionTitle';
-import { ProductList } from '@/components/products/ProductList';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -14,6 +13,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Slider } from '@/components/ui/slider';
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
+import { useRouter } from 'next/navigation';
+import { Label } from '@/components/ui/label';
 
 interface CarouselBanner {
   id: number;
@@ -126,20 +127,17 @@ const HeroCarousel = () => {
     return () => clearInterval(timer); 
   }, []);
 
-  // Banner fade transition classes
   const bannerAnimationInactiveClasses = "opacity-0";
   const bannerAnimationActiveClasses = "opacity-100";
-  const bannerBaseTransition = "transition-opacity duration-[2000ms] ease-in-out"; // Slower banner fade
+  const bannerBaseTransition = "transition-opacity duration-[2000ms] ease-in-out"; 
 
-  // Text animation classes (pure fade)
   const commonTextInactiveAnimation = "opacity-0";
   const commonTextActiveAnimation = "opacity-100";
   
-  // Base transition classes for text elements (sequential fade, slightly different timing)
-  const iconBaseTransition = "transition-opacity duration-[1200ms] ease-out delay-[300ms]"; // Slower text fade, adjusted delay
-  const titleBaseTransition = "transition-opacity duration-[1200ms] ease-out delay-[450ms]"; // Slower text fade, adjusted delay
-  const descriptionBaseTransition = "transition-opacity duration-[1200ms] ease-out delay-[600ms]"; // Slower text fade, adjusted delay
-  const buttonBaseTransition = "transition-opacity duration-[1200ms] ease-out delay-[750ms]"; // Slower text fade, adjusted delay
+  const iconBaseTransition = "transition-opacity duration-[1200ms] ease-out delay-[300ms]"; 
+  const titleBaseTransition = "transition-opacity duration-[1200ms] ease-out delay-[450ms]"; 
+  const descriptionBaseTransition = "transition-opacity duration-[1200ms] ease-out delay-[600ms]";
+  const buttonBaseTransition = "transition-opacity duration-[1200ms] ease-out delay-[750ms]";
 
 
   return (
@@ -196,7 +194,6 @@ const HeroCarousel = () => {
           />
         </div>
       ))}
-       {/* Navigation Dots */}
       <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex space-x-2">
         {carouselBannersData.map((_, index) => (
           <button
@@ -216,48 +213,101 @@ const HeroCarousel = () => {
 
 
 const SmartFinderPanel = () => {
-  const [priceRange, setPriceRange] = useState([50, 300]);
+  const router = useRouter();
+  const maxProductPrice = useMemo(() => {
+    if (PRODUCTS.length === 0) return 1000;
+    return Math.max(...PRODUCTS.map(p => p.price), 1000); // Ensure a sensible minimum max
+  }, []);
+
+  const [selectedOccasion, setSelectedOccasion] = useState<string>('all');
+  const [selectedGiftType, setSelectedGiftType] = useState<string>('all');
+  const [selectedRecipient, setSelectedRecipient] = useState<string>('all');
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, maxProductPrice]);
+
+  useEffect(() => {
+    // Adjust initial price range if maxProductPrice changes after initial mount
+    setPriceRange(currentRange => [currentRange[0], Math.min(currentRange[1], maxProductPrice)]);
+  }, [maxProductPrice]);
+
+
+  const handleFindGifts = () => {
+    const queryParams = new URLSearchParams();
+    if (selectedOccasion && selectedOccasion !== 'all') {
+      queryParams.append('occasion', selectedOccasion);
+    }
+    if (selectedGiftType && selectedGiftType !== 'all') {
+      queryParams.append('category', selectedGiftType); // 'category' is used on products page for gift type
+    }
+    if (selectedRecipient && selectedRecipient !== 'all') {
+      queryParams.append('recipient', selectedRecipient);
+    }
+    queryParams.append('priceMin', priceRange[0].toString());
+    queryParams.append('priceMax', priceRange[1].toString());
+
+    router.push(`/products?${queryParams.toString()}`);
+  };
+
   return (
-    <section className="bg-neutral-900 py-6 sm:py-8 my-8 sm:my-12 rounded-lg">
+    <section className="bg-neutral-900 py-6 sm:py-8 my-8 sm:my-12 rounded-lg shadow-xl">
       <div className="container mx-auto px-4">
-        <SectionTitle className="text-white mb-4 sm:mb-6 text-xl sm:text-2xl">Find The Perfect Gift</SectionTitle>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 items-end">
-          <Select>
-            <SelectTrigger className="w-full bg-black text-white border-border placeholder:text-neutral-400 focus:ring-primary h-10 text-sm">
-              <SelectValue placeholder="Select Occasion" />
-            </SelectTrigger>
-            <SelectContent className="bg-black text-white border-border">
-              {OCCASIONS_LIST.slice(0,5).map(o => <SelectItem key={o.id} value={o.slug} className="hover:bg-neutral-800 focus:bg-neutral-700 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground">{o.name}</SelectItem>)}
-            </SelectContent>
-          </Select>
-          <Select>
-            <SelectTrigger className="w-full bg-black text-white border-border placeholder:text-neutral-400 focus:ring-primary h-10 text-sm">
-              <SelectValue placeholder="Select Gift Type" />
-            </SelectTrigger>
-            <SelectContent className="bg-black text-white border-border">
-              {GIFT_TYPES_LIST.slice(0,5).map(gt => <SelectItem key={gt.id} value={gt.slug} className="hover:bg-neutral-800 focus:bg-neutral-700 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground">{gt.name}</SelectItem>)}
-            </SelectContent>
-          </Select>
-          <Select>
-            <SelectTrigger className="w-full bg-black text-white border-border placeholder:text-neutral-400 focus:ring-primary h-10 text-sm">
-              <SelectValue placeholder="Select Recipient" />
-            </SelectTrigger>
-            <SelectContent className="bg-black text-white border-border">
-              {RECIPIENTS_LIST.slice(0,5).map(r => <SelectItem key={r.id} value={r.slug} className="hover:bg-neutral-800 focus:bg-neutral-700 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground">{r.name}</SelectItem>)}
-            </SelectContent>
-          </Select>
-          <div className="sm:col-span-2 md:col-span-1">
-            <label className="text-xs text-neutral-400 mb-1 block">Price Range: Rs.{priceRange[0]} - Rs.{priceRange[1]}</label>
+        <SectionTitle className="text-white mb-6 sm:mb-8 text-2xl sm:text-3xl">Find The Perfect Gift</SectionTitle>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 items-end">
+          
+          <div className="space-y-1.5">
+            <Label htmlFor="smart-occasion" className="text-sm font-medium text-neutral-300">Occasion</Label>
+            <Select value={selectedOccasion} onValueChange={setSelectedOccasion}>
+              <SelectTrigger id="smart-occasion" className="w-full bg-black text-white border-border placeholder:text-neutral-400 focus:ring-primary h-11 text-sm">
+                <SelectValue placeholder="Select Occasion" />
+              </SelectTrigger>
+              <SelectContent className="bg-black text-white border-border">
+                <SelectItem value="all" className="hover:bg-neutral-800 focus:bg-neutral-700 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground">All Occasions</SelectItem>
+                {OCCASIONS_LIST.map(o => <SelectItem key={o.id} value={o.slug} className="hover:bg-neutral-800 focus:bg-neutral-700 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground">{o.name}</SelectItem>)}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-1.5">
+            <Label htmlFor="smart-gift-type" className="text-sm font-medium text-neutral-300">Gift Type</Label>
+            <Select value={selectedGiftType} onValueChange={setSelectedGiftType}>
+              <SelectTrigger id="smart-gift-type" className="w-full bg-black text-white border-border placeholder:text-neutral-400 focus:ring-primary h-11 text-sm">
+                <SelectValue placeholder="Select Gift Type" />
+              </SelectTrigger>
+              <SelectContent className="bg-black text-white border-border">
+                <SelectItem value="all" className="hover:bg-neutral-800 focus:bg-neutral-700 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground">All Gift Types</SelectItem>
+                {GIFT_TYPES_LIST.map(gt => <SelectItem key={gt.id} value={gt.slug} className="hover:bg-neutral-800 focus:bg-neutral-700 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground">{gt.name}</SelectItem>)}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-1.5">
+            <Label htmlFor="smart-recipient" className="text-sm font-medium text-neutral-300">Recipient</Label>
+            <Select value={selectedRecipient} onValueChange={setSelectedRecipient}>
+              <SelectTrigger id="smart-recipient" className="w-full bg-black text-white border-border placeholder:text-neutral-400 focus:ring-primary h-11 text-sm">
+                <SelectValue placeholder="Select Recipient" />
+              </SelectTrigger>
+              <SelectContent className="bg-black text-white border-border">
+                <SelectItem value="all" className="hover:bg-neutral-800 focus:bg-neutral-700 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground">Any Recipient</SelectItem>
+                {RECIPIENTS_LIST.map(r => <SelectItem key={r.id} value={r.slug} className="hover:bg-neutral-800 focus:bg-neutral-700 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground">{r.name}</SelectItem>)}
+              </SelectContent>
+            </Select>
+          </div>
+          
+          <div className="md:col-span-2 lg:col-span-1 space-y-1.5">
+            <Label className="text-sm font-medium text-neutral-300 mb-1 block">Price Range: Rs.{priceRange[0]} - Rs.{priceRange[1]}</Label>
             <Slider
-              defaultValue={[50, 300]}
-              min={0} max={1000} step={10}
+              min={0} 
+              max={maxProductPrice} 
+              step={10}
+              value={priceRange}
               onValueChange={(value) => setPriceRange(value as [number, number])}
-              className="[&>span:first-child]:bg-primary [&>span:first-child_span]:bg-white"
+              className="[&>span:first-child]:h-2 [&>span:first-child_span]:bg-primary [&>span:first-child_span]:h-2 [&>span:nth-child(2)]:h-5 [&>span:nth-child(2)]:w-5"
             />
           </div>
         </div>
-         <div className="mt-4 text-center">
-            <Button className="bg-primary hover:bg-primary/80 text-primary-foreground text-sm px-6">Find Gifts</Button>
+         <div className="mt-8 text-center">
+            <Button onClick={handleFindGifts} size="lg" className="bg-primary hover:bg-primary/80 text-primary-foreground text-base px-10 py-3 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+              Find Gifts
+            </Button>
         </div>
       </div>
     </section>
@@ -337,9 +387,9 @@ const Advertisements = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentBannerIndex((prevIndex) => (prevIndex + 1) % bannerMessages.length);
-    }, 10000); // Change banner every 10 seconds
+    }, 10000); 
 
-    return () => clearInterval(timer); // Cleanup interval on component unmount
+    return () => clearInterval(timer); 
   }, []);
 
   const currentBanner = bannerMessages[currentBannerIndex];

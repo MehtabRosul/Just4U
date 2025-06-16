@@ -11,17 +11,19 @@ import { Button } from '@/components/ui/button';
 import { XIcon, FilterIcon } from 'lucide-react';
 
 export interface Filters {
-  category: string;
+  category: string; // Gift Type
   priceRange: [number, number];
+  occasion?: string; // Optional, ProductFilters UI doesn't directly control these
+  recipient?: string; // Optional
 }
 
 interface ProductFiltersProps {
   initialFilters?: Partial<Filters>;
-  onFilterChange: (filters: Filters) => void;
+  onFilterChange: (filters: Pick<Filters, 'category' | 'priceRange'>) => void; // Only sends back what it controls
   maxPrice?: number;
 }
 
-const DEFAULT_MAX_PRICE = 500;
+const DEFAULT_MAX_PRICE = 1000; // Increased default
 
 export function ProductFilters({ 
   initialFilters = {}, 
@@ -32,13 +34,9 @@ export function ProductFilters({
   const [priceRange, setPriceRange] = useState<[number, number]>(initialFilters.priceRange || [0, maxPrice]);
 
   useEffect(() => {
-    // Update internal price range if maxPrice changes and current max exceeds new maxPrice
-    if (priceRange[1] > maxPrice) {
-      setPriceRange([priceRange[0], maxPrice]);
-    } else if (priceRange[1] === DEFAULT_MAX_PRICE && maxPrice !== DEFAULT_MAX_PRICE){
-       setPriceRange([priceRange[0], maxPrice]); // initialize if default max price was used
-    }
-  }, [maxPrice, priceRange]);
+    setCategory(initialFilters.category || 'all');
+    setPriceRange(initialFilters.priceRange || [0, maxPrice]);
+  }, [initialFilters, maxPrice]);
 
 
   const handleApplyFilters = () => {
@@ -46,9 +44,11 @@ export function ProductFilters({
   };
 
   const handleResetFilters = () => {
-    setCategory('all');
-    setPriceRange([0, maxPrice]);
-    onFilterChange({ category: 'all', priceRange: [0, maxPrice] });
+    const defaultCategory = 'all';
+    const defaultPriceRange: [number, number] = [0, maxPrice];
+    setCategory(defaultCategory);
+    setPriceRange(defaultPriceRange);
+    onFilterChange({ category: defaultCategory, priceRange: defaultPriceRange });
   };
 
   return (
@@ -61,13 +61,13 @@ export function ProductFilters({
       </div>
       
       <div>
-        <Label htmlFor="category-filter" className="text-xs sm:text-sm font-medium mb-1.5 sm:mb-2 block text-foreground">Category</Label>
+        <Label htmlFor="category-filter" className="text-xs sm:text-sm font-medium mb-1.5 sm:mb-2 block text-foreground">Gift Type</Label>
         <Select value={category} onValueChange={setCategory}>
           <SelectTrigger id="category-filter" className="w-full text-xs sm:text-sm">
-            <SelectValue placeholder="Select category" />
+            <SelectValue placeholder="Select gift type" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Categories</SelectItem>
+            <SelectItem value="all">All Gift Types</SelectItem>
             {CATEGORIES.map((cat: Category) => (
               <SelectItem key={cat.id} value={cat.slug}>
                 {cat.name}
@@ -82,7 +82,7 @@ export function ProductFilters({
         <Slider
           min={0}
           max={maxPrice}
-          step={1}
+          step={10} // Adjusted step for finer control if needed
           value={priceRange}
           onValueChange={(newRange) => setPriceRange(newRange as [number, number])}
           className="my-3 sm:my-4"
@@ -99,3 +99,4 @@ export function ProductFilters({
     </aside>
   );
 }
+

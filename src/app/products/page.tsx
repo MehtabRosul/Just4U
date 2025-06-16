@@ -3,47 +3,89 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { PRODUCTS, CATEGORIES } from '@/lib/data';
+import { PRODUCTS, CATEGORIES, OCCASIONS_LIST, RECIPIENTS_LIST } from '@/lib/data';
 import type { Product } from '@/lib/types';
 import { ProductList } from '@/components/products/ProductList';
-import { ProductFilters, type Filters } from '@/components/products/ProductFilters';
+import { ProductFilters, type Filters as ProductFilterInputs } from '@/components/products/ProductFilters';
 import { ProductSortControl, type SortOption } from '@/components/products/ProductSortControl';
 import { SectionTitle } from '@/components/shared/SectionTitle';
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 
 const ITEMS_PER_PAGE = 12;
 
+interface ActiveFilters extends ProductFilterInputs {
+  occasion: string;
+  recipient: string;
+}
+
 export default function ProductsPage() {
   const searchParams = useSearchParams();
-  const initialCategory = searchParams.get('category') || 'all';
-  const initialSort = (searchParams.get('sort') as SortOption) || 'popularity';
 
-  const [filters, setFilters] = useState<Filters>({ category: initialCategory, priceRange: [0, 500] });
-  const [sortOption, setSortOption] = useState<SortOption>(initialSort);
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const maxPrice = useMemo(() => {
-    if (PRODUCTS.length === 0) return 500; 
+  const serverMaxPrice = useMemo(() => {
+    if (PRODUCTS.length === 0) return 1000;
     return Math.max(...PRODUCTS.map(p => p.price), 0);
   }, []);
 
+  const initialCategory = searchParams.get('category') || 'all'; // For gift type
+  const initialOccasion = searchParams.get('occasion') || 'all';
+  const initialRecipient = searchParams.get('recipient') || 'all';
+  const initialPriceMin = parseInt(searchParams.get('priceMin') || '0', 10);
+  const initialPriceMaxQuery = searchParams.get('priceMax');
+  const initialPriceMax = initialPriceMaxQuery !== null ? parseInt(initialPriceMaxQuery, 10) : serverMaxPrice;
+  
+  const initialSort = (searchParams.get('sort') as SortOption) || 'popularity';
+
+  const [activeFilters, setActiveFilters] = useState<ActiveFilters>({
+    category: initialCategory,
+    priceRange: [initialPriceMin, Math.min(initialPriceMax, serverMaxPrice)],
+    occasion: initialOccasion,
+    recipient: initialRecipient,
+  });
+  
+  const [sortOption, setSortOption] = useState<SortOption>(initialSort);
+  const [currentPage, setCurrentPage] = useState(1);
+
   useEffect(() => {
-    setFilters(prevFilters => ({
-      ...prevFilters,
-      priceRange: [prevFilters.priceRange[0], maxPrice]
-    }));
-  }, [maxPrice]);
+    // Update filters if searchParams change (e.g., browser back/forward)
+    const newCategory = searchParams.get('category') || 'all';
+    const newOccasion = searchParams.get('occasion') || 'all';
+    const newRecipient = searchParams.get('recipient') || 'all';
+    const newPriceMin = parseInt(searchParams.get('priceMin') || '0', 10);
+    const newPriceMaxQuery = searchParams.get('priceMax');
+    const newPriceMax = newPriceMaxQuery !== null ? parseInt(newPriceMaxQuery, 10) : serverMaxPrice;
+
+    setActiveFilters({
+        category: newCategory,
+        priceRange: [newPriceMin, Math.min(newPriceMax, serverMaxPrice)],
+        occasion: newOccasion,
+        recipient: newRecipient,
+    });
+    setCurrentPage(1); // Reset to first page on filter change from URL
+  }, [searchParams, serverMaxPrice]);
 
 
   const filteredAndSortedProducts = useMemo(() => {
     let tempProducts = [...PRODUCTS];
 
-    if (filters.category !== 'all') {
-      tempProducts = tempProducts.filter(p => p.category === filters.category);
+    // Apply category filter (Gift Type)
+    if (activeFilters.category !== 'all') {
+      tempProducts = tempProducts.filter(p => p.category === activeFilters.category);
     }
 
-    tempProducts = tempProducts.filter(p => p.price >= filters.priceRange[0] && p.price <= filters.priceRange[1]);
+    // Apply occasion filter
+    if (activeFilters.occasion !== 'all') {
+      tempProducts = tempProducts.filter(p => p.occasion?.includes(activeFilters.occasion));
+    }
+    
+    // Apply recipient filter
+    if (activeFilters.recipient !== 'all') {
+      tempProducts = tempProducts.filter(p => p.recipient?.includes(activeFilters.recipient));
+    }
 
+    // Apply price range filter
+    tempProducts = tempProducts.filter(p => p.price >= activeFilters.priceRange[0] && p.price <= activeFilters.priceRange[1]);
+
+    // Apply sorting
     switch (sortOption) {
       case 'popularity':
         tempProducts.sort((a, b) => b.popularity - a.popularity);
@@ -66,7 +108,7 @@ export default function ProductsPage() {
     }
 
     return tempProducts;
-  }, [filters, sortOption, initialSort]);
+  }, [activeFilters, sortOption, initialSort]);
 
   const totalPages = Math.ceil(filteredAndSortedProducts.length / ITEMS_PER_PAGE);
   const currentProducts = filteredAndSortedProducts.slice(
@@ -81,20 +123,45 @@ export default function ProductsPage() {
     }
   };
   
-  const currentCategoryName = filters.category === 'all' 
-    ? 'All Gifts' 
-    : CATEGORIES.find(c => c.slug === filters.category)?.name || 'Gifts';
+  const generatePageTitle = () => {
+    let titleParts = [];
+    if (activeFilters.occasion !== 'all') {
+      const occasionObj = OCCASIONS_LIST.find(o => o.slug === activeFilters.occasion);
+      if (occasionObj) titleParts.push(occasionObj.name);
+    }
+    if (activeFilters.category !== 'all') {
+        const categoryObj = CATEGORIES.find(c => c.slug === activeFilters.category);
+        if (categoryObj) titleParts.push(categoryObj.name);
+    }
+    if (activeFilters.recipient !== 'all') {
+      const recipientObj = RECIPIENTS_LIST.find(r => r.slug === activeFilters.recipient);
+      if (recipientObj) titleParts.push(`for ${recipientObj.name}`);
+    }
+    if (titleParts.length === 0) return "All Gifts";
+    return titleParts.join(" ") + (titleParts.length > 0 ? " Gifts" : "");
+  };
 
   return (
     <div className="container mx-auto px-4 py-6 sm:py-8">
-      <SectionTitle className="mb-4 sm:mb-6">{currentCategoryName}</SectionTitle>
+      <SectionTitle className="mb-4 sm:mb-6">{generatePageTitle()}</SectionTitle>
       
       <div className="grid lg:grid-cols-4 gap-6 sm:gap-8">
         <div className="lg:col-span-1">
           <ProductFilters 
-            initialFilters={{category: initialCategory, priceRange: [0, maxPrice]}} 
-            onFilterChange={(newFilters) => {setFilters(newFilters); setCurrentPage(1);}}
-            maxPrice={maxPrice}
+            initialFilters={{ // Pass only what ProductFilters UI can control
+                category: activeFilters.category, 
+                priceRange: activeFilters.priceRange,
+                // occasion and recipient are not managed by ProductFilters UI directly
+            }} 
+            onFilterChange={(newFilters) => {
+                setActiveFilters(prev => ({
+                    ...prev, // Keep existing occasion and recipient
+                    category: newFilters.category,
+                    priceRange: newFilters.priceRange,
+                }));
+                setCurrentPage(1);
+            }}
+            maxPrice={serverMaxPrice}
           />
         </div>
 
@@ -121,19 +188,20 @@ export default function ProductsPage() {
                 </PaginationItem>
                 {[...Array(totalPages)].map((_, i) => {
                   const pageNum = i + 1;
-                  // Show current page, first/last page, and 1 page around current
                   const showPage = pageNum === 1 || 
                                    pageNum === totalPages || 
                                    pageNum === currentPage || 
                                    pageNum === currentPage - 1 || 
                                    pageNum === currentPage + 1;
                   
-                  // Show ellipsis if there's a gap of more than 1 page
-                  const showEllipsisBefore = pageNum === currentPage - 2 && currentPage > 3;
-                  const showEllipsisAfter = pageNum === currentPage + 2 && currentPage < totalPages - 2;
+                  const showEllipsisBefore = pageNum === currentPage - 2 && currentPage > 3 && totalPages > 5;
+                  const showEllipsisAfter = pageNum === currentPage + 2 && currentPage < totalPages - 2 && totalPages > 5;
 
-                  if (showEllipsisBefore || showEllipsisAfter) {
-                    return <PaginationItem key={`ellipsis-${pageNum}`}><PaginationEllipsis /></PaginationItem>;
+                  if (showEllipsisBefore && pageNum > 1 && pageNum < currentPage -1) {
+                    return <PaginationItem key={`ellipsis-before-${pageNum}`}><PaginationEllipsis /></PaginationItem>;
+                  }
+                   if (showEllipsisAfter && pageNum < totalPages && pageNum > currentPage + 1) {
+                    return <PaginationItem key={`ellipsis-after-${pageNum}`}><PaginationEllipsis /></PaginationItem>;
                   }
                   if (showPage) {
                     return (
@@ -166,3 +234,4 @@ export default function ProductsPage() {
     </div>
   );
 }
+
