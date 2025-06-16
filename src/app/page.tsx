@@ -121,20 +121,22 @@ const HeroCarousel = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prevSlide) => (prevSlide + 1) % carouselBannersData.length);
-    }, 3000); 
+    }, 3000); // Change banner every 3 seconds
 
     return () => clearInterval(timer); 
   }, []);
 
-  // Common banner fade transition classes
+  // Banner fade transition classes
   const bannerAnimationInactiveClasses = "opacity-0";
   const bannerAnimationActiveClasses = "opacity-100";
+  const bannerBaseTransition = "transition-opacity duration-[1500ms] ease-in-out"; // Slower banner fade
 
-  // Common text animation classes (gentle fade and upward movement)
+  // Text animation classes (gentle fade and upward movement)
   const commonTextInactiveAnimation = "opacity-0 -translate-y-3";
   const commonTextActiveAnimation = "opacity-100 translate-y-0";
   
-  // Slower base transition classes for text elements
+  // Base transition classes for text elements (slower, with delays)
+  const iconBaseTransition = "transition-all duration-[1000ms] ease-out delay-[200ms]";
   const titleBaseTransition = "transition-all duration-[1000ms] ease-out delay-[400ms]";
   const descriptionBaseTransition = "transition-all duration-[1000ms] ease-out delay-[600ms]";
   const buttonBaseTransition = "transition-all duration-[1000ms] ease-out delay-[800ms]";
@@ -146,9 +148,10 @@ const HeroCarousel = () => {
         <div
           key={banner.id}
           className={cn(
-            "absolute inset-0 transition-opacity duration-[1500ms] ease-in-out w-full h-full flex p-6 md:p-10", // Slower banner fade
+            "absolute inset-0 w-full h-full flex p-6 md:p-10",
             banner.gradientClasses,
-            'items-start', 
+            'items-start', // Text content to the top-left
+            bannerBaseTransition, // Handles the opacity transition for the banner itself
             index === currentSlide ? bannerAnimationActiveClasses : bannerAnimationInactiveClasses + " pointer-events-none"
           )}
         >
@@ -156,7 +159,7 @@ const HeroCarousel = () => {
             <div className="max-w-md md:max-w-lg lg:max-w-xl text-left"> 
               <SparklesIcon className={cn(
                 "w-10 h-10 sm:w-12 sm:h-12 text-white opacity-70 mb-2 sm:mb-3 hidden md:inline-block",
-                titleBaseTransition,
+                iconBaseTransition,
                 index === currentSlide ? commonTextActiveAnimation : commonTextInactiveAnimation
                 )} />
               <h1 className={cn(
@@ -169,7 +172,7 @@ const HeroCarousel = () => {
               </h1>
               <p className={cn(
                 "text-neutral-200 text-sm sm:text-base lg:text-md max-w-md mb-6 sm:mb-8",
-                 "mr-auto",
+                 "mr-auto", // Ensure text stays left
                 descriptionBaseTransition,
                 index === currentSlide ? commonTextActiveAnimation : commonTextInactiveAnimation
                 )}>
@@ -187,9 +190,9 @@ const HeroCarousel = () => {
             src={banner.imageUrl}
             alt={banner.title}
             fill
-            className="object-cover opacity-20 pointer-events-none"
+            className="object-cover opacity-20 pointer-events-none" // Image as a subtle background layer
             data-ai-hint={banner.dataAiHint}
-            priority={index === 0} 
+            priority={index === 0} // Prioritize loading the first banner image
           />
         </div>
       ))}
@@ -527,6 +530,8 @@ export default function HomePage()
 
 
 
+
+    
 
     
 
