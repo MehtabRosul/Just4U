@@ -1,40 +1,28 @@
 
-"use client"; // Top-level client component for state management (modal)
+"use client"; 
 
-import { useState, useMemo } from 'react'; // Added useMemo
+import { useMemo } from 'react'; 
 import type { Product } from '@/lib/types';
 import { CATEGORIES, PRODUCTS } from '@/lib/data';
 import { SectionTitle } from '@/components/shared/SectionTitle';
 import { ProductList } from '@/components/products/ProductList';
 import { CategoryPill } from '@/components/products/CategoryPill';
-import { ProductDetailModal } from '@/components/products/ProductDetailModal';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import Image from 'next/image';
 
 export default function HomePage() {
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-
   const trendingProducts = useMemo(() => PRODUCTS.filter(p => p.trending).slice(0, 4), []);
   
   const personalizedProducts = useMemo(() => PRODUCTS.filter(p => !p.trending)
-    .sort(() => 0.5 - Math.random()) // Shuffle
+    .sort(() => 0.5 - Math.random()) 
     .slice(0, 4), []);
 
   const featuredDeals = useMemo(() => {
-    // Pick some non-trending products, or products with a hypothetical discount
-    return PRODUCTS.filter(p => !p.trending && p.price < 50) // Example: items under $50 not in trending
+    return PRODUCTS.filter(p => !p.trending && p.price < 50) 
       .sort(() => 0.5 - Math.random())
       .slice(0, 4);
   }, []);
-
-  const handleViewDetails = (product: Product) => {
-    setSelectedProduct(product);
-  };
-
-  const handleCloseModal = () => {
-    setSelectedProduct(null);
-  };
 
   return (
     <div className="space-y-12 md:space-y-16">
@@ -63,11 +51,11 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Featured Deals Section - NEW */}
+      {/* Featured Deals Section */}
       {featuredDeals.length > 0 && (
         <section>
           <SectionTitle>Featured Deals</SectionTitle>
-          <ProductList products={featuredDeals} onViewDetails={handleViewDetails} />
+          <ProductList products={featuredDeals} />
            <div className="mt-8 text-center">
             <Button asChild variant="outline" className="text-primary border-primary hover:bg-accent hover:text-accent-foreground">
               <Link href="/products?sort=price_asc">View More Deals</Link>
@@ -80,7 +68,7 @@ export default function HomePage() {
       {trendingProducts.length > 0 && (
         <section>
           <SectionTitle>Trending Gifts</SectionTitle>
-          <ProductList products={trendingProducts} onViewDetails={handleViewDetails} />
+          <ProductList products={trendingProducts} />
           <div className="mt-8 text-center">
             <Button asChild variant="outline" className="text-primary border-primary hover:bg-accent hover:text-accent-foreground">
               <Link href="/products?sort=trending">View More Trending</Link>
@@ -89,23 +77,12 @@ export default function HomePage() {
         </section>
       )}
       
-
       {/* Personalized Recommendations Section */}
       {personalizedProducts.length > 0 && (
          <section>
           <SectionTitle>Recommended For You</SectionTitle>
-          <ProductList products={personalizedProducts} onViewDetails={handleViewDetails} />
+          <ProductList products={personalizedProducts} />
         </section>
-      )}
-
-
-      {/* Product Detail Modal */}
-      {selectedProduct && (
-        <ProductDetailModal
-          product={selectedProduct}
-          isOpen={!!selectedProduct}
-          onClose={handleCloseModal}
-        />
       )}
     </div>
   );

@@ -7,16 +7,16 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import { Button } from '@/components/ui/button';
 import type { Product } from '@/lib/types';
 import { WishlistButton } from '@/components/features/WishlistButton';
-import { StarRating } from '@/components/shared/StarRating'; // Added
+import { StarRating } from '@/components/shared/StarRating';
 import { cn } from '@/lib/utils';
 import { ExternalLink } from 'lucide-react';
 
 interface ProductCardProps {
   product: Product;
-  onViewDetails?: (product: Product) => void;
+  // onViewDetails is no longer needed as we navigate to a page
 }
 
-export function ProductCard({ product, onViewDetails }: ProductCardProps) {
+export function ProductCard({ product }: ProductCardProps) {
   const averageRating = product.reviews && product.reviews.length > 0
     ? product.reviews.reduce((acc, review) => acc + review.rating, 0) / product.reviews.length
     : 0;
@@ -24,9 +24,9 @@ export function ProductCard({ product, onViewDetails }: ProductCardProps) {
   return (
     <Card className="group flex flex-col overflow-hidden rounded-lg shadow-lg transition-all duration-300 ease-in-out hover:shadow-xl hover:scale-[1.02] bg-card">
       <CardHeader className="p-0 relative">
-        <Link href={`/products/${product.slug}`} className="block aspect-[3/4] overflow-hidden" onClick={(e) => { if(onViewDetails) { e.preventDefault(); onViewDetails(product); }}}>
+        <Link href={`/products/${product.slug}`} className="block aspect-[3/4] overflow-hidden">
           <Image
-            src={product.imageUrl}
+            src={product.imageUrls[0]} // Use the first image as the primary card image
             alt={product.name}
             width={300}
             height={400}
@@ -44,7 +44,7 @@ export function ProductCard({ product, onViewDetails }: ProductCardProps) {
         )}
       </CardHeader>
       <CardContent className="p-4 flex-grow flex flex-col">
-        <Link href={`/products/${product.slug}`} className="block" onClick={(e) => { if(onViewDetails) { e.preventDefault(); onViewDetails(product); }}}>
+        <Link href={`/products/${product.slug}`} className="block">
           <CardTitle className="font-headline text-lg leading-tight mb-1 hover:text-accent transition-colors">
             {product.name}
           </CardTitle>
@@ -59,15 +59,15 @@ export function ProductCard({ product, onViewDetails }: ProductCardProps) {
       </CardContent>
       <CardFooter className="p-4 flex flex-col sm:flex-row justify-between items-center border-t border-border space-y-2 sm:space-y-0">
         <p className="text-xl font-semibold text-accent">
-          ${product.price.toFixed(2)}
+          Rs. {product.price.toFixed(2)}
         </p>
         <Button 
+          asChild
           size="sm" 
-          onClick={() => onViewDetails && onViewDetails(product)} 
-          variant="secondary" // Changed from outline to secondary for red background
-          className="hover:bg-accent/90 transition-colors w-full sm:w-auto" // Ensure accent is red
+          variant="secondary"
+          className="hover:bg-accent/90 transition-colors w-full sm:w-auto"
         >
-          View Details
+          <Link href={`/products/${product.slug}`}>View Details</Link>
         </Button>
       </CardFooter>
     </Card>

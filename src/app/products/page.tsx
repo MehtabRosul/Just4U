@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect, useMemo } from 'react';
@@ -8,7 +9,6 @@ import { ProductList } from '@/components/products/ProductList';
 import { ProductFilters, type Filters } from '@/components/products/ProductFilters';
 import { ProductSortControl, type SortOption } from '@/components/products/ProductSortControl';
 import { SectionTitle } from '@/components/shared/SectionTitle';
-import { ProductDetailModal } from '@/components/products/ProductDetailModal';
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 
 const ITEMS_PER_PAGE = 12;
@@ -21,15 +21,12 @@ export default function ProductsPage() {
   const [filters, setFilters] = useState<Filters>({ category: initialCategory, priceRange: [0, 500] });
   const [sortOption, setSortOption] = useState<SortOption>(initialSort);
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
-  // Determine max price from all products for the slider
   const maxPrice = useMemo(() => {
-    if (PRODUCTS.length === 0) return 500; // Default max price
+    if (PRODUCTS.length === 0) return 500; 
     return Math.max(...PRODUCTS.map(p => p.price), 0);
   }, []);
 
-  // Update price range in filters if maxPrice changes
   useEffect(() => {
     setFilters(prevFilters => ({
       ...prevFilters,
@@ -41,15 +38,12 @@ export default function ProductsPage() {
   const filteredAndSortedProducts = useMemo(() => {
     let tempProducts = [...PRODUCTS];
 
-    // Apply category filter
     if (filters.category !== 'all') {
       tempProducts = tempProducts.filter(p => p.category === filters.category);
     }
 
-    // Apply price filter
     tempProducts = tempProducts.filter(p => p.price >= filters.priceRange[0] && p.price <= filters.priceRange[1]);
 
-    // Apply sorting
     switch (sortOption) {
       case 'popularity':
         tempProducts.sort((a, b) => b.popularity - a.popularity);
@@ -67,10 +61,9 @@ export default function ProductsPage() {
         tempProducts.sort((a, b) => b.name.localeCompare(a.name));
         break;
     }
-    if (initialSort === 'trending') { // Special case from homepage link
+    if (initialSort === 'trending') { 
        tempProducts = tempProducts.filter(p => p.trending).sort((a,b) => b.popularity - a.popularity);
     }
-
 
     return tempProducts;
   }, [filters, sortOption, initialSort]);
@@ -84,16 +77,8 @@ export default function ProductsPage() {
   const handlePageChange = (page: number) => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
-      window.scrollTo(0, 0); // Scroll to top on page change
+      window.scrollTo(0, 0); 
     }
-  };
-
-  const handleViewDetails = (product: Product) => {
-    setSelectedProduct(product);
-  };
-
-  const handleCloseModal = () => {
-    setSelectedProduct(null);
   };
   
   const currentCategoryName = filters.category === 'all' 
@@ -121,7 +106,7 @@ export default function ProductsPage() {
             <ProductSortControl currentSort={sortOption} onSortChange={(newSort) => {setSortOption(newSort); setCurrentPage(1);}} />
           </div>
 
-          <ProductList products={currentProducts} onViewDetails={handleViewDetails} />
+          <ProductList products={currentProducts} />
 
           {totalPages > 1 && (
             <Pagination className="mt-8">
@@ -136,7 +121,6 @@ export default function ProductsPage() {
                 </PaginationItem>
                 {[...Array(totalPages)].map((_, i) => {
                   const pageNum = i + 1;
-                  // Basic pagination logic: show first, last, current, and +/- 1 from current
                   const showPage = pageNum === 1 || pageNum === totalPages || pageNum === currentPage || pageNum === currentPage - 1 || pageNum === currentPage + 1;
                   const showEllipsis = (pageNum === currentPage - 2 && currentPage > 3) || (pageNum === currentPage + 2 && currentPage < totalPages - 2);
 
@@ -171,13 +155,6 @@ export default function ProductsPage() {
           )}
         </div>
       </div>
-      {selectedProduct && (
-        <ProductDetailModal
-          product={selectedProduct}
-          isOpen={!!selectedProduct}
-          onClose={handleCloseModal}
-        />
-      )}
     </div>
   );
 }

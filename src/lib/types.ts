@@ -1,11 +1,13 @@
+
 import type { LucideIcon } from 'lucide-react';
 
 export interface Product {
   id: string;
   name: string;
   description: string;
-  price: number;
-  imageUrl: string;
+  price: number; // This will be the current/discounted price
+  originalPrice?: number; // Optional original price
+  imageUrls: string[]; // Changed from imageUrl to support multiple images
   dataAiHint?: string;
   category: string;
   popularity: number; // e.g., view count or sales rank
@@ -13,7 +15,11 @@ export interface Product {
   giftWrapAvailable?: boolean;
   personalizedMessageAvailable?: boolean;
   reviews?: Review[];
-  slug: string; // for URL path
+  slug: string;
+  soldBy?: string;
+  availableColors?: string[]; // e.g., ['#FF0000', '#00FF00', '#0000FF'] or ['Red', 'Green', 'Blue']
+  attributes?: Array<{ name: string; value: string }>; // For "Key Product Attributes"
+  idealGiftFor?: string[]; // For "An ideal gift for"
 }
 
 export interface Category {

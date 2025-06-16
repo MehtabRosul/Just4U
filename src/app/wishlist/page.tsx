@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useWishlist } from '@/hooks/useWishlist';
@@ -6,21 +7,9 @@ import { SectionTitle } from '@/components/shared/SectionTitle';
 import { Button } from '@/components/ui/button';
 import { HeartOff, ShoppingBag } from 'lucide-react';
 import Link from 'next/link';
-import { useState } from 'react';
-import type { Product } from '@/lib/types';
-import { ProductDetailModal } from '@/components/products/ProductDetailModal';
 
 export default function WishlistPage() {
   const { wishlist, clearWishlist } = useWishlist();
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-
-  const handleViewDetails = (product: Product) => {
-    setSelectedProduct(product);
-  };
-
-  const handleCloseModal = () => {
-    setSelectedProduct(null);
-  };
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -34,7 +23,7 @@ export default function WishlistPage() {
       </div>
 
       {wishlist.length > 0 ? (
-        <ProductList products={wishlist} onViewDetails={handleViewDetails} />
+        <ProductList products={wishlist} />
       ) : (
         <div className="text-center py-10 border border-dashed rounded-lg">
           <HeartOff className="mx-auto h-16 w-16 text-muted-foreground mb-4" />
@@ -46,13 +35,6 @@ export default function WishlistPage() {
             </Link>
           </Button>
         </div>
-      )}
-       {selectedProduct && (
-        <ProductDetailModal
-          product={selectedProduct}
-          isOpen={!!selectedProduct}
-          onClose={handleCloseModal}
-        />
       )}
     </div>
   );
