@@ -13,23 +13,237 @@ import { ArrowRight, ChevronDown, Sparkles as SparklesIcon, Quote, Star } from '
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
 import { Card, CardContent } from '@/components/ui/card';
+import { cn } from '@/lib/utils';
 
-const HeroCarousel = () => (
-  <section className="relative bg-gradient-to-b from-red-900 via-red-950 to-black min-h-[400px] md:min-h-[500px] flex items-center justify-center text-center mb-8 sm:mb-12 py-10 sm:py-16 rounded-lg overflow-hidden">
-    <div className="relative z-10 p-4 flex flex-col items-center">
-      <SparklesIcon className="w-12 h-12 sm:w-16 sm:h-16 text-pink-400 opacity-70 mb-2 sm:mb-4" />
-      <h1 className="font-headline text-4xl sm:text-5xl md:text-6xl font-extrabold mb-3 sm:mb-4 bg-gradient-to-r from-primary via-pink-500 to-fuchsia-500 text-transparent bg-clip-text">
-        Gifts as Unique <br className="md:hidden" /> as They Are
-      </h1>
-      <p className="text-neutral-300 text-sm sm:text-base lg:text-lg max-w-md mx-auto mb-6 sm:mb-8">
-        Discover a world of personalized treasures, crafted with love for every occasion and every special someone.
-      </p>
-      <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg transition-transform hover:scale-105 rounded-md px-6 py-3 sm:px-8 sm:py-3.5">
-        <Link href="/products">Grab Yours</Link>
-      </Button>
-    </div>
-  </section>
-);
+interface CarouselBanner {
+  id: number;
+  title: string;
+  description: string;
+  imageUrl: string;
+  dataAiHint: string;
+  ctaText: string;
+  ctaLink: string;
+  gradientClasses: string;
+  textPosition?: 'text-left' | 'text-center' | 'text-right';
+  contentAlignment?: 'items-start' | 'items-center' | 'items-end';
+  animationInactiveClasses: string;
+  animationActiveClasses: string;
+}
+
+const carouselBannersData: CarouselBanner[] = [
+  {
+    id: 1,
+    title: "Personalized Magic",
+    description: "Unique gifts that tell their story.",
+    imageUrl: "https://placehold.co/1200x600.png",
+    dataAiHint: "personalized gift assortment",
+    ctaText: "Discover Now",
+    ctaLink: "/products?category=photo-gifts",
+    gradientClasses: "bg-gradient-to-br from-red-600 via-pink-600 to-fuchsia-700",
+    textPosition: 'text-left',
+    contentAlignment: 'items-start',
+    animationInactiveClasses: "opacity-0 -translate-x-full",
+    animationActiveClasses: "opacity-100 translate-x-0",
+  },
+  {
+    id: 2,
+    title: "Celebrate Every Moment",
+    description: "Find the perfect gift for any occasion.",
+    imageUrl: "https://placehold.co/1200x600.png",
+    dataAiHint: "birthday celebration gifts",
+    ctaText: "Explore Occasions",
+    ctaLink: "/products",
+    gradientClasses: "bg-gradient-to-tr from-rose-500 via-red-500 to-orange-600",
+    textPosition: 'text-right',
+    contentAlignment: 'items-end',
+    animationInactiveClasses: "opacity-0 translate-x-full",
+    animationActiveClasses: "opacity-100 translate-x-0",
+  },
+  {
+    id: 3,
+    title: "3D Wonders",
+    description: "Lifelike miniatures and stunning crystal art.",
+    imageUrl: "https://placehold.co/1200x600.png",
+    dataAiHint: "3d crystal miniature",
+    ctaText: "See Collection",
+    ctaLink: "/products?category=3d-crystals",
+    gradientClasses: "bg-gradient-to-b from-neutral-800 via-red-900 to-black",
+    textPosition: 'text-center',
+    contentAlignment: 'items-center',
+    animationInactiveClasses: "opacity-0 scale-50",
+    animationActiveClasses: "opacity-100 scale-100",
+  },
+  {
+    id: 4,
+    title: "Frame Your Memories",
+    description: "Elegant photo frames for timeless keepsakes.",
+    imageUrl: "https://placehold.co/1200x600.png",
+    dataAiHint: "photo frame collection",
+    ctaText: "Shop Frames",
+    ctaLink: "/products?category=photo-frames",
+    gradientClasses: "bg-gradient-to-bl from-red-700 via-rose-800 to-neutral-900",
+    textPosition: 'text-left',
+    contentAlignment: 'items-start',
+    animationInactiveClasses: "opacity-0 -translate-y-full",
+    animationActiveClasses: "opacity-100 translate-y-0",
+  },
+  {
+    id: 5,
+    title: "Corporate Gifting",
+    description: "Impress clients with premium, branded gifts.",
+    imageUrl: "https://placehold.co/1200x600.png",
+    dataAiHint: "corporate gift basket",
+    ctaText: "Get a Quote",
+    ctaLink: "/corporate-gifts",
+    gradientClasses: "bg-gradient-to-tl from-neutral-900 via-gray-800 to-red-900",
+    textPosition: 'text-right',
+    contentAlignment: 'items-end',
+    animationInactiveClasses: "opacity-0 translate-y-full",
+    animationActiveClasses: "opacity-100 translate-y-0",
+  },
+  {
+    id: 6,
+    title: "Just For You",
+    description: "Handpicked selections for every recipient.",
+    imageUrl: "https://placehold.co/1200x600.png",
+    dataAiHint: "gift for her",
+    ctaText: "Find Their Gift",
+    ctaLink: "/products",
+    gradientClasses: "bg-gradient-to-r from-pink-700 via-red-600 to-rose-700",
+    textPosition: 'text-center',
+    contentAlignment: 'items-center',
+    animationInactiveClasses: "opacity-0 rotate-[-15deg] scale-50",
+    animationActiveClasses: "opacity-100 rotate-0 scale-100",
+  },
+  {
+    id: 7,
+    title: "Daily Deals",
+    description: "Unbeatable prices on popular gifts, daily.",
+    imageUrl: "https://placehold.co/1200x600.png",
+    dataAiHint: "gift sale discount",
+    ctaText: "Grab a Deal",
+    ctaLink: "/products?sort=trending",
+    gradientClasses: "bg-gradient-to-l from-orange-600 via-red-500 to-pink-500",
+    textPosition: 'text-left',
+    contentAlignment: 'items-start',
+    animationInactiveClasses: "opacity-0 translate-x-1/2 scale-75",
+    animationActiveClasses: "opacity-100 translate-x-0 scale-100",
+  },
+  {
+    id: 8,
+    title: "New Arrivals",
+    description: "Fresh designs and innovative gift ideas.",
+    imageUrl: "https://placehold.co/1200x600.png",
+    dataAiHint: "new product launch",
+    ctaText: "See What's New",
+    ctaLink: "/products",
+    gradientClasses: "bg-gradient-to-br from-fuchsia-700 via-purple-600 to-red-500",
+    textPosition: 'text-right',
+    contentAlignment: 'items-end',
+    animationInactiveClasses: "opacity-0 -translate-x-1/2 scale-75",
+    animationActiveClasses: "opacity-100 translate-x-0 scale-100",
+  },
+  {
+    id: 9,
+    title: "Artistic Touch",
+    description: "Transform photos into unique art pieces.",
+    imageUrl: "https://placehold.co/1200x600.png",
+    dataAiHint: "photo to art canvas",
+    ctaText: "Create Art",
+    ctaLink: "/products?category=photo-to-art",
+    gradientClasses: "bg-gradient-to-tr from-red-800 via-neutral-900 to-rose-700",
+    textPosition: 'text-center',
+    contentAlignment: 'items-center',
+    animationInactiveClasses: "opacity-0 -rotate-[-15deg] scale-50",
+    animationActiveClasses: "opacity-100 rotate-0 scale-100",
+  },
+  {
+    id: 10,
+    title: "Miniature You!",
+    description: "Get a custom 3D miniature of yourself or loved ones.",
+    imageUrl: "https://placehold.co/1200x600.png",
+    dataAiHint: "3d selfie miniature",
+    ctaText: "Get Miniaturized",
+    ctaLink: "/custom/mini-you",
+    gradientClasses: "bg-gradient-to-bl from-rose-600 via-red-700 to-pink-800",
+    textPosition: 'text-left',
+    contentAlignment: 'items-start',
+    animationInactiveClasses: "opacity-0 blur-md",
+    animationActiveClasses: "opacity-100 blur-0",
+  },
+];
+
+const HeroCarousel = () => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prevSlide) => (prevSlide + 1) % carouselBannersData.length);
+    }, 3000); // Change slide every 3 seconds
+
+    return () => clearInterval(timer); // Cleanup interval on component unmount
+  }, []);
+
+  return (
+    <section className="relative min-h-[400px] md:min-h-[500px] w-full mb-8 sm:mb-12 rounded-lg overflow-hidden">
+      {carouselBannersData.map((banner, index) => (
+        <div
+          key={banner.id}
+          className={cn(
+            "absolute inset-0 transition-all duration-1000 ease-in-out w-full h-full flex p-6 md:p-10",
+            banner.gradientClasses,
+            banner.contentAlignment || 'items-center', 
+            index === currentSlide ? banner.animationActiveClasses : banner.animationInactiveClasses + " pointer-events-none"
+          )}
+        >
+          <div className={cn("relative z-10 w-full flex", banner.textPosition === 'text-left' ? 'justify-start' : banner.textPosition === 'text-right' ? 'justify-end' : 'justify-center')}>
+            <div className={cn("max-w-md md:max-w-lg lg:max-w-xl", banner.textPosition || 'text-center')}>
+              <SparklesIcon className="w-10 h-10 sm:w-12 sm:h-12 text-white opacity-70 mb-2 sm:mb-3 hidden md:inline-block" />
+              <h1 className={cn(
+                "font-headline text-3xl sm:text-4xl md:text-5xl font-extrabold mb-3 sm:mb-4 text-white",
+                banner.textPosition || 'text-center'
+                )}>
+                {banner.title}
+              </h1>
+              <p className={cn(
+                "text-neutral-200 text-sm sm:text-base lg:text-md max-w-md mb-6 sm:mb-8",
+                 banner.textPosition === 'text-left' ? 'mr-auto' : banner.textPosition === 'text-right' ? 'ml-auto' : 'mx-auto'
+                )}>
+                {banner.description}
+              </p>
+              <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg transition-transform hover:scale-105 rounded-md px-6 py-3 sm:px-8 sm:py-3.5">
+                <Link href={banner.ctaLink}>{banner.ctaText}</Link>
+              </Button>
+            </div>
+          </div>
+          <Image
+            src={banner.imageUrl}
+            alt={banner.title}
+            fill
+            className="object-cover opacity-20 pointer-events-none"
+            data-ai-hint={banner.dataAiHint}
+            priority={index === 0} 
+          />
+        </div>
+      ))}
+       {/* Navigation Dots */}
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex space-x-2">
+        {carouselBannersData.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => setCurrentSlide(index)}
+            className={cn(
+              "w-2.5 h-2.5 rounded-full transition-all duration-300",
+              currentSlide === index ? "bg-primary scale-125" : "bg-white/50 hover:bg-white/80"
+            )}
+            aria-label={`Go to slide ${index + 1}`}
+          />
+        ))}
+      </div>
+    </section>
+  );
+};
+
 
 const SmartFinderPanel = () => {
   const [priceRange, setPriceRange] = useState([50, 300]);
