@@ -10,9 +10,16 @@ interface SiteLogoProps {
 
 export function SiteLogo({ className, hideTagline = false }: SiteLogoProps) {
   return (
-    <Link href="/" className={cn("flex flex-col items-start group", className)}>
+    <Link 
+      href="/" 
+      className={cn(
+        "flex flex-col items-start group", 
+        "transform transition-transform duration-200 ease-in-out group-hover:scale-105", // Added scale effect
+        className
+      )}
+    >
       <div className="flex items-baseline relative">
-        <span className="text-3xl sm:text-4xl font-bold text-foreground group-hover:text-primary transition-colors">
+        <span className="text-3xl sm:text-4xl font-bold text-foreground group-hover:text-primary transition-colors duration-200">
           just
         </span>
         <span className="text-3xl sm:text-4xl font-bold text-primary">
@@ -21,7 +28,7 @@ export function SiteLogo({ className, hideTagline = false }: SiteLogoProps) {
       </div>
       {!hideTagline && (
         <div className="relative w-[130px] sm:w-[155px] -mt-1 sm:-mt-1.5">
-           <span className="block text-[10px] sm:text-xs text-muted-foreground tracking-wide font-medium relative z-10 bg-transparent px-1 group-hover:text-foreground/80 transition-colors">
+           <span className="block text-[10px] sm:text-xs text-muted-foreground tracking-wide font-medium relative z-10 bg-transparent px-1 group-hover:text-primary transition-colors duration-200">
             gift with personal touch
           </span>
           {/* Underline effect can be tricky with bg-transparent. Consider if it's needed or adjust styling. */}
