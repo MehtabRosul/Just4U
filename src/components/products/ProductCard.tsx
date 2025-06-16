@@ -13,7 +13,6 @@ import { ExternalLink } from 'lucide-react';
 
 interface ProductCardProps {
   product: Product;
-  // onViewDetails is no longer needed as we navigate to a page
 }
 
 export function ProductCard({ product }: ProductCardProps) {
@@ -26,7 +25,7 @@ export function ProductCard({ product }: ProductCardProps) {
       <CardHeader className="p-0 relative">
         <Link href={`/products/${product.slug}`} className="block aspect-[3/4] overflow-hidden">
           <Image
-            src={product.imageUrls[0]} // Use the first image as the primary card image
+            src={product.imageUrls[0]}
             alt={product.name}
             width={300}
             height={400}
@@ -38,7 +37,7 @@ export function ProductCard({ product }: ProductCardProps) {
           <WishlistButton product={product} />
         </div>
         {product.trending && (
-           <div className="absolute top-2 left-2 bg-accent text-accent-foreground text-xs font-semibold px-2 py-1 rounded-full shadow">
+           <div className="absolute top-2 left-2 bg-accent text-accent-foreground text-xs font-semibold px-2 py-1 rounded-full shadow pointer-events-none">
             Trending
           </div>
         )}
@@ -61,9 +60,9 @@ export function ProductCard({ product }: ProductCardProps) {
         <p className="text-xl font-semibold text-accent">
           Rs. {product.price.toFixed(2)}
         </p>
-        <Button 
+        <Button
           asChild
-          size="sm" 
+          size="sm"
           variant="secondary"
           className="hover:bg-accent/90 transition-colors w-full sm:w-auto"
         >
