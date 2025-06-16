@@ -249,29 +249,6 @@ const TestimonialsSection = () => {
 };
 
 
-const FestivalSpecials = () => (
-  <section className="my-8 sm:my-12">
-    <SectionTitle className="text-white">Festival Specials</SectionTitle>
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-primary text-primary-foreground p-6 rounded-lg h-40 flex flex-col justify-center items-center text-center" data-ai-hint="diwali festival offer">
-            <h3 className="text-xl font-bold">Diwali Dhamaka!</h3>
-            <p className="text-sm">Up to 40% off on selected gifts.</p>
-            <Button variant="secondary" className="mt-2 text-xs bg-white text-black hover:bg-neutral-200">Shop Diwali</Button>
-        </div>
-        <div className="bg-green-600 text-white p-6 rounded-lg h-40 flex flex-col justify-center items-center text-center" data-ai-hint="christmas holiday sale">
-            <h3 className="text-xl font-bold">Christmas Cheer!</h3>
-            <p className="text-sm">Find the perfect presents.</p>
-            <Button variant="secondary" className="mt-2 text-xs bg-red-700 hover:bg-red-800 text-white">Shop Christmas</Button>
-        </div>
-         <div className="bg-pink-500 text-white p-6 rounded-lg h-40 flex flex-col justify-center items-center text-center" data-ai-hint="holi colors festival">
-            <h3 className="text-xl font-bold">Holi Hai!</h3>
-            <p className="text-sm">Colorful gifts for a vibrant celebration.</p>
-            <Button variant="secondary" className="mt-2 text-xs bg-purple-600 hover:bg-purple-700 text-white">Shop Holi</Button>
-        </div>
-    </div>
-  </section>
-);
-
 const OccasionSpotlight = () => (
   <section className="my-8 sm:my-12">
     <SectionTitle className="text-white">Shop by Top Occasions</SectionTitle>
@@ -358,7 +335,6 @@ export default function HomePage()
       <RecipientQuickLinks />
       <Advertisements />
       <TestimonialsSection />
-      <FestivalSpecials />
     </div>
   );
 }
