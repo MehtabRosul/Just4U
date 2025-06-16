@@ -3,7 +3,7 @@
 import { Share2, Mail, MessageCircle, Copy } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast'; // Corrected import path
 
 interface SocialShareButtonsProps {
   url: string;

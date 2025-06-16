@@ -1,10 +1,10 @@
 
 "use client";
 
-import React from 'react'; // Added explicit React import
+import React from 'react';
 import type { Product } from '@/lib/types';
 import { useState, useEffect, createContext, useContext, useCallback, type ReactNode } from 'react';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 
 const WISHLIST_STORAGE_KEY = 'just4ugifts_wishlist';
 
@@ -36,7 +36,7 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     try {
       localStorage.setItem(WISHLIST_STORAGE_KEY, JSON.stringify(wishlist));
-    } catch (error) {
+    } catch (error)      {
       console.error("Failed to save wishlist to localStorage", error);
     }
   }, [wishlist]);
@@ -70,8 +70,7 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
     setWishlist([]);
     toast({ title: "Wishlist Cleared", description: "Your wishlist has been cleared." });
   }, [toast]);
-  
-  // Extracted value to a separate variable
+
   const providerValue: WishlistContextType = {
     wishlist,
     addToWishlist,
@@ -80,10 +79,10 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
     clearWishlist
   };
 
-  return (
-    <WishlistContext.Provider value={providerValue}>
-      {children}
-    </WishlistContext.Provider>
+  return React.createElement(
+    WishlistContext.Provider,
+    { value: providerValue },
+    children
   );
 }
 
