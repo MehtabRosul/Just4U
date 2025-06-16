@@ -4,7 +4,7 @@ import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import TopUtilityBar from '@/components/layout/TopUtilityBar';
+// import TopUtilityBar from '@/components/layout/TopUtilityBar'; // Removed
 // import GlobalNavBar from '@/components/layout/GlobalNavBar'; // Removed
 import { WishlistProvider } from '@/hooks/useWishlist';
 
@@ -28,7 +28,7 @@ export default function RootLayout({
       </head>
       <body className="font-body antialiased min-h-screen flex flex-col bg-background text-foreground">
         <WishlistProvider>
-          <TopUtilityBar />
+          {/* <TopUtilityBar /> // Removed */}
           <Header />
           {/* <GlobalNavBar /> // Removed */}
           <main className="flex-grow container mx-auto px-4 py-8">
