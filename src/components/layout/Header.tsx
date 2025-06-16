@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Menu, X, Search as SearchIcon, Heart, ShoppingCart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { NavMenu } from './NavMenu';
 import { SiteLogo } from './SiteLogo';
 import { useWishlist } from '@/hooks/useWishlist';
@@ -86,10 +86,11 @@ export default function Header() {
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-[280px] sm:w-[320px] p-0 flex flex-col bg-background">
-              <div className="flex justify-between items-center p-4 border-b">
+              <SheetHeader className="flex flex-row justify-between items-center p-4 border-b">
                  <SiteLogo />
-                 {/* The custom SheetClose button was here and has been removed to prevent overlap */}
-              </div>
+                 <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+                 {/* The default SheetClose button will be rendered by SheetContent */}
+              </SheetHeader>
               <div className="p-4 space-y-4">
                 <div className="relative flex items-center">
                     <Input
