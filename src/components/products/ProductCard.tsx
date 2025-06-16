@@ -9,7 +9,6 @@ import type { Product } from '@/lib/types';
 import { WishlistButton } from '@/components/features/WishlistButton';
 import { StarRating } from '@/components/shared/StarRating';
 import { cn } from '@/lib/utils';
-import { ExternalLink } from 'lucide-react';
 
 interface ProductCardProps {
   product: Product;
@@ -21,9 +20,9 @@ export function ProductCard({ product }: ProductCardProps) {
     : 0;
 
   return (
-    <Card className="group flex flex-col overflow-hidden rounded-lg shadow-lg transition-shadow duration-300 ease-in-out hover:shadow-xl bg-card">
+    <Card className="group flex flex-col rounded-lg shadow-lg transition-shadow duration-300 ease-in-out hover:shadow-xl bg-card">
       <CardHeader className="p-0 relative">
-        <Link href={`/products/${product.slug}`} className="block aspect-[3/4] overflow-hidden">
+        <Link href={`/products/${product.slug}`} className="block aspect-[3/4]">
           <Image
             src={product.imageUrls[0]}
             alt={product.name}
