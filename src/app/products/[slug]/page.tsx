@@ -30,9 +30,18 @@ export default function ProductDetailPage() {
     if (slug) {
       const foundProduct = getProductBySlug(slug);
       setProduct(foundProduct || null);
+      setSelectedImageIndex(0); // Reset to first image when product (slug) changes
+
       if (foundProduct && foundProduct.availableColors && foundProduct.availableColors.length > 0) {
         setSelectedColor(foundProduct.availableColors[0]);
+      } else {
+        setSelectedColor(null); // Reset color if new product has no colors
       }
+    } else {
+      // Handle case where slug might not be present or is invalid
+      setProduct(null);
+      setSelectedImageIndex(0);
+      setSelectedColor(null);
     }
   }, [slug]);
 
@@ -95,15 +104,17 @@ export default function ProductDetailPage() {
             ))}
           </div>
           <div className="relative aspect-[3/4] w-full md:flex-1">
-            <Image
-              src={product.imageUrls[selectedImageIndex]}
-              alt={product.name}
-              fill
-              className="object-contain w-full h-full rounded-lg shadow-lg"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              priority
-              data-ai-hint={product.dataAiHint || "product main"}
-            />
+            {product.imageUrls.length > 0 && selectedImageIndex < product.imageUrls.length && (
+              <Image
+                src={product.imageUrls[selectedImageIndex]}
+                alt={product.name}
+                fill
+                className="object-contain w-full h-full rounded-lg shadow-lg"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                priority
+                data-ai-hint={product.dataAiHint || "product main"}
+              />
+            )}
           </div>
         </div>
 
@@ -165,7 +176,6 @@ export default function ProductDetailPage() {
               product={product} 
               size="lg" 
               className="w-full sm:w-auto px-6 py-3 border border-input hover:bg-accent/10"
-              showText={false} // Icon only for product page consistency
             > 
                <Heart className="mr-2 h-5 w-5" /> Wishlist
             </WishlistButton>
@@ -254,5 +264,3 @@ export default function ProductDetailPage() {
     </div>
   );
 }
-
-    
