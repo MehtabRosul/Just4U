@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect } from 'react';
@@ -51,18 +52,18 @@ export function ProductFilters({
   };
 
   return (
-    <aside className="space-y-6 p-4 border rounded-lg shadow-sm bg-card">
+    <aside className="space-y-4 sm:space-y-6 p-3 sm:p-4 border rounded-lg shadow-sm bg-card">
       <div className="flex justify-between items-center">
-        <h3 className="font-headline text-xl font-semibold">Filters</h3>
-         <Button variant="ghost" size="sm" onClick={handleResetFilters} className="text-sm">
-          <XIcon className="w-4 h-4 mr-1" /> Reset
+        <h3 className="font-headline text-lg sm:text-xl font-semibold">Filters</h3>
+         <Button variant="ghost" size="sm" onClick={handleResetFilters} className="text-xs sm:text-sm px-2 py-1">
+          <XIcon className="w-3 h-3 sm:w-4 sm:h-4 mr-1" /> Reset
         </Button>
       </div>
       
       <div>
-        <Label htmlFor="category-filter" className="text-sm font-medium mb-2 block">Category</Label>
+        <Label htmlFor="category-filter" className="text-xs sm:text-sm font-medium mb-1.5 sm:mb-2 block">Category</Label>
         <Select value={category} onValueChange={setCategory}>
-          <SelectTrigger id="category-filter" className="w-full">
+          <SelectTrigger id="category-filter" className="w-full text-xs sm:text-sm">
             <SelectValue placeholder="Select category" />
           </SelectTrigger>
           <SelectContent>
@@ -77,23 +78,23 @@ export function ProductFilters({
       </div>
 
       <div>
-        <Label className="text-sm font-medium mb-2 block">Price Range</Label>
+        <Label className="text-xs sm:text-sm font-medium mb-1.5 sm:mb-2 block">Price Range</Label>
         <Slider
           min={0}
           max={maxPrice}
           step={1}
           value={priceRange}
           onValueChange={(newRange) => setPriceRange(newRange as [number, number])}
-          className="my-4"
+          className="my-3 sm:my-4"
         />
-        <div className="flex justify-between text-sm text-muted-foreground">
-          <span>${priceRange[0]}</span>
-          <span>${priceRange[1]}</span>
+        <div className="flex justify-between text-xs sm:text-sm text-muted-foreground">
+          <span>Rs. {priceRange[0]}</span>
+          <span>Rs. {priceRange[1]}</span>
         </div>
       </div>
       
-      <Button onClick={handleApplyFilters} className="w-full">
-        <FilterIcon className="w-4 h-4 mr-2"/> Apply Filters
+      <Button onClick={handleApplyFilters} className="w-full text-sm sm:text-base py-2 sm:py-2.5">
+        <FilterIcon className="w-3 h-3 sm:w-4 sm:h-4 mr-2"/> Apply Filters
       </Button>
     </aside>
   );

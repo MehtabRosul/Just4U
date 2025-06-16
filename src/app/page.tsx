@@ -9,7 +9,6 @@ import { ProductList } from '@/components/products/ProductList';
 import { CategoryPill } from '@/components/products/CategoryPill';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import Image from 'next/image';
 
 export default function HomePage() {
   const [featuredDeals, setFeaturedDeals] = useState<Product[]>([]);
@@ -39,10 +38,10 @@ export default function HomePage() {
             <h1 className="font-headline text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4">
               Buy Custom Gifts & Surprise your Recipients
             </h1>
-            <p className="text-md sm:text-lg text-foreground/80 mb-8 max-w-xl mx-auto">
+            <p className="text-md sm:text-lg text-foreground/80 mb-8 max-w-md sm:max-w-xl mx-auto px-4 sm:px-0">
               Most trusted personalized gifting brand for all occasions
             </p>
-            <Button asChild size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-lg transition-transform hover:scale-105 rounded-full px-6 py-3 sm:px-8">
+            <Button asChild size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-lg transition-transform hover:scale-105 rounded-full px-6 py-3 sm:px-8 sm:py-3.5">
               <Link href="/products">Shop Now</Link>
             </Button>
         </div>
@@ -51,7 +50,7 @@ export default function HomePage() {
       {/* Categories Section */}
       <section>
         <SectionTitle>Shop by Category</SectionTitle>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4 md:gap-6">
           {CATEGORIES.map((category) => (
             <CategoryPill key={category.id} category={category} />
           ))}
@@ -63,8 +62,8 @@ export default function HomePage() {
         <section>
           <SectionTitle>Featured Deals</SectionTitle>
           <ProductList products={featuredDeals} />
-           <div className="mt-8 text-center">
-            <Button asChild variant="outline" className="text-accent border-accent hover:bg-accent hover:text-accent-foreground">
+           <div className="mt-6 sm:mt-8 text-center">
+            <Button asChild variant="outline" className="text-accent border-accent hover:bg-accent hover:text-accent-foreground px-5 py-2.5 sm:px-6">
               <Link href="/products?sort=price_asc">View More Deals</Link>
             </Button>
           </div>
@@ -76,8 +75,8 @@ export default function HomePage() {
         <section>
           <SectionTitle>Trending Gifts</SectionTitle>
           <ProductList products={trendingProducts} />
-          <div className="mt-8 text-center">
-            <Button asChild variant="outline" className="text-accent border-accent hover:bg-accent hover:text-accent-foreground">
+          <div className="mt-6 sm:mt-8 text-center">
+            <Button asChild variant="outline" className="text-accent border-accent hover:bg-accent hover:text-accent-foreground px-5 py-2.5 sm:px-6">
               <Link href="/products?sort=trending">View More Trending</Link>
             </Button>
           </div>

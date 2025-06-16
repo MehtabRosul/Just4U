@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -21,18 +22,18 @@ const sortOptions: { value: SortOption; label: string }[] = [
 
 export function ProductSortControl({ currentSort, onSortChange }: ProductSortControlProps) {
   return (
-    <div className="flex items-center gap-2">
-      <Label htmlFor="sort-select" className="text-sm font-medium whitespace-nowrap hidden sm:block">
-        <ArrowUpDown className="w-4 h-4 inline-block mr-1 text-muted-foreground" />
+    <div className="flex items-center gap-1.5 sm:gap-2 w-full sm:w-auto">
+      <Label htmlFor="sort-select" className="text-xs sm:text-sm font-medium whitespace-nowrap hidden sm:block">
+        <ArrowUpDown className="w-3 h-3 sm:w-4 sm:h-4 inline-block mr-1 text-muted-foreground" />
         Sort by:
       </Label>
       <Select value={currentSort} onValueChange={(value) => onSortChange(value as SortOption)}>
-        <SelectTrigger id="sort-select" className="w-full sm:w-[200px]">
+        <SelectTrigger id="sort-select" className="w-full sm:w-[180px] md:w-[200px] text-xs sm:text-sm">
           <SelectValue placeholder="Sort products" />
         </SelectTrigger>
         <SelectContent>
           {sortOptions.map(option => (
-            <SelectItem key={option.value} value={option.value}>
+            <SelectItem key={option.value} value={option.value} className="text-xs sm:text-sm">
               {option.label}
             </SelectItem>
           ))}

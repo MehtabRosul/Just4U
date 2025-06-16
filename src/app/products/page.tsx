@@ -86,10 +86,10 @@ export default function ProductsPage() {
     : CATEGORIES.find(c => c.slug === filters.category)?.name || 'Gifts';
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <SectionTitle>{currentCategoryName}</SectionTitle>
+    <div className="container mx-auto px-4 py-6 sm:py-8">
+      <SectionTitle className="mb-4 sm:mb-6">{currentCategoryName}</SectionTitle>
       
-      <div className="grid lg:grid-cols-4 gap-8">
+      <div className="grid lg:grid-cols-4 gap-6 sm:gap-8">
         <div className="lg:col-span-1">
           <ProductFilters 
             initialFilters={{category: initialCategory, priceRange: [0, maxPrice]}} 
@@ -99,9 +99,9 @@ export default function ProductsPage() {
         </div>
 
         <div className="lg:col-span-3 space-y-6">
-          <div className="flex flex-col sm:flex-row justify-between items-center p-4 border rounded-lg shadow-sm bg-card gap-2 sm:gap-0">
-            <p className="text-sm text-muted-foreground text-center sm:text-left">
-              Showing {currentProducts.length} of {filteredAndSortedProducts.length} products
+          <div className="flex flex-col sm:flex-row justify-between items-center p-3 sm:p-4 border rounded-lg shadow-sm bg-card gap-2 sm:gap-4">
+            <p className="text-xs sm:text-sm text-muted-foreground text-center sm:text-left">
+              Showing {currentProducts.length > 0 ? ((currentPage - 1) * ITEMS_PER_PAGE) + 1 : 0}-{(Math.min(currentPage * ITEMS_PER_PAGE, filteredAndSortedProducts.length))} of {filteredAndSortedProducts.length} products
             </p>
             <ProductSortControl currentSort={sortOption} onSortChange={(newSort) => {setSortOption(newSort); setCurrentPage(1);}} />
           </div>
@@ -121,11 +121,19 @@ export default function ProductsPage() {
                 </PaginationItem>
                 {[...Array(totalPages)].map((_, i) => {
                   const pageNum = i + 1;
-                  const showPage = pageNum === 1 || pageNum === totalPages || pageNum === currentPage || pageNum === currentPage - 1 || pageNum === currentPage + 1;
-                  const showEllipsis = (pageNum === currentPage - 2 && currentPage > 3) || (pageNum === currentPage + 2 && currentPage < totalPages - 2);
+                  // Show current page, first/last page, and 1 page around current
+                  const showPage = pageNum === 1 || 
+                                   pageNum === totalPages || 
+                                   pageNum === currentPage || 
+                                   pageNum === currentPage - 1 || 
+                                   pageNum === currentPage + 1;
+                  
+                  // Show ellipsis if there's a gap of more than 1 page
+                  const showEllipsisBefore = pageNum === currentPage - 2 && currentPage > 3;
+                  const showEllipsisAfter = pageNum === currentPage + 2 && currentPage < totalPages - 2;
 
-                  if (showEllipsis) {
-                    return <PaginationItem key={`ellipsis-${i}`}><PaginationEllipsis /></PaginationItem>;
+                  if (showEllipsisBefore || showEllipsisAfter) {
+                    return <PaginationItem key={`ellipsis-${pageNum}`}><PaginationEllipsis /></PaginationItem>;
                   }
                   if (showPage) {
                     return (

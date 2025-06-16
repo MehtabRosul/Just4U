@@ -16,25 +16,25 @@ export function CategoryPill({ category }: CategoryPillProps) {
       <Button
         variant="outline"
         className={cn(
-          "w-full h-auto p-3 sm:p-4 flex flex-col items-center justify-center space-y-1 sm:space-y-2 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200",
+          "w-full h-auto p-2.5 sm:p-3 md:p-4 flex flex-col items-center justify-center space-y-1 sm:space-y-1.5 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200",
           "border-border bg-card hover:bg-accent/10 hover:border-accent"
         )}
         aria-label={`View products in ${category.name}`}
       >
         {IconComponent && (
-          <IconComponent className="h-8 w-8 sm:h-10 sm:w-10 text-primary group-hover:text-accent transition-colors duration-200" strokeWidth={1.5} />
+          <IconComponent className="h-7 w-7 sm:h-8 md:h-10 text-primary group-hover:text-accent transition-colors duration-200" strokeWidth={1.5} />
         )}
         {!IconComponent && category.dataAiHint && (
            <Image
             src={`https://placehold.co/80x80.png`} 
             alt={category.name}
-            width={50} // Adjusted for smaller screens
-            height={50} // Adjusted for smaller screens
-            className="rounded-md object-cover sm:w-[60px] sm:h-[60px]"
+            width={40} 
+            height={40}
+            className="rounded-md object-cover sm:w-[50px] sm:h-[50px] md:w-[60px] md:h-[60px]"
             data-ai-hint={category.dataAiHint}
           />
         )}
-        <span className="font-headline text-xs sm:text-sm font-medium text-foreground group-hover:text-accent transition-colors duration-200 text-center">
+        <span className="font-headline text-[11px] sm:text-xs md:text-sm font-medium text-foreground group-hover:text-accent transition-colors duration-200 text-center leading-tight">
           {category.name}
         </span>
       </Button>

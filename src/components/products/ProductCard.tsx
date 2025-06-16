@@ -20,16 +20,16 @@ export function ProductCard({ product }: ProductCardProps) {
     : 0;
 
   return (
-    <Link href={`/products/${product.slug}`} className="block group h-full">
+    <Link href={`/products/${product.slug}`} className="block group h-full" passHref>
       <Card className="flex flex-col rounded-lg shadow-lg transition-all duration-300 ease-in-out group-hover:shadow-xl group-hover:scale-[1.02] bg-card h-full cursor-pointer">
         <CardHeader className="p-0 relative">
-          <div className="block aspect-[3/4]">
+          <div className="block aspect-[3/4] transition-transform duration-300 group-hover:scale-110">
             <Image
               src={product.imageUrls[0]}
               alt={product.name}
-              width={300}
-              height={400}
-              className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-110"
+              fill
+              className="object-cover rounded-t-lg"
+              sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
               data-ai-hint={product.dataAiHint || "gift item"}
             />
           </div>
@@ -42,26 +42,26 @@ export function ProductCard({ product }: ProductCardProps) {
             </div>
           )}
         </CardHeader>
-        <CardContent className="p-4 flex-grow flex flex-col">
-          <CardTitle className="font-headline text-lg leading-tight mb-1 group-hover:text-accent transition-colors">
+        <CardContent className="p-3 sm:p-4 flex-grow flex flex-col">
+          <CardTitle className="font-headline text-base sm:text-lg leading-tight mb-1 group-hover:text-accent transition-colors line-clamp-2">
             {product.name}
           </CardTitle>
           {averageRating > 0 && (
-            <div className="mb-2 flex items-center">
-              <StarRating rating={averageRating} starSize="h-5 w-5" />
-              <span className="ml-2 text-sm text-muted-foreground">({product.reviews?.length} review{product.reviews?.length === 1 ? "" : "s"})</span>
+            <div className="mb-1 sm:mb-2 flex items-center">
+              <StarRating rating={averageRating} starSize="h-4 w-4 sm:h-5 sm:w-5" />
+              <span className="ml-1.5 sm:ml-2 text-xs sm:text-sm text-muted-foreground">({product.reviews?.length} review{product.reviews?.length === 1 ? "" : "s"})</span>
             </div>
           )}
-          <p className="text-sm text-muted-foreground line-clamp-2 flex-grow">{product.description}</p>
+          <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2 flex-grow">{product.description}</p>
         </CardContent>
-        <CardFooter className="p-4 flex flex-col sm:flex-row justify-between items-center border-t border-border space-y-2 sm:space-y-0">
-          <p className="text-xl font-semibold text-accent">
+        <CardFooter className="p-3 sm:p-4 flex flex-col sm:flex-row justify-between items-center border-t border-border space-y-2 sm:space-y-0">
+          <p className="text-lg sm:text-xl font-semibold text-accent">
             Rs. {product.price.toFixed(2)}
           </p>
           <div 
             className={cn(
               buttonVariants({ variant: 'secondary', size: 'sm' }),
-              "hover:bg-accent/90 transition-colors w-full sm:w-auto"
+              "hover:bg-accent/90 transition-colors w-full sm:w-auto text-xs sm:text-sm py-1.5 sm:py-2 px-3 sm:px-4"
             )}
           >
             View Details

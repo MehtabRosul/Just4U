@@ -1,3 +1,4 @@
+
 "use client";
 import { useState } from 'react';
 import Link from 'next/link';
@@ -12,7 +13,7 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container mx-auto flex h-16 items-center justify-between px-4">
+      <div className="container mx-auto flex h-16 items-center justify-between px-4 sm:px-6">
         <SiteLogo />
         <div className="hidden md:flex">
           <NavMenu />
@@ -25,8 +26,8 @@ export default function Header() {
                 <span className="sr-only">Open menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-[300px] sm:w-[350px] p-6">
-              <div className="flex flex-col space-y-6">
+            <SheetContent side="right" className="w-[280px] sm:w-[320px] p-4 sm:p-6">
+              <div className="flex flex-col space-y-5 sm:space-y-6">
                 <div className="flex justify-between items-center">
                    <SiteLogo />
                    <SheetClose asChild>

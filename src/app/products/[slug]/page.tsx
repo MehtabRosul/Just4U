@@ -77,11 +77,11 @@ export default function ProductDetailPage() {
   };
 
   return (
-    <div className="container mx-auto px-2 sm:px-4 py-8">
-      <div className="grid md:grid-cols-2 gap-8 lg:gap-12 mb-12">
+    <div className="container mx-auto px-2 sm:px-4 py-6 sm:py-8">
+      <div className="grid md:grid-cols-2 gap-6 lg:gap-12 mb-10 sm:mb-12">
         {/* Image Gallery */}
-        <div className="flex flex-col-reverse md:flex-row gap-4 items-start">
-          <div className="flex md:flex-col gap-2 overflow-x-auto md:overflow-y-auto md:max-h-[500px] pr-2 pb-2 md:pb-0">
+        <div className="flex flex-col-reverse md:flex-row gap-3 sm:gap-4 items-start">
+          <div className="flex md:flex-col gap-2 overflow-x-auto md:overflow-y-auto md:max-h-[400px] lg:max-h-[500px] pr-2 pb-2 md:pb-0 w-full md:w-auto">
             {product.imageUrls.map((url, index) => (
               <button
                 key={index}
@@ -96,7 +96,7 @@ export default function ProductDetailPage() {
                   alt={`${product.name} thumbnail ${index + 1}`}
                   width={80}
                   height={100}
-                  className="object-cover w-20 h-24 cursor-pointer"
+                  className="object-cover w-16 h-20 sm:w-20 sm:h-24 cursor-pointer"
                   data-ai-hint={product.dataAiHint || "product detail"}
                 />
               </button>
@@ -118,10 +118,10 @@ export default function ProductDetailPage() {
         </div>
 
         {/* Product Info */}
-        <div className="flex flex-col space-y-4">
+        <div className="flex flex-col space-y-3 sm:space-y-4">
           <h1 className="font-headline text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground">{product.name}</h1>
           
-          <div className="flex items-center space-x-2 flex-wrap">
+          <div className="flex items-center space-x-2 flex-wrap gap-y-1">
             {averageRating > 0 && (
                 <StarRating rating={averageRating} starSize="h-5 w-5" />
             )}
@@ -148,15 +148,15 @@ export default function ProductDetailPage() {
           )}
 
           {product.availableColors && product.availableColors.length > 0 && (
-            <div className="pt-2">
-              <h3 className="text-sm font-medium text-muted-foreground mb-2">Select Color: <span className="text-foreground">{selectedColor ? product.availableColors.find(c => c === selectedColor) || selectedColor : ''}</span></h3>
+            <div className="pt-1 sm:pt-2">
+              <h3 className="text-sm font-medium text-muted-foreground mb-1.5 sm:mb-2">Select Color: <span className="text-foreground">{selectedColor ? product.availableColors.find(c => c === selectedColor) || selectedColor : ''}</span></h3>
               <div className="flex space-x-2 flex-wrap gap-y-2">
                 {product.availableColors.map(color => (
                   <button
                     key={color}
                     onClick={() => setSelectedColor(color)}
                     className={cn(
-                      "h-8 w-8 rounded-full border-2 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring",
+                      "h-7 w-7 sm:h-8 sm:w-8 rounded-full border-2 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring",
                       selectedColor === color ? 'ring-2 ring-offset-2 ring-accent' : 'border-muted-foreground/50'
                     )}
                     style={{ backgroundColor: color.startsWith('#') ? color : undefined }}
@@ -170,42 +170,44 @@ export default function ProductDetailPage() {
             </div>
           )}
 
-          <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3 pt-4">
-            <WishlistButton 
-              product={product} 
+          <div className="flex flex-col space-y-2 sm:space-y-3 pt-3 sm:pt-4">
+            <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
+              <WishlistButton 
+                product={product} 
+                size="lg" 
+                className="w-full sm:w-auto px-6 py-3 border border-input hover:bg-accent/10"
+              > 
+                 <Heart className="mr-2 h-5 w-5" /> Wishlist
+              </WishlistButton>
+              <Button size="lg" variant="secondary" className="w-full sm:w-auto px-6 py-3">
+                <ShoppingCart className="mr-2 h-5 w-5" /> Add to Cart
+              </Button>
+            </div>
+             <Button 
               size="lg" 
-              className="w-full sm:w-auto px-6 py-3 border border-input hover:bg-accent/10"
-            > 
-               <Heart className="mr-2 h-5 w-5" /> Wishlist
-            </WishlistButton>
-            <Button size="lg" variant="secondary" className="w-full sm:w-auto px-6 py-3">
-              <ShoppingCart className="mr-2 h-5 w-5" /> Add to Cart
+              variant="outline"
+              className="w-full sm:w-auto hover:bg-accent hover:text-accent-foreground border-accent text-accent"
+              onClick={() => window.open(`https://just4ugifts.com/product/${product.id}`, '_blank')}
+            >
+              <ExternalLink className="mr-2 h-5 w-5" />
+              Buy on Just4UGifts.com
             </Button>
           </div>
-           <Button 
-            size="lg" 
-            variant="outline"
-            className="w-full sm:w-auto hover:bg-accent hover:text-accent-foreground border-accent text-accent mt-2"
-            onClick={() => window.open(`https://just4ugifts.com/product/${product.id}`, '_blank')}
-          >
-            <ExternalLink className="mr-2 h-5 w-5" />
-            Buy on Just4UGifts.com
-          </Button>
         </div>
       </div>
 
-      <Separator className="my-8" />
+      <Separator className="my-6 sm:my-8" />
 
-      <div className="space-y-8">
+      <div className="space-y-6 sm:space-y-8">
         <div>
-          <h2 className="font-headline text-xl sm:text-2xl font-semibold mb-3">Product Details</h2>
-          <p className="text-muted-foreground leading-relaxed">{product.description}</p>
+          <h2 className="font-headline text-lg sm:text-xl font-semibold mb-2 sm:mb-3">Product Details</h2>
+          <p className="text-muted-foreground leading-relaxed text-sm sm:text-base">{product.description}</p>
         </div>
 
         {product.attributes && product.attributes.length > 0 && (
           <div>
-            <h2 className="font-headline text-xl sm:text-2xl font-semibold mb-3">Key Product Attributes</h2>
-            <ul className="list-disc list-inside space-y-1 text-muted-foreground">
+            <h2 className="font-headline text-lg sm:text-xl font-semibold mb-2 sm:mb-3">Key Product Attributes</h2>
+            <ul className="list-disc list-inside space-y-1 text-muted-foreground text-sm sm:text-base">
               {product.attributes.map(attr => (
                 <li key={attr.name}><span className="font-medium text-foreground">{attr.name}:</span> {attr.value}</li>
               ))}
@@ -215,8 +217,8 @@ export default function ProductDetailPage() {
 
         {product.idealGiftFor && product.idealGiftFor.length > 0 && (
           <div>
-            <h2 className="font-headline text-xl sm:text-2xl font-semibold mb-3">An ideal gift for:</h2>
-            <ul className="list-disc list-inside space-y-1 text-muted-foreground">
+            <h2 className="font-headline text-lg sm:text-xl font-semibold mb-2 sm:mb-3">An ideal gift for:</h2>
+            <ul className="list-disc list-inside space-y-1 text-muted-foreground text-sm sm:text-base">
               {product.idealGiftFor.map(item => (
                 <li key={item}>{item}</li>
               ))}
@@ -225,14 +227,14 @@ export default function ProductDetailPage() {
         )}
       </div>
       
-      <Separator className="my-12" />
+      <Separator className="my-8 sm:my-12" />
 
       {product.reviews && product.reviews.length > 0 && (
-         <section className="mb-12">
-            <SectionTitle className="text-xl sm:text-2xl md:text-3xl mb-6">Customer Reviews</SectionTitle>
-            <div className="space-y-6">
+         <section className="mb-10 sm:mb-12">
+            <SectionTitle className="text-xl sm:text-2xl mb-4 sm:mb-6">Customer Reviews</SectionTitle>
+            <div className="space-y-4 sm:space-y-6">
             {product.reviews.map(review => (
-                <div key={review.id} className="p-4 border rounded-lg bg-card">
+                <div key={review.id} className="p-3 sm:p-4 border rounded-lg bg-card">
                 <div className="flex items-center mb-1">
                     <StarRating rating={review.rating} starSize="h-4 w-4" />
                     <span className="ml-2 text-sm font-medium text-foreground">{review.author}</span>
@@ -247,14 +249,14 @@ export default function ProductDetailPage() {
 
       {similarProducts.length > 0 && (
         <section>
-          <SectionTitle className="text-xl sm:text-2xl md:text-3xl mb-6">Similar Products</SectionTitle>
+          <SectionTitle className="text-xl sm:text-2xl mb-4 sm:mb-6">Similar Products</SectionTitle>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
             {similarProducts.map((p) => (
               <ProductCard key={p.id} product={p} />
             ))}
           </div>
-           <div className="mt-8 text-center">
-            <Button asChild variant="outline" className="text-accent border-accent hover:bg-accent hover:text-accent-foreground">
+           <div className="mt-6 sm:mt-8 text-center">
+            <Button asChild variant="outline" className="text-accent border-accent hover:bg-accent hover:text-accent-foreground px-5 py-2.5 sm:px-6">
               <Link href={`/products?category=${product.category}`}>View More in {product.category}</Link>
             </Button>
           </div>
