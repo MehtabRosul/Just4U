@@ -37,7 +37,7 @@ export function ProductCard({ product }: ProductCardProps) {
           <div className="absolute top-2 right-2 z-10">
             <WishlistButton
               product={product}
-              className="bg-background/70 hover:bg-background/90 text-foreground" // Ensure icon is visible on dark card header
+              className="bg-background/70 hover:bg-background/90 text-foreground" 
             />
           </div>
           {product.trending && (
@@ -64,7 +64,7 @@ export function ProductCard({ product }: ProductCardProps) {
           <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2 flex-grow">{product.description}</p>
         </CardContent>
         <CardFooter className="p-3 sm:p-4 flex flex-col sm:flex-row justify-between items-center border-t border-border/20 space-y-2 sm:space-y-0">
-          <div className="flex flex-col items-start sm:items-center">
+          <div className="flex flex-col items-start"> {/* Ensures price text is consistently left-aligned */}
             <p className="text-lg sm:text-xl font-semibold text-primary">
               Rs. {product.price.toFixed(2)}
             </p>
@@ -80,8 +80,7 @@ export function ProductCard({ product }: ProductCardProps) {
               "border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-colors w-full sm:w-auto text-xs sm:text-sm py-1.5 sm:py-2 px-3 sm:px-4"
             )}
             onClick={(e) => {
-              e.preventDefault(); // Prevent link navigation if we want to handle cart add here
-              // Add to cart logic here if needed, or remove onClick if it's just for show
+              e.preventDefault(); 
               console.log("Add to cart clicked for: ", product.name);
             }}
           >
@@ -92,5 +91,4 @@ export function ProductCard({ product }: ProductCardProps) {
     </Link>
   );
 }
-
     
