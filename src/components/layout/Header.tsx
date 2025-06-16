@@ -88,12 +88,7 @@ export default function Header() {
             <SheetContent side="right" className="w-[280px] sm:w-[320px] p-0 flex flex-col bg-background">
               <div className="flex justify-between items-center p-4 border-b">
                  <SiteLogo />
-                 <SheetClose asChild>
-                   <Button variant="ghost" size="icon">
-                     <X className="h-6 w-6" />
-                     <span className="sr-only">Close menu</span>
-                   </Button>
-                 </SheetClose>
+                 {/* The custom SheetClose button was here and has been removed to prevent overlap */}
               </div>
               <div className="p-4 space-y-4">
                 <div className="relative flex items-center">
