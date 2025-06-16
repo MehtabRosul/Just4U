@@ -10,7 +10,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight, ChevronDown, Sparkles as SparklesIcon, Quote, Star } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Slider } from '@/components/ui/slider';
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
@@ -212,23 +211,25 @@ const HeroCarousel = () => {
 };
 
 
+const priceRangeOptions = [
+  { value: 'all', label: 'All Prices' },
+  { value: '0-99', label: 'Below Rs. 100' },
+  { value: '100-250', label: 'Rs. 100 - Rs. 250' },
+  { value: '250-500', label: 'Rs. 250 - Rs. 500' },
+  { value: '500-750', label: 'Rs. 500 - Rs. 750' },
+  { value: '750-1000', label: 'Rs. 750 - Rs. 1000' },
+  { value: '1000-2500', label: 'Rs. 1000 - Rs. 2500' },
+  { value: '2500-5000', label: 'Rs. 2500 - Rs. 5000' },
+  { value: '5000-Infinity', label: 'Above Rs. 5000' },
+];
+
 const SmartFinderPanel = () => {
   const router = useRouter();
-  const maxProductPrice = useMemo(() => {
-    if (PRODUCTS.length === 0) return 1000;
-    return Math.max(...PRODUCTS.map(p => p.price), 1000); // Ensure a sensible minimum max
-  }, []);
 
   const [selectedOccasion, setSelectedOccasion] = useState<string>('all');
   const [selectedGiftType, setSelectedGiftType] = useState<string>('all');
   const [selectedRecipient, setSelectedRecipient] = useState<string>('all');
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, maxProductPrice]);
-
-  useEffect(() => {
-    // Adjust initial price range if maxProductPrice changes after initial mount
-    setPriceRange(currentRange => [currentRange[0], Math.min(currentRange[1], maxProductPrice)]);
-  }, [maxProductPrice]);
-
+  const [selectedPriceRange, setSelectedPriceRange] = useState<string>('all');
 
   const handleFindGifts = () => {
     const queryParams = new URLSearchParams();
@@ -236,14 +237,23 @@ const SmartFinderPanel = () => {
       queryParams.append('occasion', selectedOccasion);
     }
     if (selectedGiftType && selectedGiftType !== 'all') {
-      queryParams.append('category', selectedGiftType); // 'category' is used on products page for gift type
+      queryParams.append('category', selectedGiftType); 
     }
     if (selectedRecipient && selectedRecipient !== 'all') {
       queryParams.append('recipient', selectedRecipient);
     }
-    queryParams.append('priceMin', priceRange[0].toString());
-    queryParams.append('priceMax', priceRange[1].toString());
 
+    if (selectedPriceRange && selectedPriceRange !== 'all') {
+      const parts = selectedPriceRange.split('-');
+      const minPrice = parseInt(parts[0], 10);
+      const maxPrice = parts[1] === 'Infinity' ? Number.MAX_SAFE_INTEGER : parseInt(parts[1], 10);
+      queryParams.append('priceMin', minPrice.toString());
+      queryParams.append('priceMax', maxPrice.toString());
+    } else {
+        // Default to a very wide range if "All Prices" is selected or no specific range
+        queryParams.append('priceMin', '0');
+        queryParams.append('priceMax', Number.MAX_SAFE_INTEGER.toString());
+    }
     router.push(`/products?${queryParams.toString()}`);
   };
 
@@ -292,16 +302,20 @@ const SmartFinderPanel = () => {
             </Select>
           </div>
           
-          <div className="md:col-span-2 lg:col-span-1 space-y-1.5">
-            <Label className="text-sm font-medium text-neutral-300 mb-1 block">Price Range: Rs.{priceRange[0]} - Rs.{priceRange[1]}</Label>
-            <Slider
-              min={0} 
-              max={maxProductPrice} 
-              step={10}
-              value={priceRange}
-              onValueChange={(value) => setPriceRange(value as [number, number])}
-              className="[&>span:first-child]:h-2 [&>span:first-child_span]:bg-primary [&>span:first-child_span]:h-2 [&>span:nth-child(2)]:h-5 [&>span:nth-child(2)]:w-5"
-            />
+          <div className="space-y-1.5">
+            <Label htmlFor="smart-price-range" className="text-sm font-medium text-neutral-300">Price Range</Label>
+            <Select value={selectedPriceRange} onValueChange={setSelectedPriceRange}>
+              <SelectTrigger id="smart-price-range" className="w-full bg-black text-white border-border placeholder:text-neutral-400 focus:ring-primary h-11 text-sm">
+                <SelectValue placeholder="Select Price Range" />
+              </SelectTrigger>
+              <SelectContent className="bg-black text-white border-border">
+                {priceRangeOptions.map(option => (
+                  <SelectItem key={option.value} value={option.value} className="hover:bg-neutral-800 focus:bg-neutral-700 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground">
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </div>
          <div className="mt-8 text-center">
@@ -594,3 +608,4 @@ export default function HomePage()
     
 
     
+
