@@ -21,7 +21,7 @@ export function ProductCard({ product }: ProductCardProps) {
     : 0;
 
   return (
-    <Card className="group flex flex-col overflow-hidden rounded-lg shadow-lg transition-all duration-300 ease-in-out hover:shadow-xl hover:scale-[1.02] bg-card">
+    <Card className="group flex flex-col overflow-hidden rounded-lg shadow-lg transition-shadow duration-300 ease-in-out hover:shadow-xl bg-card">
       <CardHeader className="p-0 relative">
         <Link href={`/products/${product.slug}`} className="block aspect-[3/4] overflow-hidden">
           <Image
@@ -29,7 +29,7 @@ export function ProductCard({ product }: ProductCardProps) {
             alt={product.name}
             width={300}
             height={400}
-            className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-110"
+            className="object-cover w-full h-full transition-transform duration-300"
             data-ai-hint={product.dataAiHint || "gift item"}
           />
         </Link>
