@@ -37,21 +37,26 @@ export function NavMenu({ isMobile = false, onLinkClick, navLinks }: NavMenuProp
               </AccordionTrigger>
               <AccordionContent className="pl-4">
                 <ul className="space-y-1">
-                  {link.children.map(child => (
-                     <li key={child.label}>
-                        <Link
-                          href={child.href}
-                          onClick={onLinkClick}
-                          className={cn(
-                            "block text-sm py-2 px-3 hover:bg-muted rounded-md w-full text-left transition-colors",
-                            pathname === child.href ? "text-primary bg-muted" : "text-foreground/70"
-                          )}
-                          aria-current={pathname === child.href ? 'page' : undefined}
-                        >
-                          {child.label}
-                        </Link>
-                     </li>
-                  ))}
+                  {link.children.map(child => {
+                     const isActive = pathname === child.href;
+                     return (
+                       <li key={child.label}>
+                          <Link
+                            href={child.href}
+                            onClick={onLinkClick}
+                            className={cn(
+                              "block text-sm py-2 px-3 rounded-md w-full text-left transition-colors",
+                              isActive
+                                ? "text-primary font-semibold bg-primary/10 hover:bg-primary/20"
+                                : "text-foreground/70 hover:bg-primary/10 hover:text-primary"
+                            )}
+                            aria-current={isActive ? 'page' : undefined}
+                          >
+                            {child.label}
+                          </Link>
+                       </li>
+                     );
+                  })}
                 </ul>
               </AccordionContent>
             </AccordionItem>
@@ -61,10 +66,10 @@ export function NavMenu({ isMobile = false, onLinkClick, navLinks }: NavMenuProp
               href={link.href}
               onClick={onLinkClick}
               className={cn(
-                "flex items-center text-base py-3 px-1 hover:bg-muted rounded-md w-full text-left transition-colors",
+                "flex items-center text-base py-3 px-1 rounded-md w-full text-left transition-colors",
                 pathname === link.href
-                  ? "text-primary font-medium"
-                  : "text-foreground/80",
+                  ? "text-primary font-semibold bg-primary/10 hover:bg-primary/20"
+                  : "text-foreground/80 hover:bg-primary/10 hover:text-primary",
               )}
               aria-current={pathname === link.href ? 'page' : undefined}
             >
@@ -97,7 +102,7 @@ export function NavMenu({ isMobile = false, onLinkClick, navLinks }: NavMenuProp
               isActive
                 ? "text-primary"
                 : "text-foreground/70",
-              isMobile ? "text-base py-2 px-3 hover:bg-muted rounded-md w-full text-left" : "py-2"
+              isMobile ? "text-base py-2 px-3 rounded-md w-full text-left hover:bg-primary/10" : "py-2"
             )}
             aria-current={isActive ? 'page' : undefined}
           >
