@@ -121,7 +121,7 @@ const HeroCarousel = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prevSlide) => (prevSlide + 1) % carouselBannersData.length);
-    }, 3000); // Change banner every 3 seconds
+    }, 3000); 
 
     return () => clearInterval(timer); 
   }, []);
@@ -129,11 +129,11 @@ const HeroCarousel = () => {
   // Banner fade transition classes
   const bannerAnimationInactiveClasses = "opacity-0";
   const bannerAnimationActiveClasses = "opacity-100";
-  const bannerBaseTransition = "transition-opacity duration-[1500ms] ease-in-out"; // Slower banner fade
+  const bannerBaseTransition = "transition-opacity duration-[1500ms] ease-in-out";
 
-  // Text animation classes (gentle fade and upward movement)
-  const commonTextInactiveAnimation = "opacity-0 -translate-y-3";
-  const commonTextActiveAnimation = "opacity-100 translate-y-0";
+  // Text animation classes (gentle swipe from left)
+  const commonTextInactiveAnimation = "opacity-0 -translate-x-8";
+  const commonTextActiveAnimation = "opacity-100 translate-x-0";
   
   // Base transition classes for text elements (slower, with delays)
   const iconBaseTransition = "transition-all duration-[1000ms] ease-out delay-[200ms]";
@@ -150,8 +150,8 @@ const HeroCarousel = () => {
           className={cn(
             "absolute inset-0 w-full h-full flex p-6 md:p-10",
             banner.gradientClasses,
-            'items-start', // Text content to the top-left
-            bannerBaseTransition, // Handles the opacity transition for the banner itself
+            'items-start', 
+            bannerBaseTransition,
             index === currentSlide ? bannerAnimationActiveClasses : bannerAnimationInactiveClasses + " pointer-events-none"
           )}
         >
@@ -172,7 +172,7 @@ const HeroCarousel = () => {
               </h1>
               <p className={cn(
                 "text-neutral-200 text-sm sm:text-base lg:text-md max-w-md mb-6 sm:mb-8",
-                 "mr-auto", // Ensure text stays left
+                 "mr-auto", 
                 descriptionBaseTransition,
                 index === currentSlide ? commonTextActiveAnimation : commonTextInactiveAnimation
                 )}>
@@ -190,9 +190,9 @@ const HeroCarousel = () => {
             src={banner.imageUrl}
             alt={banner.title}
             fill
-            className="object-cover opacity-20 pointer-events-none" // Image as a subtle background layer
+            className="object-cover opacity-20 pointer-events-none" 
             data-ai-hint={banner.dataAiHint}
-            priority={index === 0} // Prioritize loading the first banner image
+            priority={index === 0} 
           />
         </div>
       ))}
@@ -530,6 +530,8 @@ export default function HomePage()
 
 
 
+
+    
 
     
 
