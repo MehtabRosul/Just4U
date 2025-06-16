@@ -1,5 +1,7 @@
+
 "use client";
 
+import React from 'react'; // Added explicit React import
 import type { Product } from '@/lib/types';
 import { useState, useEffect, createContext, useContext, useCallback, type ReactNode } from 'react';
 import { useToast } from '@/components/ui/use-toast';
@@ -69,8 +71,17 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
     toast({ title: "Wishlist Cleared", description: "Your wishlist has been cleared." });
   }, [toast]);
   
+  // Extracted value to a separate variable
+  const providerValue: WishlistContextType = {
+    wishlist,
+    addToWishlist,
+    removeFromWishlist,
+    isProductInWishlist,
+    clearWishlist
+  };
+
   return (
-    <WishlistContext.Provider value={{ wishlist, addToWishlist, removeFromWishlist, isProductInWishlist, clearWishlist }}>
+    <WishlistContext.Provider value={providerValue}>
       {children}
     </WishlistContext.Provider>
   );
