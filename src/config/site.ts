@@ -4,7 +4,7 @@ import type { LucideIcon } from 'lucide-react';
 import { Home, ShoppingBag, Heart, ClipboardList } from 'lucide-react';
 import type { NavItem } from '@/lib/types';
 
-// Define SVG Icon Components using React.createElement to bypass JSX parsing issues
+// Define SVG Icon Components using React.createElement
 
 const FacebookIcon = () => {
   return React.createElement(
@@ -13,10 +13,10 @@ const FacebookIcon = () => {
       className: "w-5 h-5",
       viewBox: "0 0 24 24",
       fill: "currentColor",
-      stroke: "currentColor", // Added for consistency if strokeLineCap/Join are used
+      stroke: "currentColor", // Assuming stroke might be desired for consistency or future styling
       strokeWidth: 0,         // Default to 0 if primarily a filled icon
-      strokeLineCap: "round",
-      strokeLineJoin: "round",
+      strokeLinecap: "round", // Corrected: strokeLinecap
+      strokeLinejoin: "round", // Corrected: strokeLinejoin
     },
     React.createElement("path", {
       d: "M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z",
@@ -31,10 +31,10 @@ const TwitterIcon = () => {
       className: "w-5 h-5",
       viewBox: "0 0 24 24",
       fill: "currentColor",
-      stroke: "currentColor", // Added for consistency
+      stroke: "currentColor", // Assuming stroke might be desired
       strokeWidth: 0,         // Default to 0
-      strokeLineCap: "round",
-      strokeLineJoin: "round",
+      strokeLinecap: "round", // Corrected: strokeLinecap
+      strokeLinejoin: "round", // Corrected: strokeLinejoin
     },
     React.createElement("path", {
       d: "M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z",
@@ -50,9 +50,9 @@ const InstagramIcon = () => {
       viewBox: "0 0 24 24",
       fill: "none",
       stroke: "currentColor",
-      strokeWidth: 2,
-      strokeLineCap: "round",
-      strokeLineJoin: "round",
+      strokeWidth: 2, // This one is correct as strokeWidth
+      strokeLinecap: "round", // Corrected: strokeLinecap
+      strokeLinejoin: "round", // Corrected: strokeLinejoin
     },
     React.createElement("rect", {
       width: "20",
