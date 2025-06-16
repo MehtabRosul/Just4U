@@ -35,7 +35,7 @@ export default function HomePage() {
         <div className="absolute inset-0 opacity-5" style={{backgroundImage: "url('/img/gift-pattern.svg')", backgroundSize: "300px"}}></div> {/* Optional subtle pattern */}
         <div className="relative z-10 grid md:grid-cols-2 gap-8 items-center">
           <div>
-            <h1 className="font-headline text-4xl sm:text-5xl lg:text-6xl font-bold text-primary mb-4">
+            <h1 className="font-headline text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-4">
               Find The Perfect Gift
             </h1>
             <p className="text-lg sm:text-xl text-foreground/80 mb-8 max-w-xl">
