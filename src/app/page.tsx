@@ -1,3 +1,4 @@
+
 "use client"; // Top-level client component for state management (modal)
 
 import { useState } from 'react';
@@ -31,29 +32,18 @@ export default function HomePage() {
   return (
     <div className="space-y-12 md:space-y-16">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-r from-primary/10 via-background to-background rounded-xl p-8 md:p-12 lg:p-16 overflow-hidden">
-        <div className="absolute inset-0 opacity-5" style={{backgroundImage: "url('/img/gift-pattern.svg')", backgroundSize: "300px"}}></div> {/* Optional subtle pattern */}
-        <div className="relative z-10 grid md:grid-cols-2 gap-8 items-center">
+      <section className="relative bg-background py-12 md:py-20 lg:py-24 overflow-hidden">
+        <div className="relative z-10">
           <div>
             <h1 className="font-headline text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-4">
-              Find The Perfect Gift
+              Buy Custom Gifts & Surprise your Recipients
             </h1>
             <p className="text-lg sm:text-xl text-foreground/80 mb-8 max-w-xl">
-              Discover a curated selection of unique and thoughtful gifts from Just4UGifts, tailored to every occasion and recipient.
+              Most trusted personalized gifting brand for all occasions
             </p>
-            <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg transition-transform hover:scale-105">
-              <Link href="/products">Explore All Gifts</Link>
+            <Button asChild size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-lg transition-transform hover:scale-105 rounded-full">
+              <Link href="/products">Shop Now</Link>
             </Button>
-          </div>
-          <div className="hidden md:block">
-            <Image 
-              src="https://placehold.co/500x400.png" 
-              alt="Gift boxes" 
-              width={500} 
-              height={400} 
-              className="rounded-lg shadow-2xl object-cover"
-              data-ai-hint="gift boxes celebration"
-            />
           </div>
         </div>
       </section>
