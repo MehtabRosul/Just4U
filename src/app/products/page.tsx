@@ -6,14 +6,16 @@ import { useSearchParams } from 'next/navigation';
 import { PRODUCTS, CATEGORIES, OCCASIONS_LIST, RECIPIENTS_LIST } from '@/lib/data';
 import type { Product } from '@/lib/types';
 import { ProductList } from '@/components/products/ProductList';
-import { ProductFilters, type Filters as ProductFilterInputs } from '@/components/products/ProductFilters';
+// import { ProductFilters, type Filters as ProductFilterInputs } from '@/components/products/ProductFilters'; // Removed
 import { ProductSortControl, type SortOption } from '@/components/products/ProductSortControl';
 import { SectionTitle } from '@/components/shared/SectionTitle';
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 
 const ITEMS_PER_PAGE = 12;
 
-interface ActiveFilters extends ProductFilterInputs {
+interface ActiveFilters { // Renamed from ProductFilterInputs to ActiveFilters to be more generic
+  category: string;
+  priceRange: [number, number];
   occasion: string;
   recipient: string;
 }
@@ -46,7 +48,6 @@ export default function ProductsPage() {
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    // Update filters if searchParams change (e.g., browser back/forward)
     const newCategory = searchParams.get('category') || 'all';
     const newOccasion = searchParams.get('occasion') || 'all';
     const newRecipient = searchParams.get('recipient') || 'all';
@@ -60,32 +61,27 @@ export default function ProductsPage() {
         occasion: newOccasion,
         recipient: newRecipient,
     });
-    setCurrentPage(1); // Reset to first page on filter change from URL
+    setCurrentPage(1); 
   }, [searchParams, serverMaxPrice]);
 
 
   const filteredAndSortedProducts = useMemo(() => {
     let tempProducts = [...PRODUCTS];
 
-    // Apply category filter (Gift Type)
     if (activeFilters.category !== 'all') {
       tempProducts = tempProducts.filter(p => p.category === activeFilters.category);
     }
 
-    // Apply occasion filter
     if (activeFilters.occasion !== 'all') {
       tempProducts = tempProducts.filter(p => p.occasion?.includes(activeFilters.occasion));
     }
     
-    // Apply recipient filter
     if (activeFilters.recipient !== 'all') {
       tempProducts = tempProducts.filter(p => p.recipient?.includes(activeFilters.recipient));
     }
 
-    // Apply price range filter
     tempProducts = tempProducts.filter(p => p.price >= activeFilters.priceRange[0] && p.price <= activeFilters.priceRange[1]);
 
-    // Apply sorting
     switch (sortOption) {
       case 'popularity':
         tempProducts.sort((a, b) => b.popularity - a.popularity);
@@ -145,27 +141,11 @@ export default function ProductsPage() {
     <div className="container mx-auto px-4 py-6 sm:py-8">
       <SectionTitle className="mb-4 sm:mb-6">{generatePageTitle()}</SectionTitle>
       
-      <div className="grid lg:grid-cols-4 gap-6 sm:gap-8">
-        <div className="lg:col-span-1">
-          <ProductFilters 
-            initialFilters={{ // Pass only what ProductFilters UI can control
-                category: activeFilters.category, 
-                priceRange: activeFilters.priceRange,
-                // occasion and recipient are not managed by ProductFilters UI directly
-            }} 
-            onFilterChange={(newFilters) => {
-                setActiveFilters(prev => ({
-                    ...prev, // Keep existing occasion and recipient
-                    category: newFilters.category,
-                    priceRange: newFilters.priceRange,
-                }));
-                setCurrentPage(1);
-            }}
-            maxPrice={serverMaxPrice}
-          />
-        </div>
-
-        <div className="lg:col-span-3 space-y-6">
+      <div className="space-y-6"> {/* Changed from grid to simple div for content flow */}
+        {/* ProductFilters component removed from here */}
+        
+        {/* This div now takes full width as filters are removed */}
+        <div className="space-y-6"> 
           <div className="flex flex-col sm:flex-row justify-between items-center p-3 sm:p-4 border rounded-lg shadow-sm bg-card gap-2 sm:gap-4">
             <p className="text-xs sm:text-sm text-muted-foreground text-center sm:text-left">
               Showing {currentProducts.length > 0 ? ((currentPage - 1) * ITEMS_PER_PAGE) + 1 : 0}-{(Math.min(currentPage * ITEMS_PER_PAGE, filteredAndSortedProducts.length))} of {filteredAndSortedProducts.length} products
