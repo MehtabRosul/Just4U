@@ -9,7 +9,7 @@ import { ProductList } from '@/components/products/ProductList';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, ChevronDown, Sparkles as SparklesIcon } from 'lucide-react'; // Added SparklesIcon
+import { ArrowRight, ChevronDown, Sparkles as SparklesIcon } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -69,7 +69,7 @@ const SmartFinderPanel = () => {
               defaultValue={[50, 300]}
               min={0} max={1000} step={10}
               onValueChange={(value) => setPriceRange(value as [number, number])}
-              className="[&>span:first-child]:bg-primary [&>span:first-child_span]:bg-white" // Track and Range styling
+              className="[&>span:first-child]:bg-primary [&>span:first-child_span]:bg-white"
             />
           </div>
         </div>
@@ -140,28 +140,41 @@ const DailySpotlight = ({ products }: { products: Product[] }) => (
   </section>
 );
 
-const Advertisements = () => (
-  <section className="my-8 sm:my-12 space-y-6">
-    <div className="bg-neutral-800 h-[90px] w-full max-w-[728px] mx-auto flex items-center justify-center text-muted-foreground rounded text-sm" data-ai-hint="advertisement banner">Leaderboard Ad (728x90) - Promotion 1</div>
-    <div className="bg-black text-white h-8 flex items-center justify-center overflow-hidden border-y border-border">
-      <div className="animate-marquee whitespace-nowrap">
-        <span className="mx-4 text-sm">New Arrivals in Photo Gifts! Check them out now!</span>
-        <span className="mx-4 text-sm">Special Discount on Corporate Bulk Orders!</span>
-        <span className="mx-4 text-sm">Valentine's Day Specials - Up to 50% Off!</span>
+const Advertisements = () => {
+  const bannerMessages = [
+    { id: 1, text: "Grand Opening Sale! Up to 50% Off Selected Gifts!", bgColor: "bg-red-600", textColor: "text-white" },
+    { id: 2, text: "New Arrivals: Personalized Miniatures - Create Yours Today!", bgColor: "bg-blue-600", textColor: "text-white" },
+    { id: 3, text: "Corporate Gifting Solutions - Impress Your Clients & Employees.", bgColor: "bg-green-600", textColor: "text-white" },
+    { id: 4, text: "Express Delivery Available for Last Minute Gifts!", bgColor: "bg-yellow-500", textColor: "text-black" },
+    { id: 5, text: "Join Our Loyalty Program and Earn Rewards with Every Purchase!", bgColor: "bg-purple-600", textColor: "text-white" },
+  ];
+
+  const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentBannerIndex((prevIndex) => (prevIndex + 1) % bannerMessages.length);
+    }, 10000); // Change banner every 10 seconds
+
+    return () => clearInterval(timer); // Cleanup interval on component unmount
+  }, []);
+
+  const currentBanner = bannerMessages[currentBannerIndex];
+
+  return (
+    <section className="my-8 sm:my-12">
+      <div
+        className={`w-full h-24 sm:h-28 md:h-32 flex items-center justify-center p-4 rounded-lg shadow-lg transition-all duration-500 ease-in-out ${currentBanner.bgColor} ${currentBanner.textColor}`}
+        data-ai-hint="promotional banner"
+      >
+        <p className="text-base sm:text-lg md:text-xl font-semibold text-center">
+          {currentBanner.text}
+        </p>
       </div>
-    </div>
-    <div className="bg-neutral-800 h-[250px] w-full max-w-[300px] mx-auto flex items-center justify-center text-muted-foreground rounded text-sm" data-ai-hint="advertisement square">Medium Rectangle Ad (300x250) - Corporate Bulk Offers</div>
-    <style jsx>{`
-      .animate-marquee {
-        animation: marquee 20s linear infinite;
-      }
-      @keyframes marquee {
-        0% { transform: translateX(100%); }
-        100% { transform: translateX(-100%); }
-      }
-    `}</style>
-  </section>
-);
+    </section>
+  );
+};
+
 
 const BestSellersAndTrending = ({products}: {products: Product[]}) => (
  <section className="my-8 sm:my-12">
@@ -275,7 +288,6 @@ export default function HomePage()
 {
   const [dealProducts, setDealProducts] = useState<Product[]>([]);
   useEffect(() => {
-    // Simulate fetching products marked as deals or with significant discounts
     setDealProducts(PRODUCTS.filter(p => p.originalPrice && p.price < p.originalPrice).sort(() => 0.5 - Math.random()).slice(0, 4));
   }, []);
 
@@ -294,4 +306,4 @@ export default function HomePage()
     </div>
   );
 }
-
+    
