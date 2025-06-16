@@ -24,10 +24,8 @@ interface CarouselBanner {
   ctaText: string;
   ctaLink: string;
   gradientClasses: string;
-  textPosition?: 'text-left' | 'text-center' | 'text-right';
-  contentAlignment?: 'items-start' | 'items-center' | 'items-end';
-  animationInactiveClasses: string;
-  animationActiveClasses: string;
+  // textPosition and contentAlignment will be standardized, no longer per-banner
+  // animation classes will be common, no longer per-banner
 }
 
 const carouselBannersData: CarouselBanner[] = [
@@ -40,10 +38,6 @@ const carouselBannersData: CarouselBanner[] = [
     ctaText: "Discover Now",
     ctaLink: "/products?category=photo-gifts",
     gradientClasses: "bg-gradient-to-br from-red-600 via-pink-600 to-fuchsia-700",
-    textPosition: 'text-left',
-    contentAlignment: 'items-start',
-    animationInactiveClasses: "opacity-0 -translate-x-full",
-    animationActiveClasses: "opacity-100 translate-x-0",
   },
   {
     id: 2,
@@ -54,10 +48,6 @@ const carouselBannersData: CarouselBanner[] = [
     ctaText: "Explore Occasions",
     ctaLink: "/products",
     gradientClasses: "bg-gradient-to-tr from-rose-500 via-red-500 to-orange-600",
-    textPosition: 'text-right',
-    contentAlignment: 'items-end',
-    animationInactiveClasses: "opacity-0 translate-x-full",
-    animationActiveClasses: "opacity-100 translate-x-0",
   },
   {
     id: 3,
@@ -68,10 +58,6 @@ const carouselBannersData: CarouselBanner[] = [
     ctaText: "See Collection",
     ctaLink: "/products?category=3d-crystals",
     gradientClasses: "bg-gradient-to-b from-neutral-800 via-red-900 to-black",
-    textPosition: 'text-center',
-    contentAlignment: 'items-center',
-    animationInactiveClasses: "opacity-0 scale-50",
-    animationActiveClasses: "opacity-100 scale-100",
   },
   {
     id: 4,
@@ -82,10 +68,6 @@ const carouselBannersData: CarouselBanner[] = [
     ctaText: "Shop Frames",
     ctaLink: "/products?category=photo-frames",
     gradientClasses: "bg-gradient-to-bl from-red-700 via-rose-800 to-neutral-900",
-    textPosition: 'text-left',
-    contentAlignment: 'items-start',
-    animationInactiveClasses: "opacity-0 -translate-y-full",
-    animationActiveClasses: "opacity-100 translate-y-0",
   },
   {
     id: 5,
@@ -96,10 +78,6 @@ const carouselBannersData: CarouselBanner[] = [
     ctaText: "Get a Quote",
     ctaLink: "/corporate-gifts",
     gradientClasses: "bg-gradient-to-tl from-neutral-900 via-gray-800 to-red-900",
-    textPosition: 'text-right',
-    contentAlignment: 'items-end',
-    animationInactiveClasses: "opacity-0 translate-y-full",
-    animationActiveClasses: "opacity-100 translate-y-0",
   },
   {
     id: 6,
@@ -110,10 +88,6 @@ const carouselBannersData: CarouselBanner[] = [
     ctaText: "Find Their Gift",
     ctaLink: "/products",
     gradientClasses: "bg-gradient-to-r from-pink-700 via-red-600 to-rose-700",
-    textPosition: 'text-center',
-    contentAlignment: 'items-center',
-    animationInactiveClasses: "opacity-0 rotate-[-15deg] scale-50",
-    animationActiveClasses: "opacity-100 rotate-0 scale-100",
   },
   {
     id: 7,
@@ -124,10 +98,6 @@ const carouselBannersData: CarouselBanner[] = [
     ctaText: "Grab a Deal",
     ctaLink: "/products?sort=trending",
     gradientClasses: "bg-gradient-to-l from-orange-600 via-red-500 to-pink-500",
-    textPosition: 'text-left',
-    contentAlignment: 'items-start',
-    animationInactiveClasses: "opacity-0 translate-x-1/2 scale-75",
-    animationActiveClasses: "opacity-100 translate-x-0 scale-100",
   },
   {
     id: 8,
@@ -138,10 +108,6 @@ const carouselBannersData: CarouselBanner[] = [
     ctaText: "See What's New",
     ctaLink: "/products",
     gradientClasses: "bg-gradient-to-br from-fuchsia-700 via-purple-600 to-red-500",
-    textPosition: 'text-right',
-    contentAlignment: 'items-end',
-    animationInactiveClasses: "opacity-0 -translate-x-1/2 scale-75",
-    animationActiveClasses: "opacity-100 translate-x-0 scale-100",
   },
   {
     id: 9,
@@ -152,10 +118,6 @@ const carouselBannersData: CarouselBanner[] = [
     ctaText: "Create Art",
     ctaLink: "/products?category=photo-to-art",
     gradientClasses: "bg-gradient-to-tr from-red-800 via-neutral-900 to-rose-700",
-    textPosition: 'text-center',
-    contentAlignment: 'items-center',
-    animationInactiveClasses: "opacity-0 -rotate-[-15deg] scale-50",
-    animationActiveClasses: "opacity-100 rotate-0 scale-100",
   },
   {
     id: 10,
@@ -166,10 +128,6 @@ const carouselBannersData: CarouselBanner[] = [
     ctaText: "Get Miniaturized",
     ctaLink: "/custom/mini-you",
     gradientClasses: "bg-gradient-to-bl from-rose-600 via-red-700 to-pink-800",
-    textPosition: 'text-left',
-    contentAlignment: 'items-start',
-    animationInactiveClasses: "opacity-0 blur-md",
-    animationActiveClasses: "opacity-100 blur-0",
   },
 ];
 
@@ -184,6 +142,9 @@ const HeroCarousel = () => {
     return () => clearInterval(timer); // Cleanup interval on component unmount
   }, []);
 
+  const commonAnimationInactiveClasses = "opacity-0 translate-x-1/4"; // Slide in from right and fade
+  const commonAnimationActiveClasses = "opacity-100 translate-x-0";
+
   return (
     <section className="relative min-h-[400px] md:min-h-[500px] w-full mb-8 sm:mb-12 rounded-lg overflow-hidden">
       {carouselBannersData.map((banner, index) => (
@@ -192,22 +153,22 @@ const HeroCarousel = () => {
           className={cn(
             "absolute inset-0 transition-all duration-1000 ease-in-out w-full h-full flex p-6 md:p-10",
             banner.gradientClasses,
-            banner.contentAlignment || 'items-center', 
-            index === currentSlide ? banner.animationActiveClasses : banner.animationInactiveClasses + " pointer-events-none"
+            'items-start', // Standardized: Content aligned to the top
+            index === currentSlide ? commonAnimationActiveClasses : commonAnimationInactiveClasses + " pointer-events-none"
           )}
         >
-          <div className={cn("relative z-10 w-full flex", banner.textPosition === 'text-left' ? 'justify-start' : banner.textPosition === 'text-right' ? 'justify-end' : 'justify-center')}>
-            <div className={cn("max-w-md md:max-w-lg lg:max-w-xl", banner.textPosition || 'text-center')}>
+          <div className={cn("relative z-10 w-full flex justify-start")}> {/* Standardized: Text content block to the left */}
+            <div className={cn("max-w-md md:max-w-lg lg:max-w-xl text-left")}> {/* Standardized: Text alignment to left */}
               <SparklesIcon className="w-10 h-10 sm:w-12 sm:h-12 text-white opacity-70 mb-2 sm:mb-3 hidden md:inline-block" />
               <h1 className={cn(
                 "font-headline text-3xl sm:text-4xl md:text-5xl font-extrabold mb-3 sm:mb-4 text-white",
-                banner.textPosition || 'text-center'
+                "text-left" // Standardized
                 )}>
                 {banner.title}
               </h1>
               <p className={cn(
                 "text-neutral-200 text-sm sm:text-base lg:text-md max-w-md mb-6 sm:mb-8",
-                 banner.textPosition === 'text-left' ? 'mr-auto' : banner.textPosition === 'text-right' ? 'ml-auto' : 'mx-auto'
+                 "mr-auto" // Standardized for left alignment
                 )}>
                 {banner.description}
               </p>
@@ -552,6 +513,8 @@ export default function HomePage()
     </div>
   );
 }
+    
+
     
 
     
