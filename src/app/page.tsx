@@ -21,8 +21,6 @@ interface CarouselBanner {
   description: string;
   imageUrl: string;
   dataAiHint: string;
-  ctaText: string;
-  ctaLink: string;
   gradientClasses: string;
 }
 
@@ -33,8 +31,6 @@ const carouselBannersData: CarouselBanner[] = [
     description: "Unique gifts that tell their story.",
     imageUrl: "https://placehold.co/1200x600.png",
     dataAiHint: "personalized gift assortment",
-    ctaText: "Shop Now",
-    ctaLink: "/products",
     gradientClasses: "bg-gradient-to-br from-red-600 via-pink-600 to-fuchsia-700",
   },
   {
@@ -43,8 +39,6 @@ const carouselBannersData: CarouselBanner[] = [
     description: "Find the perfect gift for any occasion.",
     imageUrl: "https://placehold.co/1200x600.png",
     dataAiHint: "birthday celebration gifts",
-    ctaText: "Shop Now",
-    ctaLink: "/products",
     gradientClasses: "bg-gradient-to-tr from-rose-500 via-red-500 to-orange-600",
   },
   {
@@ -53,8 +47,6 @@ const carouselBannersData: CarouselBanner[] = [
     description: "Lifelike miniatures and stunning crystal art.",
     imageUrl: "https://placehold.co/1200x600.png",
     dataAiHint: "3d crystal miniature",
-    ctaText: "Shop Now",
-    ctaLink: "/products",
     gradientClasses: "bg-gradient-to-b from-neutral-800 via-red-900 to-black",
   },
   {
@@ -63,8 +55,6 @@ const carouselBannersData: CarouselBanner[] = [
     description: "Elegant photo frames for timeless keepsakes.",
     imageUrl: "https://placehold.co/1200x600.png",
     dataAiHint: "photo frame collection",
-    ctaText: "Shop Now",
-    ctaLink: "/products",
     gradientClasses: "bg-gradient-to-bl from-red-700 via-rose-800 to-neutral-900",
   },
   {
@@ -73,8 +63,6 @@ const carouselBannersData: CarouselBanner[] = [
     description: "Impress clients with premium, branded gifts.",
     imageUrl: "https://placehold.co/1200x600.png",
     dataAiHint: "corporate gift basket",
-    ctaText: "Shop Now",
-    ctaLink: "/products",
     gradientClasses: "bg-gradient-to-tl from-neutral-900 via-gray-800 to-red-900",
   },
   {
@@ -83,8 +71,6 @@ const carouselBannersData: CarouselBanner[] = [
     description: "Handpicked selections for every recipient.",
     imageUrl: "https://placehold.co/1200x600.png",
     dataAiHint: "gift for her",
-    ctaText: "Shop Now",
-    ctaLink: "/products",
     gradientClasses: "bg-gradient-to-r from-pink-700 via-red-600 to-rose-700",
   },
   {
@@ -93,8 +79,6 @@ const carouselBannersData: CarouselBanner[] = [
     description: "Unbeatable prices on popular gifts, daily.",
     imageUrl: "https://placehold.co/1200x600.png",
     dataAiHint: "gift sale discount",
-    ctaText: "Shop Now",
-    ctaLink: "/products",
     gradientClasses: "bg-gradient-to-l from-orange-600 via-red-500 to-pink-500",
   },
   {
@@ -103,8 +87,6 @@ const carouselBannersData: CarouselBanner[] = [
     description: "Fresh designs and innovative gift ideas.",
     imageUrl: "https://placehold.co/1200x600.png",
     dataAiHint: "new product launch",
-    ctaText: "Shop Now",
-    ctaLink: "/products",
     gradientClasses: "bg-gradient-to-br from-fuchsia-700 via-purple-600 to-red-500",
   },
   {
@@ -113,8 +95,6 @@ const carouselBannersData: CarouselBanner[] = [
     description: "Transform photos into unique art pieces.",
     imageUrl: "https://placehold.co/1200x600.png",
     dataAiHint: "photo to art canvas",
-    ctaText: "Shop Now",
-    ctaLink: "/products",
     gradientClasses: "bg-gradient-to-tr from-red-800 via-neutral-900 to-rose-700",
   },
   {
@@ -123,11 +103,17 @@ const carouselBannersData: CarouselBanner[] = [
     description: "Get a custom 3D miniature of yourself or loved ones.",
     imageUrl: "https://placehold.co/1200x600.png",
     dataAiHint: "3d selfie miniature",
-    ctaText: "Shop Now",
-    ctaLink: "/products",
     gradientClasses: "bg-gradient-to-bl from-rose-600 via-red-700 to-pink-800",
   },
 ];
+
+const HeroCarouselButton = () => {
+  return (
+    <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg transition-transform hover:scale-105 rounded-md px-6 py-3 sm:px-8 sm:py-3.5">
+      <Link href="/products">Shop Now</Link>
+    </Button>
+  );
+};
 
 const HeroCarousel = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -170,9 +156,7 @@ const HeroCarousel = () => {
                 )}>
                 {banner.description}
               </p>
-              <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg transition-transform hover:scale-105 rounded-md px-6 py-3 sm:px-8 sm:py-3.5">
-                <Link href={banner.ctaLink}>{banner.ctaText}</Link>
-              </Button>
+              <HeroCarouselButton />
             </div>
           </div>
           <Image
@@ -516,3 +500,4 @@ export default function HomePage()
     
 
     
+
