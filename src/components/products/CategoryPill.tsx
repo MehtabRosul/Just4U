@@ -26,7 +26,7 @@ export function CategoryPill({ category }: CategoryPillProps) {
         )}
         {!IconComponent && category.dataAiHint && (
            <Image
-            src={`https://placehold.co/80x80.png`} 
+            src={`https://placehold.co/80x80.jpg`} 
             alt={category.name}
             width={40} 
             height={40}
@@ -41,3 +41,5 @@ export function CategoryPill({ category }: CategoryPillProps) {
     </Link>
   );
 }
+
+    
