@@ -53,9 +53,9 @@ export default function ProductDetailPage() {
   if (!product) {
     return (
       <div className="container mx-auto px-4 py-8 text-center">
-        <SectionTitle>Product Not Found</SectionTitle>
-        <p>Sorry, we couldn't find the product you're looking for.</p>
-        <Button asChild className="mt-4">
+        <SectionTitle className="text-foreground">Product Not Found</SectionTitle>
+        <p className="text-muted-foreground">Sorry, we couldn't find the product you're looking for.</p>
+        <Button asChild className="mt-4 bg-primary text-primary-foreground hover:bg-primary/90">
           <Link href="/products">Back to All Gifts</Link>
         </Button>
       </div>
@@ -87,8 +87,8 @@ export default function ProductDetailPage() {
                 key={index}
                 onClick={() => handleThumbnailClick(index)}
                 className={cn(
-                  "border-2 rounded-lg overflow-hidden focus:outline-none focus:ring-2 focus:ring-accent shrink-0",
-                  selectedImageIndex === index ? "border-accent" : "border-transparent hover:border-muted"
+                  "border-2 rounded-lg overflow-hidden focus:outline-none focus:ring-2 focus:ring-primary shrink-0", // ring-primary for light theme
+                  selectedImageIndex === index ? "border-primary" : "border-transparent hover:border-muted"
                 )}
               >
                 <Image
@@ -134,7 +134,7 @@ export default function ProductDetailPage() {
           </div>
 
           <div className="flex items-baseline space-x-2 flex-wrap">
-            <p className="text-2xl sm:text-3xl font-bold text-accent">Rs. {product.price.toFixed(2)}</p>
+            <p className="text-2xl sm:text-3xl font-bold text-primary">Rs. {product.price.toFixed(2)}</p> {/* text-primary for light theme */}
             {product.originalPrice && product.originalPrice > product.price && (
               <p className="text-md sm:text-lg text-muted-foreground line-through">Rs. {product.originalPrice.toFixed(2)}</p>
             )}
@@ -157,7 +157,7 @@ export default function ProductDetailPage() {
                     onClick={() => setSelectedColor(color)}
                     className={cn(
                       "h-7 w-7 sm:h-8 sm:w-8 rounded-full border-2 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring",
-                      selectedColor === color ? 'ring-2 ring-offset-2 ring-accent' : 'border-muted-foreground/50'
+                      selectedColor === color ? 'ring-2 ring-offset-2 ring-primary' : 'border-muted-foreground/50' // ring-primary for light theme
                     )}
                     style={{ backgroundColor: color.startsWith('#') ? color : undefined }}
                     title={color}
@@ -175,18 +175,18 @@ export default function ProductDetailPage() {
               <WishlistButton 
                 product={product} 
                 size="lg" 
-                className="w-full sm:w-auto px-6 py-3 border border-input hover:bg-accent/10"
+                className="w-full sm:w-auto px-6 py-3 border border-input hover:bg-primary/10 text-primary" // Adjusted for light theme
               > 
                  <Heart className="mr-2 h-5 w-5" /> Wishlist
               </WishlistButton>
-              <Button size="lg" variant="secondary" className="w-full sm:w-auto px-6 py-3">
+              <Button size="lg" variant="default" className="w-full sm:w-auto px-6 py-3 bg-primary text-primary-foreground hover:bg-primary/90"> {/* variant="default" is red */}
                 <ShoppingCart className="mr-2 h-5 w-5" /> Add to Cart
               </Button>
             </div>
              <Button 
               size="lg" 
               variant="outline"
-              className="w-full sm:w-auto hover:bg-accent hover:text-accent-foreground border-accent text-accent"
+              className="w-full sm:w-auto hover:bg-primary hover:text-primary-foreground border-primary text-primary"
               onClick={() => window.open(`https://just4ugifts.com/product/${product.id}`, '_blank')}
             >
               <ExternalLink className="mr-2 h-5 w-5" />
@@ -200,13 +200,13 @@ export default function ProductDetailPage() {
 
       <div className="space-y-6 sm:space-y-8">
         <div>
-          <h2 className="font-headline text-lg sm:text-xl font-semibold mb-2 sm:mb-3">Product Details</h2>
+          <h2 className="font-headline text-lg sm:text-xl font-semibold mb-2 sm:mb-3 text-foreground">Product Details</h2>
           <p className="text-muted-foreground leading-relaxed text-sm sm:text-base">{product.description}</p>
         </div>
 
         {product.attributes && product.attributes.length > 0 && (
           <div>
-            <h2 className="font-headline text-lg sm:text-xl font-semibold mb-2 sm:mb-3">Key Product Attributes</h2>
+            <h2 className="font-headline text-lg sm:text-xl font-semibold mb-2 sm:mb-3 text-foreground">Key Product Attributes</h2>
             <ul className="list-disc list-inside space-y-1 text-muted-foreground text-sm sm:text-base">
               {product.attributes.map(attr => (
                 <li key={attr.name}><span className="font-medium text-foreground">{attr.name}:</span> {attr.value}</li>
@@ -217,7 +217,7 @@ export default function ProductDetailPage() {
 
         {product.idealGiftFor && product.idealGiftFor.length > 0 && (
           <div>
-            <h2 className="font-headline text-lg sm:text-xl font-semibold mb-2 sm:mb-3">An ideal gift for:</h2>
+            <h2 className="font-headline text-lg sm:text-xl font-semibold mb-2 sm:mb-3 text-foreground">An ideal gift for:</h2>
             <ul className="list-disc list-inside space-y-1 text-muted-foreground text-sm sm:text-base">
               {product.idealGiftFor.map(item => (
                 <li key={item}>{item}</li>
@@ -231,10 +231,10 @@ export default function ProductDetailPage() {
 
       {product.reviews && product.reviews.length > 0 && (
          <section className="mb-10 sm:mb-12">
-            <SectionTitle className="text-xl sm:text-2xl mb-4 sm:mb-6">Customer Reviews</SectionTitle>
+            <SectionTitle className="text-xl sm:text-2xl mb-4 sm:mb-6 text-foreground">Customer Reviews</SectionTitle>
             <div className="space-y-4 sm:space-y-6">
             {product.reviews.map(review => (
-                <div key={review.id} className="p-3 sm:p-4 border rounded-lg bg-card">
+                <div key={review.id} className="p-3 sm:p-4 border rounded-lg bg-card shadow">
                 <div className="flex items-center mb-1">
                     <StarRating rating={review.rating} starSize="h-4 w-4" />
                     <span className="ml-2 text-sm font-medium text-foreground">{review.author}</span>
@@ -249,14 +249,14 @@ export default function ProductDetailPage() {
 
       {similarProducts.length > 0 && (
         <section>
-          <SectionTitle className="text-xl sm:text-2xl mb-4 sm:mb-6">Similar Products</SectionTitle>
+          <SectionTitle className="text-xl sm:text-2xl mb-4 sm:mb-6 text-foreground">Similar Products</SectionTitle>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
             {similarProducts.map((p) => (
               <ProductCard key={p.id} product={p} />
             ))}
           </div>
            <div className="mt-6 sm:mt-8 text-center">
-            <Button asChild variant="outline" className="text-accent border-accent hover:bg-accent hover:text-accent-foreground px-5 py-2.5 sm:px-6">
+            <Button asChild variant="outline" className="text-primary border-primary hover:bg-primary hover:text-primary-foreground px-5 py-2.5 sm:px-6">
               <Link href={`/products?category=${product.category}`}>View More in {product.category}</Link>
             </Button>
           </div>

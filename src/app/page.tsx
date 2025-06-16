@@ -17,7 +17,6 @@ export default function HomePage() {
   const trendingProducts = useMemo(() => PRODUCTS.filter(p => p.trending).slice(0, 4), []);
   
   useEffect(() => {
-    // Client-side randomization to prevent hydration mismatch
     const deals = PRODUCTS.filter(p => !p.trending && p.price < 50) 
       .sort(() => 0.5 - Math.random())
       .slice(0, 4);
@@ -41,7 +40,7 @@ export default function HomePage() {
             <p className="text-md sm:text-lg text-foreground/80 mb-8 max-w-md sm:max-w-xl mx-auto px-4 sm:px-0">
               Most trusted personalized gifting brand for all occasions
             </p>
-            <Button asChild size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-lg transition-transform hover:scale-105 rounded-full px-6 py-3 sm:px-8 sm:py-3.5">
+            <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg transition-transform hover:scale-105 rounded-full px-6 py-3 sm:px-8 sm:py-3.5">
               <Link href="/products">Shop Now</Link>
             </Button>
         </div>
@@ -49,7 +48,7 @@ export default function HomePage() {
 
       {/* Categories Section */}
       <section>
-        <SectionTitle>Shop by Category</SectionTitle>
+        <SectionTitle className="text-foreground">Shop by Category</SectionTitle>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4 md:gap-6">
           {CATEGORIES.map((category) => (
             <CategoryPill key={category.id} category={category} />
@@ -60,10 +59,10 @@ export default function HomePage() {
       {/* Featured Deals Section */}
       {featuredDeals.length > 0 && (
         <section>
-          <SectionTitle>Featured Deals</SectionTitle>
+          <SectionTitle className="text-foreground">Featured Deals</SectionTitle>
           <ProductList products={featuredDeals} />
            <div className="mt-6 sm:mt-8 text-center">
-            <Button asChild variant="outline" className="text-accent border-accent hover:bg-accent hover:text-accent-foreground px-5 py-2.5 sm:px-6">
+            <Button asChild variant="outline" className="text-primary border-primary hover:bg-primary hover:text-primary-foreground px-5 py-2.5 sm:px-6">
               <Link href="/products?sort=price_asc">View More Deals</Link>
             </Button>
           </div>
@@ -73,10 +72,10 @@ export default function HomePage() {
       {/* Trending Gifts Section */}
       {trendingProducts.length > 0 && (
         <section>
-          <SectionTitle>Trending Gifts</SectionTitle>
+          <SectionTitle className="text-foreground">Trending Gifts</SectionTitle>
           <ProductList products={trendingProducts} />
           <div className="mt-6 sm:mt-8 text-center">
-            <Button asChild variant="outline" className="text-accent border-accent hover:bg-accent hover:text-accent-foreground px-5 py-2.5 sm:px-6">
+            <Button asChild variant="outline" className="text-primary border-primary hover:bg-primary hover:text-primary-foreground px-5 py-2.5 sm:px-6">
               <Link href="/products?sort=trending">View More Trending</Link>
             </Button>
           </div>
@@ -86,7 +85,7 @@ export default function HomePage() {
       {/* Personalized Recommendations Section */}
       {personalizedProducts.length > 0 && (
          <section>
-          <SectionTitle>Recommended For You</SectionTitle>
+          <SectionTitle className="text-foreground">Recommended For You</SectionTitle>
           <ProductList products={personalizedProducts} />
         </section>
       )}

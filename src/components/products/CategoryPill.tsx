@@ -17,12 +17,12 @@ export function CategoryPill({ category }: CategoryPillProps) {
         variant="outline"
         className={cn(
           "w-full h-auto p-2.5 sm:p-3 md:p-4 flex flex-col items-center justify-center space-y-1 sm:space-y-1.5 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200",
-          "border-border bg-card hover:bg-accent/10 hover:border-accent"
+          "border-border bg-card hover:bg-primary/5 hover:border-primary" // Adjusted hover for light theme
         )}
         aria-label={`View products in ${category.name}`}
       >
         {IconComponent && (
-          <IconComponent className="h-7 w-7 sm:h-8 md:h-10 text-primary group-hover:text-accent transition-colors duration-200" strokeWidth={1.5} />
+          <IconComponent className="h-7 w-7 sm:h-8 md:h-10 text-foreground/70 group-hover:text-primary transition-colors duration-200" strokeWidth={1.5} />
         )}
         {!IconComponent && category.dataAiHint && (
            <Image
@@ -34,7 +34,7 @@ export function CategoryPill({ category }: CategoryPillProps) {
             data-ai-hint={category.dataAiHint}
           />
         )}
-        <span className="font-headline text-[11px] sm:text-xs md:text-sm font-medium text-foreground group-hover:text-accent transition-colors duration-200 text-center leading-tight">
+        <span className="font-headline text-[11px] sm:text-xs md:text-sm font-medium text-foreground/80 group-hover:text-primary transition-colors duration-200 text-center leading-tight">
           {category.name}
         </span>
       </Button>
