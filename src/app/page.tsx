@@ -22,10 +22,6 @@ interface CarouselBanner {
   imageUrl: string;
   dataAiHint: string;
   gradientClasses: string;
-  titleInactiveAnimation: string;
-  titleActiveAnimation: string;
-  descriptionInactiveAnimation: string;
-  descriptionActiveAnimation: string;
 }
 
 const carouselBannersData: CarouselBanner[] = [
@@ -36,10 +32,6 @@ const carouselBannersData: CarouselBanner[] = [
     imageUrl: "https://placehold.co/1200x600.png",
     dataAiHint: "personalized gift assortment",
     gradientClasses: "bg-gradient-to-br from-red-600 via-pink-600 to-fuchsia-700",
-    titleInactiveAnimation: "opacity-0 -translate-y-6",
-    titleActiveAnimation: "opacity-100 translate-y-0",
-    descriptionInactiveAnimation: "opacity-0 translate-y-6",
-    descriptionActiveAnimation: "opacity-100 translate-y-0",
   },
   {
     id: 2,
@@ -48,10 +40,6 @@ const carouselBannersData: CarouselBanner[] = [
     imageUrl: "https://placehold.co/1200x600.png",
     dataAiHint: "birthday celebration gifts",
     gradientClasses: "bg-gradient-to-tr from-rose-500 via-red-500 to-orange-600",
-    titleInactiveAnimation: "opacity-0 -translate-x-6",
-    titleActiveAnimation: "opacity-100 translate-x-0",
-    descriptionInactiveAnimation: "opacity-0 translate-x-6",
-    descriptionActiveAnimation: "opacity-100 translate-x-0",
   },
   {
     id: 3,
@@ -60,10 +48,6 @@ const carouselBannersData: CarouselBanner[] = [
     imageUrl: "https://placehold.co/1200x600.png",
     dataAiHint: "3d crystal miniature",
     gradientClasses: "bg-gradient-to-b from-neutral-800 via-red-900 to-black",
-    titleInactiveAnimation: "opacity-0 scale-90",
-    titleActiveAnimation: "opacity-100 scale-100",
-    descriptionInactiveAnimation: "opacity-0 scale-110",
-    descriptionActiveAnimation: "opacity-100 scale-100",
   },
   {
     id: 4,
@@ -72,10 +56,6 @@ const carouselBannersData: CarouselBanner[] = [
     imageUrl: "https://placehold.co/1200x600.png",
     dataAiHint: "photo frame collection",
     gradientClasses: "bg-gradient-to-bl from-red-700 via-rose-800 to-neutral-900",
-    titleInactiveAnimation: "opacity-0 rotate-[-10deg] scale-90",
-    titleActiveAnimation: "opacity-100 rotate-0 scale-100",
-    descriptionInactiveAnimation: "opacity-0 rotate-[10deg] scale-90",
-    descriptionActiveAnimation: "opacity-100 rotate-0 scale-100",
   },
   {
     id: 5,
@@ -84,10 +64,6 @@ const carouselBannersData: CarouselBanner[] = [
     imageUrl: "https://placehold.co/1200x600.png",
     dataAiHint: "corporate gift basket",
     gradientClasses: "bg-gradient-to-tl from-neutral-900 via-gray-800 to-red-900",
-    titleInactiveAnimation: "opacity-0 translate-y-6",
-    titleActiveAnimation: "opacity-100 translate-y-0",
-    descriptionInactiveAnimation: "opacity-0 -translate-y-6",
-    descriptionActiveAnimation: "opacity-100 translate-y-0",
   },
   {
     id: 6,
@@ -96,10 +72,6 @@ const carouselBannersData: CarouselBanner[] = [
     imageUrl: "https://placehold.co/1200x600.png",
     dataAiHint: "gift for her",
     gradientClasses: "bg-gradient-to-r from-pink-700 via-red-600 to-rose-700",
-    titleInactiveAnimation: "opacity-0 translate-x-10",
-    titleActiveAnimation: "opacity-100 translate-x-0",
-    descriptionInactiveAnimation: "opacity-0 -translate-x-10",
-    descriptionActiveAnimation: "opacity-100 translate-x-0",
   },
   {
     id: 7,
@@ -108,10 +80,6 @@ const carouselBannersData: CarouselBanner[] = [
     imageUrl: "https://placehold.co/1200x600.png",
     dataAiHint: "gift sale discount",
     gradientClasses: "bg-gradient-to-l from-orange-600 via-red-500 to-pink-500",
-    titleInactiveAnimation: "opacity-0 scale-50",
-    titleActiveAnimation: "opacity-100 scale-100",
-    descriptionInactiveAnimation: "opacity-0 scale-150",
-    descriptionActiveAnimation: "opacity-100 scale-100",
   },
   {
     id: 8,
@@ -120,10 +88,6 @@ const carouselBannersData: CarouselBanner[] = [
     imageUrl: "https://placehold.co/1200x600.png",
     dataAiHint: "new product launch",
     gradientClasses: "bg-gradient-to-br from-fuchsia-700 via-purple-600 to-red-500",
-    titleInactiveAnimation: "opacity-0 -translate-y-3 -rotate-6",
-    titleActiveAnimation: "opacity-100 translate-y-0 rotate-0",
-    descriptionInactiveAnimation: "opacity-0 translate-y-3 rotate-6",
-    descriptionActiveAnimation: "opacity-100 translate-y-0 rotate-0",
   },
   {
     id: 9,
@@ -132,10 +96,6 @@ const carouselBannersData: CarouselBanner[] = [
     imageUrl: "https://placehold.co/1200x600.png",
     dataAiHint: "photo to art canvas",
     gradientClasses: "bg-gradient-to-tr from-red-800 via-neutral-900 to-rose-700",
-    titleInactiveAnimation: "opacity-0 translate-y-5 blur-sm",
-    titleActiveAnimation: "opacity-100 translate-y-0 blur-0",
-    descriptionInactiveAnimation: "opacity-0 -translate-y-5 blur-sm",
-    descriptionActiveAnimation: "opacity-100 translate-y-0 blur-0",
   },
   {
     id: 10,
@@ -144,10 +104,6 @@ const carouselBannersData: CarouselBanner[] = [
     imageUrl: "https://placehold.co/1200x600.png",
     dataAiHint: "3d selfie miniature",
     gradientClasses: "bg-gradient-to-bl from-rose-600 via-red-700 to-pink-800",
-    titleInactiveAnimation: "opacity-0 translate-x-full",
-    titleActiveAnimation: "opacity-100 translate-x-0",
-    descriptionInactiveAnimation: "opacity-0 -translate-x-full",
-    descriptionActiveAnimation: "opacity-100 translate-x-0",
   },
 ];
 
@@ -170,15 +126,18 @@ const HeroCarousel = () => {
     return () => clearInterval(timer); 
   }, []);
 
-  // Common banner transition classes (fade in/out)
-  const commonAnimationInactiveClasses = "opacity-0";
-  const commonAnimationActiveClasses = "opacity-100";
+  // Common banner fade transition classes
+  const bannerAnimationInactiveClasses = "opacity-0";
+  const bannerAnimationActiveClasses = "opacity-100";
 
-  // Base transition classes for text elements
-  const titleBaseTransition = "transition-all duration-700 ease-out delay-200";
-  const descriptionBaseTransition = "transition-all duration-700 ease-out delay-300";
-  // Button can inherit parent's animation or have its own slightly later delay
-  const buttonBaseTransition = "transition-all duration-700 ease-out delay-400";
+  // Common text animation classes (gentle fade and upward movement)
+  const commonTextInactiveAnimation = "opacity-0 -translate-y-3";
+  const commonTextActiveAnimation = "opacity-100 translate-y-0";
+  
+  // Slower base transition classes for text elements
+  const titleBaseTransition = "transition-all duration-[1000ms] ease-out delay-[400ms]";
+  const descriptionBaseTransition = "transition-all duration-[1000ms] ease-out delay-[600ms]";
+  const buttonBaseTransition = "transition-all duration-[1000ms] ease-out delay-[800ms]";
 
 
   return (
@@ -187,30 +146,24 @@ const HeroCarousel = () => {
         <div
           key={banner.id}
           className={cn(
-            "absolute inset-0 transition-opacity duration-1000 ease-in-out w-full h-full flex p-6 md:p-10", // Banner transition
+            "absolute inset-0 transition-opacity duration-[1500ms] ease-in-out w-full h-full flex p-6 md:p-10", // Slower banner fade
             banner.gradientClasses,
             'items-start', 
-            index === currentSlide ? commonAnimationActiveClasses : commonAnimationInactiveClasses + " pointer-events-none"
+            index === currentSlide ? bannerAnimationActiveClasses : bannerAnimationInactiveClasses + " pointer-events-none"
           )}
         >
           <div className={cn("relative z-10 w-full flex justify-start")}> 
-            <div className={cn(
-                "max-w-md md:max-w-lg lg:max-w-xl text-left",
-                 // Apply description's animation to the button container for simplicity, or define its own
-                index === currentSlide ? banner.descriptionActiveAnimation : banner.descriptionInactiveAnimation,
-                buttonBaseTransition // This will make the button animate with the description
-              )}
-            > 
+            <div className="max-w-md md:max-w-lg lg:max-w-xl text-left"> 
               <SparklesIcon className={cn(
                 "w-10 h-10 sm:w-12 sm:h-12 text-white opacity-70 mb-2 sm:mb-3 hidden md:inline-block",
                 titleBaseTransition,
-                index === currentSlide ? banner.titleActiveAnimation : banner.titleInactiveAnimation // Apply to icon too for sync
+                index === currentSlide ? commonTextActiveAnimation : commonTextInactiveAnimation
                 )} />
               <h1 className={cn(
                 "font-headline text-3xl sm:text-4xl md:text-5xl font-extrabold mb-3 sm:mb-4 text-white",
                 "text-left",
                 titleBaseTransition,
-                index === currentSlide ? banner.titleActiveAnimation : banner.titleInactiveAnimation
+                index === currentSlide ? commonTextActiveAnimation : commonTextInactiveAnimation
                 )}>
                 {banner.title}
               </h1>
@@ -218,13 +171,13 @@ const HeroCarousel = () => {
                 "text-neutral-200 text-sm sm:text-base lg:text-md max-w-md mb-6 sm:mb-8",
                  "mr-auto",
                 descriptionBaseTransition,
-                index === currentSlide ? banner.descriptionActiveAnimation : banner.descriptionInactiveAnimation
+                index === currentSlide ? commonTextActiveAnimation : commonTextInactiveAnimation
                 )}>
                 {banner.description}
               </p>
-              <div className={cn( // Container for button to apply its specific animation if desired or inherit
-                  buttonBaseTransition, // Inherits description's animation timing
-                  index === currentSlide ? banner.descriptionActiveAnimation : banner.descriptionInactiveAnimation
+              <div className={cn(
+                  buttonBaseTransition,
+                  index === currentSlide ? commonTextActiveAnimation : commonTextInactiveAnimation
               )}>
                 <HeroCarouselButton />
               </div>
