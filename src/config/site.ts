@@ -23,6 +23,7 @@ const InstagramIcon = () => (
   </svg>
 );
 
+
 export const SITE_TITLE = "Just4UGifts Curator";
 export const SITE_DESCRIPTION = "Find the perfect gift, curated just for you.";
 
