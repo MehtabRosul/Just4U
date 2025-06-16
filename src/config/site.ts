@@ -1,89 +1,64 @@
 
-import React from 'react';
-import type { LucideIcon } from 'lucide-react';
-// Icons for nav links are removed as per new design
-import type { NavItem } from '@/lib/types';
+import type { NavItem, UtilityLink, Occasion, GiftType, Recipient } from '@/lib/types';
+import { OCCASIONS_LIST, GIFT_TYPES_LIST, RECIPIENTS_LIST } from '@/lib/data';
+import { Briefcase, Percent, MapPin, HelpCircle } from 'lucide-react';
 
-// Define SVG Icon Components using React.createElement for footer
-// These remain unchanged unless footer design changes too.
-const FacebookIcon = () => {
-  return React.createElement(
-    "svg",
-    {
-      className: "w-5 h-5",
-      viewBox: "0 0 24 24",
-      fill: "currentColor",
-      stroke: "currentColor",
-      strokeWidth: 0,
-      strokeLinecap: "round",
-      strokeLinejoin: "round",
-    },
-    React.createElement("path", {
-      d: "M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z",
-    })
-  );
-};
+export const SITE_TITLE = "Just4U";
+export const SITE_DESCRIPTION = "Find the perfect gift, curated just for you with a personal touch.";
 
-const TwitterIcon = () => {
-  return React.createElement(
-    "svg",
-    {
-      className: "w-5 h-5",
-      viewBox: "0 0 24 24",
-      fill: "currentColor",
-      stroke: "currentColor",
-      strokeWidth: 0,
-      strokeLinecap: "round",
-      strokeLinejoin: "round",
-    },
-    React.createElement("path", {
-      d: "M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z",
-    })
-  );
-};
-
-const InstagramIcon = () => {
-  return React.createElement(
-    "svg",
-    {
-      className: "w-5 h-5",
-      viewBox: "0 0 24 24",
-      fill: "none",
-      stroke: "currentColor",
-      strokeWidth: 2,
-      strokeLinecap: "round",
-      strokeLinejoin: "round",
-    },
-    React.createElement("rect", {
-      width: "20",
-      height: "20",
-      x: "2",
-      y: "2",
-      rx: "5",
-      ry: "5",
-    }),
-    React.createElement("path", {
-      d: "M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37zm1.5-4.87h.01",
-    })
-  );
-};
-
-export const SITE_TITLE = "Just4U"; // Updated to reflect new logo style
-export const SITE_DESCRIPTION = "Find the perfect gift, curated just for you.";
-
-// New navigation links based on the image
-export const NAV_LINKS: NavItem[] = [
-  { label: 'Corporate Gifts', href: '/products?category=corporate' }, // Assuming a category or specific page
-  { label: 'Personalized Gifts', href: '/products?category=personalized' },
-  { label: 'Occasions', href: '/products?category=occasions' },
-  { label: 'Create Mini You', href: '/custom/mini-you' }, // Placeholder for a custom page
+// For Top Utility Bar
+export const TOP_UTILITY_LINKS: UtilityLink[] = [
+  { label: 'Bulk Orders', href: '/corporate-gifts' }, // Assuming corporate gifts page handles bulk
+  { label: 'Track Order', href: 'https://just4ugifts.com/track' }, // External link
+  { label: 'My Reminders', href: '/account/reminders' }, // Placeholder for reminders page
 ];
 
+// For Global Navigation Bar
+export const GLOBAL_NAV_LINKS: NavItem[] = [
+  {
+    label: 'Select Occasion',
+    href: '#', // '#' because it's a dropdown trigger
+    children: OCCASIONS_LIST.map(o => ({ label: o.name, href: `/products?occasion=${o.slug}` })),
+    // megaMenuColumns: [ /* Define mega menu structure here later */ ]
+  },
+  {
+    label: 'Select Gift Type',
+    href: '#',
+    children: GIFT_TYPES_LIST.map(gt => ({ label: gt.name, href: `/products?category=${gt.slug}` })),
+    // megaMenuColumns: [ /* Define mega menu structure here later */ ]
+  },
+  {
+    label: 'Recipient',
+    href: '#',
+    children: RECIPIENTS_LIST.map(r => ({ label: r.name, href: `/products?recipient=${r.slug}` })),
+    // megaMenuColumns: [ /* Define mega menu structure here later */ ]
+  },
+  { label: 'Corporate Gifts', href: '/corporate-gifts', icon: Briefcase },
+  { label: 'Offers', href: '/offers', icon: Percent },
+  { label: 'Store Locator', href: '/store-locator', icon: MapPin },
+  { label: 'Help', href: '/help', icon: HelpCircle },
+];
+
+// NAV_LINKS from previous design (used in mobile sheet menu or simple fallback)
+// This can be deprecated or merged if Global Nav handles all primary navigation.
+// For now, let's keep it minimal as primary nav moves to GlobalNavBar.
+export const NAV_LINKS: NavItem[] = [
+  // These links are now primarily in GlobalNavBar.
+  // The mobile menu might source from GLOBAL_NAV_LINKS.
+  // { label: 'Corporate Gifts', href: '/corporate-gifts' },
+  // { label: 'Personalized Gifts', href: '/products?category=photo-gifts' }, // Example mapping
+  // { label: 'Occasions', href: '/products' }, // Generic occasions link
+  // { label: 'Create Mini You', href: '/custom/mini-you' },
+];
+
+
+// Legacy footer links, can be updated/merged if needed
 export const FOOTER_LINKS = {
   social: [
-    { name: 'Facebook', href: '#', icon: FacebookIcon },
-    { name: 'Twitter', href: '#', icon: TwitterIcon },
-    { name: 'Instagram', href: '#', icon: InstagramIcon },
+    // Define actual SVG components or use lucide icons if preferred
+    { name: 'Facebook', href: '#', icon: () => null },
+    { name: 'Twitter', href: '#', icon: () => null },
+    { name: 'Instagram', href: '#', icon: () => null },
   ],
   legal: [
     { name: 'Terms of Service', href: '#' },

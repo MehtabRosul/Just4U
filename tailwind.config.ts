@@ -1,7 +1,8 @@
+
 import type {Config} from 'tailwindcss';
 
 export default {
-  darkMode: ['class'],
+  darkMode: ['class'], // Maintained for shadcn compatibility, but default is dark.
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -46,7 +47,11 @@ export default {
           foreground: 'hsl(var(--destructive-foreground))',
         },
         border: 'hsl(var(--border))',
-        input: 'hsl(var(--input))',
+        input: {
+          DEFAULT: 'hsl(var(--input))',
+          placeholder: 'hsl(var(--input-placeholder))',
+          ring: 'hsl(var(--input-ring))',
+        },
         ring: 'hsl(var(--ring))',
         chart: {
           '1': 'hsl(var(--chart-1))',
@@ -55,16 +60,17 @@ export default {
           '4': 'hsl(var(--chart-4))',
           '5': 'hsl(var(--chart-5))',
         },
-        sidebar: {
-          DEFAULT: 'hsl(var(--sidebar-background))',
-          foreground: 'hsl(var(--sidebar-foreground))',
-          primary: 'hsl(var(--sidebar-primary))',
-          'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
-          accent: 'hsl(var(--sidebar-accent))',
-          'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
-          border: 'hsl(var(--sidebar-border))',
-          ring: 'hsl(var(--sidebar-ring))',
+        // Specific theme variables from new design
+        'top-utility': {
+          DEFAULT: 'hsl(var(--top-utility-bg))',
+          foreground: 'hsl(var(--top-utility-fg))',
         },
+        'primary-header': {
+          DEFAULT: 'hsl(var(--primary-header-bg))',
+        },
+        'global-nav': {
+          DEFAULT: 'hsl(var(--global-nav-bg))',
+        }
       },
       borderRadius: {
         lg: 'var(--radius)',
@@ -88,12 +94,24 @@ export default {
             height: '0',
           },
         },
+        'marquee': { /* For text banner on homepage */
+          '0%': { transform: 'translateX(100%)' },
+          '100%': { transform: 'translateX(-100%)' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
+        'marquee': 'marquee 25s linear infinite',
       },
+      height: { // For TopUtilityBar & PrimaryHeader
+        '6': '1.5rem', // 24px for TopUtilityBar
+        '16': '4rem', // 64px for PrimaryHeader
+      }
     },
   },
-  plugins: [require('tailwindcss-animate')],
+  plugins: [
+    require('tailwindcss-animate'),
+    require('tailwind-scrollbar')({ nocompatible: true }), // For custom scrollbars if needed
+  ],
 } satisfies Config;

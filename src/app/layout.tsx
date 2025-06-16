@@ -4,11 +4,13 @@ import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import { WishlistProvider } from '@/hooks/useWishlist'; // WishlistProvider for global state
+import TopUtilityBar from '@/components/layout/TopUtilityBar';
+import GlobalNavBar from '@/components/layout/GlobalNavBar';
+import { WishlistProvider } from '@/hooks/useWishlist';
 
 export const metadata: Metadata = {
-  title: 'Just4U - Gift with Personal Touch', // Updated title
-  description: 'Curated gift ideas from Just4U', // Updated description
+  title: 'Just4U - Gift with Personal Touch',
+  description: 'Curated gift ideas from Just4U, with a personal touch for every occasion.',
 };
 
 export default function RootLayout({
@@ -26,7 +28,9 @@ export default function RootLayout({
       </head>
       <body className="font-body antialiased min-h-screen flex flex-col bg-background text-foreground">
         <WishlistProvider>
+          <TopUtilityBar />
           <Header />
+          <GlobalNavBar />
           <main className="flex-grow container mx-auto px-4 py-8">
             {children}
           </main>

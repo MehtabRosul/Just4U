@@ -4,35 +4,37 @@
 
 @layer base {
   :root {
-    /* Dark Theme with Red Accent */
-    --background: 210 20% 9%; /* Dark Slate Blue/Gray */
+    /* New Dark Theme with Red Accent */
+    --background: 0 0% 8%; /* Very Dark Gray / Near Black */
     --foreground: 0 0% 98%; /* Almost White for text */
 
-    --card: 210 20% 13%; /* Slightly lighter Dark Slate for cards */
-    --card-foreground: 0 0% 98%; /* Almost White */
+    --card: 0 0% 100%; /* White cards */
+    --card-foreground: 0 0% 10%; /* Dark text for cards */
 
-    --popover: 210 20% 11%; /* Darker Popover */
-    --popover-foreground: 0 0% 98%; /* Almost White */
+    --popover: 0 0% 10%; /* Dark Popover */
+    --popover-foreground: 0 0% 98%;
 
     --primary: 0 84% 60%; /* Vibrant Red */
-    --primary-foreground: 0 0% 98%; /* Off-White */
+    --primary-foreground: 0 0% 98%; /* Off-White for text on primary */
 
-    --secondary: 0 75% 55%; /* Slightly darker/muted Red for secondary actions */
-    --secondary-foreground: 0 0% 98%; /* Off-White */
+    --secondary: 0 0% 15%; /* Darker gray for secondary elements */
+    --secondary-foreground: 0 0% 98%;
 
-    --muted: 210 15% 25%; /* Muted Dark Slate for less emphasis */
-    --muted-foreground: 210 15% 65%; /* Lighter Gray for muted text */
+    --muted: 0 0% 25%; /* Muted Dark Gray */
+    --muted-foreground: 0 0% 65%; /* Lighter Gray for muted text */
 
     --accent: 0 84% 60%; /* Vibrant Red */
-    --accent-foreground: 0 0% 98%; /* Off-White */
+    --accent-foreground: 0 0% 98%;
 
     --destructive: 0 62% 50%; /* Darker Red for destructive actions */
-    --destructive-foreground: 0 0% 98%; /* Off-White */
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 210 15% 30%; /* Darker border */
-    --input: 210 15% 30%; /* Darker input border */
-    --input-bg-light-pink: 0 100% 97%; /* Light pink for search input as per original theme */
-    --ring: 0 84% 60%; /* Red for focus rings */
+    --border: 0 0% 20%; /* Border for elements on dark background */
+    --input: 0 0% 12%; /* Dark input background */
+    --input-placeholder: 0 0% 60%; /* Lighter placeholder for dark input */
+    --input-ring: 0 84% 60%; /* Red for focus rings on inputs */
+
+    --ring: 0 84% 60%; /* Red for general focus rings */
 
     --chart-1: 0 70% 60%;
     --chart-2: 220 60% 55%;
@@ -41,38 +43,40 @@
     --chart-5: 320 75% 60%;
     --radius: 0.5rem;
 
-    /* Sidebar variables for dark theme */
-    --sidebar-background: 210 20% 11%; /* Dark for sidebar */
-    --sidebar-foreground: 0 0% 98%;
-    --sidebar-primary: 0 84% 60%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 0 84% 55%;
-    --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 210 15% 30%;
-    --sidebar-ring: 0 84% 60%;
+    /* Specific for new design */
+    --top-utility-bg: 0 0% 0%; /* Black for top utility strip */
+    --top-utility-fg: 0 0% 98%; /* White text for top utility strip */
+    --primary-header-bg: 240 2% 13%; /* #212121 for primary header */
+    --global-nav-bg: 0 0% 0%; /* Black for global navigation */
   }
 
+  /* 
+    The .dark class is still here from the original shadcn setup.
+    For this new design, we are making the default theme dark.
+    If a light mode toggle were to be added later, these .dark variables would define it.
+    For now, they are effectively the same as the :root dark theme.
+  */
   .dark {
-    /* Original .dark block from user's file */
-    --background: 0 0% 100%;
-    --foreground: 210 10% 23%;
+    --background: 0 0% 8%;
+    --foreground: 0 0% 98%;
     --card: 0 0% 100%;
-    --card-foreground: 210 10% 23%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 210 10% 23%;
+    --card-foreground: 0 0% 10%;
+    --popover: 0 0% 10%;
+    --popover-foreground: 0 0% 98%;
     --primary: 0 84% 60%;
     --primary-foreground: 0 0% 98%;
-    --secondary: 210 15% 90%;
-    --secondary-foreground: 210 10% 23%;
-    --muted: 210 15% 90%;
-    --muted-foreground: 210 10% 45%;
+    --secondary: 0 0% 15%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 25%;
+    --muted-foreground: 0 0% 65%;
     --accent: 0 84% 60%;
     --accent-foreground: 0 0% 98%;
-    --destructive: 0 70% 50%;
+    --destructive: 0 62% 50%;
     --destructive-foreground: 0 0% 98%;
-    --border: 210 15% 88%;
-    --input: 210 15% 88%;
-    --input-bg-light-pink: 0 100% 97%;
+    --border: 0 0% 20%;
+    --input: 0 0% 12%;
+    --input-placeholder: 0 0% 60%;
+    --input-ring: 0 84% 60%;
     --ring: 0 84% 60%;
     --chart-1: 0 70% 60%;
     --chart-2: 220 60% 55%;
@@ -80,14 +84,10 @@
     --chart-4: 280 65% 70%;
     --chart-5: 320 75% 60%;
 
-    --sidebar-background: 0 0% 96%;
-    --sidebar-foreground: 210 10% 23%;
-    --sidebar-primary: 0 84% 60%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 0 84% 55%;
-    --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 210 15% 88%;
-    --sidebar-ring: 0 84% 60%;
+    --top-utility-bg: 0 0% 0%;
+    --top-utility-fg: 0 0% 98%;
+    --primary-header-bg: 240 2% 13%;
+    --global-nav-bg: 0 0% 0%;
   }
 }
 

@@ -5,30 +5,41 @@ export interface Product {
   id: string;
   name: string;
   description: string;
-  price: number; // This will be the current/discounted price
-  originalPrice?: number; // Optional original price
-  imageUrls: string[]; // Changed from imageUrl to support multiple images
+  price: number;
+  originalPrice?: number;
+  imageUrls: string[];
   dataAiHint?: string;
-  category: string;
-  popularity: number; // e.g., view count or sales rank
+  category: string; // Corresponds to GiftType slug
+  occasion?: string[]; // Slugs of occasions
+  recipient?: string[]; // Slugs of recipients
+  popularity: number;
   trending?: boolean;
   giftWrapAvailable?: boolean;
   personalizedMessageAvailable?: boolean;
   reviews?: Review[];
   slug: string;
   soldBy?: string;
-  availableColors?: string[]; // e.g., ['#FF0000', '#00FF00', '#0000FF'] or ['Red', 'Green', 'Blue']
-  attributes?: Array<{ name: string; value: string }>; // For "Key Product Attributes"
-  idealGiftFor?: string[]; // For "An ideal gift for"
+  availableColors?: string[];
+  attributes?: Array<{ name: string; value: string }>;
+  idealGiftFor?: string[]; // Legacy, can be mapped from recipient/occasion
+  customizable?: boolean; // For "Customize Now" button
+  countdownEndTime?: string; // For "Deal of the Day"
 }
 
-export interface Category {
+export interface BaseCategory {
   id: string;
   name: string;
-  Icon?: LucideIcon;
   slug: string;
-  dataAiHint?: string;
+  Icon?: LucideIcon; // For homepage spotlights/grids
+  dataAiHint?: string; // For placeholder images
 }
+
+export interface Occasion extends BaseCategory {}
+export interface GiftType extends BaseCategory {}
+export interface Recipient extends BaseCategory {}
+
+// Legacy Category type, maps to GiftType now
+export interface Category extends GiftType {}
 
 export interface Review {
   id: string;
@@ -40,23 +51,24 @@ export interface Review {
 
 export interface WishlistItem extends Product {}
 
-export interface GiftRegistryItem extends Product {
-  quantityDesired: number;
-  quantityFulfilled: number;
-}
-
-export interface GiftRegistry {
-  id: string;
-  name: string;
-  occasion: string;
-  date: string; // ISO date string
-  items: GiftRegistryItem[];
-  isPublic?: boolean;
-  shareUrl?: string;
-}
-
+// NavItem is generic for different nav menus
 export interface NavItem {
   label: string;
   href: string;
-  icon?: LucideIcon;
+  icon?: LucideIcon; // Retained for potential use elsewhere
+  children?: NavItem[]; // For dropdowns/mega-menus
+  megaMenuColumns?: MegaMenuColumn[];
+}
+
+export interface MegaMenuColumn {
+  title: string;
+  links: NavItem[];
+  showBestsellers?: boolean; // Placeholder for future content
+  showTrendingPicks?: boolean; // Placeholder for future content
+}
+
+// Type for Top Utility Bar Links
+export interface UtilityLink {
+  label: string;
+  href: string;
 }
