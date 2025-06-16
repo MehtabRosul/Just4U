@@ -5,7 +5,7 @@ import { Toaster } from '@/components/ui/toaster';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import TopUtilityBar from '@/components/layout/TopUtilityBar';
-import GlobalNavBar from '@/components/layout/GlobalNavBar';
+// import GlobalNavBar from '@/components/layout/GlobalNavBar'; // Removed
 import { WishlistProvider } from '@/hooks/useWishlist';
 
 export const metadata: Metadata = {
@@ -30,7 +30,7 @@ export default function RootLayout({
         <WishlistProvider>
           <TopUtilityBar />
           <Header />
-          <GlobalNavBar />
+          {/* <GlobalNavBar /> // Removed */}
           <main className="flex-grow container mx-auto px-4 py-8">
             {children}
           </main>
