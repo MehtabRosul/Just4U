@@ -73,7 +73,7 @@ export default function HomePage() {
         <SectionTitle>Trending Gifts</SectionTitle>
         <ProductList products={trendingProducts} onViewDetails={handleViewDetails} />
         <div className="mt-8 text-center">
-          <Button asChild variant="outline" className="text-primary border-primary hover:bg-primary hover:text-primary-foreground">
+          <Button asChild variant="outline" className="text-primary border-primary hover:bg-accent hover:text-accent-foreground">
             <Link href="/products?sort=trending">View More Trending</Link>
           </Button>
         </div>

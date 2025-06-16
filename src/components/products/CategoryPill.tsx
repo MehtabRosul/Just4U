@@ -16,12 +16,12 @@ export function CategoryPill({ category }: CategoryPillProps) {
         variant="outline"
         className={cn(
           "w-full h-auto p-4 flex flex-col items-center justify-center space-y-2 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200",
-          "border-border bg-card hover:bg-accent/10 hover:border-primary"
+          "border-border bg-card hover:bg-accent/10 hover:border-accent"
         )}
         aria-label={`View products in ${category.name}`}
       >
         {IconComponent && (
-          <IconComponent className="h-10 w-10 text-primary group-hover:text-primary transition-colors duration-200" strokeWidth={1.5} />
+          <IconComponent className="h-10 w-10 text-primary group-hover:text-accent transition-colors duration-200" strokeWidth={1.5} />
         )}
         {/* If no icon, could use a placeholder image based on dataAiHint */}
         {!IconComponent && category.dataAiHint && (
@@ -34,7 +34,7 @@ export function CategoryPill({ category }: CategoryPillProps) {
             data-ai-hint={category.dataAiHint}
           />
         )}
-        <span className="font-headline text-sm font-medium text-foreground group-hover:text-primary transition-colors duration-200 text-center">
+        <span className="font-headline text-sm font-medium text-foreground group-hover:text-accent transition-colors duration-200 text-center">
           {category.name}
         </span>
       </Button>
