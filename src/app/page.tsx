@@ -136,10 +136,10 @@ const HeroCarousel = () => {
   const commonTextActiveAnimation = "opacity-100";
   
   // Base transition classes for text elements (sequential fade, slightly different timing)
-  const iconBaseTransition = "transition-opacity duration-[700ms] ease-out delay-[300ms]";
-  const titleBaseTransition = "transition-opacity duration-[700ms] ease-out delay-[450ms]";
-  const descriptionBaseTransition = "transition-opacity duration-[700ms] ease-out delay-[600ms]";
-  const buttonBaseTransition = "transition-opacity duration-[700ms] ease-out delay-[750ms]";
+  const iconBaseTransition = "transition-opacity duration-[1000ms] ease-out delay-[200ms]";
+  const titleBaseTransition = "transition-opacity duration-[1000ms] ease-out delay-[350ms]";
+  const descriptionBaseTransition = "transition-opacity duration-[1000ms] ease-out delay-[500ms]";
+  const buttonBaseTransition = "transition-opacity duration-[1000ms] ease-out delay-[650ms]";
 
 
   return (
@@ -538,3 +538,4 @@ export default function HomePage()
     
 
     
+
