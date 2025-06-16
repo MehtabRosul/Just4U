@@ -24,8 +24,6 @@ interface CarouselBanner {
   ctaText: string;
   ctaLink: string;
   gradientClasses: string;
-  // textPosition and contentAlignment will be standardized, no longer per-banner
-  // animation classes will be common, no longer per-banner
 }
 
 const carouselBannersData: CarouselBanner[] = [
@@ -35,8 +33,8 @@ const carouselBannersData: CarouselBanner[] = [
     description: "Unique gifts that tell their story.",
     imageUrl: "https://placehold.co/1200x600.png",
     dataAiHint: "personalized gift assortment",
-    ctaText: "Discover Now",
-    ctaLink: "/products?category=photo-gifts",
+    ctaText: "Shop Now",
+    ctaLink: "/products",
     gradientClasses: "bg-gradient-to-br from-red-600 via-pink-600 to-fuchsia-700",
   },
   {
@@ -45,7 +43,7 @@ const carouselBannersData: CarouselBanner[] = [
     description: "Find the perfect gift for any occasion.",
     imageUrl: "https://placehold.co/1200x600.png",
     dataAiHint: "birthday celebration gifts",
-    ctaText: "Explore Occasions",
+    ctaText: "Shop Now",
     ctaLink: "/products",
     gradientClasses: "bg-gradient-to-tr from-rose-500 via-red-500 to-orange-600",
   },
@@ -55,8 +53,8 @@ const carouselBannersData: CarouselBanner[] = [
     description: "Lifelike miniatures and stunning crystal art.",
     imageUrl: "https://placehold.co/1200x600.png",
     dataAiHint: "3d crystal miniature",
-    ctaText: "See Collection",
-    ctaLink: "/products?category=3d-crystals",
+    ctaText: "Shop Now",
+    ctaLink: "/products",
     gradientClasses: "bg-gradient-to-b from-neutral-800 via-red-900 to-black",
   },
   {
@@ -65,8 +63,8 @@ const carouselBannersData: CarouselBanner[] = [
     description: "Elegant photo frames for timeless keepsakes.",
     imageUrl: "https://placehold.co/1200x600.png",
     dataAiHint: "photo frame collection",
-    ctaText: "Shop Frames",
-    ctaLink: "/products?category=photo-frames",
+    ctaText: "Shop Now",
+    ctaLink: "/products",
     gradientClasses: "bg-gradient-to-bl from-red-700 via-rose-800 to-neutral-900",
   },
   {
@@ -75,8 +73,8 @@ const carouselBannersData: CarouselBanner[] = [
     description: "Impress clients with premium, branded gifts.",
     imageUrl: "https://placehold.co/1200x600.png",
     dataAiHint: "corporate gift basket",
-    ctaText: "Get a Quote",
-    ctaLink: "/corporate-gifts",
+    ctaText: "Shop Now",
+    ctaLink: "/products",
     gradientClasses: "bg-gradient-to-tl from-neutral-900 via-gray-800 to-red-900",
   },
   {
@@ -85,7 +83,7 @@ const carouselBannersData: CarouselBanner[] = [
     description: "Handpicked selections for every recipient.",
     imageUrl: "https://placehold.co/1200x600.png",
     dataAiHint: "gift for her",
-    ctaText: "Find Their Gift",
+    ctaText: "Shop Now",
     ctaLink: "/products",
     gradientClasses: "bg-gradient-to-r from-pink-700 via-red-600 to-rose-700",
   },
@@ -95,8 +93,8 @@ const carouselBannersData: CarouselBanner[] = [
     description: "Unbeatable prices on popular gifts, daily.",
     imageUrl: "https://placehold.co/1200x600.png",
     dataAiHint: "gift sale discount",
-    ctaText: "Grab a Deal",
-    ctaLink: "/products?sort=trending",
+    ctaText: "Shop Now",
+    ctaLink: "/products",
     gradientClasses: "bg-gradient-to-l from-orange-600 via-red-500 to-pink-500",
   },
   {
@@ -105,7 +103,7 @@ const carouselBannersData: CarouselBanner[] = [
     description: "Fresh designs and innovative gift ideas.",
     imageUrl: "https://placehold.co/1200x600.png",
     dataAiHint: "new product launch",
-    ctaText: "See What's New",
+    ctaText: "Shop Now",
     ctaLink: "/products",
     gradientClasses: "bg-gradient-to-br from-fuchsia-700 via-purple-600 to-red-500",
   },
@@ -115,8 +113,8 @@ const carouselBannersData: CarouselBanner[] = [
     description: "Transform photos into unique art pieces.",
     imageUrl: "https://placehold.co/1200x600.png",
     dataAiHint: "photo to art canvas",
-    ctaText: "Create Art",
-    ctaLink: "/products?category=photo-to-art",
+    ctaText: "Shop Now",
+    ctaLink: "/products",
     gradientClasses: "bg-gradient-to-tr from-red-800 via-neutral-900 to-rose-700",
   },
   {
@@ -125,8 +123,8 @@ const carouselBannersData: CarouselBanner[] = [
     description: "Get a custom 3D miniature of yourself or loved ones.",
     imageUrl: "https://placehold.co/1200x600.png",
     dataAiHint: "3d selfie miniature",
-    ctaText: "Get Miniaturized",
-    ctaLink: "/custom/mini-you",
+    ctaText: "Shop Now",
+    ctaLink: "/products",
     gradientClasses: "bg-gradient-to-bl from-rose-600 via-red-700 to-pink-800",
   },
 ];
@@ -153,22 +151,22 @@ const HeroCarousel = () => {
           className={cn(
             "absolute inset-0 transition-all duration-1000 ease-in-out w-full h-full flex p-6 md:p-10",
             banner.gradientClasses,
-            'items-start', // Standardized: Content aligned to the top
+            'items-start', 
             index === currentSlide ? commonAnimationActiveClasses : commonAnimationInactiveClasses + " pointer-events-none"
           )}
         >
-          <div className={cn("relative z-10 w-full flex justify-start")}> {/* Standardized: Text content block to the left */}
-            <div className={cn("max-w-md md:max-w-lg lg:max-w-xl text-left")}> {/* Standardized: Text alignment to left */}
+          <div className={cn("relative z-10 w-full flex justify-start")}> 
+            <div className={cn("max-w-md md:max-w-lg lg:max-w-xl text-left")}> 
               <SparklesIcon className="w-10 h-10 sm:w-12 sm:h-12 text-white opacity-70 mb-2 sm:mb-3 hidden md:inline-block" />
               <h1 className={cn(
                 "font-headline text-3xl sm:text-4xl md:text-5xl font-extrabold mb-3 sm:mb-4 text-white",
-                "text-left" // Standardized
+                "text-left" 
                 )}>
                 {banner.title}
               </h1>
               <p className={cn(
                 "text-neutral-200 text-sm sm:text-base lg:text-md max-w-md mb-6 sm:mb-8",
-                 "mr-auto" // Standardized for left alignment
+                 "mr-auto" 
                 )}>
                 {banner.description}
               </p>
