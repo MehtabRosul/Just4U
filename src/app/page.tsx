@@ -9,10 +9,9 @@ import { ProductList } from '@/components/products/ProductList';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, ChevronDown, Sparkles as SparklesIcon } from 'lucide-react';
+import { ArrowRight, ChevronDown, Sparkles as SparklesIcon, Quote, Star } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from '@/components/ui/card';
 
 const HeroCarousel = () => (
@@ -175,23 +174,80 @@ const Advertisements = () => {
   );
 };
 
+const TestimonialsSection = () => {
+  const testimonials = [
+    {
+      id: 1,
+      quote: "The personalized caricature was a huge hit at the birthday party! Amazing quality and super fast delivery.",
+      author: "Priya S.",
+      tag: "Loved It!",
+      tagColor: "bg-green-500",
+      rating: 5,
+    },
+    {
+      id: 2,
+      quote: "I ordered a 3D crystal for our anniversary, and it was breathtaking. Such a unique and memorable gift.",
+      author: "Amit K.",
+      tag: "Perfect Gift!",
+      tagColor: "bg-blue-500",
+      rating: 5,
+    },
+    {
+      id: 3,
+      quote: "The customer service was fantastic in helping me choose the right photo frame. The final product was beautiful.",
+      author: "Rina M.",
+      tag: "Great Service!",
+      tagColor: "bg-yellow-500",
+      rating: 4,
+    },
+     {
+      id: 4,
+      quote: "My team loved the custom mugs for our corporate event. Excellent branding and durable quality.",
+      author: "Vikram R., CEO",
+      tag: "Highly Recommend",
+      tagColor: "bg-purple-500",
+      rating: 5,
+    }
+  ];
 
-const BestSellersAndTrending = ({products}: {products: Product[]}) => (
- <section className="my-8 sm:my-12">
-    <Tabs defaultValue="bestsellers" className="w-full">
-      <TabsList className="grid w-full grid-cols-2 max-w-md mx-auto bg-black text-white">
-        <TabsTrigger value="bestsellers" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:underline data-[state=active]:decoration-primary data-[state=active]:decoration-2 data-[state=active]:underline-offset-4">Best Sellers</TabsTrigger>
-        <TabsTrigger value="trending" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:underline data-[state=active]:decoration-primary data-[state=active]:decoration-2 data-[state=active]:underline-offset-4">Trending Now</TabsTrigger>
-      </TabsList>
-      <TabsContent value="bestsellers" className="mt-6">
-        <ProductList products={products.filter(p => p.popularity > 90).slice(0,4)} />
-      </TabsContent>
-      <TabsContent value="trending" className="mt-6">
-         <ProductList products={products.filter(p => p.trending).slice(0,4)} />
-      </TabsContent>
-    </Tabs>
-  </section>
-);
+  return (
+    <section className="my-8 sm:my-12">
+      <SectionTitle className="text-white mb-8">Words from Our Happy Gifting Community</SectionTitle>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 sm:gap-8">
+        {testimonials.map((testimonial) => (
+          <Card key={testimonial.id} className="bg-neutral-800 border-neutral-700 shadow-xl flex flex-col hover:shadow-primary/30 transition-shadow duration-300">
+            <CardContent className="p-6 flex-grow flex flex-col">
+              <div className="flex justify-between items-start mb-3">
+                <Quote className="w-8 h-8 text-primary opacity-50 transform -scale-x-100" />
+                {testimonial.tag && (
+                  <span className={`px-2 py-0.5 text-xs font-semibold text-white rounded-full ${testimonial.tagColor}`}>
+                    {testimonial.tag}
+                  </span>
+                )}
+              </div>
+              <p className="text-neutral-300 italic text-sm sm:text-base leading-relaxed mb-4 flex-grow">
+                "{testimonial.quote}"
+              </p>
+              <div className="mt-auto">
+                <div className="flex items-center justify-between">
+                    <p className="text-sm font-semibold text-primary">{testimonial.author}</p>
+                    {testimonial.rating && (
+                        <div className="flex">
+                            {[...Array(5)].map((_, i) => (
+                                <Star key={i} className={`w-4 h-4 ${i < testimonial.rating ? 'text-yellow-400 fill-yellow-400' : 'text-neutral-600'}`} />
+                            ))}
+                        </div>
+                    )}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </section>
+  );
+};
+
 
 const FestivalSpecials = () => (
   <section className="my-8 sm:my-12">
@@ -301,9 +357,11 @@ export default function HomePage()
       <DailySpotlight products={dealProducts} />
       <RecipientQuickLinks />
       <Advertisements />
-      <BestSellersAndTrending products={PRODUCTS} />
+      <TestimonialsSection />
       <FestivalSpecials />
     </div>
   );
 }
+    
+
     
