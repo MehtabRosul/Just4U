@@ -11,10 +11,11 @@ import { WishlistButton } from '@/components/features/WishlistButton';
 import { StarRating } from '@/components/shared/StarRating';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
-import { Heart, ShoppingCart, ExternalLink, ChevronRight, ChevronLeft } from 'lucide-react';
+import { Heart, ShoppingCart, ExternalLink } from 'lucide-react';
 import { SectionTitle } from '@/components/shared/SectionTitle';
 import Link from 'next/link';
 import { ProductCard } from '@/components/products/ProductCard';
+import { SocialShareButtons } from '@/components/features/SocialShareButtons';
 import { cn } from '@/lib/utils';
 
 export default function ProductDetailPage() {
@@ -23,6 +24,7 @@ export default function ProductDetailPage() {
   const [product, setProduct] = useState<Product | null>(null);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
+  const [currentUrl, setCurrentUrl] = useState('');
 
   useEffect(() => {
     if (slug) {
@@ -33,6 +35,12 @@ export default function ProductDetailPage() {
       }
     }
   }, [slug]);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setCurrentUrl(window.location.href);
+    }
+  }, []);
 
   if (!product) {
     return (
@@ -103,12 +111,17 @@ export default function ProductDetailPage() {
         <div className="flex flex-col space-y-4">
           <h1 className="font-headline text-3xl sm:text-4xl font-bold text-foreground">{product.name}</h1>
           
-          {averageRating > 0 && (
-            <div className="flex items-center">
-              <StarRating rating={averageRating} starSize="h-5 w-5" />
-              <span className="ml-2 text-sm text-muted-foreground">({product.reviews?.length} review{product.reviews?.length === 1 ? "" : "s"})</span>
-            </div>
-          )}
+          <div className="flex items-center space-x-2">
+            {averageRating > 0 && (
+                <StarRating rating={averageRating} starSize="h-5 w-5" />
+            )}
+            <span className="text-sm text-muted-foreground">
+                {product.reviews && product.reviews.length > 0 ? `(${product.reviews.length} review${product.reviews.length === 1 ? "" : "s"})` : "(No reviews yet)"}
+            </span>
+            {currentUrl && product.name && (
+              <SocialShareButtons url={currentUrl} title={product.name} />
+            )}
+          </div>
 
           <div className="flex items-baseline space-x-2">
             <p className="text-3xl font-bold text-accent">Rs. {product.price.toFixed(2)}</p>
@@ -123,25 +136,6 @@ export default function ProductDetailPage() {
           {product.soldBy && (
             <p className="text-sm text-muted-foreground">Sold By: <span className="font-medium text-foreground">{product.soldBy}</span></p>
           )}
-
-          <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3 pt-4">
-            <WishlistButton product={product} size="lg" className="w-full sm:w-auto px-6 py-3 border border-input hover:bg-accent/10">
-              <Heart className="mr-2 h-5 w-5" /> Wishlist
-            </WishlistButton>
-            <Button size="lg" variant="secondary" className="w-full sm:w-auto px-6 py-3">
-              <ShoppingCart className="mr-2 h-5 w-5" /> Add to Cart
-            </Button>
-          </div>
-           <Button 
-            size="lg" 
-            variant="outline"
-            className="w-full sm:w-auto hover:bg-accent hover:text-accent-foreground border-accent text-accent mt-2"
-            onClick={() => window.open(`https://just4ugifts.com/product/${product.id}`, '_blank')}
-          >
-            <ExternalLink className="mr-2 h-5 w-5" />
-            Buy on Just4UGifts.com
-          </Button>
-
 
           {product.availableColors && product.availableColors.length > 0 && (
             <div className="pt-2">
@@ -165,12 +159,34 @@ export default function ProductDetailPage() {
               </div>
             </div>
           )}
+
+          <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3 pt-4">
+            <WishlistButton 
+              product={product} 
+              size="lg" 
+              className="w-full sm:w-auto px-6 py-3 border border-input hover:bg-accent/10"
+              showText={false} // Icon only for product page consistency
+            > 
+               <Heart className="mr-2 h-5 w-5" /> Wishlist
+            </WishlistButton>
+            <Button size="lg" variant="secondary" className="w-full sm:w-auto px-6 py-3">
+              <ShoppingCart className="mr-2 h-5 w-5" /> Add to Cart
+            </Button>
+          </div>
+           <Button 
+            size="lg" 
+            variant="outline"
+            className="w-full sm:w-auto hover:bg-accent hover:text-accent-foreground border-accent text-accent mt-2"
+            onClick={() => window.open(`https://just4ugifts.com/product/${product.id}`, '_blank')}
+          >
+            <ExternalLink className="mr-2 h-5 w-5" />
+            Buy on Just4UGifts.com
+          </Button>
         </div>
       </div>
 
       <Separator className="my-8" />
 
-      {/* Product Details, Attributes, Ideal For */}
       <div className="space-y-8">
         <div>
           <h2 className="font-headline text-2xl font-semibold mb-3">Product Details</h2>
@@ -198,31 +214,12 @@ export default function ProductDetailPage() {
             </ul>
           </div>
         )}
-         {/* Read More could be added here if description is very long */}
       </div>
       
       <Separator className="my-12" />
 
-      {/* Similar Products Section */}
-      {similarProducts.length > 0 && (
-        <section>
-          <SectionTitle className="text-2xl sm:text-3xl mb-6">Similar Products</SectionTitle>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {similarProducts.map((p) => (
-              <ProductCard key={p.id} product={p} />
-            ))}
-          </div>
-           <div className="mt-8 text-center">
-            <Button asChild variant="outline" className="text-primary border-primary hover:bg-accent hover:text-accent-foreground">
-              <Link href={`/products?category=${product.category}`}>View More in {product.category}</Link>
-            </Button>
-          </div>
-        </section>
-      )}
-
-      {/* Reviews Section - Can be expanded later */}
       {product.reviews && product.reviews.length > 0 && (
-         <section className="mt-12">
+         <section className="mb-12">
             <SectionTitle className="text-2xl sm:text-3xl mb-6">Customer Reviews</SectionTitle>
             <div className="space-y-6">
             {product.reviews.map(review => (
@@ -239,6 +236,23 @@ export default function ProductDetailPage() {
         </section>
       )}
 
+      {similarProducts.length > 0 && (
+        <section>
+          <SectionTitle className="text-2xl sm:text-3xl mb-6">Similar Products</SectionTitle>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {similarProducts.map((p) => (
+              <ProductCard key={p.id} product={p} />
+            ))}
+          </div>
+           <div className="mt-8 text-center">
+            <Button asChild variant="outline" className="text-accent border-accent hover:bg-accent hover:text-accent-foreground">
+              <Link href={`/products?category=${product.category}`}>View More in {product.category}</Link>
+            </Button>
+          </div>
+        </section>
+      )}
     </div>
   );
 }
+
+    
