@@ -1,7 +1,7 @@
 
 "use client"; 
 
-import { useMemo } from 'react'; 
+import { useState, useEffect, useMemo } from 'react'; 
 import type { Product } from '@/lib/types';
 import { CATEGORIES, PRODUCTS } from '@/lib/data';
 import { SectionTitle } from '@/components/shared/SectionTitle';
@@ -12,17 +12,24 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 export default function HomePage() {
+  const [featuredDeals, setFeaturedDeals] = useState<Product[]>([]);
+  const [personalizedProducts, setPersonalizedProducts] = useState<Product[]>([]);
+
   const trendingProducts = useMemo(() => PRODUCTS.filter(p => p.trending).slice(0, 4), []);
   
-  const personalizedProducts = useMemo(() => PRODUCTS.filter(p => !p.trending)
-    .sort(() => 0.5 - Math.random()) 
-    .slice(0, 4), []);
-
-  const featuredDeals = useMemo(() => {
-    return PRODUCTS.filter(p => !p.trending && p.price < 50) 
+  useEffect(() => {
+    // Client-side randomization to prevent hydration mismatch
+    const deals = PRODUCTS.filter(p => !p.trending && p.price < 50) 
       .sort(() => 0.5 - Math.random())
       .slice(0, 4);
+    setFeaturedDeals(deals);
+
+    const recommended = PRODUCTS.filter(p => !p.trending)
+      .sort(() => 0.5 - Math.random()) 
+      .slice(0, 4);
+    setPersonalizedProducts(recommended);
   }, []);
+
 
   return (
     <div className="space-y-12 md:space-y-16">
@@ -57,7 +64,7 @@ export default function HomePage() {
           <SectionTitle>Featured Deals</SectionTitle>
           <ProductList products={featuredDeals} />
            <div className="mt-8 text-center">
-            <Button asChild variant="outline" className="text-primary border-primary hover:bg-accent hover:text-accent-foreground">
+            <Button asChild variant="outline" className="text-accent border-accent hover:bg-accent hover:text-accent-foreground">
               <Link href="/products?sort=price_asc">View More Deals</Link>
             </Button>
           </div>
@@ -70,7 +77,7 @@ export default function HomePage() {
           <SectionTitle>Trending Gifts</SectionTitle>
           <ProductList products={trendingProducts} />
           <div className="mt-8 text-center">
-            <Button asChild variant="outline" className="text-primary border-primary hover:bg-accent hover:text-accent-foreground">
+            <Button asChild variant="outline" className="text-accent border-accent hover:bg-accent hover:text-accent-foreground">
               <Link href="/products?sort=trending">View More Trending</Link>
             </Button>
           </div>
