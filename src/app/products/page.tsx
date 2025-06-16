@@ -99,8 +99,8 @@ export default function ProductsPage() {
         </div>
 
         <div className="lg:col-span-3 space-y-6">
-          <div className="flex flex-col sm:flex-row justify-between items-center p-4 border rounded-lg shadow-sm bg-card">
-            <p className="text-sm text-muted-foreground mb-2 sm:mb-0">
+          <div className="flex flex-col sm:flex-row justify-between items-center p-4 border rounded-lg shadow-sm bg-card gap-2 sm:gap-0">
+            <p className="text-sm text-muted-foreground text-center sm:text-left">
               Showing {currentProducts.length} of {filteredAndSortedProducts.length} products
             </p>
             <ProductSortControl currentSort={sortOption} onSortChange={(newSort) => {setSortOption(newSort); setCurrentPage(1);}} />

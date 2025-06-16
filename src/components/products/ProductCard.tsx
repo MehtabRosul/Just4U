@@ -8,7 +8,7 @@ import type { Product } from '@/lib/types';
 import { WishlistButton } from '@/components/features/WishlistButton';
 import { StarRating } from '@/components/shared/StarRating';
 import { cn } from '@/lib/utils';
-import { buttonVariants } from '@/components/ui/button'; // Import buttonVariants
+import { buttonVariants } from '@/components/ui/button'; 
 
 interface ProductCardProps {
   product: Product;
@@ -33,7 +33,7 @@ export function ProductCard({ product }: ProductCardProps) {
               data-ai-hint={product.dataAiHint || "gift item"}
             />
           </div>
-          <div className="absolute top-2 right-2 z-10"> {/* Ensure wishlist button is on top and clickable */}
+          <div className="absolute top-2 right-2 z-10">
             <WishlistButton product={product} />
           </div>
           {product.trending && (
@@ -58,7 +58,7 @@ export function ProductCard({ product }: ProductCardProps) {
           <p className="text-xl font-semibold text-accent">
             Rs. {product.price.toFixed(2)}
           </p>
-          <div // Changed to a div styled as a button
+          <div 
             className={cn(
               buttonVariants({ variant: 'secondary', size: 'sm' }),
               "hover:bg-accent/90 transition-colors w-full sm:w-auto"

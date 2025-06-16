@@ -30,15 +30,14 @@ export default function ProductDetailPage() {
     if (slug) {
       const foundProduct = getProductBySlug(slug);
       setProduct(foundProduct || null);
-      setSelectedImageIndex(0); // Reset to first image when product (slug) changes
+      setSelectedImageIndex(0); 
 
       if (foundProduct && foundProduct.availableColors && foundProduct.availableColors.length > 0) {
         setSelectedColor(foundProduct.availableColors[0]);
       } else {
-        setSelectedColor(null); // Reset color if new product has no colors
+        setSelectedColor(null);
       }
     } else {
-      // Handle case where slug might not be present or is invalid
       setProduct(null);
       setSelectedImageIndex(0);
       setSelectedColor(null);
@@ -82,13 +81,13 @@ export default function ProductDetailPage() {
       <div className="grid md:grid-cols-2 gap-8 lg:gap-12 mb-12">
         {/* Image Gallery */}
         <div className="flex flex-col-reverse md:flex-row gap-4 items-start">
-          <div className="flex md:flex-col gap-2 overflow-x-auto md:overflow-y-auto md:max-h-[500px] pr-2">
+          <div className="flex md:flex-col gap-2 overflow-x-auto md:overflow-y-auto md:max-h-[500px] pr-2 pb-2 md:pb-0">
             {product.imageUrls.map((url, index) => (
               <button
                 key={index}
                 onClick={() => handleThumbnailClick(index)}
                 className={cn(
-                  "border-2 rounded-lg overflow-hidden focus:outline-none focus:ring-2 focus:ring-accent",
+                  "border-2 rounded-lg overflow-hidden focus:outline-none focus:ring-2 focus:ring-accent shrink-0",
                   selectedImageIndex === index ? "border-accent" : "border-transparent hover:border-muted"
                 )}
               >
@@ -120,9 +119,9 @@ export default function ProductDetailPage() {
 
         {/* Product Info */}
         <div className="flex flex-col space-y-4">
-          <h1 className="font-headline text-3xl sm:text-4xl font-bold text-foreground">{product.name}</h1>
+          <h1 className="font-headline text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground">{product.name}</h1>
           
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 flex-wrap">
             {averageRating > 0 && (
                 <StarRating rating={averageRating} starSize="h-5 w-5" />
             )}
@@ -134,10 +133,10 @@ export default function ProductDetailPage() {
             )}
           </div>
 
-          <div className="flex items-baseline space-x-2">
-            <p className="text-3xl font-bold text-accent">Rs. {product.price.toFixed(2)}</p>
+          <div className="flex items-baseline space-x-2 flex-wrap">
+            <p className="text-2xl sm:text-3xl font-bold text-accent">Rs. {product.price.toFixed(2)}</p>
             {product.originalPrice && product.originalPrice > product.price && (
-              <p className="text-lg text-muted-foreground line-through">Rs. {product.originalPrice.toFixed(2)}</p>
+              <p className="text-md sm:text-lg text-muted-foreground line-through">Rs. {product.originalPrice.toFixed(2)}</p>
             )}
             {discountPercentage > 0 && (
               <Badge variant="destructive" className="text-sm">Save {discountPercentage}%</Badge>
@@ -151,7 +150,7 @@ export default function ProductDetailPage() {
           {product.availableColors && product.availableColors.length > 0 && (
             <div className="pt-2">
               <h3 className="text-sm font-medium text-muted-foreground mb-2">Select Color: <span className="text-foreground">{selectedColor ? product.availableColors.find(c => c === selectedColor) || selectedColor : ''}</span></h3>
-              <div className="flex space-x-2">
+              <div className="flex space-x-2 flex-wrap gap-y-2">
                 {product.availableColors.map(color => (
                   <button
                     key={color}
@@ -199,13 +198,13 @@ export default function ProductDetailPage() {
 
       <div className="space-y-8">
         <div>
-          <h2 className="font-headline text-2xl font-semibold mb-3">Product Details</h2>
+          <h2 className="font-headline text-xl sm:text-2xl font-semibold mb-3">Product Details</h2>
           <p className="text-muted-foreground leading-relaxed">{product.description}</p>
         </div>
 
         {product.attributes && product.attributes.length > 0 && (
           <div>
-            <h2 className="font-headline text-2xl font-semibold mb-3">Key Product Attributes</h2>
+            <h2 className="font-headline text-xl sm:text-2xl font-semibold mb-3">Key Product Attributes</h2>
             <ul className="list-disc list-inside space-y-1 text-muted-foreground">
               {product.attributes.map(attr => (
                 <li key={attr.name}><span className="font-medium text-foreground">{attr.name}:</span> {attr.value}</li>
@@ -216,7 +215,7 @@ export default function ProductDetailPage() {
 
         {product.idealGiftFor && product.idealGiftFor.length > 0 && (
           <div>
-            <h2 className="font-headline text-2xl font-semibold mb-3">An ideal gift for:</h2>
+            <h2 className="font-headline text-xl sm:text-2xl font-semibold mb-3">An ideal gift for:</h2>
             <ul className="list-disc list-inside space-y-1 text-muted-foreground">
               {product.idealGiftFor.map(item => (
                 <li key={item}>{item}</li>
@@ -230,7 +229,7 @@ export default function ProductDetailPage() {
 
       {product.reviews && product.reviews.length > 0 && (
          <section className="mb-12">
-            <SectionTitle className="text-2xl sm:text-3xl mb-6">Customer Reviews</SectionTitle>
+            <SectionTitle className="text-xl sm:text-2xl md:text-3xl mb-6">Customer Reviews</SectionTitle>
             <div className="space-y-6">
             {product.reviews.map(review => (
                 <div key={review.id} className="p-4 border rounded-lg bg-card">
@@ -248,8 +247,8 @@ export default function ProductDetailPage() {
 
       {similarProducts.length > 0 && (
         <section>
-          <SectionTitle className="text-2xl sm:text-3xl mb-6">Similar Products</SectionTitle>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <SectionTitle className="text-xl sm:text-2xl md:text-3xl mb-6">Similar Products</SectionTitle>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
             {similarProducts.map((p) => (
               <ProductCard key={p.id} product={p} />
             ))}

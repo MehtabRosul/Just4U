@@ -16,7 +16,7 @@ export default function WishlistPage() {
       <div className="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4">
         <SectionTitle className="mb-0 text-left">Your Wishlist</SectionTitle>
         {wishlist.length > 0 && (
-          <Button variant="outline" onClick={clearWishlist} className="text-destructive border-destructive hover:bg-destructive hover:text-destructive-foreground">
+          <Button variant="outline" onClick={clearWishlist} className="text-destructive border-destructive hover:bg-destructive hover:text-destructive-foreground w-full sm:w-auto">
             <HeartOff className="mr-2 h-4 w-4" /> Clear Wishlist
           </Button>
         )}

@@ -1,3 +1,4 @@
+
 import type { HTMLAttributes } from 'react';
 import { cn } from '@/lib/utils';
 
@@ -10,7 +11,7 @@ export function SectionTitle({ children, className, as = 'h2', ...props }: Secti
   return (
     <Tag
       className={cn(
-        'font-headline text-3xl font-semibold tracking-tight text-foreground sm:text-4xl mb-6 md:mb-8 text-center',
+        'font-headline text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight text-foreground mb-6 md:mb-8 text-center',
         className
       )}
       {...props}

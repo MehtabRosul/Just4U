@@ -36,13 +36,13 @@ export default function HomePage() {
       {/* Hero Section */}
       <section className="relative bg-background py-12 md:py-20 lg:py-24 overflow-hidden">
         <div className="relative z-10 text-center">
-            <h1 className="font-headline text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-4">
+            <h1 className="font-headline text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4">
               Buy Custom Gifts & Surprise your Recipients
             </h1>
-            <p className="text-lg sm:text-xl text-foreground/80 mb-8 max-w-xl mx-auto">
+            <p className="text-md sm:text-lg text-foreground/80 mb-8 max-w-xl mx-auto">
               Most trusted personalized gifting brand for all occasions
             </p>
-            <Button asChild size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-lg transition-transform hover:scale-105 rounded-full px-8 py-3">
+            <Button asChild size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-lg transition-transform hover:scale-105 rounded-full px-6 py-3 sm:px-8">
               <Link href="/products">Shop Now</Link>
             </Button>
         </div>
@@ -51,7 +51,7 @@ export default function HomePage() {
       {/* Categories Section */}
       <section>
         <SectionTitle>Shop by Category</SectionTitle>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6">
           {CATEGORIES.map((category) => (
             <CategoryPill key={category.id} category={category} />
           ))}

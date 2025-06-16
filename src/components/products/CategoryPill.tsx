@@ -1,3 +1,4 @@
+
 import Link from 'next/link';
 import type { Category } from '@/lib/types';
 import { Button } from '@/components/ui/button';
@@ -15,26 +16,25 @@ export function CategoryPill({ category }: CategoryPillProps) {
       <Button
         variant="outline"
         className={cn(
-          "w-full h-auto p-4 flex flex-col items-center justify-center space-y-2 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200",
+          "w-full h-auto p-3 sm:p-4 flex flex-col items-center justify-center space-y-1 sm:space-y-2 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200",
           "border-border bg-card hover:bg-accent/10 hover:border-accent"
         )}
         aria-label={`View products in ${category.name}`}
       >
         {IconComponent && (
-          <IconComponent className="h-10 w-10 text-primary group-hover:text-accent transition-colors duration-200" strokeWidth={1.5} />
+          <IconComponent className="h-8 w-8 sm:h-10 sm:w-10 text-primary group-hover:text-accent transition-colors duration-200" strokeWidth={1.5} />
         )}
-        {/* If no icon, could use a placeholder image based on dataAiHint */}
         {!IconComponent && category.dataAiHint && (
            <Image
-            src={`https://placehold.co/80x80.png`} // Placeholder, actual image would be better
+            src={`https://placehold.co/80x80.png`} 
             alt={category.name}
-            width={60}
-            height={60}
-            className="rounded-md object-cover"
+            width={50} // Adjusted for smaller screens
+            height={50} // Adjusted for smaller screens
+            className="rounded-md object-cover sm:w-[60px] sm:h-[60px]"
             data-ai-hint={category.dataAiHint}
           />
         )}
-        <span className="font-headline text-sm font-medium text-foreground group-hover:text-accent transition-colors duration-200 text-center">
+        <span className="font-headline text-xs sm:text-sm font-medium text-foreground group-hover:text-accent transition-colors duration-200 text-center">
           {category.name}
         </span>
       </Button>

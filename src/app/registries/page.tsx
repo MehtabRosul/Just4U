@@ -1,3 +1,4 @@
+
 "use client";
 
 import { SectionTitle } from '@/components/shared/SectionTitle';
@@ -28,7 +29,7 @@ export default function RegistriesPage() {
     <div className="container mx-auto px-4 py-8">
       <div className="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4">
         <SectionTitle className="mb-0 text-left">Your Gift Registries</SectionTitle>
-        <Button>
+        <Button className="w-full sm:w-auto">
           <PlusCircle className="mr-2 h-4 w-4" /> Create New Registry
         </Button>
       </div>
@@ -36,28 +37,28 @@ export default function RegistriesPage() {
       {registries.length > 0 ? (
         <div className="space-y-6">
           {registries.map(registry => (
-            <div key={registry.id} className="p-6 border rounded-lg shadow-sm bg-card hover:shadow-md transition-shadow">
+            <div key={registry.id} className="p-4 sm:p-6 border rounded-lg shadow-sm bg-card hover:shadow-md transition-shadow">
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
-                <div>
-                  <h3 className="font-headline text-xl font-semibold text-primary">{registry.name}</h3>
+                <div className="mb-2 sm:mb-0">
+                  <h3 className="font-headline text-lg sm:text-xl font-semibold text-primary">{registry.name}</h3>
                   <p className="text-sm text-muted-foreground">{registry.occasion} - {new Date(registry.date).toLocaleDateString()}</p>
                 </div>
-                <div className="mt-2 sm:mt-0 text-sm text-muted-foreground">
+                <div className="text-sm text-muted-foreground">
                   {registry.itemCount} items
                 </div>
               </div>
-              <div className="mt-4 flex space-x-2">
-                <Button variant="outline" size="sm">View Registry</Button>
-                <Button variant="ghost" size="sm">Manage</Button>
+              <div className="mt-4 flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
+                <Button variant="outline" size="sm" className="w-full sm:w-auto">View Registry</Button>
+                <Button variant="ghost" size="sm" className="w-full sm:w-auto">Manage</Button>
               </div>
             </div>
           ))}
         </div>
       ) : (
         <div className="text-center py-10 border border-dashed rounded-lg">
-          <ClipboardList className="mx-auto h-16 w-16 text-muted-foreground mb-4" />
-          <p className="text-xl font-semibold text-muted-foreground mb-2">No gift registries found.</p>
-          <p className="text-muted-foreground mb-6">Create a registry for your special occasion and share it with friends and family.</p>
+          <ClipboardList className="mx-auto h-12 w-12 sm:h-16 sm:w-16 text-muted-foreground mb-4" />
+          <p className="text-lg sm:text-xl font-semibold text-muted-foreground mb-2">No gift registries found.</p>
+          <p className="text-sm sm:text-base text-muted-foreground mb-6 max-w-md mx-auto">Create a registry for your special occasion and share it with friends and family.</p>
           <Button size="lg">
             <PlusCircle className="mr-2 h-5 w-5" /> Create Your First Registry
           </Button>
