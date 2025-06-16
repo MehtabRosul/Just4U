@@ -16,7 +16,7 @@ interface ProductCardProps {
 
 export function ProductCard({ product, onViewDetails }: ProductCardProps) {
   return (
-    <Card className="group flex flex-col overflow-hidden rounded-lg shadow-lg transition-all duration-300 ease-in-out hover:shadow-xl hover:scale-[1.02]">
+    <Card className="group flex flex-col overflow-hidden rounded-lg shadow-lg transition-all duration-300 ease-in-out hover:shadow-xl hover:scale-[1.02] bg-card">
       <CardHeader className="p-0 relative">
         <Link href={`/products/${product.slug}`} className="block aspect-[3/4] overflow-hidden" onClick={(e) => { if(onViewDetails) { e.preventDefault(); onViewDetails(product); }}}>
           <Image
@@ -32,24 +32,29 @@ export function ProductCard({ product, onViewDetails }: ProductCardProps) {
           <WishlistButton product={product} />
         </div>
         {product.trending && (
-           <div className="absolute top-2 left-2 bg-primary text-primary-foreground text-xs font-semibold px-2 py-1 rounded-full shadow">
+           <div className="absolute top-2 left-2 bg-accent text-accent-foreground text-xs font-semibold px-2 py-1 rounded-full shadow">
             Trending
           </div>
         )}
       </CardHeader>
       <CardContent className="p-4 flex-grow">
         <Link href={`/products/${product.slug}`} className="block" onClick={(e) => { if(onViewDetails) { e.preventDefault(); onViewDetails(product); }}}>
-          <CardTitle className="font-headline text-lg leading-tight mb-1 hover:text-primary transition-colors">
+          <CardTitle className="font-headline text-lg leading-tight mb-1 hover:text-accent transition-colors">
             {product.name}
           </CardTitle>
         </Link>
         <p className="text-sm text-muted-foreground line-clamp-2">{product.description}</p>
       </CardContent>
-      <CardFooter className="p-4 flex justify-between items-center border-t">
-        <p className="text-xl font-semibold text-primary">
+      <CardFooter className="p-4 flex justify-between items-center border-t border-border">
+        <p className="text-xl font-semibold text-accent">
           ${product.price.toFixed(2)}
         </p>
-        <Button size="sm" onClick={() => onViewDetails && onViewDetails(product)} variant="outline" className="group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+        <Button 
+          size="sm" 
+          onClick={() => onViewDetails && onViewDetails(product)} 
+          variant="outline" 
+          className="hover:bg-accent hover:text-accent-foreground transition-colors"
+        >
           View Details
         </Button>
       </CardFooter>
