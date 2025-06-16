@@ -33,7 +33,7 @@ export default function Header() {
               <Input
                 type="search"
                 placeholder="Search here"
-                className="h-10 w-64 rounded-full pl-4 pr-12 text-sm bg-[hsl(var(--input-bg-light-pink))] focus:bg-white border-primary/30 focus:border-primary"
+                className="h-10 w-64 rounded-full pl-4 pr-12 text-sm bg-[hsl(var(--input-bg-light-pink))] focus:bg-background border-primary/30 focus:border-primary text-foreground placeholder:text-muted-foreground"
               />
               <Button type="submit" size="sm" className="absolute right-1 top-1/2 -translate-y-1/2 h-8 rounded-full bg-primary hover:bg-primary/90 px-3">
                 <SearchIcon className="h-4 w-4 text-primary-foreground" />
@@ -100,7 +100,7 @@ export default function Header() {
                     <Input
                         type="search"
                         placeholder="Search here..."
-                        className="h-10 w-full rounded-full pl-4 pr-12 text-sm bg-[hsl(var(--input-bg-light-pink))] focus:bg-white border-primary/30 focus:border-primary"
+                        className="h-10 w-full rounded-full pl-4 pr-12 text-sm bg-[hsl(var(--input-bg-light-pink))] focus:bg-background border-primary/30 focus:border-primary text-foreground placeholder:text-muted-foreground"
                     />
                     <Button type="submit" size="icon" className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full bg-primary hover:bg-primary/90">
                         <SearchIcon className="h-4 w-4 text-primary-foreground" />

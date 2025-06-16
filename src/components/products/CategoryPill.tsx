@@ -17,7 +17,7 @@ export function CategoryPill({ category }: CategoryPillProps) {
         variant="outline"
         className={cn(
           "w-full h-auto p-2.5 sm:p-3 md:p-4 flex flex-col items-center justify-center space-y-1 sm:space-y-1.5 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200",
-          "border-border bg-card hover:bg-primary/5 hover:border-primary" // Adjusted hover for light theme
+          "border-border bg-card hover:bg-primary/10 hover:border-primary" 
         )}
         aria-label={`View products in ${category.name}`}
       >

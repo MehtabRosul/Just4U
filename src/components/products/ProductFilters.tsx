@@ -54,14 +54,14 @@ export function ProductFilters({
   return (
     <aside className="space-y-4 sm:space-y-6 p-3 sm:p-4 border rounded-lg shadow-sm bg-card">
       <div className="flex justify-between items-center">
-        <h3 className="font-headline text-lg sm:text-xl font-semibold">Filters</h3>
-         <Button variant="ghost" size="sm" onClick={handleResetFilters} className="text-xs sm:text-sm px-2 py-1">
+        <h3 className="font-headline text-lg sm:text-xl font-semibold text-foreground">Filters</h3>
+         <Button variant="ghost" size="sm" onClick={handleResetFilters} className="text-xs sm:text-sm px-2 py-1 text-muted-foreground hover:text-primary">
           <XIcon className="w-3 h-3 sm:w-4 sm:h-4 mr-1" /> Reset
         </Button>
       </div>
       
       <div>
-        <Label htmlFor="category-filter" className="text-xs sm:text-sm font-medium mb-1.5 sm:mb-2 block">Category</Label>
+        <Label htmlFor="category-filter" className="text-xs sm:text-sm font-medium mb-1.5 sm:mb-2 block text-foreground">Category</Label>
         <Select value={category} onValueChange={setCategory}>
           <SelectTrigger id="category-filter" className="w-full text-xs sm:text-sm">
             <SelectValue placeholder="Select category" />
@@ -78,7 +78,7 @@ export function ProductFilters({
       </div>
 
       <div>
-        <Label className="text-xs sm:text-sm font-medium mb-1.5 sm:mb-2 block">Price Range</Label>
+        <Label className="text-xs sm:text-sm font-medium mb-1.5 sm:mb-2 block text-foreground">Price Range</Label>
         <Slider
           min={0}
           max={maxPrice}

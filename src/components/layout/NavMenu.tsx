@@ -26,7 +26,7 @@ export function NavMenu({isMobile = false, onLinkClick}: {isMobile?: boolean, on
               "text-sm font-medium transition-colors hover:text-primary",
               isActive
                 ? "text-primary"
-                : "text-foreground/70",
+                : "text-foreground/70", // Use foreground/70 for better contrast on dark theme for inactive links
               isMobile ? "text-base py-2 px-3 hover:bg-muted rounded-md w-full text-left" : "py-2"
             )}
             aria-current={isActive ? 'page' : undefined}

@@ -87,7 +87,7 @@ export default function ProductDetailPage() {
                 key={index}
                 onClick={() => handleThumbnailClick(index)}
                 className={cn(
-                  "border-2 rounded-lg overflow-hidden focus:outline-none focus:ring-2 focus:ring-primary shrink-0", // ring-primary for light theme
+                  "border-2 rounded-lg overflow-hidden focus:outline-none focus:ring-2 focus:ring-primary shrink-0", 
                   selectedImageIndex === index ? "border-primary" : "border-transparent hover:border-muted"
                 )}
               >
@@ -134,7 +134,7 @@ export default function ProductDetailPage() {
           </div>
 
           <div className="flex items-baseline space-x-2 flex-wrap">
-            <p className="text-2xl sm:text-3xl font-bold text-primary">Rs. {product.price.toFixed(2)}</p> {/* text-primary for light theme */}
+            <p className="text-2xl sm:text-3xl font-bold text-primary">Rs. {product.price.toFixed(2)}</p> 
             {product.originalPrice && product.originalPrice > product.price && (
               <p className="text-md sm:text-lg text-muted-foreground line-through">Rs. {product.originalPrice.toFixed(2)}</p>
             )}
@@ -157,7 +157,7 @@ export default function ProductDetailPage() {
                     onClick={() => setSelectedColor(color)}
                     className={cn(
                       "h-7 w-7 sm:h-8 sm:w-8 rounded-full border-2 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring",
-                      selectedColor === color ? 'ring-2 ring-offset-2 ring-primary' : 'border-muted-foreground/50' // ring-primary for light theme
+                      selectedColor === color ? 'ring-2 ring-offset-2 ring-primary' : 'border-muted-foreground/50' 
                     )}
                     style={{ backgroundColor: color.startsWith('#') ? color : undefined }}
                     title={color}
@@ -175,11 +175,11 @@ export default function ProductDetailPage() {
               <WishlistButton 
                 product={product} 
                 size="lg" 
-                className="w-full sm:w-auto px-6 py-3 border border-input hover:bg-primary/10 text-primary" // Adjusted for light theme
+                className="w-full sm:w-auto px-6 py-3 border border-input hover:bg-accent/20 text-primary" 
               > 
                  <Heart className="mr-2 h-5 w-5" /> Wishlist
               </WishlistButton>
-              <Button size="lg" variant="default" className="w-full sm:w-auto px-6 py-3 bg-primary text-primary-foreground hover:bg-primary/90"> {/* variant="default" is red */}
+              <Button size="lg" variant="default" className="w-full sm:w-auto px-6 py-3 bg-primary text-primary-foreground hover:bg-primary/90"> 
                 <ShoppingCart className="mr-2 h-5 w-5" /> Add to Cart
               </Button>
             </div>

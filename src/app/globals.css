@@ -4,34 +4,34 @@
 
 @layer base {
   :root {
-    /* Light Theme with Red Accent */
-    --background: 0 0% 100%; /* White */
-    --foreground: 210 10% 23%; /* Dark Gray for text */
+    /* Dark Theme with Red Accent */
+    --background: 210 20% 9%; /* Dark Slate Blue/Gray */
+    --foreground: 0 0% 98%; /* Almost White for text */
 
-    --card: 0 0% 100%; /* White */
-    --card-foreground: 210 10% 23%; /* Dark Gray */
+    --card: 210 20% 13%; /* Slightly lighter Dark Slate for cards */
+    --card-foreground: 0 0% 98%; /* Almost White */
 
-    --popover: 0 0% 100%; /* White */
-    --popover-foreground: 210 10% 23%; /* Dark Gray */
+    --popover: 210 20% 11%; /* Darker Popover */
+    --popover-foreground: 0 0% 98%; /* Almost White */
 
     --primary: 0 84% 60%; /* Vibrant Red */
     --primary-foreground: 0 0% 98%; /* Off-White */
 
-    --secondary: 210 15% 90%; /* Light Gray for secondary elements/buttons */
-    --secondary-foreground: 210 10% 23%; /* Dark Gray */
+    --secondary: 0 75% 55%; /* Slightly darker/muted Red for secondary actions */
+    --secondary-foreground: 0 0% 98%; /* Off-White */
 
-    --muted: 210 15% 90%; /* Light Gray */
-    --muted-foreground: 210 10% 45%; /* Lighter Gray for muted text */
+    --muted: 210 15% 25%; /* Muted Dark Slate for less emphasis */
+    --muted-foreground: 210 15% 65%; /* Lighter Gray for muted text */
 
     --accent: 0 84% 60%; /* Vibrant Red */
     --accent-foreground: 0 0% 98%; /* Off-White */
 
-    --destructive: 0 70% 50%; /* Darker Red for destructive actions */
+    --destructive: 0 62% 50%; /* Darker Red for destructive actions */
     --destructive-foreground: 0 0% 98%; /* Off-White */
 
-    --border: 210 15% 88%; /* Light Gray border */
-    --input: 210 15% 88%; /* Light Gray input border */
-    --input-bg-light-pink: 0 100% 97%; /* Very light pink for search input */
+    --border: 210 15% 30%; /* Darker border */
+    --input: 210 15% 30%; /* Darker input border */
+    --input-bg-light-pink: 0 100% 97%; /* Light pink for search input as per original theme */
     --ring: 0 84% 60%; /* Red for focus rings */
 
     --chart-1: 0 70% 60%;
@@ -41,19 +41,19 @@
     --chart-5: 320 75% 60%;
     --radius: 0.5rem;
 
-    /* Sidebar variables could be updated or removed if sidebar is not used with this theme */
-    --sidebar-background: 0 0% 96%; /* Light gray for sidebar */
-    --sidebar-foreground: 210 10% 23%;
+    /* Sidebar variables for dark theme */
+    --sidebar-background: 210 20% 11%; /* Dark for sidebar */
+    --sidebar-foreground: 0 0% 98%;
     --sidebar-primary: 0 84% 60%;
     --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 0 84% 60%;
+    --sidebar-accent: 0 84% 55%;
     --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 210 15% 88%;
+    --sidebar-border: 210 15% 30%;
     --sidebar-ring: 0 84% 60%;
   }
 
   .dark {
-    /* For now, make dark theme same as light theme based on new design */
+    /* Original .dark block from user's file */
     --background: 0 0% 100%;
     --foreground: 210 10% 23%;
     --card: 0 0% 100%;

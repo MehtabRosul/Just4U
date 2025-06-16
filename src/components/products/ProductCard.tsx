@@ -36,7 +36,7 @@ export function ProductCard({ product }: ProductCardProps) {
           <div className="absolute top-2 right-2 z-10">
             <WishlistButton 
               product={product} 
-              className="bg-background/70 hover:bg-background/90" // Adjusted for light theme
+              className="bg-background/70 hover:bg-background/90" 
             />
           </div>
           {product.trending && (
@@ -63,7 +63,7 @@ export function ProductCard({ product }: ProductCardProps) {
           </p>
           <div 
             className={cn(
-              buttonVariants({ variant: 'default', size: 'sm' }), // Changed to default (red)
+              buttonVariants({ variant: 'default', size: 'sm' }), 
               "hover:bg-primary/90 transition-colors w-full sm:w-auto text-xs sm:text-sm py-1.5 sm:py-2 px-3 sm:px-4"
             )}
           >

@@ -1,7 +1,7 @@
 
 "use client"; 
 
-import { useState, useEffect, useMemo } from 'react'; 
+import { useState, useEffect } from 'react'; 
 import type { Product } from '@/lib/types';
 import { CATEGORIES, PRODUCTS } from '@/lib/data';
 import { SectionTitle } from '@/components/shared/SectionTitle';
@@ -13,8 +13,7 @@ import Link from 'next/link';
 export default function HomePage() {
   const [featuredDeals, setFeaturedDeals] = useState<Product[]>([]);
   const [personalizedProducts, setPersonalizedProducts] = useState<Product[]>([]);
-
-  const trendingProducts = useMemo(() => PRODUCTS.filter(p => p.trending).slice(0, 4), []);
+  const [trendingProducts, setTrendingProducts] = useState<Product[]>([]);
   
   useEffect(() => {
     const deals = PRODUCTS.filter(p => !p.trending && p.price < 50) 
@@ -26,6 +25,9 @@ export default function HomePage() {
       .sort(() => 0.5 - Math.random()) 
       .slice(0, 4);
     setPersonalizedProducts(recommended);
+
+    const trending = PRODUCTS.filter(p => p.trending).slice(0, 4);
+    setTrendingProducts(trending);
   }, []);
 
 
