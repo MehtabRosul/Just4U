@@ -129,17 +129,17 @@ const HeroCarousel = () => {
   // Banner fade transition classes
   const bannerAnimationInactiveClasses = "opacity-0";
   const bannerAnimationActiveClasses = "opacity-100";
-  const bannerBaseTransition = "transition-opacity duration-[1500ms] ease-in-out";
+  const bannerBaseTransition = "transition-opacity duration-[2000ms] ease-in-out"; // Slower banner fade
 
   // Text animation classes (pure fade)
   const commonTextInactiveAnimation = "opacity-0";
   const commonTextActiveAnimation = "opacity-100";
   
   // Base transition classes for text elements (sequential fade, slightly different timing)
-  const iconBaseTransition = "transition-opacity duration-[1000ms] ease-out delay-[200ms]";
-  const titleBaseTransition = "transition-opacity duration-[1000ms] ease-out delay-[350ms]";
-  const descriptionBaseTransition = "transition-opacity duration-[1000ms] ease-out delay-[500ms]";
-  const buttonBaseTransition = "transition-opacity duration-[1000ms] ease-out delay-[650ms]";
+  const iconBaseTransition = "transition-opacity duration-[1200ms] ease-out delay-[300ms]"; // Slower text fade, adjusted delay
+  const titleBaseTransition = "transition-opacity duration-[1200ms] ease-out delay-[450ms]"; // Slower text fade, adjusted delay
+  const descriptionBaseTransition = "transition-opacity duration-[1200ms] ease-out delay-[600ms]"; // Slower text fade, adjusted delay
+  const buttonBaseTransition = "transition-opacity duration-[1200ms] ease-out delay-[750ms]"; // Slower text fade, adjusted delay
 
 
   return (
@@ -540,5 +540,7 @@ export default function HomePage()
     
 
 
+
+    
 
     
