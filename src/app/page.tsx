@@ -126,8 +126,8 @@ const HeroCarousel = () => {
     return () => clearInterval(timer); // Cleanup interval on component unmount
   }, []);
 
-  const commonAnimationInactiveClasses = "opacity-0 translate-x-1/4"; // Slide in from right and fade
-  const commonAnimationActiveClasses = "opacity-100 translate-x-0";
+  const commonAnimationInactiveClasses = "opacity-0 scale-90"; // New: fade out and scale down
+  const commonAnimationActiveClasses = "opacity-100 scale-100"; // New: fade in and scale to normal
 
   return (
     <section className="relative min-h-[400px] md:min-h-[500px] w-full mb-8 sm:mb-12 rounded-lg overflow-hidden">
@@ -500,4 +500,5 @@ export default function HomePage()
     
 
     
+
 
