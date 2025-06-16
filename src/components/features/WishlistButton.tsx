@@ -34,7 +34,7 @@ export function WishlistButton({ product, className, size = 'icon', showText = f
       onClick={handleToggleWishlist}
       className={cn(
         "group rounded-full p-2 transition-colors",
-        isInWishlist ? "text-primary hover:bg-red-100 dark:hover:bg-red-900/50" : "text-muted-foreground hover:text-primary hover:bg-red-100 dark:hover:bg-red-900/50",
+        isInWishlist ? "text-primary hover:bg-primary/10 dark:hover:bg-primary/20" : "text-muted-foreground hover:text-primary hover:bg-primary/10 dark:hover:bg-primary/20",
         className
       )}
       aria-label={isInWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
