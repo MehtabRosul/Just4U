@@ -28,4 +28,3 @@ export const FOOTER_LINKS = {
     { name: 'Order Tracking', href: 'https://just4ugifts.com/track' } // Example external link
   ]
 };
-
