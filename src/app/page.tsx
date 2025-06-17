@@ -257,7 +257,7 @@ const SmartFinderPanel = () => {
   };
 
   return (
-    <section className="bg-neutral-900 py-6 sm:py-8 my-8 sm:my-12 rounded-lg shadow-xl">
+    <section className="bg-secondary py-6 sm:py-8 my-8 sm:my-12 rounded-lg shadow-xl">
       <div className="container mx-auto px-4">
         <SectionTitle className="text-white mb-6 sm:mb-8 text-2xl sm:text-3xl">Find The Perfect Gift</SectionTitle>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 items-end">
@@ -670,5 +670,6 @@ export default function HomePage()
     
 
     
+
 
 
