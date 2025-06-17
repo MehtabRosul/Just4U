@@ -8,7 +8,7 @@ import { SectionTitle } from '@/components/shared/SectionTitle';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, ChevronDown, Sparkles as SparklesIcon, Quote, Star } from 'lucide-react';
+import { ArrowRight, ChevronDown, Sparkles as SparklesIcon, Quote, Star, Gift } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
@@ -229,7 +229,7 @@ const SmartFinderPanel = () => {
   const [selectedOccasion, setSelectedOccasion] = useState<string>('all');
   const [selectedGiftType, setSelectedGiftType] = useState<string>('all');
   const [selectedRecipient, setSelectedRecipient] = useState<string>('all');
-  const [selectedPriceRange, setSelectedPriceRange] = useState<string>('all');
+  const [selectedPriceRangeKey, setSelectedPriceRangeKey] = useState<string>('all');
 
   const handleFindGifts = () => {
     const queryParams = new URLSearchParams();
@@ -243,14 +243,13 @@ const SmartFinderPanel = () => {
       queryParams.append('recipient', selectedRecipient);
     }
 
-    if (selectedPriceRange && selectedPriceRange !== 'all') {
-      const parts = selectedPriceRange.split('-');
+    if (selectedPriceRangeKey && selectedPriceRangeKey !== 'all') {
+      const parts = selectedPriceRangeKey.split('-');
       const minPrice = parseInt(parts[0], 10);
       const maxPrice = parts[1] === 'Infinity' ? Number.MAX_SAFE_INTEGER : parseInt(parts[1], 10);
       queryParams.append('priceMin', minPrice.toString());
       queryParams.append('priceMax', maxPrice.toString());
     } else {
-        // Default to a very wide range if "All Prices" is selected or no specific range
         queryParams.append('priceMin', '0');
         queryParams.append('priceMax', Number.MAX_SAFE_INTEGER.toString());
     }
@@ -304,7 +303,7 @@ const SmartFinderPanel = () => {
           
           <div className="space-y-1.5">
             <Label htmlFor="smart-price-range" className="text-sm font-medium text-neutral-300">Price Range</Label>
-            <Select value={selectedPriceRange} onValueChange={setSelectedPriceRange}>
+            <Select value={selectedPriceRangeKey} onValueChange={setSelectedPriceRangeKey}>
               <SelectTrigger id="smart-price-range" className="w-full bg-black text-white border-border placeholder:text-neutral-400 focus:ring-primary h-11 text-sm">
                 <SelectValue placeholder="Select Price Range" />
               </SelectTrigger>
@@ -501,18 +500,46 @@ const OccasionSpotlight = () => (
   <section className="my-8 sm:my-12">
     <SectionTitle className="text-white">Shop by Top Occasions</SectionTitle>
     <div className="relative">
-      <div className="flex space-x-3 sm:space-x-4 overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-muted scrollbar-track-transparent">
+      <div className="flex space-x-4 overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-muted scrollbar-track-transparent">
         {OCCASIONS_LIST.slice(0, 10).map(occasion => {
           const OccIcon = occasion.Icon;
           return (
-          <Link key={occasion.id} href={`/products?occasion=${occasion.slug}`} className="flex-shrink-0 w-24 sm:w-28">
-            <div className="flex flex-col items-center p-2 sm:p-3 rounded-lg bg-neutral-800 group hover:bg-neutral-700 transition-colors">
-              {OccIcon && <div className="bg-primary p-2 sm:p-2.5 rounded-full mb-1 sm:mb-1.5"><OccIcon className="h-5 w-5 sm:h-6 sm:w-6 text-primary-foreground"/></div>}
-              {!OccIcon && <div className="bg-primary p-2 sm:p-2.5 rounded-full mb-1 sm:mb-1.5 w-9 h-9 sm:w-11 sm:w-11" data-ai-hint={occasion.dataAiHint || "occasion icon"}></div>}
-              <span className="text-xs sm:text-sm text-center text-white group-hover:text-primary transition-colors">{occasion.name}</span>
-            </div>
-          </Link>
-        )})}
+            <Link 
+              key={occasion.id} 
+              href={`/products?occasion=${occasion.slug}`} 
+              className="group flex-shrink-0 w-32 h-36"
+            >
+              <div className={cn(
+                "flex flex-col items-center justify-center p-4 rounded-lg bg-neutral-800 text-center h-full",
+                "transition-all duration-300 ease-in-out",
+                "group-hover:bg-neutral-700 group-hover:shadow-xl group-hover:scale-105"
+              )}>
+                {OccIcon ? (
+                  <OccIcon className={cn(
+                    "h-10 w-10 text-primary mb-3",
+                    "transition-colors duration-300 group-hover:text-red-400" 
+                  )} />
+                ) : (
+                  <div 
+                    className={cn(
+                      "h-10 w-10 rounded-md bg-muted flex items-center justify-center mb-3",
+                      "transition-colors duration-300 group-hover:bg-primary/20"
+                    )}
+                    data-ai-hint={occasion.dataAiHint || "occasion gift icon"}
+                  >
+                    <Gift className="h-6 w-6 text-muted-foreground group-hover:text-primary" />
+                  </div>
+                )}
+                <span className={cn(
+                  "text-sm font-medium text-neutral-200 line-clamp-2",
+                  "transition-colors duration-300 group-hover:text-white"
+                )}>
+                  {occasion.name}
+                </span>
+              </div>
+            </Link>
+          );
+        })}
       </div>
     </div>
   </section>
@@ -608,4 +635,3 @@ export default function HomePage()
     
 
     
-
