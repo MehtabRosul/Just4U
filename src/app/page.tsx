@@ -8,7 +8,7 @@ import { SectionTitle } from '@/components/shared/SectionTitle';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, ChevronDown, Sparkles as SparklesIcon, Quote, Star, Gift, CalendarDays } from 'lucide-react';
+import { ArrowRight, ChevronDown, Sparkles as SparklesIcon, Quote, Star, Gift, CalendarDays, PartyPopper, Heart, Briefcase, ToyBrick } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
@@ -330,11 +330,11 @@ const SmartFinderPanel = () => {
 const TopCurations = () => {
   const curations = [
     { name: 'Occasion', Icon: CalendarDays, slug:'all', type: 'occasion' },
-    { name: 'Birthday', Icon: OCCASIONS_LIST.find(o=>o.slug==='birthday')?.Icon, slug:'birthday', type: 'occasion' },
-    { name: 'Anniversary', Icon: OCCASIONS_LIST.find(o=>o.slug==='anniversary')?.Icon, slug:'anniversary', type: 'occasion' },
-    { name: 'Corporate', Icon: GIFT_TYPES_LIST.find(gt=>gt.slug==='premium-gifts')?.Icon, slug:'premium-gifts', type: 'giftType' },
-    { name: 'Personalized', Icon: GIFT_TYPES_LIST.find(gt=>gt.slug==='photo-gifts')?.Icon, slug:'photo-gifts', type: 'giftType' },
-    { name: 'Miniature', Icon: GIFT_TYPES_LIST.find(gt=>gt.slug==='miniature')?.Icon, slug:'miniature', type: 'giftType' },
+    { name: 'Birthday', Icon: PartyPopper, slug:'birthday', type: 'occasion' },
+    { name: 'Anniversary', Icon: Heart, slug:'anniversary', type: 'occasion' },
+    { name: 'Corporate', Icon: Briefcase, slug:'premium-gifts', type: 'giftType' },
+    { name: 'Personalized', Icon: SparklesIcon, slug:'photo-gifts', type: 'giftType' },
+    { name: 'Miniature', Icon: ToyBrick, slug:'miniature', type: 'giftType' },
   ];
   return (
     <section className="my-8 sm:my-12">
@@ -670,6 +670,7 @@ export default function HomePage()
     
 
     
+
 
 
 
