@@ -94,15 +94,20 @@ export default {
             height: '0',
           },
         },
-        'marquee': { /* For text banner on homepage */
+        'marquee-text': { 
           '0%': { transform: 'translateX(100%)' },
           '100%': { transform: 'translateX(-100%)' },
         },
+        'marquee-horizontal': {
+          '0%': { transform: 'translateX(0%)' },
+          '100%': { transform: 'translateX(-100%)' },
+        }
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
-        'marquee': 'marquee 25s linear infinite',
+        'marquee-text': 'marquee-text 25s linear infinite',
+        'marquee-horizontal': 'marquee-horizontal 40s linear infinite', // Adjust duration as needed for speed
       },
       height: { // For TopUtilityBar & PrimaryHeader
         '6': '1.5rem', // 24px for TopUtilityBar
@@ -115,3 +120,4 @@ export default {
     require('tailwind-scrollbar')({ nocompatible: true }), // For custom scrollbars if needed
   ],
 } satisfies Config;
+

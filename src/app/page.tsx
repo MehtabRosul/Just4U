@@ -495,55 +495,70 @@ const TestimonialsSection = () => {
   );
 };
 
+const OccasionSpotlight = () => {
+  // Ensure enough items for a smooth marquee, duplicate if necessary.
+  // We'll show up to 10 unique occasions, duplicated for the marquee effect.
+  const occasionsToDisplay = OCCASIONS_LIST.slice(0, 10);
+  const marqueeItems = [...occasionsToDisplay, ...occasionsToDisplay];
 
-const OccasionSpotlight = () => (
-  <section className="my-8 sm:my-12">
-    <SectionTitle className="text-white">Shop by Top Occasions</SectionTitle>
-    <div className="relative">
-      <div className="flex space-x-4 overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-muted scrollbar-track-transparent">
-        {OCCASIONS_LIST.slice(0, 10).map(occasion => {
-          const OccIcon = occasion.Icon;
-          return (
-            <Link 
-              key={occasion.id} 
-              href={`/products?occasion=${occasion.slug}`} 
-              className="group flex-shrink-0 w-32 h-36"
-            >
-              <div className={cn(
-                "flex flex-col items-center justify-center p-4 rounded-lg bg-neutral-800 text-center h-full",
-                "transition-all duration-300 ease-in-out",
-                "group-hover:bg-neutral-700 group-hover:shadow-xl group-hover:scale-105"
-              )}>
-                {OccIcon ? (
-                  <OccIcon className={cn(
-                    "h-10 w-10 text-primary mb-3",
-                    "transition-colors duration-300 group-hover:text-red-400" 
-                  )} />
-                ) : (
-                  <div 
+  return (
+    <section className="my-8 sm:my-12">
+      <SectionTitle className="text-white">Shop by Top Occasions</SectionTitle>
+      <div className="relative overflow-hidden group/marquee">
+        <div className="flex animate-marquee-horizontal group-hover/marquee:[animation-play-state:paused] whitespace-nowrap py-2">
+          {marqueeItems.map((occasion, index) => {
+            const OccIcon = occasion.Icon;
+            const uniqueKey = `${occasion.id}-${index}`; // Unique key for duplicated items
+            return (
+              <Link
+                key={uniqueKey}
+                href={`/products?occasion=${occasion.slug}`}
+                className="group/item flex-shrink-0 w-36 h-40 mx-2" // Card dimensions and margin
+              >
+                <div
+                  className={cn(
+                    "flex flex-col items-center justify-center p-4 rounded-lg bg-neutral-800 text-center h-full",
+                    "transition-all duration-300 ease-in-out",
+                    "border-2 border-transparent", // Start with transparent border
+                    "group-hover/item:bg-primary/80 group-hover/item:shadow-xl group-hover/item:shadow-primary/30 group-hover/item:scale-105 group-hover/item:border-primary"
+                  )}
+                >
+                  {OccIcon ? (
+                    <OccIcon
+                      className={cn(
+                        "h-12 w-12 text-primary mb-3", // Increased icon size
+                        "transition-colors duration-300 group-hover/item:text-primary-foreground"
+                      )}
+                    />
+                  ) : (
+                    <div
+                      className={cn(
+                        "h-12 w-12 rounded-md bg-muted flex items-center justify-center mb-3", // Consistent placeholder size
+                        "transition-colors duration-300 group-hover/item:bg-primary/20 group-hover/item:text-primary-foreground"
+                      )}
+                      data-ai-hint={occasion.dataAiHint || "occasion gift icon"}
+                    >
+                      <Gift className="h-7 w-7 text-muted-foreground group-hover/item:text-primary-foreground" />
+                    </div>
+                  )}
+                  <span
                     className={cn(
-                      "h-10 w-10 rounded-md bg-muted flex items-center justify-center mb-3",
-                      "transition-colors duration-300 group-hover:bg-primary/20"
+                      "text-sm font-medium text-neutral-200 line-clamp-2", // Ensure text doesn't overflow card
+                      "transition-colors duration-300 group-hover/item:text-primary-foreground"
                     )}
-                    data-ai-hint={occasion.dataAiHint || "occasion gift icon"}
                   >
-                    <Gift className="h-6 w-6 text-muted-foreground group-hover:text-primary" />
-                  </div>
-                )}
-                <span className={cn(
-                  "text-sm font-medium text-neutral-200 line-clamp-2",
-                  "transition-colors duration-300 group-hover:text-white"
-                )}>
-                  {occasion.name}
-                </span>
-              </div>
-            </Link>
-          );
-        })}
+                    {occasion.name}
+                  </span>
+                </div>
+              </Link>
+            );
+          })}
+        </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
+
 
 const GiftTypeHighlight = () => {
     const featuredTypes = ['caricature', '3d-crystals', 'photo-frames'];
