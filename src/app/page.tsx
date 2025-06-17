@@ -29,7 +29,7 @@ const carouselBannersData: CarouselBanner[] = [
     id: 1,
     title: "Personalized Magic",
     description: "Unique gifts that tell their story.",
-    imageUrl: "https://placehold.co/1200x600.jpg",
+    imageUrl: "https://placehold.co/1200x600.png",
     dataAiHint: "personalized gift assortment",
     gradientClasses: "bg-gradient-to-br from-red-600 via-pink-600 to-fuchsia-700",
   },
@@ -37,7 +37,7 @@ const carouselBannersData: CarouselBanner[] = [
     id: 2,
     title: "Celebrate Every Moment",
     description: "Find the perfect gift for any occasion.",
-    imageUrl: "https://placehold.co/1200x600.jpg",
+    imageUrl: "https://placehold.co/1200x600.png",
     dataAiHint: "birthday celebration gifts",
     gradientClasses: "bg-gradient-to-tr from-rose-500 via-red-500 to-orange-600",
   },
@@ -45,7 +45,7 @@ const carouselBannersData: CarouselBanner[] = [
     id: 3,
     title: "3D Wonders",
     description: "Lifelike miniatures and stunning crystal art.",
-    imageUrl: "https://placehold.co/1200x600.jpg",
+    imageUrl: "https://placehold.co/1200x600.png",
     dataAiHint: "3d crystal miniature",
     gradientClasses: "bg-gradient-to-b from-neutral-800 via-red-900 to-black",
   },
@@ -53,7 +53,7 @@ const carouselBannersData: CarouselBanner[] = [
     id: 4,
     title: "Frame Your Memories",
     description: "Elegant photo frames for timeless keepsakes.",
-    imageUrl: "https://placehold.co/1200x600.jpg",
+    imageUrl: "https://placehold.co/1200x600.png",
     dataAiHint: "photo frame collection",
     gradientClasses: "bg-gradient-to-bl from-red-700 via-rose-800 to-neutral-900",
   },
@@ -61,7 +61,7 @@ const carouselBannersData: CarouselBanner[] = [
     id: 5,
     title: "Corporate Gifting",
     description: "Impress clients with premium, branded gifts.",
-    imageUrl: "https://placehold.co/1200x600.jpg",
+    imageUrl: "https://placehold.co/1200x600.png",
     dataAiHint: "corporate gift basket",
     gradientClasses: "bg-gradient-to-tl from-neutral-900 via-gray-800 to-red-900",
   },
@@ -69,7 +69,7 @@ const carouselBannersData: CarouselBanner[] = [
     id: 6,
     title: "Just For You",
     description: "Handpicked selections for every recipient.",
-    imageUrl: "https://placehold.co/1200x600.jpg",
+    imageUrl: "https://placehold.co/1200x600.png",
     dataAiHint: "gift for her",
     gradientClasses: "bg-gradient-to-r from-pink-700 via-red-600 to-rose-700",
   },
@@ -77,7 +77,7 @@ const carouselBannersData: CarouselBanner[] = [
     id: 7,
     title: "Daily Deals",
     description: "Unbeatable prices on popular gifts, daily.",
-    imageUrl: "https://placehold.co/1200x600.jpg",
+    imageUrl: "https://placehold.co/1200x600.png",
     dataAiHint: "gift sale discount",
     gradientClasses: "bg-gradient-to-l from-orange-600 via-red-500 to-pink-500",
   },
@@ -85,7 +85,7 @@ const carouselBannersData: CarouselBanner[] = [
     id: 8,
     title: "New Arrivals",
     description: "Fresh designs and innovative gift ideas.",
-    imageUrl: "https://placehold.co/1200x600.jpg",
+    imageUrl: "https://placehold.co/1200x600.png",
     dataAiHint: "new product launch",
     gradientClasses: "bg-gradient-to-br from-fuchsia-700 via-purple-600 to-red-500",
   },
@@ -93,7 +93,7 @@ const carouselBannersData: CarouselBanner[] = [
     id: 9,
     title: "Artistic Touch",
     description: "Transform photos into unique art pieces.",
-    imageUrl: "https://placehold.co/1200x600.jpg",
+    imageUrl: "https://placehold.co/1200x600.png",
     dataAiHint: "photo to art canvas",
     gradientClasses: "bg-gradient-to-tr from-red-800 via-neutral-900 to-rose-700",
   },
@@ -101,7 +101,7 @@ const carouselBannersData: CarouselBanner[] = [
     id: 10,
     title: "Miniature You!",
     description: "Get a custom 3D miniature of yourself or loved ones.",
-    imageUrl: "https://placehold.co/1200x600.jpg",
+    imageUrl: "https://placehold.co/1200x600.png",
     dataAiHint: "3d selfie miniature",
     gradientClasses: "bg-gradient-to-bl from-rose-600 via-red-700 to-pink-800",
   },
@@ -349,25 +349,24 @@ const TopCurations = () => {
             >
               <div className={cn(
                 "bg-neutral-800 p-4 sm:p-6 rounded-xl aspect-square flex flex-col items-center justify-center text-center overflow-hidden",
-                "[transform-style:preserve-3d]", 
-                "transition-all duration-300 ease-out transform",
-                "group-hover:bg-primary group-hover:shadow-xl group-hover:shadow-primary/30 group-hover:[transform:perspective(800px)_rotateY(8deg)_scale(1.03)]"
+                "transition-all duration-300 ease-out", // Base transition for all properties
+                "group-hover:bg-primary group-hover:shadow-xl group-hover:shadow-primary/40 group-hover:scale-105" // Card hover: bg, shadow, scale
               )}>
                 <div className={cn(
                   "bg-neutral-700 p-3 sm:p-4 rounded-full mb-3 sm:mb-4",
-                  "transition-all duration-300 ease-out transform",
-                  "group-hover:bg-white/10 group-hover:[transform:translateZ(25px)_scale(1.12)]"
+                  "transition-all duration-300 ease-out", // Transition for wrapper
+                  "group-hover:bg-white/20 group-hover:scale-110" // Icon wrapper hover: bg, scale
                 )}>
                   {ItemIcon && <ItemIcon className={cn(
                     "h-7 w-7 sm:h-8 w-8 text-primary",
-                    "transition-all duration-300 ease-out transform",
-                    "group-hover:text-white group-hover:[transform:translateZ(35px)_rotate(12deg)_scale(1.05)]"
+                    "transition-all duration-500 ease-out", // Longer duration for icon spin
+                    "group-hover:text-white group-hover:rotate-[360deg]" // Icon hover: color, spin
                    )} />}
                 </div>
                 <h3 className={cn(
-                  "font-semibold text-neutral-200 text-sm sm:text-base leading-tight",
-                  "transition-all duration-300 ease-out transform",
-                  "group-hover:text-primary-foreground group-hover:font-bold group-hover:tracking-wide group-hover:[transform:translateZ(15px)]"
+                  "font-normal text-neutral-200 text-sm sm:text-base leading-tight", // Base text style
+                  "transition-colors duration-300 ease-out", // Transition for text color and font-weight
+                  "group-hover:text-primary-foreground group-hover:font-semibold" // Text hover: color, font-weight
                   )}>
                   {item.name}
                 </h3>
@@ -594,7 +593,7 @@ const GiftTypeHighlight = () => {
                 <Card key={gt.id} className="bg-card text-card-foreground group">
                      <Link href={`/products?category=${gt.slug}`} className="block">
                         {gt.trending && <div className="absolute top-2 left-2 bg-primary text-primary-foreground text-xs px-2 py-0.5 rounded-full z-10">Trending</div>}
-                        {GtIcon ? <GtIcon className="w-full h-32 sm:h-40 object-contain p-4 text-primary" /> : <Image src="https://placehold.co/300x200.jpg" alt={gt.name} width={300} height={200} className="w-full h-32 sm:h-40 object-cover rounded-t-lg" data-ai-hint={gt.dataAiHint || "gift type"}/>}
+                        {GtIcon ? <GtIcon className="w-full h-32 sm:h-40 object-contain p-4 text-primary" /> : <Image src="https://placehold.co/300x200.png" alt={gt.name} width={300} height={200} className="w-full h-32 sm:h-40 object-cover rounded-t-lg" data-ai-hint={gt.dataAiHint || "gift type"}/>}
                         <CardContent className="p-3 sm:p-4 bg-white">
                             <h3 className="text-base sm:text-lg font-semibold text-black group-hover:text-primary">{gt.name}</h3>
                             <p className="text-primary text-xs sm:text-sm font-medium mt-1 group-hover:underline">Explore <ArrowRight className="inline h-3 w-3"/></p>
@@ -671,6 +670,7 @@ export default function HomePage()
     
 
     
+
 
 
 
