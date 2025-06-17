@@ -349,24 +349,25 @@ const TopCurations = () => {
             >
               <div className={cn(
                 "bg-neutral-800 p-4 sm:p-6 rounded-xl aspect-square flex flex-col items-center justify-center text-center overflow-hidden",
-                "transition-all duration-300 ease-out",
-                "group-hover:bg-primary group-hover:scale-105 group-hover:shadow-xl group-hover:shadow-primary/30"
+                "[transform-style:preserve-3d]", 
+                "transition-all duration-300 ease-out transform",
+                "group-hover:bg-primary group-hover:shadow-xl group-hover:shadow-primary/30 group-hover:[transform:perspective(800px)_rotateY(8deg)_scale(1.03)]"
               )}>
                 <div className={cn(
                   "bg-neutral-700 p-3 sm:p-4 rounded-full mb-3 sm:mb-4",
-                  "transition-all duration-300 ease-out",
-                  "group-hover:bg-white/10 group-hover:scale-110"
+                  "transition-all duration-300 ease-out transform",
+                  "group-hover:bg-white/10 group-hover:[transform:translateZ(25px)_scale(1.12)]"
                 )}>
                   {ItemIcon && <ItemIcon className={cn(
                     "h-7 w-7 sm:h-8 w-8 text-primary",
-                    "transition-all duration-300 ease-out",
-                    "group-hover:text-white group-hover:rotate-12"
+                    "transition-all duration-300 ease-out transform",
+                    "group-hover:text-white group-hover:[transform:translateZ(35px)_rotate(12deg)_scale(1.05)]"
                    )} />}
                 </div>
                 <h3 className={cn(
                   "font-semibold text-neutral-200 text-sm sm:text-base leading-tight",
-                  "transition-all duration-300 ease-out",
-                  "group-hover:text-primary-foreground group-hover:font-bold group-hover:tracking-wide"
+                  "transition-all duration-300 ease-out transform",
+                  "group-hover:text-primary-foreground group-hover:font-bold group-hover:tracking-wide group-hover:[transform:translateZ(15px)]"
                   )}>
                   {item.name}
                 </h3>
@@ -670,6 +671,7 @@ export default function HomePage()
     
 
     
+
 
 
 
