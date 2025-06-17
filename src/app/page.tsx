@@ -8,7 +8,7 @@ import { SectionTitle } from '@/components/shared/SectionTitle';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, ChevronDown, Sparkles as SparklesIcon, Quote, Star, Gift } from 'lucide-react';
+import { ArrowRight, ChevronDown, Sparkles as SparklesIcon, Quote, Star, Gift, CalendarDays } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
@@ -329,6 +329,7 @@ const SmartFinderPanel = () => {
 
 const TopCurations = () => {
   const curations = [
+    { name: 'Occasion', Icon: CalendarDays, slug:'all', type: 'occasion' },
     { name: 'Birthday', Icon: OCCASIONS_LIST.find(o=>o.slug==='birthday')?.Icon, slug:'birthday', type: 'occasion' },
     { name: 'Anniversary', Icon: OCCASIONS_LIST.find(o=>o.slug==='anniversary')?.Icon, slug:'anniversary', type: 'occasion' },
     { name: 'Corporate', Icon: GIFT_TYPES_LIST.find(gt=>gt.slug==='premium-gifts')?.Icon, slug:'premium-gifts', type: 'giftType' },
@@ -338,7 +339,7 @@ const TopCurations = () => {
   return (
     <section className="my-8 sm:my-12">
       <SectionTitle className="text-white">Top Curations</SectionTitle>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3 sm:gap-4">
         {curations.map(item => {
           const ItemIcon = item.Icon;
           const link = item.type === 'occasion' ? `/products?occasion=${item.slug}` : `/products?category=${item.slug}`;
@@ -348,7 +349,6 @@ const TopCurations = () => {
                 <CardContent className="flex flex-col items-center justify-center space-y-2">
                   {ItemIcon && <div className="bg-primary p-2 sm:p-3 rounded-full mb-1 sm:mb-2"><ItemIcon className="h-6 w-6 sm:h-7 sm:w-7 text-primary-foreground" /></div>}
                   <h3 className="text-xs sm:text-sm font-semibold text-white group-hover:text-primary transition-colors">{item.name}</h3>
-                  <p className="text-primary text-xs font-medium group-hover:underline">Explore Gifts</p>
                 </CardContent>
               </Card>
             </Link>
@@ -650,3 +650,4 @@ export default function HomePage()
     
 
     
+
