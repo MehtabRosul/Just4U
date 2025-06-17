@@ -344,13 +344,33 @@ const TopCurations = () => {
           const ItemIcon = item.Icon;
           const link = item.type === 'occasion' ? `/products?occasion=${item.slug}` : `/products?category=${item.slug}`;
           return (
-            <Link key={item.name} href={link} passHref>
-              <Card className="bg-neutral-800 text-center p-3 sm:p-4 rounded-lg hover:shadow-lg transition-shadow group">
-                <CardContent className="flex flex-col items-center justify-center space-y-2">
-                  {ItemIcon && <div className="bg-primary p-2 sm:p-3 rounded-full mb-1 sm:mb-2"><ItemIcon className="h-6 w-6 sm:h-7 sm:w-7 text-primary-foreground" /></div>}
-                  <h3 className="text-xs sm:text-sm font-semibold text-white group-hover:text-primary transition-colors">{item.name}</h3>
-                </CardContent>
-              </Card>
+            <Link key={item.name} href={link} passHref 
+                  className="group block outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-xl"
+            >
+              <div className={cn(
+                "bg-neutral-800 p-4 sm:p-6 rounded-xl aspect-square flex flex-col items-center justify-center text-center overflow-hidden",
+                "transition-all duration-300 ease-out",
+                "group-hover:bg-primary group-hover:scale-105 group-hover:shadow-xl group-hover:shadow-primary/30"
+              )}>
+                <div className={cn(
+                  "bg-neutral-700 p-3 sm:p-4 rounded-full mb-3 sm:mb-4",
+                  "transition-all duration-300 ease-out",
+                  "group-hover:bg-white/10 group-hover:scale-110"
+                )}>
+                  {ItemIcon && <ItemIcon className={cn(
+                    "h-7 w-7 sm:h-8 w-8 text-primary",
+                    "transition-all duration-300 ease-out",
+                    "group-hover:text-white group-hover:rotate-12"
+                   )} />}
+                </div>
+                <h3 className={cn(
+                  "font-semibold text-neutral-200 text-sm sm:text-base leading-tight",
+                  "transition-all duration-300 ease-out",
+                  "group-hover:text-primary-foreground group-hover:font-bold group-hover:tracking-wide"
+                  )}>
+                  {item.name}
+                </h3>
+              </div>
             </Link>
           )
         })}
@@ -650,4 +670,5 @@ export default function HomePage()
     
 
     
+
 
