@@ -133,7 +133,7 @@ export default function Footer() {
           <p>
             Copyright &copy; {new Date().getFullYear()} by <span className="text-primary">Just4U</span>. All Rights Reserved
             <span className="mx-1 sm:mx-2">||</span>
-            Design & Developed by <Link href="#" className="text-primary hover:underline">Mehtab Rosul</Link>
+            Design & Developed by <Link href="https://www.rosulmehtab.tech/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Mehtab Rosul</Link>
           </p>
         </div>
       </div>
