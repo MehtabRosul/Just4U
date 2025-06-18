@@ -36,10 +36,10 @@ export default function AccountPage() {
               </div>
             </CardHeader>
             <CardContent className="space-y-3">
-              <Button variant="default" size="sm" className="w-full bg-primary text-primary-foreground hover:bg-primary/90">
+              <Button variant="default" size="sm" className="w-full bg-primary text-primary-foreground hover:bg-primary/80 hover:shadow-lg hover:shadow-primary/30">
                 <LogIn className="mr-2 h-4 w-4" /> Sign In
               </Button>
-              <Button variant="outline" size="sm" className="w-full hover:bg-accent/10 hover:text-accent-foreground border-input">
+              <Button variant="outline" size="sm" className="w-full text-primary border-primary hover:bg-primary hover:text-primary-foreground hover:shadow-lg hover:shadow-primary/30">
                  <UserPlus className="mr-2 h-4 w-4" /> Register
               </Button>
             </CardContent>
