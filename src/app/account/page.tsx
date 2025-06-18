@@ -5,15 +5,8 @@ import { SectionTitle } from '@/components/shared/SectionTitle';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import { User, ShoppingBag, Heart, Gift, MapPin, Bell, LogOut, Edit } from 'lucide-react';
+import { User, ShoppingBag, Heart, Gift, MapPin, Bell, LogIn, UserPlus } from 'lucide-react';
 import Link from 'next/link';
-
-// Placeholder user data - in a real app, this would come from auth context or API
-const user = {
-  name: 'Guest User',
-  email: 'guest@example.com',
-  memberSince: new Date().toLocaleDateString(),
-};
 
 const accountSections = [
   { title: 'My Orders', description: 'View your order history and track shipments.', icon: ShoppingBag, href: '/account/orders' },
@@ -38,20 +31,16 @@ export default function AccountPage() {
                 <User className="h-8 w-8 text-primary" />
               </div>
               <div>
-                <CardTitle className="text-xl text-card-foreground">{user.name}</CardTitle>
-                <CardDescription className="text-sm">{user.email}</CardDescription>
+                <CardTitle className="text-xl text-card-foreground">Welcome, Guest</CardTitle>
+                <CardDescription className="text-sm">Sign in or register to personalize your experience.</CardDescription>
               </div>
             </CardHeader>
             <CardContent className="space-y-3">
-              <div className="text-sm text-muted-foreground">
-                Member since: {user.memberSince}
-              </div>
-              <Button variant="outline" size="sm" className="w-full hover:bg-primary/10 hover:text-primary">
-                <Edit className="mr-2 h-4 w-4" /> Edit Profile
+              <Button variant="default" size="sm" className="w-full bg-primary text-primary-foreground hover:bg-primary/90">
+                <LogIn className="mr-2 h-4 w-4" /> Sign In
               </Button>
-              <Separator />
-              <Button variant="destructive" size="sm" className="w-full">
-                 <LogOut className="mr-2 h-4 w-4" /> Sign Out
+              <Button variant="outline" size="sm" className="w-full hover:bg-accent/10 hover:text-accent-foreground border-input">
+                 <UserPlus className="mr-2 h-4 w-4" /> Register
               </Button>
             </CardContent>
           </Card>
@@ -70,12 +59,12 @@ export default function AccountPage() {
                             const Icon = section.icon;
                             return (
                                 <Link key={section.title} href={section.href} className="block group">
-                                    <div className="p-4 border rounded-lg hover:bg-accent hover:border-primary transition-all duration-200 h-full flex flex-col">
+                                    <div className="p-4 border rounded-lg bg-card hover:bg-primary/10 hover:border-primary/40 hover:shadow-lg transition-all duration-200 h-full flex flex-col">
                                         <div className="flex items-center mb-2">
                                             <Icon className="h-6 w-6 text-primary mr-3 transition-transform group-hover:scale-110" />
                                             <h3 className="text-md font-semibold text-card-foreground group-hover:text-primary">{section.title}</h3>
                                         </div>
-                                        <p className="text-xs text-muted-foreground flex-grow">{section.description}</p>
+                                        <p className="text-xs text-muted-foreground group-hover:text-foreground/90 flex-grow">{section.description}</p>
                                     </div>
                                 </Link>
                             );
