@@ -8,7 +8,7 @@ import { SectionTitle } from '@/components/shared/SectionTitle';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, ChevronDown, Sparkles as SparklesIcon, Quote, Star, Gift, CalendarDays, PartyPopper, Heart, Briefcase, ToyBrick } from 'lucide-react';
+import { ArrowRight, ChevronDown, Sparkles as SparklesIcon, Quote, Star, Gift, CalendarDays, PartyPopper, Heart, Briefcase, ToyBrick, Utensils, Gem, Camera, Lamp } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
@@ -349,24 +349,24 @@ const TopCurations = () => {
             >
               <div className={cn(
                 "bg-neutral-800 p-4 sm:p-6 rounded-xl aspect-square flex flex-col items-center justify-center text-center overflow-hidden",
-                "transition-all duration-300 ease-out", // Base transition for all properties
-                "group-hover:bg-primary group-hover:shadow-xl group-hover:shadow-primary/40 group-hover:scale-105" // Card hover: bg, shadow, scale
+                "transition-all duration-300 ease-out", 
+                "group-hover:bg-primary group-hover:shadow-xl group-hover:shadow-primary/40 group-hover:scale-105" 
               )}>
                 <div className={cn(
                   "bg-neutral-700 p-3 sm:p-4 rounded-full mb-3 sm:mb-4",
-                  "transition-all duration-300 ease-out", // Transition for wrapper
-                  "group-hover:bg-white/20 group-hover:scale-110" // Icon wrapper hover: bg, scale
+                  "transition-all duration-300 ease-out", 
+                  "group-hover:bg-white/20 group-hover:scale-110" 
                 )}>
                   {ItemIcon && <ItemIcon className={cn(
                     "h-7 w-7 sm:h-8 w-8 text-primary",
-                    "transition-all duration-500 ease-out", // Longer duration for icon spin
-                    "group-hover:text-white group-hover:rotate-[360deg]" // Icon hover: color, spin
+                    "transition-all duration-500 ease-out", 
+                    "group-hover:text-white group-hover:rotate-[360deg]" 
                    )} />}
                 </div>
                 <h3 className={cn(
-                  "font-normal text-neutral-200 text-sm sm:text-base leading-tight", // Base text style
-                  "transition-colors duration-300 ease-out", // Transition for text color and font-weight
-                  "group-hover:text-primary-foreground group-hover:font-semibold" // Text hover: color, font-weight
+                  "font-semibold text-neutral-200 text-sm sm:text-base leading-tight", 
+                  "transition-colors duration-300 ease-out", 
+                  "group-hover:text-primary-foreground group-hover:font-bold" 
                   )}>
                   {item.name}
                 </h3>
@@ -581,25 +581,43 @@ const OccasionSpotlight = () => {
 
 
 const GiftTypeHighlight = () => {
-    const featuredTypes = ['caricature', '3d-crystals', 'photo-frames'];
+    const featuredTypes = ['caricature', '3d-crystals', 'photo-frames', 'miniature', 'custom-mugs', '3d-lamps'];
     const productsToShow = GIFT_TYPES_LIST.filter(gt => featuredTypes.includes(gt.slug));
     return (
     <section className="my-8 sm:my-12">
         <SectionTitle className="text-white">Featured Gift Types</SectionTitle>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {productsToShow.map(gt => {
                 const GtIcon = gt.Icon;
                 return (
-                <Card key={gt.id} className="bg-card text-card-foreground group">
-                     <Link href={`/products?category=${gt.slug}`} className="block">
-                        {gt.trending && <div className="absolute top-2 left-2 bg-primary text-primary-foreground text-xs px-2 py-0.5 rounded-full z-10">Trending</div>}
-                        {GtIcon ? <GtIcon className="w-full h-32 sm:h-40 object-contain p-4 text-primary" /> : <Image src="https://placehold.co/300x200.png" alt={gt.name} width={300} height={200} className="w-full h-32 sm:h-40 object-cover rounded-t-lg" data-ai-hint={gt.dataAiHint || "gift type"}/>}
-                        <CardContent className="p-3 sm:p-4 bg-white">
-                            <h3 className="text-base sm:text-lg font-semibold text-black group-hover:text-primary">{gt.name}</h3>
-                            <p className="text-primary text-xs sm:text-sm font-medium mt-1 group-hover:underline">Explore <ArrowRight className="inline h-3 w-3"/></p>
+                  <Link key={gt.id} href={`/products?category=${gt.slug}`} className="block group">
+                    <Card className="overflow-hidden transition-all duration-300 ease-in-out hover:shadow-xl hover:border-primary/50 bg-card text-card-foreground">
+                        <div className="relative w-full h-40 sm:h-48 bg-muted/30 group-hover:bg-muted/50 transition-colors">
+                            {GtIcon ? (
+                                <GtIcon className="absolute inset-0 m-auto h-20 w-20 text-primary transition-transform duration-300 group-hover:scale-110" />
+                            ) : (
+                                <Image 
+                                    src="https://placehold.co/400x300.png" 
+                                    alt={gt.name} 
+                                    width={400} 
+                                    height={300} 
+                                    className="object-cover w-full h-full group-hover:scale-105 transition-transform" 
+                                    data-ai-hint={gt.dataAiHint || "featured gift type"}
+                                />
+                            )}
+                        </div>
+                        <CardContent className="p-4 text-center">
+                            <h3 className="text-lg font-semibold mb-3 text-foreground group-hover:text-primary transition-colors">{gt.name}</h3>
+                            <Button 
+                                variant="outline" 
+                                size="sm" 
+                                className="w-full text-primary border-primary hover:bg-primary hover:text-primary-foreground transition-colors"
+                            >
+                                View Products <ArrowRight className="ml-2 h-4 w-4" />
+                            </Button>
                         </CardContent>
-                    </Link>
-                </Card>
+                    </Card>
+                  </Link>
             )})}
         </div>
     </section>
@@ -670,6 +688,7 @@ export default function HomePage()
     
 
     
+
 
 
 
