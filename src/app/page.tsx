@@ -451,7 +451,7 @@ const TestimonialsSection = () => {
   const testimonials = [
     {
       id: 1,
-      quote: "The personalized caricature was a huge hit at the birthday party! Amazing quality and super fast delivery.",
+      quote: "The personalized caricature was a huge hit! Amazing quality and super fast delivery.",
       author: "Priya S.",
       tag: "Loved It!",
       tagColor: "bg-green-500",
@@ -459,7 +459,7 @@ const TestimonialsSection = () => {
     },
     {
       id: 2,
-      quote: "I ordered a 3D crystal for our anniversary, and it was breathtaking. Such a unique and memorable gift.",
+      quote: "Ordered a 3D crystal for our anniversary, breathtaking and memorable.",
       author: "Amit K.",
       tag: "Perfect Gift!",
       tagColor: "bg-blue-500",
@@ -467,7 +467,7 @@ const TestimonialsSection = () => {
     },
     {
       id: 3,
-      quote: "The customer service was fantastic in helping me choose the right photo frame. The final product was beautiful.",
+      quote: "Customer service was fantastic in choosing the photo frame. Beautiful product.",
       author: "Rina M.",
       tag: "Great Service!",
       tagColor: "bg-yellow-500",
@@ -475,39 +475,71 @@ const TestimonialsSection = () => {
     },
      {
       id: 4,
-      quote: "My team loved the custom mugs for our corporate event. Excellent branding and durable quality.",
+      quote: "My team loved the custom mugs for our corporate event. Excellent branding.",
       author: "Vikram R., CEO",
-      tag: "Highly Recommend",
+      tag: "Recommend",
       tagColor: "bg-purple-500",
+      rating: 5,
+    },
+    {
+      id: 5,
+      quote: "The miniature version of my pet was incredibly detailed. A truly special keepsake!",
+      author: "Sneha P.",
+      tag: "Adorable!",
+      tagColor: "bg-pink-500",
+      rating: 5,
+    },
+    {
+      id: 6,
+      quote: "Bulk farewell gifts were seamless, and everyone appreciated the customization.",
+      author: "Rajesh G., HR",
+      tag: "Efficient!",
+      tagColor: "bg-teal-500",
+      rating: 5,
+    },
+    {
+      id: 7,
+      quote: "Photo collage for my parents' anniversary was beautifully arranged. So touched.",
+      author: "Anjali T.",
+      tag: "Heartfelt",
+      tagColor: "bg-orange-500",
+      rating: 4,
+    },
+    {
+      id: 8,
+      quote: "Loved the 3D lamp with our family picture. Unique night light and conversation starter.",
+      author: "Karan N.",
+      tag: "Unique!",
+      tagColor: "bg-cyan-500",
       rating: 5,
     }
   ];
 
   return (
     <section className="my-8 sm:my-12">
-      <SectionTitle className="text-white mb-8">Words from Our Happy Gifting Community</SectionTitle>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 sm:gap-8">
+      <SectionTitle className="text-white mb-6 sm:mb-8">Words from Our Happy Gifting Community</SectionTitle>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
         {testimonials.map((testimonial) => (
-          <Card key={testimonial.id} className="bg-neutral-800 border-neutral-700 shadow-xl flex flex-col hover:shadow-primary/30 transition-shadow duration-300">
-            <CardContent className="p-6 flex-grow flex flex-col">
-              <div className="flex justify-between items-start mb-3">
-                <Quote className="w-8 h-8 text-primary opacity-50 transform -scale-x-100" />
+          <Card key={testimonial.id} className="bg-neutral-800 border-neutral-700 shadow-lg flex flex-col hover:shadow-primary/30 transition-shadow duration-300">
+            <CardContent className="p-4 flex-grow flex flex-col">
+              <div className="flex justify-between items-start mb-2">
+                <Quote className="w-6 h-6 text-primary opacity-50 transform -scale-x-100" />
                 {testimonial.tag && (
-                  <span className={`px-2 py-0.5 text-xs font-semibold text-white rounded-full ${testimonial.tagColor}`}>
+                  <span className={`px-2 py-0.5 text-[10px] sm:text-xs font-semibold text-white rounded-full ${testimonial.tagColor}`}>
                     {testimonial.tag}
                   </span>
                 )}
               </div>
-              <p className="text-neutral-300 italic text-sm sm:text-base leading-relaxed mb-4 flex-grow">
+              <p className="text-neutral-300 italic text-xs sm:text-sm leading-normal mb-3 flex-grow">
                 "{testimonial.quote}"
               </p>
               <div className="mt-auto">
                 <div className="flex items-center justify-between">
-                    <p className="text-sm font-semibold text-primary">{testimonial.author}</p>
+                    <p className="text-xs font-semibold text-primary">{testimonial.author}</p>
                     {testimonial.rating && (
                         <div className="flex">
                             {[...Array(5)].map((_, i) => (
-                                <StarIconLucide key={i} className={`w-4 h-4 ${i < testimonial.rating ? 'text-yellow-400 fill-yellow-400' : 'text-neutral-600'}`} />
+                                <StarIconLucide key={i} className={`w-3.5 h-3.5 ${i < testimonial.rating ? 'text-yellow-400 fill-yellow-400' : 'text-neutral-600'}`} />
                             ))}
                         </div>
                     )}
