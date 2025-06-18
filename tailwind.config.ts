@@ -126,27 +126,6 @@ export default {
           '0%, 100%': { backgroundPosition: '0% 50%' },
           '50%': { backgroundPosition: '100% 50%' },
         },
-        'gradient-y-flow': {
-          '0%, 100%': { backgroundPosition: '0% 0%' },
-          '50%': { backgroundPosition: '0% 100%' },
-        },
-        'gradient-x-flow': {
-          '0%, 100%': { backgroundPosition: '0% 50%' },
-          '50%': { backgroundPosition: '100% 50%' },
-        },
-        'radial-burst': {
-          '0%, 100%': { backgroundPosition: 'center center', backgroundSize: '200% 200%' },
-          '50%': { backgroundPosition: 'center center', backgroundSize: '250% 250%' },
-        },
-        'diagonal-bg-wave': {
-          '0%, 100%': { backgroundPosition: '0% 0%' },
-          '50%': { backgroundPosition: '100% 100%' },
-        },
-        'bg-color-cycle': {
-          '0%, 100%': { backgroundColor: 'hsl(var(--primary) / 0.7)' },
-          '33%': { backgroundColor: 'hsl(var(--secondary) / 0.7)' },
-          '66%': { backgroundColor: 'hsl(var(--accent) / 0.6)' },
-        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -159,11 +138,6 @@ export default {
         'bokeh-drift': 'bokeh-drift 25s ease-in-out infinite',
         'subtle-stripes': 'subtle-stripes 30s linear infinite',
         'watercolor-flow': 'watercolor-flow 18s ease-in-out infinite',
-        'gradient-y-flow': 'gradient-y-flow 15s ease infinite',
-        'gradient-x-flow': 'gradient-x-flow 15s ease infinite',
-        'radial-burst': 'radial-burst 20s ease infinite',
-        'diagonal-bg-wave': 'diagonal-bg-wave 22s ease infinite',
-        'bg-color-cycle': 'bg-color-cycle 18s ease-in-out infinite',
       },
       height: { 
         '6': '1.5rem', 
