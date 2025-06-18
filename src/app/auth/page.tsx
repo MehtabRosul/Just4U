@@ -16,6 +16,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2, LogIn, UserPlus, Eye, EyeOff } from 'lucide-react';
 import { SiteLogo } from '@/components/layout/SiteLogo';
+import { cn } from '@/lib/utils';
 
 const loginSchema = z.object({
   email: z.string().email({ message: "Invalid email address." }),
@@ -127,7 +128,12 @@ export default function AuthPage() {
                     type="email"
                     placeholder="you@example.com"
                     {...registerLogin("email")}
-                    className={`mt-1 ${loginErrors.email ? 'border-destructive focus:ring-destructive' : 'border-input text-foreground bg-background placeholder:text-input-placeholder'}`}
+                    className={cn(
+                      'mt-1 text-foreground bg-background placeholder:text-input-placeholder',
+                      loginErrors.email
+                        ? 'border-destructive focus:ring-destructive'
+                        : 'border-input'
+                    )}
                   />
                   {loginErrors.email && <p className="text-xs text-destructive mt-1">{loginErrors.email.message}</p>}
                 </div>
@@ -139,7 +145,12 @@ export default function AuthPage() {
                       type={showLoginPassword ? "text" : "password"}
                       placeholder="••••••••"
                       {...registerLogin("password")}
-                      className={`mt-1 pr-10 ${loginErrors.password ? 'border-destructive focus:ring-destructive' : 'border-input text-foreground bg-background placeholder:text-input-placeholder'}`}
+                      className={cn(
+                        'mt-1 pr-10 text-foreground bg-background placeholder:text-input-placeholder',
+                        loginErrors.password
+                          ? 'border-destructive focus:ring-destructive'
+                          : 'border-input'
+                      )}
                     />
                     <Button
                         type="button"
@@ -170,7 +181,12 @@ export default function AuthPage() {
                     type="email"
                     placeholder="you@example.com"
                     {...registerSignUp("email")}
-                    className={`mt-1 ${signUpErrors.email ? 'border-destructive focus:ring-destructive' : 'border-input text-foreground bg-background placeholder:text-input-placeholder'}`}
+                     className={cn(
+                      'mt-1 text-foreground bg-background placeholder:text-input-placeholder',
+                      signUpErrors.email
+                        ? 'border-destructive focus:ring-destructive'
+                        : 'border-input'
+                    )}
                   />
                   {signUpErrors.email && <p className="text-xs text-destructive mt-1">{signUpErrors.email.message}</p>}
                 </div>
@@ -182,7 +198,12 @@ export default function AuthPage() {
                       type={showSignUpPassword ? "text" : "password"}
                       placeholder="Choose a strong password"
                       {...registerSignUp("password")}
-                      className={`mt-1 pr-10 ${signUpErrors.password ? 'border-destructive focus:ring-destructive' : 'border-input text-foreground bg-background placeholder:text-input-placeholder'}`}
+                      className={cn(
+                        'mt-1 pr-10 text-foreground bg-background placeholder:text-input-placeholder',
+                        signUpErrors.password
+                          ? 'border-destructive focus:ring-destructive'
+                          : 'border-input'
+                      )}
                     />
                     <Button
                         type="button"
@@ -205,7 +226,12 @@ export default function AuthPage() {
                       type={showConfirmPassword ? "text" : "password"}
                       placeholder="Confirm your password"
                       {...registerSignUp("confirmPassword")}
-                      className={`mt-1 pr-10 ${signUpErrors.confirmPassword ? 'border-destructive focus:ring-destructive' : 'border-input text-foreground bg-background placeholder:text-input-placeholder'}`}
+                      className={cn(
+                        'mt-1 pr-10 text-foreground bg-background placeholder:text-input-placeholder',
+                        signUpErrors.confirmPassword
+                          ? 'border-destructive focus:ring-destructive'
+                          : 'border-input'
+                      )}
                     />
                      <Button
                         type="button"
