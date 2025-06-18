@@ -8,7 +8,7 @@ import { SectionTitle } from '@/components/shared/SectionTitle';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, ChevronDown, Sparkles as SparklesIcon, Quote, Star as StarIconLucide, Gift, CalendarDays, PartyPopper, Heart, Briefcase, ToyBrick, Utensils, Gem, Camera, Lamp, Smile, ArrowRightCircle, Users, Award, Trophy, Rocket, GraduationCap, Shield, ShoppingBag, Feather, Star as StarLucide, User } from 'lucide-react';
+import { ArrowRight, ChevronDown, Sparkles as SparklesIcon, Quote, Star as StarIconLucide, Gift, CalendarDays, PartyPopper, Heart, Briefcase, ToyBrick, Utensils, Gem, Camera, Lamp, Smile, ArrowRightCircle, Users, Award, Trophy, Rocket, GraduationCap, Shield, ShoppingBag, Feather, Star as StarLucide } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
@@ -122,20 +122,20 @@ const HeroCarousel = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prevSlide) => (prevSlide + 1) % carouselBannersData.length);
-    }, 3000); 
+    }, 3000);
 
-    return () => clearInterval(timer); 
+    return () => clearInterval(timer);
   }, []);
 
   const bannerAnimationInactiveClasses = "opacity-0";
   const bannerAnimationActiveClasses = "opacity-100";
-  const bannerBaseTransition = "transition-opacity duration-[2000ms] ease-in-out"; 
+  const bannerBaseTransition = "transition-opacity duration-[2000ms] ease-in-out";
 
   const commonTextInactiveAnimation = "opacity-0";
   const commonTextActiveAnimation = "opacity-100";
-  
-  const iconBaseTransition = "transition-opacity duration-[1200ms] ease-out delay-[300ms]"; 
-  const titleBaseTransition = "transition-opacity duration-[1200ms] ease-out delay-[450ms]"; 
+
+  const iconBaseTransition = "transition-opacity duration-[1200ms] ease-out delay-[300ms]";
+  const titleBaseTransition = "transition-opacity duration-[1200ms] ease-out delay-[450ms]";
   const descriptionBaseTransition = "transition-opacity duration-[1200ms] ease-out delay-[600ms]";
   const buttonBaseTransition = "transition-opacity duration-[1200ms] ease-out delay-[750ms]";
 
@@ -148,13 +148,13 @@ const HeroCarousel = () => {
           className={cn(
             "absolute inset-0 w-full h-full flex p-6 md:p-10",
             banner.gradientClasses,
-            'items-start', 
+            'items-start',
             bannerBaseTransition,
             index === currentSlide ? bannerAnimationActiveClasses : bannerAnimationInactiveClasses + " pointer-events-none"
           )}
         >
-          <div className={cn("relative z-10 w-full flex justify-start")}> 
-            <div className="max-w-md md:max-w-lg lg:max-w-xl text-left"> 
+          <div className={cn("relative z-10 w-full flex justify-start")}>
+            <div className="max-w-md md:max-w-lg lg:max-w-xl text-left">
               <SparklesIcon className={cn(
                 "w-10 h-10 sm:w-12 sm:h-12 text-white opacity-70 mb-2 sm:mb-3 hidden md:inline-block",
                 iconBaseTransition,
@@ -170,7 +170,7 @@ const HeroCarousel = () => {
               </h1>
               <p className={cn(
                 "text-neutral-200 text-sm sm:text-base lg:text-md max-w-md mb-6 sm:mb-8",
-                 "mr-auto", 
+                 "mr-auto",
                 descriptionBaseTransition,
                 index === currentSlide ? commonTextActiveAnimation : commonTextInactiveAnimation
                 )}>
@@ -188,9 +188,9 @@ const HeroCarousel = () => {
             src={banner.imageUrl}
             alt={banner.title}
             fill
-            className="object-cover opacity-20 pointer-events-none" 
+            className="object-cover opacity-20 pointer-events-none"
             data-ai-hint={banner.dataAiHint}
-            priority={index === 0} 
+            priority={index === 0}
           />
         </div>
       ))}
@@ -238,7 +238,7 @@ const SmartFinderPanel = () => {
       queryParams.append('occasion', selectedOccasion);
     }
     if (selectedGiftType && selectedGiftType !== 'all') {
-      queryParams.append('category', selectedGiftType); 
+      queryParams.append('category', selectedGiftType);
     }
     if (selectedRecipient && selectedRecipient !== 'all') {
       queryParams.append('recipient', selectedRecipient);
@@ -262,7 +262,7 @@ const SmartFinderPanel = () => {
       <div className="container mx-auto px-4">
         <SectionTitle className="text-white mb-6 sm:mb-8 text-2xl sm:text-3xl">Find The Perfect Gift</SectionTitle>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 items-end">
-          
+
           <div className="space-y-1.5">
             <Label htmlFor="smart-occasion" className="text-sm font-medium text-neutral-300">Occasion</Label>
             <Select value={selectedOccasion} onValueChange={setSelectedOccasion}>
@@ -301,7 +301,7 @@ const SmartFinderPanel = () => {
               </SelectContent>
             </Select>
           </div>
-          
+
           <div className="space-y-1.5">
             <Label htmlFor="smart-price-range" className="text-sm font-medium text-neutral-300">Price Range</Label>
             <Select value={selectedPriceRangeKey} onValueChange={setSelectedPriceRangeKey}>
@@ -345,29 +345,29 @@ const TopCurations = () => {
           const ItemIcon = item.Icon;
           const link = item.type === 'occasion' ? `/products?occasion=${item.slug}` : `/products?category=${item.slug}`;
           return (
-            <Link key={item.name} href={link} passHref 
+            <Link key={item.name} href={link} passHref
                   className="group block outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-xl"
             >
               <div className={cn(
                 "bg-neutral-800 p-4 sm:p-6 rounded-xl aspect-square flex flex-col items-center justify-center text-center overflow-hidden",
-                "transition-all duration-300 ease-out", 
-                "group-hover:bg-primary group-hover:shadow-xl group-hover:shadow-primary/40 group-hover:scale-105" 
+                "transition-all duration-300 ease-out",
+                "group-hover:bg-primary group-hover:shadow-xl group-hover:shadow-primary/40 group-hover:scale-105"
               )}>
                 <div className={cn(
                   "bg-neutral-700 p-3 sm:p-4 rounded-full mb-3 sm:mb-4",
-                  "transition-all duration-300 ease-out", 
-                  "group-hover:bg-white/20 group-hover:scale-110" 
+                  "transition-all duration-300 ease-out",
+                  "group-hover:bg-white/20 group-hover:scale-110"
                 )}>
                   {ItemIcon && <ItemIcon className={cn(
                     "h-7 w-7 sm:h-8 w-8 text-primary",
-                    "transition-all duration-500 ease-out", 
-                    "group-hover:text-white group-hover:rotate-[360deg]" 
+                    "transition-all duration-500 ease-out",
+                    "group-hover:text-white group-hover:rotate-[360deg]"
                    )} />}
                 </div>
                 <h3 className={cn(
-                  "font-semibold text-neutral-200 text-sm sm:text-base leading-tight", 
-                  "transition-colors duration-300 ease-out", 
-                  "group-hover:text-primary-foreground group-hover:font-bold" 
+                  "font-semibold text-neutral-200 text-sm sm:text-base leading-tight",
+                  "transition-colors duration-300 ease-out",
+                  "group-hover:text-primary-foreground group-hover:font-bold"
                   )}>
                   {item.name}
                 </h3>
@@ -420,9 +420,9 @@ const Advertisements = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentBannerIndex((prevIndex) => (prevIndex + 1) % bannerMessages.length);
-    }, 10000); 
+    }, 10000);
 
-    return () => clearInterval(timer); 
+    return () => clearInterval(timer);
   }, []);
 
   const currentBanner = bannerMessages[currentBannerIndex];
@@ -526,32 +526,32 @@ const OccasionSpotlight = () => {
         <div className="flex animate-marquee-horizontal group-hover/marquee:[animation-play-state:paused] whitespace-nowrap py-2">
           {marqueeItems.map((occasion, index) => {
             const OccIcon = occasion.Icon;
-            const uniqueKey = `${occasion.id}-${index}`; 
+            const uniqueKey = `${occasion.id}-${index}`;
             return (
               <Link
                 key={uniqueKey}
                 href={`/products?occasion=${occasion.slug}`}
-                className="group/item flex-shrink-0 w-36 h-40 mx-2" 
+                className="group/item flex-shrink-0 w-36 h-40 mx-2"
               >
                 <div
                   className={cn(
                     "flex flex-col items-center justify-center p-4 rounded-lg bg-neutral-800 text-center h-full",
                     "transition-all duration-300 ease-in-out",
-                    "border-2 border-transparent", 
+                    "border-2 border-transparent",
                     "group-hover/item:bg-primary/80 group-hover/item:shadow-xl group-hover/item:shadow-primary/30 group-hover/item:scale-105 group-hover/item:border-primary"
                   )}
                 >
                   {OccIcon ? (
                     <OccIcon
                       className={cn(
-                        "h-12 w-12 text-primary mb-3", 
+                        "h-12 w-12 text-primary mb-3",
                         "transition-colors duration-300 group-hover/item:text-primary-foreground"
                       )}
                     />
                   ) : (
                     <div
                       className={cn(
-                        "h-12 w-12 rounded-md bg-muted flex items-center justify-center mb-3", 
+                        "h-12 w-12 rounded-md bg-muted flex items-center justify-center mb-3",
                         "transition-colors duration-300 group-hover/item:bg-primary/20 group-hover/item:text-primary-foreground"
                       )}
                       data-ai-hint={occasion.dataAiHint || "occasion gift icon"}
@@ -561,7 +561,7 @@ const OccasionSpotlight = () => {
                   )}
                   <span
                     className={cn(
-                      "text-sm font-medium text-neutral-200 line-clamp-2", 
+                      "text-sm font-medium text-neutral-200 line-clamp-2",
                       "transition-colors duration-300 group-hover/item:text-primary-foreground"
                     )}
                   >
@@ -591,7 +591,7 @@ const GiftQuoteBanners = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentBannerIndex((prevIndex) => (prevIndex + 1) % quoteBanners.length);
-    }, 10000); 
+    }, 10000);
 
     return () => clearInterval(timer);
   }, [quoteBanners.length]);
@@ -652,50 +652,38 @@ const RecipientQuickLinks = () => {
     <section className="my-8 sm:my-12">
       <SectionTitle className="text-white">Who's it For?</SectionTitle>
       <div className="relative overflow-hidden group/marquee">
-        <div className="flex animate-marquee-horizontal group-hover/marquee:[animation-play-state:paused] whitespace-nowrap py-2">
+        <div className="flex animate-marquee-horizontal-reverse group-hover/marquee:[animation-play-state:paused] whitespace-nowrap py-2">
           {marqueeRecipients.map((recipient, index) => {
-            const RecipientIcon = recipient.Icon;
             const uniqueKey = `${recipient.id}-${index}`;
             return (
               <Link
                 key={uniqueKey}
                 href={`/products?recipient=${recipient.slug}`}
-                className="group/item flex-shrink-0 w-36 h-40 mx-2"
+                className="group/item flex-shrink-0 w-36 mx-2" // Card dimensions defined here
               >
                 <div
                   className={cn(
-                    "flex flex-col items-center justify-center p-4 rounded-lg bg-neutral-800 text-center h-full",
-                    "transition-all duration-300 ease-in-out",
-                    "border-2 border-transparent",
-                    "group-hover/item:bg-primary/80 group-hover/item:shadow-xl group-hover/item:shadow-primary/30 group-hover/item:scale-105 group-hover/item:border-primary"
+                    "bg-neutral-800 rounded-lg overflow-hidden transition-all duration-300 ease-in-out group",
+                    "border-2 border-transparent group-hover/item:-translate-y-1 group-hover/item:shadow-xl group-hover/item:border-primary"
                   )}
                 >
-                  {RecipientIcon ? (
-                    <RecipientIcon
-                      className={cn(
-                        "h-12 w-12 text-primary mb-3",
-                        "transition-colors duration-300 group-hover/item:text-primary-foreground"
-                      )}
+                  <div className="relative w-full aspect-[1/1]"> {/* Square aspect ratio for image */}
+                    <Image
+                      src={`https://placehold.co/200x200.jpg`}
+                      alt={recipient.name}
+                      fill
+                      className="object-cover group-hover/item:scale-105 transition-transform duration-300"
+                      data-ai-hint={recipient.dataAiHint || "recipient image"}
                     />
-                  ) : (
-                    <div
-                      className={cn(
-                        "h-12 w-12 rounded-md bg-muted flex items-center justify-center mb-3",
-                        "transition-colors duration-300 group-hover/item:bg-primary/20 group-hover/item:text-primary-foreground"
-                      )}
-                      data-ai-hint={recipient.dataAiHint || "recipient icon"}
-                    >
-                      <User className="h-7 w-7 text-muted-foreground group-hover/item:text-primary-foreground" />
-                    </div>
-                  )}
-                  <span
-                    className={cn(
-                      "text-sm font-medium text-neutral-200 line-clamp-2",
-                      "transition-colors duration-300 group-hover/item:text-primary-foreground"
-                    )}
-                  >
-                    {recipient.name}
-                  </span>
+                  </div>
+                  <div className="p-3 text-center">
+                    <h3 className={cn(
+                      "text-sm font-medium text-neutral-200 truncate",
+                      "transition-colors duration-300 group-hover/item:text-primary"
+                    )}>
+                      {recipient.name}
+                    </h3>
+                  </div>
                 </div>
               </Link>
             );
@@ -732,6 +720,3 @@ export default function HomePage()
     </div>
   );
 }
-    
-
-    

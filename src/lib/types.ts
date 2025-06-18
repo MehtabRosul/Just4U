@@ -30,13 +30,18 @@ export interface BaseCategory {
   id: string;
   name: string;
   slug: string;
-  Icon?: LucideIcon; // For homepage spotlights/grids
   dataAiHint?: string; // For placeholder images
 }
 
-export interface Occasion extends BaseCategory {}
-export interface GiftType extends BaseCategory {}
-export interface Recipient extends BaseCategory {}
+export interface Occasion extends BaseCategory {
+  Icon?: LucideIcon; // Retained for OccasionSpotlight
+}
+export interface GiftType extends BaseCategory {
+   Icon?: LucideIcon; // Retained for GiftTypeHighlight if specific icons are preferred over images later
+}
+export interface Recipient extends BaseCategory {
+  // Icon property is removed as we are moving to images for RecipientQuickLinks
+}
 
 // Legacy Category type, maps to GiftType now
 export interface Category extends GiftType {}
