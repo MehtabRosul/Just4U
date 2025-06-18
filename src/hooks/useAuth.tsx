@@ -9,6 +9,7 @@ import {
   type User,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  updateProfile, // Import updateProfile
   type AuthError
 } from 'firebase/auth';
 import { auth, googleProvider } from '@/lib/firebase';
@@ -21,6 +22,7 @@ interface AuthContextType {
   signOutUser: () => Promise<boolean>;
   signInWithEmailPass: (email: string, password: string) => Promise<boolean>;
   createUserWithEmailPass: (email: string, password: string) => Promise<boolean>;
+  updateUserFirebaseProfile: (currentUser: User, profileData: { displayName?: string; photoURL?: string }) => Promise<void>; // New function
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -58,6 +60,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       await signOut(auth);
       toast({ title: "Signed Out", description: "You have been successfully signed out." });
+      // setUser(null) // onAuthStateChanged will handle this
       return true;
     } catch (error) {
       const authError = error as AuthError;
@@ -72,10 +75,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setLoading(true);
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      // onAuthStateChanged will handle setting user and loading states.
-      // Toast might be better handled on the page after successful redirect or here.
-      // For now, keeping toast consistent with google sign in.
-      // toast({ title: "Login Successful", description: "Welcome back!" });
       return true;
     } catch (error) {
       const authError = error as AuthError;
@@ -96,8 +95,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setLoading(true);
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      // onAuthStateChanged will handle setting user and loading states.
-      // toast({ title: "Sign Up Successful", description: "Welcome! Your account has been created." });
       return true;
     } catch (error) {
       const authError = error as AuthError;
@@ -116,7 +113,34 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, [toast]);
 
-  const value = { user, loading, signInWithGoogle, signOutUser, signInWithEmailPass, createUserWithEmailPass };
+  const updateUserFirebaseProfile = useCallback(async (
+    currentUser: User, 
+    profileData: { displayName?: string; photoURL?: string }
+  ) => {
+    if (!currentUser) throw new Error("User not authenticated for profile update.");
+    try {
+      await updateProfile(currentUser, profileData);
+      // onAuthStateChanged should pick up the changes and update the user state globally.
+      // For immediate local update if needed, one might call setUser({...currentUser, ...profileData})
+      // but it's usually better to let Firebase be the source of truth.
+      // setUser(prevUser => prevUser ? ({ ...prevUser, ...profileData, displayName: profileData.displayName || prevUser.displayName }) : null);
+
+    } catch (error) {
+      const authError = error as AuthError;
+      console.error("Error updating Firebase profile: ", authError);
+      throw new Error(authError.message || "Could not update Firebase profile.");
+    }
+  }, []);
+
+  const value = { 
+    user, 
+    loading, 
+    signInWithGoogle, 
+    signOutUser, 
+    signInWithEmailPass, 
+    createUserWithEmailPass,
+    updateUserFirebaseProfile // Expose the new function
+  };
 
   return (
     <AuthContext.Provider value={value}>

@@ -11,13 +11,14 @@ import { useWishlist } from '@/hooks/useWishlist';
 import { Badge } from '@/components/ui/badge';
 import { NavMenu } from './NavMenu'; 
 import { GLOBAL_NAV_LINKS } from '@/config/site'; 
-import { useAuth } from '@/hooks/useAuth'; // Import useAuth
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'; // Import Avatar
+import { useAuth } from '@/hooks/useAuth'; 
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'; 
+import { cn } from '@/lib/utils';
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { wishlist } = useWishlist();
-  const { user, loading } = useAuth(); // Get user and loading state
+  const { user, loading } = useAuth(); 
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-[var(--primary-header-bg)] bg-opacity-75 backdrop-blur-md shadow-sm">
@@ -35,7 +36,6 @@ export default function Header() {
               <SheetHeader className="flex flex-row justify-between items-center p-4 border-b">
                  <SiteLogo hideTagline />
                  <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
-                 {/* Default SheetClose is provided by SheetContent, no need for custom one here to avoid overlap */}
               </SheetHeader>
               <div className="p-4 space-y-4">
                 {/* Mobile Search Bar */}
@@ -78,7 +78,7 @@ export default function Header() {
         </div>
         
         {/* Desktop & Mobile Quick Access Icons */}
-        <div className="flex items-center space-x-2 sm:space-x-3">
+        <div className="flex items-center space-x-1.5 sm:space-x-2">
             <Link href="/wishlist" passHref>
               <Button variant="ghost" size="icon" className="relative text-foreground hover:text-primary hover:bg-accent/10 rounded-full">
                 <Heart className="h-5 w-5 sm:h-6 sm:w-6" />
@@ -90,19 +90,33 @@ export default function Header() {
                 <span className="sr-only">Wishlist</span>
               </Button>
             </Link>
+            
             <Link href="/account" passHref>
-              <Button variant="ghost" size="icon" className="text-foreground hover:text-primary hover:bg-accent/10 rounded-full">
-                {!loading && user && user.photoURL ? (
-                  <Avatar className="h-6 w-6 sm:h-7 sm:w-7">
-                    <AvatarImage src={user.photoURL} alt={user.displayName || 'User'} />
-                    <AvatarFallback>{user.displayName ? user.displayName.charAt(0).toUpperCase() : <UserIcon className="h-4 w-4 sm:h-5 sm:w-5" />}</AvatarFallback>
-                  </Avatar>
-                ) : (
-                  <UserIcon className="h-5 w-5 sm:h-6 sm:w-6" />
-                )}
+              <Button variant="ghost" size="icon" className={cn(
+                "text-foreground hover:text-primary hover:bg-accent/10 rounded-full",
+                user && user.displayName ? "p-0 sm:p-0" : "p-1 sm:p-1" // Adjust padding if name is shown
+              )}>
+                <div className="flex items-center">
+                  {!loading && user ? (
+                    <>
+                      <Avatar className="h-6 w-6 sm:h-7 sm:w-7">
+                        <AvatarImage src={user.photoURL || undefined} alt={user.displayName || 'User'} />
+                        <AvatarFallback>{user.displayName ? user.displayName.charAt(0).toUpperCase() : <UserIcon className="h-4 w-4 sm:h-5 sm:w-5" />}</AvatarFallback>
+                      </Avatar>
+                      {user.displayName && (
+                        <span className="ml-1.5 hidden md:inline text-xs font-medium truncate max-w-[100px]">
+                          {user.displayName}
+                        </span>
+                      )}
+                    </>
+                  ) : (
+                    <UserIcon className="h-5 w-5 sm:h-6 sm:w-6" />
+                  )}
+                </div>
                 <span className="sr-only">Account</span>
               </Button>
             </Link>
+
             <Link href="/cart" passHref>
               <Button variant="ghost" size="icon" className="text-foreground hover:text-primary hover:bg-accent/10 rounded-full">
                 <ShoppingCart className="h-5 w-5 sm:h-6 sm:w-6" />

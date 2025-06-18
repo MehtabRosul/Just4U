@@ -1,15 +1,20 @@
 
 "use client";
 
+import { useState, useEffect, type ChangeEvent, type FormEvent } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { SectionTitle } from '@/components/shared/SectionTitle';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { ShoppingBag, Heart, Gift, MapPin, Bell, LogOut, UserPlus, User as UserIcon } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { ShoppingBag, Heart, Gift, MapPin, Bell, LogOut, User as UserIcon, Edit3, Save, Camera } from 'lucide-react';
 import Link from 'next/link';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/hooks/use-toast';
+import { useRouter } from 'next/navigation';
+import { cn } from '@/lib/utils';
 
 const accountSections = [
   { title: 'My Orders', description: 'View your order history and track shipments.', icon: ShoppingBag, href: '/account/orders' },
@@ -20,8 +25,66 @@ const accountSections = [
 ];
 
 export default function AccountPage() {
-  const { user, loading, signOutUser } = useAuth();
+  const { user, loading, signOutUser, updateUserFirebaseProfile } = useAuth();
   const { toast } = useToast();
+  const router = useRouter();
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+
+  // Editable profile fields
+  const [displayName, setDisplayName] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [deliveryAddress, setDeliveryAddress] = useState('');
+  // For photoURL, direct update via Firebase updateProfile requires a URL.
+  // Actual file upload would need Firebase Storage and is more complex.
+  // We'll keep photoURL as is from Google or show fallback.
+
+  useEffect(() => {
+    if (user) {
+      setDisplayName(user.displayName || '');
+      // Placeholder: In a real app, phone and address would come from Firestore/Database
+      setPhoneNumber(user.phoneNumber || ''); // Firebase User object might not have this directly
+      setDeliveryAddress(''); // This would typically come from a separate user profile collection
+    }
+  }, [user]);
+
+  const handleEditToggle = () => setIsEditing(!isEditing);
+
+  const handleProfileSave = async (e: FormEvent) => {
+    e.preventDefault();
+    if (!user) {
+      toast({ title: "Error", description: "You must be logged in to save your profile.", variant: "destructive" });
+      return;
+    }
+    setIsSaving(true);
+    try {
+      // Only update displayName for now, as it's part of Firebase Auth User object
+      // photoURL update would require an actual URL from an upload process
+      await updateUserFirebaseProfile(user, { displayName });
+      
+      toast({ title: "Profile Updated", description: "Your display name has been updated." });
+      setIsEditing(false);
+
+      // Phone number and address would be saved to Firestore/Database here
+      console.log("Phone number (placeholder save):", phoneNumber);
+      console.log("Delivery address (placeholder save):", deliveryAddress);
+
+    } catch (error) {
+      const authError = error as Error;
+      toast({ title: "Update Failed", description: authError.message || "Could not update profile.", variant: "destructive" });
+    } finally {
+      setIsSaving(false);
+    }
+  };
+  
+  const handleSignOut = async () => {
+    const success = await signOutUser();
+    if (success) {
+      router.push('/'); // Redirect to home after sign out
+    }
+  }
+
 
   if (loading) {
     return (
@@ -30,14 +93,13 @@ export default function AccountPage() {
         <div className="grid md:grid-cols-3 gap-8">
           <div className="md:col-span-1 space-y-6">
             <Card className="bg-card border-border shadow-md">
-              <CardHeader className="flex flex-row items-center space-x-4 pb-4">
-                <Skeleton className="h-12 w-12 rounded-full" />
-                <div className="space-y-2">
-                  <Skeleton className="h-4 w-[150px]" />
-                  <Skeleton className="h-3 w-[200px]" />
-                </div>
+              <CardHeader className="items-center pb-4">
+                <Skeleton className="h-24 w-24 rounded-full mx-auto" />
+                <Skeleton className="h-4 w-3/4 mx-auto mt-3" />
+                <Skeleton className="h-3 w-full mx-auto mt-1" />
               </CardHeader>
-              <CardContent className="space-y-3">
+              <CardContent className="space-y-3 pt-2">
+                <Skeleton className="h-10 w-full" />
                 <Skeleton className="h-10 w-full" />
               </CardContent>
             </Card>
@@ -61,6 +123,29 @@ export default function AccountPage() {
       </div>
     );
   }
+  
+  if (!user && !loading) {
+     return (
+      <div className="container mx-auto px-4 py-8 text-center">
+        <SectionTitle className="mb-6">My Account</SectionTitle>
+        <Card className="max-w-md mx-auto bg-card border-border shadow-xl p-6 sm:p-8">
+            <Avatar className="h-20 w-20 mx-auto mb-4">
+                <AvatarFallback>
+                    <UserIcon className="h-10 w-10 text-muted-foreground" />
+                </AvatarFallback>
+            </Avatar>
+            <CardTitle className="text-xl sm:text-2xl text-center mb-2 text-card-foreground">Welcome, Guest</CardTitle>
+            <CardDescription className="text-center mb-6 text-muted-foreground">
+                Please log in or sign up to access your account and manage your profile.
+            </CardDescription>
+            <Button asChild size="lg" className="w-full bg-primary text-primary-foreground hover:bg-primary/90">
+                <Link href="/auth">Login / Sign Up</Link>
+            </Button>
+        </Card>
+      </div>
+    );
+  }
+
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -69,45 +154,87 @@ export default function AccountPage() {
       <div className="grid md:grid-cols-3 gap-8">
         <div className="md:col-span-1 space-y-6">
           <Card className="bg-card border-border shadow-md">
-            <CardHeader className="flex flex-row items-center space-x-4 pb-4">
-              <Avatar className="h-12 w-12">
-                <AvatarImage src={user?.photoURL || undefined} alt={user?.displayName || 'User'} />
-                <AvatarFallback>
-                  {user?.displayName ? user.displayName.charAt(0).toUpperCase() : <UserIcon className="h-6 w-6" />}
-                </AvatarFallback>
-              </Avatar>
-              <div>
-                <CardTitle className="text-xl text-card-foreground">
-                  {user ? user.displayName || user.email || 'User' : 'Welcome, Guest'}
-                </CardTitle>
-                <CardDescription className="text-sm">
-                  {user ? user.email : 'Log in or sign up to access your account.'}
+            <form onSubmit={handleProfileSave}>
+              <CardHeader className="items-center text-center pb-4">
+                <div className="relative group">
+                  <Avatar className="h-24 w-24 mx-auto">
+                    <AvatarImage src={user?.photoURL || undefined} alt={displayName || user?.email || 'User'} />
+                    <AvatarFallback>
+                      {displayName ? displayName.charAt(0).toUpperCase() : (user?.email ? user.email.charAt(0).toUpperCase() : <UserIcon className="h-10 w-10" />)}
+                    </AvatarFallback>
+                  </Avatar>
+                  {isEditing && (
+                    <Button type="button" size="icon" variant="outline" className="absolute bottom-0 right-0 rounded-full h-8 w-8 bg-background/80 hover:bg-background" onClick={() => alert("Photo upload placeholder")}>
+                      <Camera className="h-4 w-4 text-primary" />
+                      <span className="sr-only">Change photo</span>
+                    </Button>
+                  )}
+                </div>
+                
+                {isEditing ? (
+                  <Input
+                    id="displayName"
+                    value={displayName}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setDisplayName(e.target.value)}
+                    className="text-xl font-semibold text-center mt-3 bg-input border-border focus:ring-primary"
+                    placeholder="Your Name"
+                  />
+                ) : (
+                  <CardTitle className="text-xl text-center mt-3 text-card-foreground">
+                    {displayName || user?.email || 'User Profile'}
+                  </CardTitle>
+                )}
+                <CardDescription className="text-sm text-center">
+                  {user?.email}
                 </CardDescription>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              {user ? (
+              </CardHeader>
+
+              <CardContent className="space-y-4 pt-2">
+                {isEditing && (
+                  <>
+                    <div>
+                      <Label htmlFor="phoneNumber" className="text-xs text-muted-foreground">Phone Number</Label>
+                      <Input
+                        id="phoneNumber"
+                        type="tel"
+                        value={phoneNumber}
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => setPhoneNumber(e.target.value)}
+                        placeholder="Your phone number"
+                        className="mt-1 bg-input border-border focus:ring-primary"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="deliveryAddress" className="text-xs text-muted-foreground">Delivery Address</Label>
+                      <Input
+                        id="deliveryAddress"
+                        value={deliveryAddress}
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => setDeliveryAddress(e.target.value)}
+                        placeholder="Your delivery address"
+                        className="mt-1 bg-input border-border focus:ring-primary"
+                      />
+                    </div>
+                  </>
+                )}
+
+                {isEditing ? (
+                  <Button type="submit" className="w-full bg-primary text-primary-foreground hover:bg-primary/90" disabled={isSaving}>
+                    {isSaving ? <Save className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />}
+                    Save Profile
+                  </Button>
+                ) : (
+                  <Button variant="outline" onClick={handleEditToggle} className="w-full text-primary border-primary hover:bg-primary/10 hover:text-primary">
+                    <Edit3 className="mr-2 h-4 w-4" /> Edit Profile
+                  </Button>
+                )}
                 <Button
                   variant="outline"
-                  size="sm"
-                  className="w-full text-destructive border-destructive hover:bg-destructive hover:text-destructive-foreground hover:shadow-lg transition-all duration-200 ease-in-out hover:scale-105"
-                  onClick={signOutUser}
+                  className="w-full text-destructive border-destructive hover:bg-destructive hover:text-destructive-foreground"
+                  onClick={handleSignOut}
                 >
                   <LogOut className="mr-2 h-4 w-4" /> Sign Out
                 </Button>
-              ) : (
-                  <Button
-                    asChild
-                    variant="default"
-                    size="sm"
-                    className="w-full bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-xl transition-all duration-200 ease-in-out hover:scale-105"
-                  >
-                    <Link href="/auth">
-                       <UserPlus className="mr-2 h-4 w-4" /> Login / Sign Up
-                    </Link>
-                  </Button>
-              )}
-            </CardContent>
+              </CardContent>
+            </form>
           </Card>
         </div>
 
@@ -123,17 +250,18 @@ export default function AccountPage() {
                   const Icon = section.icon;
                   return (
                     <Link key={section.title} href={user ? section.href : '#'} passHref
-                      className={`block group ${!user ? 'opacity-50 cursor-not-allowed' : ''}`}
+                      className={cn(
+                        "block group",
+                        !user ? 'opacity-50 cursor-not-allowed' : ''
+                      )}
                       onClick={(e) => {
                         if (!user) {
                           e.preventDefault();
                           toast({
                             title: "Authentication Required",
                             description: "Please log in or sign up to access this section.",
-                            variant: "default" // Changed to default
+                            variant: "default"
                           });
-                           // Optionally, redirect to /auth page
-                           // router.push('/auth');
                         }
                       }}
                     >
