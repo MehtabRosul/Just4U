@@ -45,6 +45,7 @@ export default function AccountPage() {
     if (user) {
       setDisplayName(user.displayName || '');
       setPhoneNumber(user.phoneNumber || '');
+      // These are not standard Firebase Auth profile fields, so initialize them as empty or from another source if available
       setDeliveryAddress(''); 
       setAge(''); 
       setPhotoPreview(null); // Reset preview when user data changes
@@ -71,26 +72,34 @@ export default function AccountPage() {
     }
     setIsSaving(true);
     try {
-      const profileDataToUpdate: { displayName?: string; photoURL?: string } = {
+      // Only include displayName for Firebase Auth profile update.
+      // photoURL from local file selection (data URI) is too long for Firebase Auth.
+      // A proper solution would involve uploading to Firebase Storage and using that URL.
+      const profileDataToUpdate: { displayName?: string } = {
         displayName: displayName,
       };
-
-      if (photoPreview && photoFile) { // Only update photoURL if a new photo was previewed
-        profileDataToUpdate.photoURL = photoPreview;
-      }
       
       await updateUserFirebaseProfile(user, profileDataToUpdate);
       
-      toast({ title: "Profile Updated", description: "Your profile has been updated." });
+      toast({ title: "Profile Updated", description: "Your display name has been updated." });
 
-      // Reset photo states after successful save
+      // Reset photo states after successful save, as the new photo wasn't saved to Firebase Auth.
+      // The user object update from onAuthStateChanged will reflect the displayName change.
       setPhotoFile(null);
-      // photoPreview will be cleared by the user effect when user object updates, or we can clear it here
-      // setPhotoPreview(null); // Optional: clear immediately if user.photoURL doesn't update instantly in UI
+      // Let existing user.photoURL persist in preview if no new local photo was selected
+      // or if user wants to keep the Firebase Auth photo if they only changed name.
+      // If a local photo *was* selected, it was just for preview and won't be saved.
+      // We could clear photoPreview here: setPhotoPreview(null); 
+      // This means after saving, it reverts to user.photoURL or fallback.
+      // For now, let's keep the local preview if one was made, but inform the user it wasn't saved.
 
+      // Log other non-Firebase Auth fields
       console.log("Phone number (placeholder save):", phoneNumber);
       console.log("Delivery address (placeholder save):", deliveryAddress);
       console.log("Age (placeholder save):", age);
+      if (photoFile) {
+        console.log("New profile photo was selected for local preview but not saved to Firebase Auth to avoid URL length errors.");
+      }
 
     } catch (error) {
       const authError = error as Error;
@@ -99,9 +108,10 @@ export default function AccountPage() {
       setIsSaving(false);
     }
   };
-
+  
   const handleEditToggle = async () => {
     if (isEditing) { 
+      // When "Done Editing" is clicked, save the profile.
       await handleProfileSave(); 
     }
     setIsEditing(!isEditing);
