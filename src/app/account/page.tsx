@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState, useEffect, type ChangeEvent, type FormEvent } from 'react';
+import { useState, useEffect, type ChangeEvent, type FormEvent, useRef } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { SectionTitle } from '@/components/shared/SectionTitle';
 import { Button } from '@/components/ui/button';
@@ -37,37 +37,57 @@ export default function AccountPage() {
   const [deliveryAddress, setDeliveryAddress] = useState('');
   const [age, setAge] = useState('');
 
+  const [photoFile, setPhotoFile] = useState<File | null>(null);
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   useEffect(() => {
     if (user) {
       setDisplayName(user.displayName || '');
-      setPhoneNumber(user.phoneNumber || ''); 
-      // Fields not directly on Firebase User object; initialize as empty or from other source if available
+      setPhoneNumber(user.phoneNumber || '');
       setDeliveryAddress(''); 
       setAge(''); 
+      setPhotoPreview(null); // Reset preview when user data changes
+      setPhotoFile(null); // Reset file when user data changes
     }
   }, [user]);
 
-  const handleEditToggle = async () => {
-    if (isEditing) { // If was editing, now "Done Editing" is clicked
-      await handleProfileSave(); // Attempt to save changes
+  const handlePhotoChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      const file = event.target.files[0];
+      setPhotoFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPhotoPreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
     }
-    setIsEditing(!isEditing);
   };
 
-  // This function is called when "Done Editing" is clicked (formerly "Save Profile")
-  const handleProfileSave = async () => { 
+  const handleProfileSave = async () => {
     if (!user) {
       toast({ title: "Error", description: "You must be logged in to save your profile.", variant: "destructive" });
       return;
     }
     setIsSaving(true);
     try {
-      // Only update displayName in Firebase Auth user profile
-      await updateUserFirebaseProfile(user, { displayName });
-      
-      toast({ title: "Profile Updated", description: "Your display name has been updated." });
+      const profileDataToUpdate: { displayName?: string; photoURL?: string } = {
+        displayName: displayName,
+      };
 
-      // For other fields, log or send to a different backend/database
+      if (photoPreview && photoFile) { // Only update photoURL if a new photo was previewed
+        profileDataToUpdate.photoURL = photoPreview;
+      }
+      
+      await updateUserFirebaseProfile(user, profileDataToUpdate);
+      
+      toast({ title: "Profile Updated", description: "Your profile has been updated." });
+
+      // Reset photo states after successful save
+      setPhotoFile(null);
+      // photoPreview will be cleared by the user effect when user object updates, or we can clear it here
+      // setPhotoPreview(null); // Optional: clear immediately if user.photoURL doesn't update instantly in UI
+
       console.log("Phone number (placeholder save):", phoneNumber);
       console.log("Delivery address (placeholder save):", deliveryAddress);
       console.log("Age (placeholder save):", age);
@@ -78,6 +98,13 @@ export default function AccountPage() {
     } finally {
       setIsSaving(false);
     }
+  };
+
+  const handleEditToggle = async () => {
+    if (isEditing) { 
+      await handleProfileSave(); 
+    }
+    setIsEditing(!isEditing);
   };
   
   const handleSignOut = async () => {
@@ -150,16 +177,20 @@ export default function AccountPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <SectionTitle className="mb-8 text-center sm:text-left">My Account</SectionTitle>
-
+      <input
+        type="file"
+        ref={fileInputRef}
+        onChange={handlePhotoChange}
+        accept="image/*"
+        className="hidden"
+      />
       <div className="grid md:grid-cols-3 gap-8">
         <div className="md:col-span-1 space-y-6">
           <Card className="bg-card border-border shadow-md">
-            {/* The form is no longer needed if the "Done Editing" button triggers save */}
-            {/* <form onSubmit={handleProfileSave}> */}
               <CardHeader className="items-center text-center pb-4">
                 <div className="relative group">
                   <Avatar className="h-24 w-24 mx-auto">
-                    <AvatarImage src={user?.photoURL || undefined} alt={displayName || user?.email || 'User'} />
+                    <AvatarImage src={photoPreview || user?.photoURL || undefined} alt={displayName || user?.email || 'User'} />
                     <AvatarFallback>
                       {displayName ? displayName.charAt(0).toUpperCase() : (user?.email ? user.email.charAt(0).toUpperCase() : <UserIcon className="h-10 w-10" />)}
                     </AvatarFallback>
@@ -170,7 +201,7 @@ export default function AccountPage() {
                       size="icon" 
                       variant="outline" 
                       className="absolute bottom-0 right-0 rounded-full h-8 w-8 bg-background/80 hover:bg-background" 
-                      onClick={() => alert("Photo upload placeholder")}
+                      onClick={() => fileInputRef.current?.click()}
                     >
                       <Camera className="h-4 w-4 text-primary" />
                       <span className="sr-only">Change photo</span>
@@ -253,7 +284,6 @@ export default function AccountPage() {
                   <LogOut className="mr-2 h-4 w-4" /> Sign Out
                 </Button>
               </CardContent>
-            {/* </form> */}
           </Card>
         </div>
 
@@ -305,5 +335,7 @@ export default function AccountPage() {
     
 
       
+
+    
 
     
