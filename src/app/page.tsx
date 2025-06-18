@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useEffect, useMemo } from 'react';
@@ -8,9 +7,9 @@ import { SectionTitle } from '@/components/shared/SectionTitle';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, ChevronDown, Sparkles as SparklesIcon, Quote, Star, Gift, CalendarDays, PartyPopper, Heart, Briefcase, ToyBrick, Utensils, Gem, Camera, Lamp, Smile } from 'lucide-react';
+import { ArrowRight, ChevronDown, Sparkles as SparklesIcon, Quote, Star, Gift, CalendarDays, PartyPopper, Heart, Briefcase, ToyBrick, Utensils, Gem, Camera, Lamp, Smile, ArrowRightCircle } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
 import { Label } from '@/components/ui/label';
@@ -392,15 +391,13 @@ const TrendingSpotlight = ({ products }: { products: Product[] }) => {
              <ProductCard key={p.id} product={p} />
           ))}
         </div>
-        {products.length > 8 && ( 
-          <div className="mt-8 text-center">
+        <div className="mt-8 text-center">
             <Button asChild size="lg" className="bg-primary hover:bg-primary/80 text-primary-foreground text-base px-10 py-3 rounded-lg shadow-md hover:shadow-lg transition-shadow">
               <Link href="/products?sort=trending">
                 Explore Trending Gifts
               </Link>
             </Button>
-          </div>
-        )}
+        </div>
       </>
     ) : <p className="text-center text-muted-foreground">No spotlight items today. Check back soon!</p>}
   </section>
@@ -658,39 +655,4 @@ export default function HomePage()
     </div>
   );
 }
-    
-
-    
-
-    
-
-
-
-
-    
-
-    
-
-    
-
-    
-
-
-
-    
-
-    
-
-
-
-
-
-
-
-
-
-
-
-    
-
     
