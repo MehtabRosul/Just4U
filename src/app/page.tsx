@@ -8,7 +8,7 @@ import { SectionTitle } from '@/components/shared/SectionTitle';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, ChevronDown, Sparkles as SparklesIcon, Quote, Star as StarIconLucide, Gift, CalendarDays, PartyPopper, Heart, Briefcase, ToyBrick, Utensils, Gem, Camera, Lamp, Smile, ArrowRightCircle, Users, Award, Trophy, Rocket, GraduationCap, Shield, ShoppingBag, Feather, Star as StarLucide } from 'lucide-react';
+import { ArrowRight, ChevronDown, Sparkles as SparklesIcon, Quote, Star as StarIconLucide, Gift, CalendarDays, PartyPopper, Heart, Briefcase, ToyBrick, Utensils, Gem, Camera, Lamp, Smile, ArrowRightCircle, Users, Award, Trophy, Rocket, GraduationCap, Shield, ShoppingBag, Feather, Star as StarLucide, User } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
@@ -577,6 +577,40 @@ const OccasionSpotlight = () => {
   );
 };
 
+const GiftQuoteBanners = () => {
+  const quoteBanners = [
+    { id: 1, text: "The best gifts come from the heart, not the store.", bgColor: "bg-red-700", textColor: "text-white" },
+    { id: 2, text: "Every gift from a friend is a wish for your happiness.", bgColor: "bg-neutral-700", textColor: "text-neutral-200" },
+    { id: 3, text: "A gift is a wish for happiness.", bgColor: "bg-rose-700", textColor: "text-white" },
+    { id: 4, text: "The excellence of a gift lies in its appropriateness rather than in its value.", bgColor: "bg-slate-700", textColor: "text-neutral-200" },
+    { id: 5, text: "The manner of giving is worth more than the gift.", bgColor: "bg-stone-700", textColor: "text-neutral-200" },
+  ];
+
+  const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentBannerIndex((prevIndex) => (prevIndex + 1) % quoteBanners.length);
+    }, 10000); 
+
+    return () => clearInterval(timer);
+  }, [quoteBanners.length]);
+
+  const currentBanner = quoteBanners[currentBannerIndex];
+
+  return (
+    <section className="my-8 sm:my-12">
+      <div
+        className={`w-full h-20 sm:h-24 md:h-28 flex items-center justify-center p-4 rounded-lg shadow-md transition-all duration-700 ease-in-out ${currentBanner.bgColor} ${currentBanner.textColor}`}
+      >
+        <p className="text-sm sm:text-base md:text-lg font-medium text-center italic">
+          "{currentBanner.text}"
+        </p>
+      </div>
+    </section>
+  );
+};
+
 
 const GiftTypeHighlight = () => {
     const featuredTypes = ['caricature', '3d-crystals', 'photo-frames', 'miniature', 'custom-mugs', '3d-lamps'];
@@ -688,6 +722,7 @@ export default function HomePage()
       <HeroCarousel />
       <SmartFinderPanel />
       <OccasionSpotlight />
+      <GiftQuoteBanners />
       <TopCurations />
       <GiftTypeHighlight />
       <TrendingSpotlight products={spotlightProducts} />
@@ -697,4 +732,6 @@ export default function HomePage()
     </div>
   );
 }
+    
+
     
