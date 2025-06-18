@@ -15,6 +15,8 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+
 
 const accountSections = [
   { title: 'My Orders', description: 'View your order history and track shipments.', icon: ShoppingBag, href: '/account/orders' },
@@ -23,6 +25,14 @@ const accountSections = [
   { title: 'Address Book', description: 'Manage your shipping addresses.', icon: MapPin, href: '/account/addresses' },
   { title: 'Notifications', description: 'Manage your notification preferences.', icon: Bell, href: '/account/notifications' },
 ];
+
+const LOCAL_STORAGE_PROFILE_KEY_PREFIX = 'just4u_profile_';
+
+interface StoredProfileData {
+  phoneNumber?: string;
+  deliveryAddress?: string;
+  age?: string;
+}
 
 export default function AccountPage() {
   const { user, loading, signOutUser, updateUserFirebaseProfile } = useAuth();
@@ -42,26 +52,50 @@ export default function AccountPage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (user) {
+    if (user && !loading) {
       setDisplayName(user.displayName || '');
-      setPhoneNumber(user.phoneNumber || ''); 
-      setDeliveryAddress(''); 
-      setAge(''); 
-      // If a local photo was just selected and previewed, we don't want to discard it
-      // just because the user object (e.g. displayName) got updated from Firebase.
-      // So, photoPreview is NOT reset here unless the user logs out.
-      setPhotoFile(null); // Reset the file input state, as we don't hold the file itself after preview generation
-    } else {
-      // If user logs out, clear all fields including local preview
+      // Load other profile data from localStorage
+      const storageKey = `${LOCAL_STORAGE_PROFILE_KEY_PREFIX}${user.uid}`;
+      try {
+        const storedDataString = localStorage.getItem(storageKey);
+        if (storedDataString) {
+          const storedData: StoredProfileData = JSON.parse(storedDataString);
+          setPhoneNumber(storedData.phoneNumber || '');
+          setDeliveryAddress(storedData.deliveryAddress || '');
+          setAge(storedData.age || '');
+        } else {
+          // If no stored data, initialize with empty strings (or defaults if you have them)
+          setPhoneNumber('');
+          setDeliveryAddress('');
+          setAge('');
+        }
+      } catch (error) {
+        console.error("Error loading profile data from localStorage:", error);
+        // Fallback to empty strings if localStorage fails
+        setPhoneNumber('');
+        setDeliveryAddress('');
+        setAge('');
+      }
+      
+      // photoPreview should primarily reflect user.photoURL unless a local file is chosen
+      // It's not persisted in localStorage to avoid size issues with data URIs
+      if (!photoFile) { // Only reset preview if a new file isn't already staged
+         setPhotoPreview(user.photoURL || null);
+      }
+      setIsEditing(false); // Reset editing state on user change
+
+    } else if (!user && !loading) {
+      // User logged out, clear all fields
       setDisplayName('');
       setPhoneNumber('');
       setDeliveryAddress('');
       setAge('');
       setPhotoFile(null);
       setPhotoPreview(null);
-      setIsEditing(false); // Ensure editing mode is turned off on logout
+      setIsEditing(false);
     }
-  }, [user]);
+  }, [user, loading]);
+
 
   const handlePhotoChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
@@ -87,29 +121,31 @@ export default function AccountPage() {
       };
       // We are NOT updating photoURL with photoPreview (local data URI) to avoid "URL too long" error.
       // Firebase Auth photoURL is best updated with a URL from a service like Firebase Storage.
-      // For this interaction, only displayName is saved to Firebase Auth.
       await updateUserFirebaseProfile(user, profileDataToUpdate);
       
-      toast({ title: "Profile Updated", description: "Your display name has been updated in Firebase." });
+      toast({ title: "Profile Updated", description: "Your display name has been updated." });
+
+      // Save other non-Auth fields to localStorage
+      const otherProfileData: StoredProfileData = { phoneNumber, deliveryAddress, age };
+      const storageKey = `${LOCAL_STORAGE_PROFILE_KEY_PREFIX}${user.uid}`;
+      localStorage.setItem(storageKey, JSON.stringify(otherProfileData));
+      console.log("Phone, Address, Age saved to localStorage for user:", user.uid);
+
 
       // If a new photo was selected (photoFile was set), we keep photoPreview for this page's avatar.
       // Reset photoFile to allow for another selection if desired.
       // The actual user.photoURL in Firebase Auth is NOT updated with the local preview.
       if (photoFile) {
-        console.log("New profile photo was locally previewed. Display name updated in Firebase. Local photo not saved to Firebase Auth's photoURL.");
+        console.log("New profile photo was locally previewed. Display name updated in Firebase. Local photo not saved to Firebase Auth's photoURL. Phone/Address/Age saved to localStorage.");
         setPhotoFile(null); // Reset the file input state, but photoPreview remains for local display.
       }
-
-      // Log other non-Firebase Auth fields (these are not persisted in Firebase Auth)
-      console.log("Phone number (local state, not saved to Firebase Auth):", phoneNumber);
-      console.log("Delivery address (local state, not saved to Firebase Auth):", deliveryAddress);
-      console.log("Age (local state, not saved to Firebase Auth):", age);
 
     } catch (error) {
       const authError = error as Error;
       toast({ title: "Update Failed", description: authError.message || "Could not update profile.", variant: "destructive" });
     } finally {
       setIsSaving(false);
+      setIsEditing(false); // Exit editing mode after save attempt
     }
   };
   
@@ -117,9 +153,11 @@ export default function AccountPage() {
     if (isEditing) { 
       // When clicking "Done Editing"
       await handleProfileSave(); 
+      // setIsEditing(false) is handled in handleProfileSave's finally block
+    } else {
+      // When clicking "Edit Profile"
+      setIsEditing(true);
     }
-    // Toggle editing mode
-    setIsEditing(!isEditing);
   };
   
   const handleSignOut = async () => {
@@ -212,7 +250,7 @@ export default function AccountPage() {
                   </Avatar>
                   {isEditing && (
                     <Button 
-                      type="button" // Important: prevents form submission
+                      type="button" 
                       size="icon" 
                       variant="outline" 
                       className="absolute bottom-0 right-0 rounded-full h-8 w-8 bg-background/80 hover:bg-background" 
@@ -281,7 +319,7 @@ export default function AccountPage() {
                 )}
 
                 <Button 
-                  type="button" // Important: prevents form submission
+                  type="button" 
                   variant="outline" 
                   onClick={handleEditToggle} 
                   className="w-full text-primary border-primary hover:bg-primary/10 hover:text-primary"
@@ -291,7 +329,7 @@ export default function AccountPage() {
                 </Button>
 
                 <Button
-                  type="button" // Important: prevents form submission
+                  type="button" 
                   variant="outline"
                   className="w-full text-destructive border-destructive hover:bg-destructive hover:text-destructive-foreground"
                   onClick={handleSignOut}
@@ -354,5 +392,6 @@ export default function AccountPage() {
     
 
     
+
 
 
