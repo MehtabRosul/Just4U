@@ -22,6 +22,18 @@ const allTestimonialsData = [
     { id: 10, quote: "Just4UGifts made our team awards so special with their crystal trophies. Great quality.", author: "Sunil M., Manager", tag: "Professional", tagColor: "bg-gray-700", rating: 5 },
     { id: 11, quote: "My custom bobblehead looked exactly like me! Hilarious and well-made.", author: "Rohan P.", tag: "So Fun!", tagColor: "bg-lime-500", rating: 4 },
     { id: 12, quote: "The photo-to-art canvas turned our vacation picture into a masterpiece. Highly recommend!", author: "Aisha B.", tag: "Artistic", tagColor: "bg-fuchsia-500", rating: 5 },
+    { id: 13, quote: "Got a set of personalized keychains for my friends. They were a big hit, great quality.", author: "Varun S.", tag: "Great Value", tagColor: "bg-amber-500", rating: 5 },
+    { id: 14, quote: "The nameplate for our new home is beautiful and exactly what we wanted. Thank you!", author: "Neha & Raj K.", tag: "Perfect Finish", tagColor: "bg-emerald-500", rating: 5 },
+    { id: 15, quote: "Ordered a custom t-shirt with a quirky design. Print quality is excellent and fabric is comfy.", author: "Tina G.", tag: "Cool Stuff", tagColor: "bg-sky-500", rating: 4 },
+    { id: 16, quote: "The shadow box for my collectibles is stunning. It showcases them perfectly. Superb craftsmanship.", author: "Arjun M.", tag: "Masterpiece", tagColor: "bg-rose-500", rating: 5 },
+    { id: 17, quote: "Our wedding caricatures were a highlight! Everyone loved them as favors.", author: "Priya & Rahul", tag: "Wedding Hit!", tagColor: "bg-pink-600", rating: 5 },
+    { id: 18, quote: "The 3D miniature of our family is a treasure. The details are incredible!", author: "The Sharma Family", tag: "Family Treasure", tagColor: "bg-blue-600", rating: 5 },
+    { id: 19, quote: "My custom photo mug is my new favorite. Makes my coffee taste better!", author: "Aakash V.", tag: "Morning Joy", tagColor: "bg-orange-500", rating: 5 },
+    { id: 20, quote: "The photo clock for my office is both functional and beautiful. Great conversation starter.", author: "Anita D.", tag: "Office Decor", tagColor: "bg-teal-600", rating: 4 },
+    { id: 21, quote: "Just4UGifts has the best selection of unique gifts. I always find something perfect!", author: "Ravi K.", tag: "Go-To Store", tagColor: "bg-green-600", rating: 5 },
+    { id: 22, quote: "The personalized photo keychain was a small gift but made a big impact. Loved it!", author: "Sara J.", tag: "Sweet & Simple", tagColor: "bg-purple-600", rating: 5 },
+    { id: 23, quote: "My corporate clients were very impressed with the branded gift sets. Highly professional.", author: "Mr. Alok Verma", tag: "Corporate Choice", tagColor: "bg-indigo-600", rating: 5 },
+    { id: 24, quote: "The photo-to-art canvas of my pet is stunning. It's like having a museum piece at home.", author: "Meera N.", tag: "Pet Portrait Love", tagColor: "bg-fuchsia-600", rating: 5 },
 ];
 
 
@@ -67,3 +79,5 @@ export default function TestimonialsPage() {
     </div>
   );
 }
+
+    
