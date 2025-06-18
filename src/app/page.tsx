@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect, useMemo } from 'react';
@@ -394,7 +395,7 @@ const TrendingSpotlight = ({ products }: { products: Product[] }) => {
         <div className="mt-8 text-center">
             <Button asChild size="lg" className="bg-primary hover:bg-primary/80 text-primary-foreground text-base px-10 py-3 rounded-lg shadow-md hover:shadow-lg transition-shadow">
               <Link href="/products?sort=trending">
-                Explore Trending Gifts
+                Explore Spotlight Gifts
               </Link>
             </Button>
         </div>
