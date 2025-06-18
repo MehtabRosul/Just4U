@@ -592,17 +592,17 @@ const GiftTypeHighlight = () => {
                 const imageHint = gt.dataAiHint || "gift category";
                 return (
                   <Link key={gt.id} href={`/products?category=${gt.slug}`} className="block group">
-                    <div className="bg-neutral-800 p-3 rounded-lg transition-all duration-200 ease-in-out group-hover:bg-neutral-700 group-hover:shadow-lg">
+                    <div className="bg-card p-3 rounded-lg transition-all duration-200 ease-in-out group-hover:bg-primary/5 group-hover:shadow-xl border border-border group-hover:border-primary/30">
                         <div className="relative w-full aspect-[4/3] rounded-md overflow-hidden mb-3">
                             <Image
-                                src="https://placehold.co/400x300.png"
+                                src="https://placehold.co/400x300.jpg"
                                 alt={gt.name}
                                 fill
                                 className="object-cover transition-transform duration-200 group-hover:scale-105"
                                 data-ai-hint={imageHint}
                             />
                         </div>
-                        <h3 className="text-sm font-medium text-neutral-200 text-center truncate group-hover:text-primary transition-colors">
+                        <h3 className="text-sm font-medium text-card-foreground text-center truncate group-hover:text-primary transition-colors">
                             {gt.name}
                         </h3>
                     </div>
@@ -686,3 +686,6 @@ export default function HomePage()
 
 
 
+
+
+    
