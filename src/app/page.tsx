@@ -8,13 +8,14 @@ import { SectionTitle } from '@/components/shared/SectionTitle';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, ChevronDown, Sparkles as SparklesIcon, Quote, Star as StarIconLucide, Gift, CalendarDays, PartyPopper, Heart, Briefcase, ToyBrick, Utensils, Gem, Camera, Lamp, Smile, ArrowRightCircle, Users, Award, Trophy, Rocket, GraduationCap, Shield, ShoppingBag, Feather, Star as StarLucide, User, Diamond, Plane, Baby, Flower, Palette, Music, Package, Anchor, Pencil, ThumbsUp, Leaf, Medal, Moon, Newspaper, Pin, School, Search, Sprout, Store, Sun, Tag, Ticket, TreeDeciduous, Wand, Watch, Wind, Wine, Zap, HomeIcon } from 'lucide-react';
+import { ArrowRight, ChevronDown, Sparkles as SparklesIcon, Quote, Star as StarIconLucide, Gift, CalendarDays, PartyPopper, Heart, Briefcase, ToyBrick, Utensils, Gem, Camera, Lamp, Smile, ArrowRightCircle, Users, Award, Trophy, Rocket, GraduationCap, Shield, ShoppingBag, Feather, Star as StarLucide, User, Diamond, Plane, Baby, Flower, Palette, Music, Package, Anchor, Pencil, ThumbsUp, Leaf, Medal, Moon, Newspaper, Pin, School, Search, Sprout, Store, Sun, Tag, Ticket, TreeDeciduous, Wand, Watch, Wind, Wine, Zap, HomeIcon as HomeIconLucide } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
 import { Label } from '@/components/ui/label';
 import { ProductCard } from '@/components/products/ProductCard';
+
 
 interface CarouselBanner {
   id: number;
@@ -214,14 +215,10 @@ const HeroCarousel = () => {
 
 const priceRangeOptions = [
   { value: 'all', label: 'All Prices' },
-  { value: '0-99', label: 'Below Rs. 100' },
-  { value: '100-250', label: 'Rs. 100 - Rs. 250' },
-  { value: '250-500', label: 'Rs. 250 - Rs. 500' },
-  { value: '500-750', label: 'Rs. 500 - Rs. 750' },
-  { value: '750-1000', label: 'Rs. 750 - Rs. 1000' },
-  { value: '1000-2500', label: 'Rs. 1000 - Rs. 2500' },
-  { value: '2500-5000', label: 'Rs. 2500 - Rs. 5000' },
-  { value: '5000-Infinity', label: 'Above Rs. 5000' },
+  { value: '0-499', label: 'Under ₹500' },
+  { value: '500-999', label: '₹500 - ₹999' },
+  { value: '1000-2999', label: '₹1000 - ₹2999' },
+  { value: '3000-Infinity', label: 'Above ₹3000' },
 ];
 
 const SmartFinderPanel = () => {
@@ -330,12 +327,12 @@ const SmartFinderPanel = () => {
 
 const TopCurations = () => {
   const curations = [
-    { name: 'Occasion', Icon: CalendarDays, slug:'all', type: 'occasion' },
-    { name: 'Birthday', Icon: PartyPopper, slug:'birthday', type: 'occasion' },
-    { name: 'Anniversary', Icon: Heart, slug:'anniversary', type: 'occasion' },
-    { name: 'Corporate', Icon: Briefcase, slug:'premium-gifts', type: 'giftType' },
-    { name: 'Personalized', Icon: SparklesIcon, slug:'photo-gifts', type: 'giftType' },
-    { name: 'Miniature', Icon: ToyBrick, slug:'miniature', type: 'giftType' },
+    { name: 'Birthdays', Icon: PartyPopper, slug:'birthday', type: 'occasion' },
+    { name: 'Anniversaries', Icon: Gift, slug:'anniversary', type: 'occasion' },
+    { name: 'Miniatures', Icon: ToyBrick, slug:'mini-you-series', type: 'giftType' },
+    { name: 'Photo Frames', Icon: Camera, slug:'photo-frames', type: 'giftType' },
+    { name: 'Corporate', Icon: Briefcase, slug:'corporate-awards', type: 'giftType' }, // Updated to a valid corporate gift type
+    { name: 'Personalized', Icon: SparklesIcon, slug:'photo-gifts-general', type: 'giftType' },
   ];
   return (
     <section className="my-8 sm:my-12">
@@ -439,7 +436,7 @@ const Advertisements = () => {
               index === currentImageIndex ? "opacity-100 z-10" : "opacity-0 z-0"
             )}
             data-ai-hint={banner.dataAiHint}
-            priority={index === 0} 
+            priority={index === 0}
           />
         ))}
       </div>
@@ -514,7 +511,7 @@ const TestimonialsSection = () => {
     { id: 63, quote: "I ordered a digital sketch for a friend who lives far away. It was a perfect and quick gift!", author: "Prakash S.", tag: "Perfect Digital Gift", tagColor: "bg-gray-700", rating: 5 },
     { id: 64, quote: "The team at Just4UGifts is always helpful and the products are top-notch. My trusted gift store.", author: "Anita B.", tag: "Trusted & Top-Notch", tagColor: "bg-red-500", rating: 5 },
   ];
-  
+
 
   const ITEMS_PER_SET = 8;
   const ROTATION_INTERVAL = 15000; // 15 seconds
@@ -522,7 +519,7 @@ const TestimonialsSection = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    if (allTestimonialsData.length <= ITEMS_PER_SET) return; 
+    if (allTestimonialsData.length <= ITEMS_PER_SET) return;
 
     const intervalId = setInterval(() => {
       setCurrentIndex(prevIndex => (prevIndex + ITEMS_PER_SET) % allTestimonialsData.length);
@@ -532,19 +529,23 @@ const TestimonialsSection = () => {
 
   const displayedTestimonials = useMemo(() => {
     const endIndex = currentIndex + ITEMS_PER_SET;
+    // Handle wrap-around for the last set if it's smaller than ITEMS_PER_SET
+    if (endIndex > allTestimonialsData.length) {
+        return allTestimonialsData.slice(currentIndex).concat(allTestimonialsData.slice(0, endIndex % allTestimonialsData.length));
+    }
     return allTestimonialsData.slice(currentIndex, endIndex);
-  }, [currentIndex, allTestimonialsData]); // Added allTestimonialsData to dependencies
+  }, [currentIndex, allTestimonialsData]);
 
   return (
     <section className="my-8 sm:my-12">
       <SectionTitle className="text-white mb-6 sm:mb-8">Words from Our Happy Gifting Community</SectionTitle>
-      <div 
-        key={currentIndex} 
+      <div
+        key={currentIndex}
         className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5"
       >
         {displayedTestimonials.map((testimonial) => (
-          <Card 
-            key={testimonial.id} 
+          <Card
+            key={testimonial.id}
             className="bg-neutral-800 border-neutral-700 shadow-lg flex flex-col hover:shadow-primary/30 transition-shadow duration-300 animate-in fade-in duration-500"
           >
             <CardContent className="p-4 flex-grow flex flex-col">
@@ -581,7 +582,7 @@ const TestimonialsSection = () => {
 
 const OccasionSpotlight = () => {
   const occasionsToDisplay = OCCASIONS_LIST.slice(0, 10);
-  const marqueeItems = [...occasionsToDisplay, ...occasionsToDisplay]; 
+  const marqueeItems = [...occasionsToDisplay, ...occasionsToDisplay];
 
   return (
     <section className="my-8 sm:my-12">
@@ -680,7 +681,7 @@ const GiftQuoteBanners = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentBannerIndex((prevIndex) => (prevIndex + 1) % quoteBanners.length);
-    }, 10000); 
+    }, 10000);
 
     return () => clearInterval(timer);
   }, [quoteBanners.length]);
@@ -690,14 +691,14 @@ const GiftQuoteBanners = () => {
   return (
     <section className="my-8 sm:my-12">
       <div
-        key={currentBanner.id} 
+        key={currentBanner.id}
         className={cn(
           "w-full h-20 sm:h-24 md:h-28 flex items-center justify-center p-4 rounded-lg shadow-md relative overflow-hidden animate-breathing-scale",
-          currentBanner.animationClasses 
+          currentBanner.animationClasses
         )}
       >
         <p className={cn(
-          "text-sm sm:text-base md:text-lg font-medium text-center italic relative z-10", 
+          "text-sm sm:text-base md:text-lg font-medium text-center italic relative z-10",
            currentBanner.textColorClass
            )}>
           "{currentBanner.text}"
@@ -709,7 +710,7 @@ const GiftQuoteBanners = () => {
 
 
 const GiftTypeHighlight = () => {
-    const featuredTypes = ['caricature', '3d-crystals', 'photo-frames', 'miniature', 'custom-mugs', '3d-lamps'];
+    const featuredTypes = ['mini-you-caricatures', '3d-crystals', 'photo-frames', 'mini-you-series', 'utility-mugs', 'photo-lamps'];
     const productsToShow = GIFT_TYPES_LIST.filter(gt => featuredTypes.includes(gt.slug));
 
     return (
@@ -742,7 +743,7 @@ const GiftTypeHighlight = () => {
 };
 
 const RecipientQuickLinks = () => {
-  const marqueeRecipients = [...RECIPIENTS_LIST, ...RECIPIENTS_LIST]; 
+  const marqueeRecipients = [...RECIPIENTS_LIST, ...RECIPIENTS_LIST];
 
   return (
     <section className="my-8 sm:my-12">
@@ -751,11 +752,12 @@ const RecipientQuickLinks = () => {
         <div className="flex animate-marquee-horizontal-reverse group-hover/marquee:[animation-play-state:paused] whitespace-nowrap py-2">
           {marqueeRecipients.map((recipient, index) => {
             const uniqueKey = `${recipient.id}-${index}`;
+            // const RecipientIcon = recipient.Icon; Removed as we are using images
             return (
               <Link
                 key={uniqueKey}
                 href={`/products?recipient=${recipient.slug}`}
-                className="group/item flex-shrink-0 w-36 mx-2" 
+                className="group/item flex-shrink-0 w-36 mx-2"
               >
                 <div
                   className={cn(
@@ -763,7 +765,7 @@ const RecipientQuickLinks = () => {
                     "border-2 border-transparent group-hover/item:-translate-y-1 group-hover/item:shadow-xl group-hover/item:border-primary"
                   )}
                 >
-                  <div className="relative w-full aspect-[1/1]"> 
+                  <div className="relative w-full aspect-[1/1]">
                     <Image
                       src={`https://placehold.co/200x200.jpg`}
                       alt={recipient.name}
@@ -816,4 +818,3 @@ export default function HomePage()
     </div>
   );
 }
-
