@@ -34,13 +34,15 @@ export interface BaseCategory {
 }
 
 export interface Occasion extends BaseCategory {
-  Icon?: LucideIcon; // Retained for OccasionSpotlight
+  Icon?: LucideIcon;
+  lottieAnimationUrl?: string; // Added for Lottie animations
+  dataAiHint?: string;
 }
 export interface GiftType extends BaseCategory {
-   Icon?: LucideIcon; // Retained for GiftTypeHighlight if specific icons are preferred over images later
+   Icon?: LucideIcon;
 }
 export interface Recipient extends BaseCategory {
-  // Icon property is removed as we are moving to images for RecipientQuickLinks
+  dataAiHint?: string; // Icon property removed
 }
 
 // Legacy Category type, maps to GiftType now
@@ -60,7 +62,7 @@ export interface WishlistItem extends Product {}
 export interface NavItem {
   label: string;
   href: string;
-  icon?: LucideIcon; // Retained for potential use elsewhere
+  icon?: LucideIcon;
   children?: NavItem[]; // For dropdowns/mega-menus
   megaMenuColumns?: MegaMenuColumn[];
 }

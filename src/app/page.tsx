@@ -518,7 +518,7 @@ const TestimonialsSection = () => {
 
 const OccasionSpotlight = () => {
   const occasionsToDisplay = OCCASIONS_LIST.slice(0, 10);
-  const marqueeItems = [...occasionsToDisplay, ...occasionsToDisplay]; // Duplicate for seamless loop
+  const marqueeItems = [...occasionsToDisplay, ...occasionsToDisplay]; 
 
   return (
     <section className="my-8 sm:my-12">
@@ -542,7 +542,17 @@ const OccasionSpotlight = () => {
                     "group-hover/item:bg-primary/80 group-hover/item:shadow-xl group-hover/item:shadow-primary/30 group-hover/item:scale-105 group-hover/item:border-primary"
                   )}
                 >
-                  {OccIcon ? (
+                  {occasion.lottieAnimationUrl ? (
+                    <LottiePlayer
+                      path={occasion.lottieAnimationUrl}
+                      play
+                      loop
+                      style={{ width: 48, height: 48, marginBottom: '0.75rem' }}
+                      className={cn(
+                        "transition-opacity duration-300 group-hover/item:opacity-80"
+                      )}
+                    />
+                  ) : OccIcon ? (
                     <OccIcon
                       className={cn(
                         "h-12 w-12 text-primary mb-3",
@@ -583,62 +593,64 @@ const GiftQuoteBanners = () => {
     { 
       id: 1, 
       text: "The best gifts come from the heart, not the store.", 
-      lottieAnimationUrl: "https://lottie.host/801a2a89-3221-4f13-8877-353d537f190e/g9z4J8wY0Z.json", // Replace with actual Lottie URL
+      lottieAnimationUrl: "https://lottie.host/801a2a89-3221-4f13-8877-353d537f190e/g9z4J8wY0Z.json",
       textColorClass: "text-white" 
     },
     { 
       id: 2, 
       text: "Every gift from a friend is a wish for your happiness.", 
-      lottieAnimationUrl: "https://lottie.host/8aa22f51-a212-4f34-8c81-801c40b82f8a/xmsL0jKA7z.json", // Replace with actual Lottie URL
+      lottieAnimationUrl: "https://lottie.host/8aa22f51-a212-4f34-8c81-801c40b82f8a/xmsL0jKA7z.json",
       textColorClass: "text-neutral-100" 
     },
     { 
       id: 3, 
       text: "A gift is a wish for happiness.",  
-      lottieAnimationUrl: "https://lottie.host/b8e0a1f2-1f7c-473a-ba92-23746797825b/1z2Y3x4W5v.json", // Replace with actual Lottie URL
+      lottieAnimationUrl: "https://lottie.host/b8e0a1f2-1f7c-473a-ba92-23746797825b/1z2Y3x4W5v.json",
       textColorClass: "text-white" 
     },
     { 
       id: 4, 
       text: "The excellence of a gift lies in its appropriateness rather than in its value.", 
-      lottieAnimationUrl: "https://lottie.host/5e0f7f3a-9c29-4b95-8a8e-2f5a6e4d3c2b/oPqRsTuVwX.json", // Replace with actual Lottie URL
+      lottieAnimationUrl: "https://lottie.host/5e0f7f3a-9c29-4b95-8a8e-2f5a6e4d3c2b/oPqRsTuVwX.json",
       textColorClass: "text-neutral-100" 
     },
     { 
       id: 5, 
       text: "The manner of giving is worth more than the gift.", 
-      lottieAnimationUrl: "https://lottie.host/c4a3b2b1-d5e6-4f7a-8b9c-0d1e2f3a4b5c/AbCdEfGhIj.json", // Replace with actual Lottie URL
+      lottieAnimationUrl: "https://lottie.host/c4a3b2b1-d5e6-4f7a-8b9c-0d1e2f3a4b5c/AbCdEfGhIj.json",
       textColorClass: "text-white" 
     },
   ];
 
   const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
+  const [lottieData, setLottieData] = useState<object | null>(null);
 
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentBannerIndex((prevIndex) => (prevIndex + 1) % quoteBanners.length);
-    }, 10000); // Change banner every 10 seconds
+    }, 10000); 
 
     return () => clearInterval(timer);
   }, [quoteBanners.length]);
 
-  const currentBanner = quoteBanners[currentBannerIndex];
-  const [lottieData, setLottieData] = useState<object | null>(null);
-
   useEffect(() => {
+    const currentBanner = quoteBanners[currentBannerIndex];
     if (currentBanner.lottieAnimationUrl) {
+      setLottieData(null); // Clear previous animation data
       fetch(currentBanner.lottieAnimationUrl)
         .then(response => response.json())
         .then(data => setLottieData(data))
         .catch(error => {
           console.error("Error fetching Lottie animation:", error);
-          setLottieData(null); // Fallback or error state
+          setLottieData(null); 
         });
     } else {
       setLottieData(null);
     }
-  }, [currentBanner.lottieAnimationUrl]);
+  }, [currentBannerIndex, quoteBanners]);
 
+
+  const currentBanner = quoteBanners[currentBannerIndex];
 
   return (
     <section className="my-8 sm:my-12">
@@ -646,7 +658,6 @@ const GiftQuoteBanners = () => {
         key={currentBanner.id} 
         className={cn(
           "w-full h-20 sm:h-24 md:h-28 flex items-center justify-center p-4 rounded-lg shadow-md relative overflow-hidden",
-          // Base background color if Lottie fails or not present for some reason
           "bg-neutral-800" 
         )}
       >
@@ -667,7 +678,7 @@ const GiftQuoteBanners = () => {
           />
         )}
         <p className={cn(
-          "text-sm sm:text-base md:text-lg font-medium text-center italic relative z-10", // Added relative and z-10
+          "text-sm sm:text-base md:text-lg font-medium text-center italic relative z-10", 
            currentBanner.textColorClass
            )}>
           "{currentBanner.text}"
