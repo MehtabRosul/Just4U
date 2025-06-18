@@ -54,7 +54,7 @@ export default function AccountPage() {
   const handleEditToggle = () => setIsEditing(!isEditing);
 
   const handleProfileSave = async (e: FormEvent) => {
-    e.preventDefault();
+    e.preventDefault(); // Prevents traditional form submission / page reload
     if (!user) {
       toast({ title: "Error", description: "You must be logged in to save your profile.", variant: "destructive" });
       return;
@@ -187,7 +187,7 @@ export default function AccountPage() {
                     {displayName || user?.email || 'User Profile'}
                   </CardTitle>
                 )}
-                 <CardDescription className="text-sm text-center">
+                 <CardDescription className="text-sm text-center text-muted-foreground">
                   {user?.email}
                 </CardDescription>
               </CardHeader>
@@ -256,7 +256,7 @@ export default function AccountPage() {
           <Card className="bg-card border-border shadow-md">
             <CardHeader>
               <CardTitle className="text-lg text-card-foreground">Account Overview</CardTitle>
-              <CardDescription>Manage your account details and preferences.</CardDescription>
+              <CardDescription className="text-muted-foreground">Manage your account details and preferences.</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid sm:grid-cols-2 gap-4">
