@@ -613,7 +613,7 @@ const GiftTypeHighlight = () => {
 
 const RecipientQuickLinks = () => (
   <section className="my-8 sm:my-12">
-    <SectionTitle className="text-white">Gifts For</SectionTitle>
+    <SectionTitle className="text-white">Who's it For?</SectionTitle>
     <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3 sm:gap-4">
         {RECIPIENTS_LIST.slice(0,12).map(recipient => {
             const RecipientIcon = recipient.Icon;
