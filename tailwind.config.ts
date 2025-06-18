@@ -2,7 +2,7 @@
 import type {Config} from 'tailwindcss';
 
 export default {
-  darkMode: ['class'], // Maintained for shadcn compatibility, but default is dark.
+  darkMode: ['class'], 
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -60,7 +60,6 @@ export default {
           '4': 'hsl(var(--chart-4))',
           '5': 'hsl(var(--chart-5))',
         },
-        // Specific theme variables from new design
         'top-utility': {
           DEFAULT: 'hsl(var(--top-utility-bg))',
           foreground: 'hsl(var(--top-utility-fg))',
@@ -106,6 +105,27 @@ export default {
           '0%': { transform: 'translateX(-100%)' },
           '100%': { transform: 'translateX(0%)' },
         },
+        'nebula-shift': {
+          '0%': { backgroundPosition: '0% 50%' },
+          '50%': { backgroundPosition: '100% 50%' },
+          '100%': { backgroundPosition: '0% 50%' },
+        },
+        'liquid-flow': {
+          '0%': { backgroundPosition: '0% 50%' },
+          '100%': { backgroundPosition: '200% 50%' },
+        },
+        'bokeh-drift': {
+          '0%, 100%': { backgroundPosition: '0% 0%' },
+          '50%': { backgroundPosition: '100% 100%' },
+        },
+        'subtle-stripes': {
+          '0%, 100%': { backgroundPosition: '0% 50%' },
+          '50%': { backgroundPosition: '100% 50%' },
+        },
+        'watercolor-flow': {
+          '0%, 100%': { backgroundPosition: '0% 50%' },
+          '50%': { backgroundPosition: '100% 50%' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -113,6 +133,11 @@ export default {
         'marquee-text': 'marquee-text 25s linear infinite',
         'marquee-horizontal': 'marquee-horizontal 40s linear infinite', 
         'marquee-horizontal-reverse': 'marquee-horizontal-reverse 40s linear infinite',
+        'nebula-shift': 'nebula-shift 20s ease infinite',
+        'liquid-flow': 'liquid-flow 15s linear infinite',
+        'bokeh-drift': 'bokeh-drift 25s ease-in-out infinite',
+        'subtle-stripes': 'subtle-stripes 30s linear infinite',
+        'watercolor-flow': 'watercolor-flow 18s ease-in-out infinite',
       },
       height: { 
         '6': '1.5rem', 
