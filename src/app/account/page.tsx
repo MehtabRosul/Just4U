@@ -82,7 +82,7 @@ export default function AccountPage() {
       if (!photoFile) { // Only reset preview if a new file isn't already staged
          setPhotoPreview(user.photoURL || null);
       }
-      setIsEditing(false); // Reset editing state on user change
+      setIsEditing(false); // Reset editing state on user change or initial load
 
     } else if (!user && !loading) {
       // User logged out, clear all fields
@@ -94,7 +94,7 @@ export default function AccountPage() {
       setPhotoPreview(null);
       setIsEditing(false);
     }
-  }, [user, loading]);
+  }, [user, loading]); // Corrected dependency array
 
 
   const handlePhotoChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -116,11 +116,10 @@ export default function AccountPage() {
     }
     setIsSaving(true);
     try {
-      const profileDataToUpdate: { displayName?: string } = {
+      const profileDataToUpdate: { displayName?: string } = { // photoURL removed from here to prevent data URI error
         displayName: displayName,
       };
-      // We are NOT updating photoURL with photoPreview (local data URI) to avoid "URL too long" error.
-      // Firebase Auth photoURL is best updated with a URL from a service like Firebase Storage.
+      
       await updateUserFirebaseProfile(user, profileDataToUpdate);
       
       toast({ title: "Profile Updated", description: "Your display name has been updated." });
@@ -133,7 +132,6 @@ export default function AccountPage() {
 
 
       // If a new photo was selected (photoFile was set), we keep photoPreview for this page's avatar.
-      // Reset photoFile to allow for another selection if desired.
       // The actual user.photoURL in Firebase Auth is NOT updated with the local preview.
       if (photoFile) {
         console.log("New profile photo was locally previewed. Display name updated in Firebase. Local photo not saved to Firebase Auth's photoURL. Phone/Address/Age saved to localStorage.");
@@ -392,6 +390,7 @@ export default function AccountPage() {
     
 
     
+
 
 
 
