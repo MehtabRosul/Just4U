@@ -8,7 +8,7 @@ import { SectionTitle } from '@/components/shared/SectionTitle';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, ChevronDown, Sparkles as SparklesIcon, Quote, Star as StarIconLucide, Gift, CalendarDays, PartyPopper, Heart, Briefcase, ToyBrick, Utensils, Gem, Camera, Lamp, Smile, ArrowRightCircle, Users, Award, Trophy, Rocket, GraduationCap, Shield, ShoppingBag, Feather, Star as StarLucide } from 'lucide-react';
+import { ArrowRight, ChevronDown, Sparkles as SparklesIcon, Quote, Star as StarIconLucide, Gift, CalendarDays, PartyPopper, Heart, Briefcase, ToyBrick, Utensils, Gem, Camera, Lamp, Smile, ArrowRightCircle, Users, Award, Trophy, Rocket, GraduationCap, Shield, ShoppingBag, Feather, Star as StarLucide, User, Diamond, Plane, Baby, Flower, Palette, Music, Package, Anchor, Pencil, ThumbsUp, Leaf, Medal, Moon, Newspaper, Pin, School, Search, Sprout, Store, Sun, Tag, Ticket, TreeDeciduous, Wand, Watch, Wind, Wine, Zap, Home as HomeIcon } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
@@ -579,11 +579,11 @@ const OccasionSpotlight = () => {
 
 const GiftQuoteBanners = () => {
   const quoteBanners = [
-    { id: 1, text: "The best gifts come from the heart, not the store.", bgColor: "bg-red-700", textColor: "text-white" },
-    { id: 2, text: "Every gift from a friend is a wish for your happiness.", bgColor: "bg-neutral-700", textColor: "text-neutral-200" },
-    { id: 3, text: "A gift is a wish for happiness.", bgColor: "bg-rose-700", textColor: "text-white" },
-    { id: 4, text: "The excellence of a gift lies in its appropriateness rather than in its value.", bgColor: "bg-slate-700", textColor: "text-neutral-200" },
-    { id: 5, text: "The manner of giving is worth more than the gift.", bgColor: "bg-stone-700", textColor: "text-neutral-200" },
+    { id: 1, text: "The best gifts come from the heart, not the store.", animationClasses: "bg-red-700 animate-soft-glow-red", textColorClass: "text-white" },
+    { id: 2, text: "Every gift from a friend is a wish for your happiness.", animationClasses: "bg-gradient-to-r from-neutral-800 via-neutral-700 to-neutral-800 bg-[length:200%_100%] animate-slow-pan-neutral", textColorClass: "text-neutral-100" },
+    { id: 3, text: "A gift is a wish for happiness.",  animationClasses: "bg-rose-700 animate-pulse-opacity-rose", textColorClass: "text-white" },
+    { id: 4, text: "The excellence of a gift lies in its appropriateness rather than in its value.", animationClasses: "bg-gradient-to-tr from-slate-900 via-purple-800 to-sky-700 bg-[length:250%_250%] animate-aurora-dark", textColorClass: "text-neutral-100" },
+    { id: 5, text: "The manner of giving is worth more than the gift.", animationClasses: "animate-color-cycle-stone-bg", textColorClass: "text-white" },
   ];
 
   const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
@@ -591,7 +591,7 @@ const GiftQuoteBanners = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentBannerIndex((prevIndex) => (prevIndex + 1) % quoteBanners.length);
-    }, 10000);
+    }, 10000); // Change banner every 10 seconds
 
     return () => clearInterval(timer);
   }, [quoteBanners.length]);
@@ -601,9 +601,16 @@ const GiftQuoteBanners = () => {
   return (
     <section className="my-8 sm:my-12">
       <div
-        className={`w-full h-20 sm:h-24 md:h-28 flex items-center justify-center p-4 rounded-lg shadow-md transition-all duration-700 ease-in-out ${currentBanner.bgColor} ${currentBanner.textColor}`}
+        key={currentBanner.id} // Add key here to help React re-render and restart animation
+        className={cn(
+          "w-full h-20 sm:h-24 md:h-28 flex items-center justify-center p-4 rounded-lg shadow-md relative overflow-hidden",
+          currentBanner.animationClasses
+        )}
       >
-        <p className="text-sm sm:text-base md:text-lg font-medium text-center italic">
+        <p className={cn(
+          "text-sm sm:text-base md:text-lg font-medium text-center italic z-10",
+           currentBanner.textColorClass
+           )}>
           "{currentBanner.text}"
         </p>
       </div>
@@ -646,7 +653,7 @@ const GiftTypeHighlight = () => {
 };
 
 const RecipientQuickLinks = () => {
-  const marqueeRecipients = [...RECIPIENTS_LIST, ...RECIPIENTS_LIST]; // Duplicate for seamless loop
+  const marqueeRecipients = [...RECIPIENTS_LIST, ...RECIPIENTS_LIST]; 
 
   return (
     <section className="my-8 sm:my-12">
@@ -659,7 +666,7 @@ const RecipientQuickLinks = () => {
               <Link
                 key={uniqueKey}
                 href={`/products?recipient=${recipient.slug}`}
-                className="group/item flex-shrink-0 w-36 mx-2" // Card dimensions defined here
+                className="group/item flex-shrink-0 w-36 mx-2" 
               >
                 <div
                   className={cn(
@@ -667,7 +674,7 @@ const RecipientQuickLinks = () => {
                     "border-2 border-transparent group-hover/item:-translate-y-1 group-hover/item:shadow-xl group-hover/item:border-primary"
                   )}
                 >
-                  <div className="relative w-full aspect-[1/1]"> {/* Square aspect ratio for image */}
+                  <div className="relative w-full aspect-[1/1]"> 
                     <Image
                       src={`https://placehold.co/200x200.jpg`}
                       alt={recipient.name}
@@ -720,3 +727,4 @@ export default function HomePage()
     </div>
   );
 }
+
