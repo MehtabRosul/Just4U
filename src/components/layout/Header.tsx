@@ -92,25 +92,24 @@ export default function Header() {
             </Link>
             
             <Link href="/account" passHref>
-              <Button variant="ghost" size="icon" className={cn(
-                "text-foreground hover:text-primary hover:bg-accent/10 rounded-full",
-                user && user.displayName ? "p-0 sm:p-0" : "p-1 sm:p-1" // Adjust padding if name is shown
-              )}>
-                <div className="flex items-center">
+              <Button variant="ghost" className="text-foreground hover:text-primary hover:bg-accent/10 rounded-full px-2 py-1 h-auto min-h-[40px]">
+                <div className="flex items-center gap-2">
                   {!loading && user ? (
                     <>
-                      <Avatar className="h-6 w-6 sm:h-7 sm:w-7">
+                      <Avatar className="h-7 w-7">
                         <AvatarImage src={user.photoURL || undefined} alt={user.displayName || 'User'} />
-                        <AvatarFallback>{user.displayName ? user.displayName.charAt(0).toUpperCase() : <UserIcon className="h-4 w-4 sm:h-5 sm:w-5" />}</AvatarFallback>
+                        <AvatarFallback>
+                          {user.displayName ? user.displayName.charAt(0).toUpperCase() : <UserIcon className="h-4 w-4" />}
+                        </AvatarFallback>
                       </Avatar>
                       {user.displayName && (
-                        <span className="ml-1.5 hidden md:inline text-xs font-medium truncate max-w-[100px]">
+                        <span className="hidden md:inline text-sm font-medium truncate max-w-[100px]">
                           {user.displayName}
                         </span>
                       )}
                     </>
                   ) : (
-                    <UserIcon className="h-5 w-5 sm:h-6 sm:w-6" />
+                    <UserIcon className="h-5 w-5" /> 
                   )}
                 </div>
                 <span className="sr-only">Account</span>
