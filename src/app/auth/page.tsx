@@ -14,7 +14,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, LogIn, UserPlus, KeyRound } from 'lucide-react';
+import { Loader2, LogIn, UserPlus, Eye, EyeOff } from 'lucide-react';
 import { SiteLogo } from '@/components/layout/SiteLogo';
 
 const loginSchema = z.object({
@@ -39,6 +39,10 @@ export default function AuthPage() {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isGoogleSubmitting, setIsGoogleSubmitting] = useState(false);
+
+  const [showLoginPassword, setShowLoginPassword] = useState(false);
+  const [showSignUpPassword, setShowSignUpPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
 
   const { register: registerLogin, handleSubmit: handleLoginSubmit, formState: { errors: loginErrors } } = useForm<LoginInputs>({
@@ -82,7 +86,6 @@ export default function AuthPage() {
     setIsGoogleSubmitting(true);
     await signInWithGoogle();
     // Redirection and toast are handled by useAuth and useEffect
-    // No need to set isGoogleSubmitting to false here if redirection happens
     // but if it might fail and stay on page:
     setIsGoogleSubmitting(false); 
   };
@@ -124,19 +127,31 @@ export default function AuthPage() {
                     type="email"
                     placeholder="you@example.com"
                     {...registerLogin("email")}
-                    className={`mt-1 ${loginErrors.email ? 'border-destructive focus:ring-destructive' : 'border-input text-card-foreground bg-background placeholder:text-input-placeholder'}`}
+                    className={`mt-1 ${loginErrors.email ? 'border-destructive focus:ring-destructive' : 'border-input text-foreground bg-background placeholder:text-input-placeholder'}`}
                   />
                   {loginErrors.email && <p className="text-xs text-destructive mt-1">{loginErrors.email.message}</p>}
                 </div>
                 <div>
                   <Label htmlFor="login-password" className="text-card-foreground">Password</Label>
-                  <Input
-                    id="login-password"
-                    type="password"
-                    placeholder="••••••••"
-                    {...registerLogin("password")}
-                    className={`mt-1 ${loginErrors.password ? 'border-destructive focus:ring-destructive' : 'border-input text-card-foreground bg-background placeholder:text-input-placeholder'}`}
-                  />
+                  <div className="relative">
+                    <Input
+                      id="login-password"
+                      type={showLoginPassword ? "text" : "password"}
+                      placeholder="••••••••"
+                      {...registerLogin("password")}
+                      className={`mt-1 pr-10 ${loginErrors.password ? 'border-destructive focus:ring-destructive' : 'border-input text-foreground bg-background placeholder:text-input-placeholder'}`}
+                    />
+                    <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 text-muted-foreground hover:text-primary"
+                        onClick={() => setShowLoginPassword(!showLoginPassword)}
+                        aria-label={showLoginPassword ? "Hide password" : "Show password"}
+                    >
+                        {showLoginPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                    </Button>
+                  </div>
                   {loginErrors.password && <p className="text-xs text-destructive mt-1">{loginErrors.password.message}</p>}
                 </div>
                 <Button type="submit" className="w-full bg-primary text-primary-foreground hover:bg-primary/90" disabled={isSubmitting}>
@@ -155,30 +170,54 @@ export default function AuthPage() {
                     type="email"
                     placeholder="you@example.com"
                     {...registerSignUp("email")}
-                    className={`mt-1 ${signUpErrors.email ? 'border-destructive focus:ring-destructive' : 'border-input text-card-foreground bg-background placeholder:text-input-placeholder'}`}
+                    className={`mt-1 ${signUpErrors.email ? 'border-destructive focus:ring-destructive' : 'border-input text-foreground bg-background placeholder:text-input-placeholder'}`}
                   />
                   {signUpErrors.email && <p className="text-xs text-destructive mt-1">{signUpErrors.email.message}</p>}
                 </div>
                 <div>
                   <Label htmlFor="signup-password" className="text-card-foreground">Password</Label>
-                  <Input
-                    id="signup-password"
-                    type="password"
-                    placeholder="Choose a strong password"
-                    {...registerSignUp("password")}
-                    className={`mt-1 ${signUpErrors.password ? 'border-destructive focus:ring-destructive' : 'border-input text-card-foreground bg-background placeholder:text-input-placeholder'}`}
-                  />
+                  <div className="relative">
+                    <Input
+                      id="signup-password"
+                      type={showSignUpPassword ? "text" : "password"}
+                      placeholder="Choose a strong password"
+                      {...registerSignUp("password")}
+                      className={`mt-1 pr-10 ${signUpErrors.password ? 'border-destructive focus:ring-destructive' : 'border-input text-foreground bg-background placeholder:text-input-placeholder'}`}
+                    />
+                    <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 text-muted-foreground hover:text-primary"
+                        onClick={() => setShowSignUpPassword(!showSignUpPassword)}
+                        aria-label={showSignUpPassword ? "Hide password" : "Show password"}
+                    >
+                        {showSignUpPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                    </Button>
+                  </div>
                   {signUpErrors.password && <p className="text-xs text-destructive mt-1">{signUpErrors.password.message}</p>}
                 </div>
                 <div>
                   <Label htmlFor="confirmPassword" className="text-card-foreground">Confirm Password</Label>
-                  <Input
-                    id="confirmPassword"
-                    type="password"
-                    placeholder="Confirm your password"
-                    {...registerSignUp("confirmPassword")}
-                    className={`mt-1 ${signUpErrors.confirmPassword ? 'border-destructive focus:ring-destructive' : 'border-input text-card-foreground bg-background placeholder:text-input-placeholder'}`}
-                  />
+                  <div className="relative">
+                    <Input
+                      id="confirmPassword"
+                      type={showConfirmPassword ? "text" : "password"}
+                      placeholder="Confirm your password"
+                      {...registerSignUp("confirmPassword")}
+                      className={`mt-1 pr-10 ${signUpErrors.confirmPassword ? 'border-destructive focus:ring-destructive' : 'border-input text-foreground bg-background placeholder:text-input-placeholder'}`}
+                    />
+                     <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 text-muted-foreground hover:text-primary"
+                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                        aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+                    >
+                        {showConfirmPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                    </Button>
+                  </div>
                   {signUpErrors.confirmPassword && <p className="text-xs text-destructive mt-1">{signUpErrors.confirmPassword.message}</p>}
                 </div>
                 <Button type="submit" className="w-full bg-primary text-primary-foreground hover:bg-primary/90" disabled={isSubmitting}>
@@ -229,3 +268,4 @@ export default function AuthPage() {
     </div>
   );
 }
+
