@@ -14,6 +14,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
 import { Label } from '@/components/ui/label';
+import { ProductCard } from '@/components/products/ProductCard';
 
 interface CarouselBanner {
   id: number;
@@ -379,32 +380,33 @@ const TopCurations = () => {
   )
 };
 
-const DailySpotlight = ({ products }: { products: Product[] }) => (
+const TrendingSpotlight = ({ products }: { products: Product[] }) => {
+  const productsToShow = products.slice(0, 8);
+  return (
   <section className="my-8 sm:my-12">
-    <SectionTitle className="text-white">Just for Today</SectionTitle>
-    {products.length > 0 ? (
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-        {products.slice(0,4).map(p => (
-           <Card key={p.id} className="bg-card text-card-foreground overflow-hidden relative group">
-             <Link href={`/products/${p.slug}`} className="block">
-              <div className="absolute top-2 left-2 bg-primary text-primary-foreground text-xs font-bold px-2 py-1 rounded z-10">Deal of the Day</div>
-              <div className="absolute top-2 right-2 bg-black text-white text-xs px-2 py-1 rounded z-10">02:34:55</div>
-              <Image src={p.imageUrls[0]} alt={p.name} width={300} height={400} className="w-full h-48 sm:h-60 object-cover group-hover:scale-105 transition-transform" data-ai-hint={p.dataAiHint || "product deal"}/>
-              <CardContent className="p-3 bg-white">
-                <h3 className="text-sm sm:text-base font-semibold truncate group-hover:text-primary text-black">{p.name}</h3>
-                <div className="flex items-baseline gap-2 mt-1">
-                  <p className="text-md sm:text-lg font-bold text-primary">Rs. {p.price.toFixed(2)}</p>
-                  {p.originalPrice && <p className="text-xs sm:text-sm text-neutral-500 line-through">Rs. {p.originalPrice.toFixed(2)}</p>}
-                </div>
-                <Button variant="default" size="sm" className="w-full mt-2 text-xs bg-primary hover:bg-primary/90 text-primary-foreground">Grab Now</Button>
-              </CardContent>
-             </Link>
-           </Card>
-        ))}
-      </div>
-    ) : <p className="text-center text-muted-foreground">No deals today. Check back soon!</p>}
+    <SectionTitle className="text-white">Spotlight Steals</SectionTitle>
+    {productsToShow.length > 0 ? (
+      <>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+          {productsToShow.map(p => (
+             <ProductCard key={p.id} product={p} />
+          ))}
+        </div>
+        {products.length > 8 && ( 
+          <div className="mt-8 text-center">
+            <Button asChild size="lg" className="bg-primary hover:bg-primary/80 text-primary-foreground text-base px-10 py-3 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+              <Link href="/products?sort=trending">
+                Explore Trending Gifts
+              </Link>
+            </Button>
+          </div>
+        )}
+      </>
+    ) : <p className="text-center text-muted-foreground">No spotlight items today. Check back soon!</p>}
   </section>
-);
+  );
+};
+
 
 const Advertisements = () => {
   const bannerMessages = [
@@ -516,8 +518,6 @@ const TestimonialsSection = () => {
 };
 
 const OccasionSpotlight = () => {
-  // Ensure enough items for a smooth marquee, duplicate if necessary.
-  // We'll show up to 10 unique occasions, duplicated for the marquee effect.
   const occasionsToDisplay = OCCASIONS_LIST.slice(0, 10);
   const marqueeItems = [...occasionsToDisplay, ...occasionsToDisplay];
 
@@ -528,32 +528,32 @@ const OccasionSpotlight = () => {
         <div className="flex animate-marquee-horizontal group-hover/marquee:[animation-play-state:paused] whitespace-nowrap py-2">
           {marqueeItems.map((occasion, index) => {
             const OccIcon = occasion.Icon;
-            const uniqueKey = `${occasion.id}-${index}`; // Unique key for duplicated items
+            const uniqueKey = `${occasion.id}-${index}`; 
             return (
               <Link
                 key={uniqueKey}
                 href={`/products?occasion=${occasion.slug}`}
-                className="group/item flex-shrink-0 w-36 h-40 mx-2" // Card dimensions and margin
+                className="group/item flex-shrink-0 w-36 h-40 mx-2" 
               >
                 <div
                   className={cn(
                     "flex flex-col items-center justify-center p-4 rounded-lg bg-neutral-800 text-center h-full",
                     "transition-all duration-300 ease-in-out",
-                    "border-2 border-transparent", // Start with transparent border
+                    "border-2 border-transparent", 
                     "group-hover/item:bg-primary/80 group-hover/item:shadow-xl group-hover/item:shadow-primary/30 group-hover/item:scale-105 group-hover/item:border-primary"
                   )}
                 >
                   {OccIcon ? (
                     <OccIcon
                       className={cn(
-                        "h-12 w-12 text-primary mb-3", // Increased icon size
+                        "h-12 w-12 text-primary mb-3", 
                         "transition-colors duration-300 group-hover/item:text-primary-foreground"
                       )}
                     />
                   ) : (
                     <div
                       className={cn(
-                        "h-12 w-12 rounded-md bg-muted flex items-center justify-center mb-3", // Consistent placeholder size
+                        "h-12 w-12 rounded-md bg-muted flex items-center justify-center mb-3", 
                         "transition-colors duration-300 group-hover/item:bg-primary/20 group-hover/item:text-primary-foreground"
                       )}
                       data-ai-hint={occasion.dataAiHint || "occasion gift icon"}
@@ -563,7 +563,7 @@ const OccasionSpotlight = () => {
                   )}
                   <span
                     className={cn(
-                      "text-sm font-medium text-neutral-200 line-clamp-2", // Ensure text doesn't overflow card
+                      "text-sm font-medium text-neutral-200 line-clamp-2", 
                       "transition-colors duration-300 group-hover/item:text-primary-foreground"
                     )}
                   >
@@ -636,9 +636,12 @@ const RecipientQuickLinks = () => (
 
 export default function HomePage()
 {
-  const [dealProducts, setDealProducts] = useState<Product[]>([]);
+  const [spotlightProducts, setSpotlightProducts] = useState<Product[]>([]);
   useEffect(() => {
-    setDealProducts(PRODUCTS.filter(p => p.originalPrice && p.price < p.originalPrice).sort(() => 0.5 - Math.random()).slice(0, 4));
+    setSpotlightProducts(
+      PRODUCTS.filter(p => p.trending)
+              .sort((a,b) => b.popularity - a.popularity)
+    );
   }, []);
 
   return (
@@ -648,7 +651,7 @@ export default function HomePage()
       <OccasionSpotlight />
       <TopCurations />
       <GiftTypeHighlight />
-      <DailySpotlight products={dealProducts} />
+      <TrendingSpotlight products={spotlightProducts} />
       <RecipientQuickLinks />
       <Advertisements />
       <TestimonialsSection />
@@ -687,5 +690,7 @@ export default function HomePage()
 
 
 
+
+    
 
     
