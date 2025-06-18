@@ -8,7 +8,7 @@ import { SectionTitle } from '@/components/shared/SectionTitle';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, ChevronDown, Sparkles as SparklesIcon, Quote, Star, Gift, CalendarDays, PartyPopper, Heart, Briefcase, ToyBrick, Utensils, Gem, Camera, Lamp } from 'lucide-react';
+import { ArrowRight, ChevronDown, Sparkles as SparklesIcon, Quote, Star, Gift, CalendarDays, PartyPopper, Heart, Briefcase, ToyBrick, Utensils, Gem, Camera, Lamp, Smile } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
@@ -582,40 +582,58 @@ const OccasionSpotlight = () => {
 
 const GiftTypeHighlight = () => {
     const featuredTypes = ['caricature', '3d-crystals', 'photo-frames', 'miniature', 'custom-mugs', '3d-lamps'];
-    const productsToShow = GIFT_TYPES_LIST.filter(gt => featuredTypes.includes(gt.slug));
+    const productsToShow = GIFT_TYPES_LIST.filter(gt => featuredTypes.includes(gt.slug)).map(giftType => {
+      // Assign specific icons here, falling back to GiftType's default or a generic one
+      let ResolvedIcon = giftType.Icon; // Default from GIFT_TYPES_LIST
+      if (giftType.slug === 'caricature') ResolvedIcon = Smile;
+      else if (giftType.slug === '3d-crystals') ResolvedIcon = Gem;
+      else if (giftType.slug === 'photo-frames') ResolvedIcon = Camera;
+      else if (giftType.slug === 'miniature') ResolvedIcon = ToyBrick;
+      else if (giftType.slug === 'custom-mugs') ResolvedIcon = Utensils;
+      else if (giftType.slug === '3d-lamps') ResolvedIcon = Lamp;
+      return { ...giftType, ResolvedIcon: ResolvedIcon || Gift }; // Ensure ResolvedIcon is always defined
+    });
+
     return (
     <section className="my-8 sm:my-12">
         <SectionTitle className="text-white">Featured Gift Types</SectionTitle>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {productsToShow.map(gt => {
-                const GtIcon = gt.Icon;
+                const GtIcon = gt.ResolvedIcon; // Use the resolved icon
                 return (
                   <Link key={gt.id} href={`/products?category=${gt.slug}`} className="block group">
-                    <Card className="overflow-hidden transition-all duration-300 ease-in-out hover:shadow-xl hover:border-primary/50 bg-card text-card-foreground">
-                        <div className="relative w-full h-40 sm:h-48 bg-muted/30 group-hover:bg-muted/50 transition-colors">
-                            {GtIcon ? (
-                                <GtIcon className="absolute inset-0 m-auto h-20 w-20 text-primary transition-transform duration-300 group-hover:scale-110" />
-                            ) : (
-                                <Image 
-                                    src="https://placehold.co/400x300.png" 
-                                    alt={gt.name} 
-                                    width={400} 
-                                    height={300} 
-                                    className="object-cover w-full h-full group-hover:scale-105 transition-transform" 
-                                    data-ai-hint={gt.dataAiHint || "featured gift type"}
-                                />
-                            )}
-                        </div>
-                        <CardContent className="p-4 text-center">
-                            <h3 className="text-lg font-semibold mb-3 text-foreground group-hover:text-primary transition-colors">{gt.name}</h3>
-                            <Button 
-                                variant="outline" 
-                                size="sm" 
-                                className="w-full text-primary border-primary hover:bg-primary hover:text-primary-foreground transition-colors"
+                    <Card className="h-60 rounded-xl bg-neutral-800 relative overflow-hidden transition-all duration-300 ease-in-out group-hover:shadow-2xl group-hover:shadow-primary/40">
+                        {/* Background Hover Effect Layer */}
+                        <div className="absolute inset-0 transition-all duration-300 ease-in-out bg-neutral-700 group-hover:bg-gradient-radial from-primary/20 via-primary/5 to-neutral-700"></div>
+
+                        {/* Icon */}
+                        {GtIcon && (
+                        <GtIcon className="absolute inset-0 m-auto h-20 w-20 text-neutral-400 transition-all duration-300 ease-in-out group-hover:text-white group-hover:scale-110 group-hover:drop-shadow-[0_0_10px_hsl(var(--primary))]" />
+                        )}
+                        {!GtIcon && ( // Fallback for safety, though ResolvedIcon should cover it
+                            <Image 
+                                src="https://placehold.co/120x120.png" 
+                                alt={gt.name} 
+                                width={80} 
+                                height={80} 
+                                className="absolute inset-0 m-auto object-contain text-neutral-500 transition-all duration-300 ease-in-out group-hover:scale-110" 
+                                data-ai-hint={gt.dataAiHint || "gift category icon"}
+                            />
+                        )}
+
+                        {/* Content Overlay */}
+                        <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 via-black/40 to-transparent">
+                            <h3 className="text-lg font-semibold text-white mb-1.5 group-hover:text-primary-foreground transition-colors duration-300 truncate">
+                                {gt.name}
+                            </h3>
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                className="w-full text-xs py-1.5 px-3 bg-white/10 border-white/30 text-white backdrop-blur-sm hover:bg-primary hover:text-primary-foreground hover:border-primary group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary transition-all duration-300"
                             >
-                                View Products <ArrowRight className="ml-2 h-4 w-4" />
+                                Explore Gifts <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
                             </Button>
-                        </CardContent>
+                        </div>
                     </Card>
                   </Link>
             )})}
@@ -688,6 +706,7 @@ export default function HomePage()
     
 
     
+
 
 
 
