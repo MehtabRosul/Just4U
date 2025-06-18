@@ -9,14 +9,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { ShoppingBag, Heart, Gift, MapPin, Bell, LogOut, User as UserIcon, Edit3, Camera } from 'lucide-react';
+import { ShoppingBag, Heart, Gift, MapPin, Bell, LogOut, User as UserIcon, Edit3, Camera, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import Image from 'next/image';
 
 const accountSections = [
   { title: 'My Orders', description: 'View your order history and track shipments.', icon: ShoppingBag, href: '/account/orders' },
@@ -34,6 +34,20 @@ interface StoredProfileData {
   age?: string;
 }
 
+const predefinedAvatarUrls = [
+  'https://placehold.co/100x100/FF5733/FFFFFF.png', // Orange
+  'https://placehold.co/100x100/33FF57/000000.png', // Green
+  'https://placehold.co/100x100/3357FF/FFFFFF.png', // Blue
+  'https://placehold.co/100x100/FF33A1/FFFFFF.png', // Pink
+  'https://placehold.co/100x100/FFDD33/000000.png', // Yellow
+  'https://placehold.co/100x100/A133FF/FFFFFF.png', // Purple
+  'https://placehold.co/100x100/33FFF3/000000.png', // Cyan
+  'https://placehold.co/100x100/FF7033/FFFFFF.png', // Coral
+  'https://placehold.co/100x100/70FF33/000000.png', // Lime
+  'https://placehold.co/100x100/808080/FFFFFF.png'  // Gray
+].map((url, index) => ({ url, hint: `avatar ${index + 1}` }));
+
+
 export default function AccountPage() {
   const { user, loading, signOutUser, updateUserFirebaseProfile } = useAuth();
   const { toast } = useToast();
@@ -46,15 +60,16 @@ export default function AccountPage() {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [deliveryAddress, setDeliveryAddress] = useState('');
   const [age, setAge] = useState('');
-
-  const [photoFile, setPhotoFile] = useState<File | null>(null);
+  
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isAvatarDialogOpen, setIsAvatarDialogOpen] = useState(false);
+
 
   useEffect(() => {
     if (user && !loading) {
       setDisplayName(user.displayName || '');
-      // Load other profile data from localStorage
+      setPhotoPreview(user.photoURL || null);
+
       const storageKey = `${LOCAL_STORAGE_PROFILE_KEY_PREFIX}${user.uid}`;
       try {
         const storedDataString = localStorage.getItem(storageKey);
@@ -64,50 +79,28 @@ export default function AccountPage() {
           setDeliveryAddress(storedData.deliveryAddress || '');
           setAge(storedData.age || '');
         } else {
-          // If no stored data, initialize with empty strings (or defaults if you have them)
           setPhoneNumber('');
           setDeliveryAddress('');
           setAge('');
         }
       } catch (error) {
         console.error("Error loading profile data from localStorage:", error);
-        // Fallback to empty strings if localStorage fails
         setPhoneNumber('');
         setDeliveryAddress('');
         setAge('');
       }
-      
-      // photoPreview should primarily reflect user.photoURL unless a local file is chosen
-      // It's not persisted in localStorage to avoid size issues with data URIs
-      if (!photoFile) { // Only reset preview if a new file isn't already staged
-         setPhotoPreview(user.photoURL || null);
-      }
-      setIsEditing(false); // Reset editing state on user change or initial load
+      if (!isEditing) setIsEditing(false); // Ensure editing mode is reset if user changes
 
     } else if (!user && !loading) {
-      // User logged out, clear all fields
       setDisplayName('');
       setPhoneNumber('');
       setDeliveryAddress('');
       setAge('');
-      setPhotoFile(null);
       setPhotoPreview(null);
-      setIsEditing(false);
+      setIsEditing(false); // Reset editing state on logout
     }
-  }, [user, loading]); // Corrected dependency array
+  }, [user, loading, isEditing]); // Added isEditing to deps to reset fields if edit is cancelled by navigation/logout
 
-
-  const handlePhotoChange = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files[0]) {
-      const file = event.target.files[0];
-      setPhotoFile(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPhotoPreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
 
   const handleProfileSave = async () => {
     if (!user) {
@@ -116,46 +109,64 @@ export default function AccountPage() {
     }
     setIsSaving(true);
     try {
-      const profileDataToUpdate: { displayName?: string } = { // photoURL removed from here to prevent data URI error
+      const profileDataToUpdate: { displayName?: string; photoURL?: string } = {
         displayName: displayName,
       };
-      
+
+      // Only include photoURL if photoPreview has been changed to a new avatar
+      if (photoPreview && photoPreview !== user.photoURL) {
+        profileDataToUpdate.photoURL = photoPreview;
+      } else if (!photoPreview && user.photoURL) { 
+        // If photoPreview is nullified (e.g. user wants to remove avatar), set photoURL to empty string or null in Firebase
+        // Firebase Auth might not support setting photoURL to null directly, empty string is safer.
+        // For this example, if user wants to remove, they'd typically pick a "no avatar" option,
+        // or we'd add a "Remove Photo" button. Here, we assume photoPreview holds a valid selected URL or original.
+        // If photoPreview is cleared by some other means (not typical for selection model), we might update Firebase to remove it.
+        // For simplicity: if photoPreview is a new valid URL, it's sent.
+      }
+
+
       await updateUserFirebaseProfile(user, profileDataToUpdate);
       
-      toast({ title: "Profile Updated", description: "Your display name has been updated." });
+      toast({ title: "Profile Updated", description: "Your profile details have been updated." });
 
-      // Save other non-Auth fields to localStorage
       const otherProfileData: StoredProfileData = { phoneNumber, deliveryAddress, age };
       const storageKey = `${LOCAL_STORAGE_PROFILE_KEY_PREFIX}${user.uid}`;
       localStorage.setItem(storageKey, JSON.stringify(otherProfileData));
-      console.log("Phone, Address, Age saved to localStorage for user:", user.uid);
-
-
-      // If a new photo was selected (photoFile was set), we keep photoPreview for this page's avatar.
-      // The actual user.photoURL in Firebase Auth is NOT updated with the local preview.
-      if (photoFile) {
-        console.log("New profile photo was locally previewed. Display name updated in Firebase. Local photo not saved to Firebase Auth's photoURL. Phone/Address/Age saved to localStorage.");
-        setPhotoFile(null); // Reset the file input state, but photoPreview remains for local display.
-      }
-
+      
     } catch (error) {
       const authError = error as Error;
       toast({ title: "Update Failed", description: authError.message || "Could not update profile.", variant: "destructive" });
     } finally {
       setIsSaving(false);
-      setIsEditing(false); // Exit editing mode after save attempt
+      setIsEditing(false); 
     }
   };
   
   const handleEditToggle = async () => {
     if (isEditing) { 
-      // When clicking "Done Editing"
       await handleProfileSave(); 
-      // setIsEditing(false) is handled in handleProfileSave's finally block
     } else {
-      // When clicking "Edit Profile"
+      // Refresh data from user object when entering edit mode, in case it changed elsewhere or to discard local edits
+      if (user) {
+        setDisplayName(user.displayName || '');
+        setPhotoPreview(user.photoURL || null);
+        const storageKey = `${LOCAL_STORAGE_PROFILE_KEY_PREFIX}${user.uid}`;
+        const storedDataString = localStorage.getItem(storageKey);
+        if (storedDataString) {
+          const storedData: StoredProfileData = JSON.parse(storedDataString);
+          setPhoneNumber(storedData.phoneNumber || '');
+          setDeliveryAddress(storedData.deliveryAddress || '');
+          setAge(storedData.age || '');
+        }
+      }
       setIsEditing(true);
     }
+  };
+
+  const handleAvatarSelect = (url: string) => {
+    setPhotoPreview(url);
+    setIsAvatarDialogOpen(false);
   };
   
   const handleSignOut = async () => {
@@ -228,35 +239,59 @@ export default function AccountPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <SectionTitle className="mb-8 text-center sm:text-left">My Account</SectionTitle>
-      <input
-        type="file"
-        ref={fileInputRef}
-        onChange={handlePhotoChange}
-        accept="image/*"
-        className="hidden"
-      />
+      
       <div className="grid md:grid-cols-3 gap-8">
         <div className="md:col-span-1 space-y-6">
           <Card className="bg-card border-border shadow-md">
               <CardHeader className="items-center text-center pb-4">
                 <div className="relative group">
                   <Avatar className="h-24 w-24 mx-auto">
-                    <AvatarImage src={photoPreview || user?.photoURL || undefined} alt={displayName || user?.email || 'User'} />
+                    <AvatarImage src={photoPreview || undefined} alt={displayName || user?.email || 'User'} />
                     <AvatarFallback>
                       {displayName ? displayName.charAt(0).toUpperCase() : (user?.email ? user.email.charAt(0).toUpperCase() : <UserIcon className="h-10 w-10" />)}
                     </AvatarFallback>
                   </Avatar>
                   {isEditing && (
-                    <Button 
-                      type="button" 
-                      size="icon" 
-                      variant="outline" 
-                      className="absolute bottom-0 right-0 rounded-full h-8 w-8 bg-background/80 hover:bg-background" 
-                      onClick={() => fileInputRef.current?.click()}
-                    >
-                      <Camera className="h-4 w-4 text-primary" />
-                      <span className="sr-only">Change photo</span>
-                    </Button>
+                    <Dialog open={isAvatarDialogOpen} onOpenChange={setIsAvatarDialogOpen}>
+                      <DialogTrigger asChild>
+                        <Button 
+                          type="button" 
+                          size="icon" 
+                          variant="outline" 
+                          className="absolute bottom-0 right-0 rounded-full h-8 w-8 bg-background/80 hover:bg-background"
+                        >
+                          <Camera className="h-4 w-4 text-primary" />
+                          <span className="sr-only">Change photo</span>
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="sm:max-w-[425px] bg-card border-border">
+                        <DialogHeader>
+                          <DialogTitle className="text-card-foreground">Select Avatar</DialogTitle>
+                        </DialogHeader>
+                        <div className="grid grid-cols-5 gap-3 p-4 max-h-[300px] overflow-y-auto">
+                          {predefinedAvatarUrls.map((avatar) => (
+                            <button
+                              key={avatar.url}
+                              type="button"
+                              onClick={() => handleAvatarSelect(avatar.url)}
+                              className={cn(
+                                "rounded-full overflow-hidden border-2 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2",
+                                photoPreview === avatar.url ? "border-primary ring-2 ring-primary ring-offset-2" : "border-transparent hover:border-muted"
+                              )}
+                            >
+                              <Image
+                                src={avatar.url}
+                                alt={avatar.hint}
+                                width={60}
+                                height={60}
+                                className="object-cover"
+                                data-ai-hint={avatar.hint}
+                              />
+                            </button>
+                          ))}
+                        </div>
+                      </DialogContent>
+                    </Dialog>
                   )}
                 </div>
                 
@@ -323,7 +358,7 @@ export default function AccountPage() {
                   className="w-full text-primary border-primary hover:bg-primary/10 hover:text-primary"
                   disabled={isSaving}
                 >
-                  <Edit3 className="mr-2 h-4 w-4" /> {isEditing ? (isSaving ? 'Saving...' : 'Done Editing') : 'Edit Profile'}
+                  {isEditing ? (isSaving ? 'Saving...' : <><CheckCircle className="mr-2 h-4 w-4" />Done Editing</>) : <><Edit3 className="mr-2 h-4 w-4" /> Edit Profile</>}
                 </Button>
 
                 <Button
@@ -384,13 +419,3 @@ export default function AccountPage() {
   );
 }
     
-
-      
-
-    
-
-    
-
-
-
-
