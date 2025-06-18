@@ -126,6 +126,10 @@ export default {
           '0%, 100%': { backgroundPosition: '0% 50%' },
           '50%': { backgroundPosition: '100% 50%' },
         },
+        'breathing-scale': {
+          '0%, 100%': { transform: 'scale(1)' },
+          '50%': { transform: 'scale(1.02)' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -138,6 +142,7 @@ export default {
         'bokeh-drift': 'bokeh-drift 25s ease-in-out infinite',
         'subtle-stripes': 'subtle-stripes 30s linear infinite',
         'watercolor-flow': 'watercolor-flow 18s ease-in-out infinite',
+        'breathing-scale': 'breathing-scale 4s ease-in-out infinite',
       },
       height: { 
         '6': '1.5rem', 

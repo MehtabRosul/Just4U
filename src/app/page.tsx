@@ -587,31 +587,31 @@ const GiftQuoteBanners = () => {
   const quoteBanners = [
     {
       id: 1,
-      text: "The best gifts come from the heart, not the store.",
+      text: "A truly thoughtful gift is a silent message of affection, a tangible reminder that someone holds you dear and took the time to express it beautifully.",
       animationClasses: "bg-gradient-to-r from-indigo-800 via-purple-800 to-pink-800 bg-[length:300%_300%] animate-nebula-shift",
       textColorClass: "text-sky-200"
     },
     {
       id: 2,
-      text: "Every gift from a friend is a wish for your happiness.",
+      text: "The joy of gifting lies not in the object itself, but in the delight it brings to another's eyes, a shared moment of happiness that echoes long after the wrapping is gone.",
       animationClasses: "bg-gradient-to-r from-neutral-600 via-neutral-400 to-neutral-600 bg-[length:200%_100%] animate-liquid-flow",
       textColorClass: "text-neutral-100"
     },
     {
       id: 3,
-      text: "A gift is a wish for happiness.",
+      text: "Gifts are more than mere possessions; they are bridges between hearts, tokens of appreciation, and symbols of the unspoken bonds that connect us.",
       animationClasses: "bg-gradient-radial from-pink-600/60 via-purple-600/50 to-indigo-600/40 bg-[length:300%_300%] animate-bokeh-drift",
       textColorClass: "text-pink-100"
     },
     {
       id: 4,
-      text: "The excellence of a gift lies in its appropriateness rather than in its value.",
+      text: "In every carefully chosen gift, there's a story whispered – a tale of understanding, remembrance, and the simple, profound desire to bring a smile to someone's face.",
       animationClasses: "bg-gradient-to-r from-neutral-800 via-neutral-750 to-neutral-800 bg-[length:200%_100%] animate-subtle-stripes",
       textColorClass: "text-red-300"
     },
     {
       id: 5,
-      text: "The manner of giving is worth more than the gift.",
+      text: "Giving a gift is an art form where the heart guides the hand, selecting not just an item, but a piece of joy intended to brighten another's world.",
       animationClasses: "bg-gradient-to-br from-rose-700/70 via-red-700/60 to-orange-700/70 bg-[length:200%_200%] animate-watercolor-flow",
       textColorClass: "text-rose-100"
     },
@@ -634,7 +634,7 @@ const GiftQuoteBanners = () => {
       <div
         key={currentBanner.id} 
         className={cn(
-          "w-full h-20 sm:h-24 md:h-28 flex items-center justify-center p-4 rounded-lg shadow-md relative overflow-hidden",
+          "w-full h-20 sm:h-24 md:h-28 flex items-center justify-center p-4 rounded-lg shadow-md relative overflow-hidden animate-breathing-scale",
           currentBanner.animationClasses 
         )}
       >
