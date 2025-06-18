@@ -25,50 +25,42 @@ const accountSections = [
 ];
 
 export default function AccountPage() {
-  const { user, loading, signOutUser, updateUserFirebaseProfile } = useAuth();
+  const { user, loading, signOutUser, updateUserFirebaseProfile, signInWithGoogle } = useAuth();
   const { toast } = useToast();
   const router = useRouter();
 
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
-  // Editable profile fields
   const [displayName, setDisplayName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [deliveryAddress, setDeliveryAddress] = useState('');
   const [age, setAge] = useState('');
-  // For photoURL, direct update via Firebase updateProfile requires a URL.
-  // Actual file upload would need Firebase Storage and is more complex.
-  // We'll keep photoURL as is from Google or show fallback.
 
   useEffect(() => {
     if (user) {
       setDisplayName(user.displayName || '');
-      // Placeholder: In a real app, phone, address, and age would come from Firestore/Database
-      setPhoneNumber(user.phoneNumber || ''); // Firebase User object might not have this directly
-      setDeliveryAddress(''); // This would typically come from a separate user profile collection
-      setAge(''); // This would also come from a custom profile
+      setPhoneNumber(user.phoneNumber || ''); 
+      setDeliveryAddress(''); 
+      setAge(''); 
     }
   }, [user]);
 
   const handleEditToggle = () => setIsEditing(!isEditing);
 
   const handleProfileSave = async (e: FormEvent) => {
-    e.preventDefault(); // Prevents traditional form submission / page reload
+    e.preventDefault(); 
     if (!user) {
       toast({ title: "Error", description: "You must be logged in to save your profile.", variant: "destructive" });
       return;
     }
     setIsSaving(true);
     try {
-      // Only update displayName for now, as it's part of Firebase Auth User object
-      // photoURL update would require an actual URL from an upload process
       await updateUserFirebaseProfile(user, { displayName });
       
       toast({ title: "Profile Updated", description: "Your display name has been updated." });
       setIsEditing(false);
 
-      // Phone number, address, and age would be saved to Firestore/Database here
       console.log("Phone number (placeholder save):", phoneNumber);
       console.log("Delivery address (placeholder save):", deliveryAddress);
       console.log("Age (placeholder save):", age);
@@ -84,10 +76,9 @@ export default function AccountPage() {
   const handleSignOut = async () => {
     const success = await signOutUser();
     if (success) {
-      router.push('/'); // Redirect to home after sign out
+      router.push('/'); 
     }
   }
-
 
   if (loading) {
     return (
@@ -149,7 +140,6 @@ export default function AccountPage() {
     );
   }
 
-
   return (
     <div className="container mx-auto px-4 py-8">
       <SectionTitle className="mb-8 text-center sm:text-left">My Account</SectionTitle>
@@ -167,7 +157,13 @@ export default function AccountPage() {
                     </AvatarFallback>
                   </Avatar>
                   {isEditing && (
-                    <Button type="button" size="icon" variant="outline" className="absolute bottom-0 right-0 rounded-full h-8 w-8 bg-background/80 hover:bg-background" onClick={() => alert("Photo upload placeholder")}>
+                    <Button 
+                      type="button" 
+                      size="icon" 
+                      variant="outline" 
+                      className="absolute bottom-0 right-0 rounded-full h-8 w-8 bg-background/80 hover:bg-background" 
+                      onClick={() => alert("Photo upload placeholder")}
+                    >
                       <Camera className="h-4 w-4 text-primary" />
                       <span className="sr-only">Change photo</span>
                     </Button>
@@ -298,3 +294,5 @@ export default function AccountPage() {
     </div>
   );
 }
+
+    
