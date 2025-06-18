@@ -36,6 +36,7 @@ export default function AccountPage() {
   const [displayName, setDisplayName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [deliveryAddress, setDeliveryAddress] = useState('');
+  const [age, setAge] = useState('');
   // For photoURL, direct update via Firebase updateProfile requires a URL.
   // Actual file upload would need Firebase Storage and is more complex.
   // We'll keep photoURL as is from Google or show fallback.
@@ -43,9 +44,10 @@ export default function AccountPage() {
   useEffect(() => {
     if (user) {
       setDisplayName(user.displayName || '');
-      // Placeholder: In a real app, phone and address would come from Firestore/Database
+      // Placeholder: In a real app, phone, address, and age would come from Firestore/Database
       setPhoneNumber(user.phoneNumber || ''); // Firebase User object might not have this directly
       setDeliveryAddress(''); // This would typically come from a separate user profile collection
+      setAge(''); // This would also come from a custom profile
     }
   }, [user]);
 
@@ -66,9 +68,10 @@ export default function AccountPage() {
       toast({ title: "Profile Updated", description: "Your display name has been updated." });
       setIsEditing(false);
 
-      // Phone number and address would be saved to Firestore/Database here
+      // Phone number, address, and age would be saved to Firestore/Database here
       console.log("Phone number (placeholder save):", phoneNumber);
       console.log("Delivery address (placeholder save):", deliveryAddress);
+      console.log("Age (placeholder save):", age);
 
     } catch (error) {
       const authError = error as Error;
@@ -184,7 +187,7 @@ export default function AccountPage() {
                     {displayName || user?.email || 'User Profile'}
                   </CardTitle>
                 )}
-                <CardDescription className="text-sm text-center">
+                 <CardDescription className="text-sm text-center">
                   {user?.email}
                 </CardDescription>
               </CardHeader>
@@ -200,6 +203,17 @@ export default function AccountPage() {
                         value={phoneNumber}
                         onChange={(e: ChangeEvent<HTMLInputElement>) => setPhoneNumber(e.target.value)}
                         placeholder="Your phone number"
+                        className="mt-1 bg-input border-border focus:ring-primary"
+                      />
+                    </div>
+                     <div>
+                      <Label htmlFor="age" className="text-xs text-muted-foreground">Age</Label>
+                      <Input
+                        id="age"
+                        type="number"
+                        value={age}
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => setAge(e.target.value)}
+                        placeholder="Your age"
                         className="mt-1 bg-input border-border focus:ring-primary"
                       />
                     </div>
