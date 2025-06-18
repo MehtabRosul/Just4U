@@ -15,11 +15,11 @@ const footerSections = {
     { name: 'Profile', href: '/account' },
   ],
   product: [
-    { name: 'Custom Gifts', href: '/products?category=photo-gifts' },
+    { name: 'Custom Gifts', href: '/products?category=photo-gifts-general' }, // Updated
     { name: 'Mini You', href: '/custom/mini-you' },
-    { name: 'Trophy', href: '/products?category=trophies-awards' },
-    { name: 'Memento', href: '/products?category=memento' },
-    { name: 'Joining Kits', href: '/products?category=welcome-kits' }, // Assuming welcome-kits
+    { name: 'Trophy', href: '/products?category=corporate-trophies' }, // Updated
+    { name: 'Memento', href: '/products?category=corporate-mementos' }, // Updated
+    { name: 'Joining Kits', href: '/products?category=corporate-joining-kits' }, // Updated
     { name: 'Our Anniversary Gifts', href: '/products?occasion=anniversary' },
     { name: 'Our Birthday Gifts', href: '/products?occasion=birthday' },
   ],
