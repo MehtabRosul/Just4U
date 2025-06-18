@@ -18,6 +18,16 @@ const accountSections = [
 
 
 export default function AccountPage() {
+  const handleLogin = () => {
+    console.log('Login button clicked');
+    alert('Login functionality to be implemented.');
+  };
+
+  const handleSignUp = () => {
+    console.log('Sign Up button clicked');
+    alert('Sign Up functionality to be implemented.');
+  };
+
   return (
     <div className="container mx-auto px-4 py-8">
       <SectionTitle className="mb-8 text-center sm:text-left">My Account</SectionTitle>
@@ -36,11 +46,21 @@ export default function AccountPage() {
               </div>
             </CardHeader>
             <CardContent className="space-y-3">
-              <Button variant="default" size="sm" className="w-full bg-primary text-primary-foreground hover:bg-primary/80 hover:shadow-lg hover:shadow-primary/30">
-                <LogIn className="mr-2 h-4 w-4" /> Sign In
+              <Button 
+                variant="default" 
+                size="sm" 
+                className="w-full bg-primary text-primary-foreground hover:bg-red-700 hover:shadow-xl transition-all duration-200 ease-in-out hover:scale-105"
+                onClick={handleLogin}
+              >
+                <LogIn className="mr-2 h-4 w-4" /> Login
               </Button>
-              <Button variant="outline" size="sm" className="w-full text-primary border-primary hover:bg-primary hover:text-primary-foreground hover:shadow-lg hover:shadow-primary/30">
-                 <UserPlus className="mr-2 h-4 w-4" /> Register
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="w-full text-primary border-primary hover:bg-primary/10 hover:border-red-700 hover:text-red-600 hover:shadow-lg transition-all duration-200 ease-in-out hover:scale-105"
+                onClick={handleSignUp}
+              >
+                 <UserPlus className="mr-2 h-4 w-4" /> Sign Up
               </Button>
             </CardContent>
           </Card>
