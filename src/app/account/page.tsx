@@ -35,17 +35,17 @@ interface StoredProfileData {
 }
 
 const predefinedAvatarUrls = [
-  'https://placehold.co/100x100/FF5733/FFFFFF.png', // Orange
-  'https://placehold.co/100x100/33FF57/000000.png', // Green
-  'https://placehold.co/100x100/3357FF/FFFFFF.png', // Blue
-  'https://placehold.co/100x100/FF33A1/FFFFFF.png', // Pink
-  'https://placehold.co/100x100/FFDD33/000000.png', // Yellow
-  'https://placehold.co/100x100/A133FF/FFFFFF.png', // Purple
-  'https://placehold.co/100x100/33FFF3/000000.png', // Cyan
-  'https://placehold.co/100x100/FF7033/FFFFFF.png', // Coral
-  'https://placehold.co/100x100/70FF33/000000.png', // Lime
-  'https://placehold.co/100x100/808080/FFFFFF.png'  // Gray
-].map((url, index) => ({ url, hint: `avatar ${index + 1}` }));
+  { url: 'https://placehold.co/100x100/FF5733/FFFFFF.png', hint: 'avatar orange white' },
+  { url: 'https://placehold.co/100x100/33FF57/000000.png', hint: 'avatar green black' },
+  { url: 'https://placehold.co/100x100/3357FF/FFFFFF.png', hint: 'avatar blue white' },
+  { url: 'https://placehold.co/100x100/FF33A1/FFFFFF.png', hint: 'avatar pink white' },
+  { url: 'https://placehold.co/100x100/FFDD33/000000.png', hint: 'avatar yellow black' },
+  { url: 'https://placehold.co/100x100/A133FF/FFFFFF.png', hint: 'avatar purple white' },
+  { url: 'https://placehold.co/100x100/33FFF3/000000.png', hint: 'avatar cyan black' },
+  { url: 'https://placehold.co/100x100/FF7033/FFFFFF.png', hint: 'avatar coral white' },
+  { url: 'https://placehold.co/100x100/70FF33/000000.png', hint: 'avatar lime black' },
+  { url: 'https://placehold.co/100x100/808080/FFFFFF.png', hint: 'avatar gray white' }
+];
 
 
 export default function AccountPage() {
@@ -68,7 +68,11 @@ export default function AccountPage() {
   useEffect(() => {
     if (user && !loading) {
       setDisplayName(user.displayName || '');
-      setPhotoPreview(user.photoURL || null);
+      // Only set photoPreview from user.photoURL if not already set by local selection
+      // This helps retain a locally chosen avatar preview even if displayName update triggers re-render
+      if (!photoPreview) {
+        setPhotoPreview(user.photoURL || null);
+      }
 
       const storageKey = `${LOCAL_STORAGE_PROFILE_KEY_PREFIX}${user.uid}`;
       try {
@@ -89,9 +93,10 @@ export default function AccountPage() {
         setDeliveryAddress('');
         setAge('');
       }
-      if (!isEditing) setIsEditing(false); // Ensure editing mode is reset if user changes
+      if (!isEditing && isSaving) setIsEditing(false); // Reset editing mode if saving completes.
 
     } else if (!user && !loading) {
+      // User logged out, clear all fields
       setDisplayName('');
       setPhoneNumber('');
       setDeliveryAddress('');
@@ -99,7 +104,7 @@ export default function AccountPage() {
       setPhotoPreview(null);
       setIsEditing(false); // Reset editing state on logout
     }
-  }, [user, loading, isEditing]); // Added isEditing to deps to reset fields if edit is cancelled by navigation/logout
+  }, [user, loading, isEditing, isSaving, photoPreview]); 
 
 
   const handleProfileSave = async () => {
@@ -113,18 +118,11 @@ export default function AccountPage() {
         displayName: displayName,
       };
 
-      // Only include photoURL if photoPreview has been changed to a new avatar
-      if (photoPreview && photoPreview !== user.photoURL) {
+      // Only include photoURL if photoPreview is a valid URL and different from current user.photoURL
+      // This ensures we save the selected predefined avatar
+      if (photoPreview && photoPreview !== user.photoURL && predefinedAvatarUrls.some(avatar => avatar.url === photoPreview)) {
         profileDataToUpdate.photoURL = photoPreview;
-      } else if (!photoPreview && user.photoURL) { 
-        // If photoPreview is nullified (e.g. user wants to remove avatar), set photoURL to empty string or null in Firebase
-        // Firebase Auth might not support setting photoURL to null directly, empty string is safer.
-        // For this example, if user wants to remove, they'd typically pick a "no avatar" option,
-        // or we'd add a "Remove Photo" button. Here, we assume photoPreview holds a valid selected URL or original.
-        // If photoPreview is cleared by some other means (not typical for selection model), we might update Firebase to remove it.
-        // For simplicity: if photoPreview is a new valid URL, it's sent.
       }
-
 
       await updateUserFirebaseProfile(user, profileDataToUpdate);
       
@@ -150,7 +148,7 @@ export default function AccountPage() {
       // Refresh data from user object when entering edit mode, in case it changed elsewhere or to discard local edits
       if (user) {
         setDisplayName(user.displayName || '');
-        setPhotoPreview(user.photoURL || null);
+        setPhotoPreview(user.photoURL || null); // Reset to Firebase photoURL on entering edit
         const storageKey = `${LOCAL_STORAGE_PROFILE_KEY_PREFIX}${user.uid}`;
         const storedDataString = localStorage.getItem(storageKey);
         if (storedDataString) {
@@ -258,9 +256,9 @@ export default function AccountPage() {
                           type="button" 
                           size="icon" 
                           variant="outline" 
-                          className="absolute bottom-0 right-0 rounded-full h-8 w-8 bg-background/80 hover:bg-background"
+                          className="absolute bottom-0 right-0 rounded-full h-8 w-8 bg-background/80 hover:bg-background border-primary text-primary"
                         >
-                          <Camera className="h-4 w-4 text-primary" />
+                          <Camera className="h-4 w-4" />
                           <span className="sr-only">Change photo</span>
                         </Button>
                       </DialogTrigger>
@@ -355,7 +353,7 @@ export default function AccountPage() {
                   type="button" 
                   variant="outline" 
                   onClick={handleEditToggle} 
-                  className="w-full text-primary border-primary hover:bg-primary/10 hover:text-primary"
+                  className="w-full text-foreground border-border hover:bg-muted hover:text-foreground"
                   disabled={isSaving}
                 >
                   {isEditing ? (isSaving ? 'Saving...' : <><CheckCircle className="mr-2 h-4 w-4" />Done Editing</>) : <><Edit3 className="mr-2 h-4 w-4" /> Edit Profile</>}
@@ -364,7 +362,7 @@ export default function AccountPage() {
                 <Button
                   type="button" 
                   variant="outline"
-                  className="w-full text-destructive border-destructive hover:bg-destructive hover:text-destructive-foreground"
+                  className="w-full text-foreground border-border hover:bg-muted hover:text-foreground"
                   onClick={handleSignOut}
                 >
                   <LogOut className="mr-2 h-4 w-4" /> Sign Out
