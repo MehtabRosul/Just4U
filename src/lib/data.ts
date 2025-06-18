@@ -4,83 +4,83 @@ import { Gift, Shirt, Smartphone, HomeIcon as Home, ToyBrick, Gem, Users, Shoppi
 
 // New Data based on specification
 export const OCCASIONS_LIST: Occasion[] = [
-  { id: 'birthday', name: 'Birthday', slug: 'birthday', Icon: Cake },
-  { id: 'anniversary', name: 'Anniversary', slug: 'anniversary', Icon: Diamond },
-  { id: 'wedding', name: 'Wedding', slug: 'wedding', Icon: HandHeart },
-  { id: 'house-warming', name: 'House Warming', slug: 'house-warming', Icon: Home },
-  { id: 'farewell', name: 'Farewell', slug: 'farewell', Icon: Plane },
-  { id: 'baby-shower', name: 'Baby Shower', slug: 'baby-shower', Icon: Baby },
-  { id: 'valentines-day', name: "Valentine's Day", slug: 'valentines-day', Icon: Heart },
-  { id: 'womens-day', name: "Women's Day", slug: 'womens-day', Icon: Sparkles }, // Placeholder icon
-  { id: 'mothers-day', name: "Mother's Day", slug: 'mothers-day', Icon: Flower },
-  { id: 'fathers-day', name: "Father's Day", slug: 'fathers-day', Icon: User }, // Placeholder icon
-  { id: 'parents-day', name: "Parents' Day", slug: 'parents-day', Icon: Users },
-  { id: 'teachers-day', name: "Teacher's Day", slug: 'teachers-day', Icon: GraduationCap },
-  { id: 'childrens-day', name: "Children's Day", slug: 'childrens-day', Icon: Smile },
-  { id: 'new-year', name: 'New Year', slug: 'new-year', Icon: PartyPopper },
-  { id: 'grandparents-day', name: "Grandparents' Day", slug: 'grandparents-day', Icon: Users }, // Placeholder
-  { id: 'rakhi', name: 'Rakhi', slug: 'rakhi', Icon: Gift }, // Placeholder
-  { id: 'durga-puja', name: 'Durga Puja', slug: 'durga-puja', Icon: Drama }, // Placeholder
-  { id: 'karva-chauth', name: 'Karva Chauth', slug: 'karva-chauth', Icon: Moon }, // Placeholder
-  { id: 'diwali-bhaidooj', name: 'Diwali & Bhaidooj', slug: 'diwali-bhaidooj', Icon: Lamp },
-  { id: 'christmas', name: 'Christmas', slug: 'christmas', Icon: TreeDeciduous },
-  { id: 'holi', name: 'Holi', slug: 'holi', Icon: Palette },
-  { id: 'poila-baisakh', name: 'Poila Baisakh', slug: 'poila-baisakh', Icon: CalendarDays }, // Placeholder
-  { id: 'onam', name: 'Onam', slug: 'onam', Icon: Flower }, // Placeholder
-  { id: 'bihu', name: 'Bihu', slug: 'bihu', Icon: Music }, // Placeholder
-  { id: 'welcome-kits', name: 'Welcome Kits', slug: 'welcome-kits', Icon: Package },
-  { id: 'memento', name: 'Memento', slug: 'memento', Icon: Award },
-  { id: 'trophies-awards', name: 'Trophies & Awards', slug: 'trophies-awards', Icon: Trophy },
+  { id: 'birthday', name: 'Birthday', slug: 'birthday', Icon: Cake, dataAiHint: "birthday party" },
+  { id: 'anniversary', name: 'Anniversary', slug: 'anniversary', Icon: Diamond, dataAiHint: "anniversary celebration" },
+  { id: 'wedding', name: 'Wedding', slug: 'wedding', Icon: HandHeart, dataAiHint: "wedding ceremony" },
+  { id: 'house-warming', name: 'House Warming', slug: 'house-warming', Icon: Home, dataAiHint: "new home gift" },
+  { id: 'farewell', name: 'Farewell', slug: 'farewell', Icon: Plane, dataAiHint: "farewell party" },
+  { id: 'baby-shower', name: 'Baby Shower', slug: 'baby-shower', Icon: Baby, dataAiHint: "baby shower gift" },
+  { id: 'valentines-day', name: "Valentine's Day", slug: 'valentines-day', Icon: Heart, dataAiHint: "valentine romance" },
+  { id: 'womens-day', name: "Women's Day", slug: 'womens-day', Icon: Sparkles, dataAiHint: "women empowerment" }, 
+  { id: 'mothers-day', name: "Mother's Day", slug: 'mothers-day', Icon: Flower, dataAiHint: "mother child" },
+  { id: 'fathers-day', name: "Father's Day", slug: 'fathers-day', Icon: User, dataAiHint: "father child" }, 
+  { id: 'parents-day', name: "Parents' Day", slug: 'parents-day', Icon: Users, dataAiHint: "happy family" },
+  { id: 'teachers-day', name: "Teacher's Day", slug: 'teachers-day', Icon: GraduationCap, dataAiHint: "teacher student" },
+  { id: 'childrens-day', name: "Children's Day", slug: 'childrens-day', Icon: Smile, dataAiHint: "happy children" },
+  { id: 'new-year', name: 'New Year', slug: 'new-year', Icon: PartyPopper, dataAiHint: "new year celebration" },
+  { id: 'grandparents-day', name: "Grandparents' Day", slug: 'grandparents-day', Icon: Users, dataAiHint: "elderly couple" }, 
+  { id: 'rakhi', name: 'Rakhi', slug: 'rakhi', Icon: Gift, dataAiHint: "rakhi festival" }, 
+  { id: 'durga-puja', name: 'Durga Puja', slug: 'durga-puja', Icon: Drama, dataAiHint: "durga idol" }, 
+  { id: 'karva-chauth', name: 'Karva Chauth', slug: 'karva-chauth', Icon: Moon, dataAiHint: "karva chauth ritual" }, 
+  { id: 'diwali-bhaidooj', name: 'Diwali & Bhaidooj', slug: 'diwali-bhaidooj', Icon: Lamp, dataAiHint: "diwali lights" },
+  { id: 'christmas', name: 'Christmas', slug: 'christmas', Icon: TreeDeciduous, dataAiHint: "christmas tree" },
+  { id: 'holi', name: 'Holi', slug: 'holi', Icon: Palette, dataAiHint: "holi colors" },
+  { id: 'poila-baisakh', name: 'Poila Baisakh', slug: 'poila-baisakh', Icon: CalendarDays, dataAiHint: "bengali new year" }, 
+  { id: 'onam', name: 'Onam', slug: 'onam', Icon: Flower, dataAiHint: "onam festival" }, 
+  { id: 'bihu', name: 'Bihu', slug: 'bihu', Icon: Music, dataAiHint: "bihu dance" }, 
+  { id: 'welcome-kits', name: 'Welcome Kits', slug: 'welcome-kits', Icon: Package, dataAiHint: "welcome gift basket" },
+  { id: 'memento', name: 'Memento', slug: 'memento', Icon: Award, dataAiHint: "commemorative memento" },
+  { id: 'trophies-awards', name: 'Trophies & Awards', slug: 'trophies-awards', Icon: Trophy, dataAiHint: "award trophies" },
 ];
 
 export const GIFT_TYPES_LIST: GiftType[] = [
   { id: 'caricature', name: 'Caricature', slug: 'caricature', Icon: Smile, dataAiHint: "custom caricature art"},
-  { id: 'miniature', name: 'Miniature', slug: 'miniature', Icon: User, dataAiHint: "3d miniature figure"}, // Using User as placeholder
+  { id: 'miniature', name: 'Miniature', slug: 'miniature', Icon: ToyBrick, dataAiHint: "3d miniature figure"},
   { id: 'photo-frames', name: 'Photo Frames', slug: 'photo-frames', Icon: Camera, dataAiHint: "picture frame decor"},
-  { id: 'bobblehead', name: 'Bobblehead', slug: 'bobblehead', Icon: User, dataAiHint: "custom bobblehead doll"}, // Placeholder
+  { id: 'bobblehead', name: 'Bobblehead', slug: 'bobblehead', Icon: User, dataAiHint: "custom bobblehead doll"}, 
   { id: '3d-crystals', name: '3D Crystals', slug: '3d-crystals', Icon: Gem, dataAiHint: "crystal engraving gift"},
   { id: '3d-lamps', name: '3D Lamps', slug: '3d-lamps', Icon: Lamp, dataAiHint: "custom 3d light"},
   { id: 'clocks', name: 'Clocks', slug: 'clocks', Icon: Watch, dataAiHint: "wall clock gift"},
-  { id: 'wooden-plaques', name: 'Wooden Plaques', slug: 'wooden-plaques', Icon: Shield, dataAiHint: "engraved wood plaque"}, // Placeholder
-  { id: 'photo-collage', name: 'Photo Collage', slug: 'photo-collage', Icon: Newspaper, dataAiHint: "picture collage frame"}, // Placeholder
-  { id: 'custom-mugs', name: 'Custom Mugs', slug: 'custom-mugs', Icon: Utensils, dataAiHint: "personalized mug coffee"}, // Placeholder for coffee mug
+  { id: 'wooden-plaques', name: 'Wooden Plaques', slug: 'wooden-plaques', Icon: Shield, dataAiHint: "engraved wood plaque"}, 
+  { id: 'photo-collage', name: 'Photo Collage', slug: 'photo-collage', Icon: Newspaper, dataAiHint: "picture collage frame"}, 
+  { id: 'custom-mugs', name: 'Custom Mugs', slug: 'custom-mugs', Icon: Utensils, dataAiHint: "personalized mug coffee"}, 
   { id: 'photo-book-album', name: 'Photo Book Album', slug: 'photo-book-album', Icon: Newspaper, dataAiHint: "custom photo album"},
   { id: 'photo-gifts', name: 'Photo Gifts', slug: 'photo-gifts', Icon: Gift, dataAiHint: "personalized photo present"},
   { id: 'bar-accessories', name: 'Bar Accessories', slug: 'bar-accessories', Icon: Wine, dataAiHint: "barware tools gift"},
   { id: 'magnet-tags', name: 'Magnet & Tags', slug: 'magnet-tags', Icon: Tag, dataAiHint: "custom magnet label"},
   { id: 'home-decor', name: 'Home Decor', slug: 'home-decor', Icon: Home, dataAiHint: "house decoration item"},
   { id: 'bags', name: 'Bags', slug: 'bags', Icon: ShoppingBag, dataAiHint: "custom tote bag"},
-  { id: 'chocolates', name: 'Chocolates', slug: 'chocolates', Icon: Gift, dataAiHint: "gourmet chocolate box"}, // Placeholder
-  { id: 'name-plate', name: 'Name Plate', slug: 'name-plate', Icon: Pin, dataAiHint: "custom door nameplate"}, // Placeholder
+  { id: 'chocolates', name: 'Chocolates', slug: 'chocolates', Icon: Gift, dataAiHint: "gourmet chocolate box"}, 
+  { id: 'name-plate', name: 'Name Plate', slug: 'name-plate', Icon: Pin, dataAiHint: "custom door nameplate"}, 
   { id: 't-shirt', name: 'T-shirt', slug: 't-shirt', Icon: Shirt, dataAiHint: "custom printed tshirt"},
   { id: 'digital-gifts', name: 'Digital Gifts', slug: 'digital-gifts', Icon: Smartphone, dataAiHint: "online digital present"},
-  { id: 'stone-tiles', name: 'Stone & Tiles', slug: 'stone-tiles', Icon: Gem, dataAiHint: "engraved stone tile"}, // Placeholder
-  { id: 'keychain', name: 'Keychain', slug: 'keychain', Icon: Anchor, dataAiHint: "custom photo keychain"}, // Placeholder
+  { id: 'stone-tiles', name: 'Stone & Tiles', slug: 'stone-tiles', Icon: Gem, dataAiHint: "engraved stone tile"}, 
+  { id: 'keychain', name: 'Keychain', slug: 'keychain', Icon: Anchor, dataAiHint: "custom photo keychain"}, 
   { id: 'pens', name: 'Pens', slug: 'pens', Icon: Pencil, dataAiHint: "engraved pen gift"},
   { id: 'photo-to-art', name: 'Photo To Art', slug: 'photo-to-art', Icon: Palette, dataAiHint: "custom art portrait"},
-  { id: 'canvas-print', name: 'Canvas Print', slug: 'canvas-print', Icon: Newspaper, dataAiHint: "photo canvas wallart"}, // Placeholder
-  { id: 'digital-sketch', name: 'Digital Sketch', slug: 'digital-sketch', Icon: Pencil, dataAiHint: "custom sketch portrait"}, // Placeholder
+  { id: 'canvas-print', name: 'Canvas Print', slug: 'canvas-print', Icon: Newspaper, dataAiHint: "photo canvas wallart"}, 
+  { id: 'digital-sketch', name: 'Digital Sketch', slug: 'digital-sketch', Icon: Pencil, dataAiHint: "custom sketch portrait"}, 
   { id: 'shadow-box', name: 'Shadow Box', slug: 'shadow-box', Icon: Package, dataAiHint: "3d shadow box frame"},
   { id: 'heart-products', name: 'Heart Products', slug: 'heart-products', Icon: Heart, dataAiHint: "heart shape gift"},
-  { id: 'framed-bobblehead', name: 'Framed Bobblehead', slug: 'framed-bobblehead', Icon: User, dataAiHint: "bobblehead display case"}, // Placeholder
+  { id: 'framed-bobblehead', name: 'Framed Bobblehead', slug: 'framed-bobblehead', Icon: User, dataAiHint: "bobblehead display case"}, 
   { id: 'profession-series', name: 'Profession Series', slug: 'profession-series', Icon: Briefcase, dataAiHint: "professional themed gift"},
-  { id: 'superhero-series', name: 'Superhero Series', slug: 'superhero-series', Icon: Zap, dataAiHint: "superhero merchandise"}, // Placeholder
-  { id: 'bust', name: 'Bust', slug: 'bust', Icon: User, dataAiHint: "custom bust statue"}, // Placeholder
-  { id: 'home-living', name: 'Home & Living', slug: 'home-living', Icon: Home, dataAiHint: "lifestyle home product"}, // Duplicate of Home Decor, adjust if needed
-  { id: 'wall-art', name: 'Wall Art', slug: 'wall-art', Icon: Palette, dataAiHint: "decorative wall hanging"}, // Placeholder
-  { id: 'nameplates', name: 'Nameplates', slug: 'nameplates', Icon: Pin, dataAiHint: "custom desk nameplate"}, // Duplicate, adjust
-  { id: 'cushion', name: 'Cushion', slug: 'cushion', Icon: ToyBrick, dataAiHint: "personalized photo cushion"}, // Placeholder
+  { id: 'superhero-series', name: 'Superhero Series', slug: 'superhero-series', Icon: Zap, dataAiHint: "superhero merchandise"}, 
+  { id: 'bust', name: 'Bust', slug: 'bust', Icon: User, dataAiHint: "custom bust statue"}, 
+  { id: 'home-living', name: 'Home & Living', slug: 'home-living', Icon: Home, dataAiHint: "lifestyle home product"}, 
+  { id: 'wall-art', name: 'Wall Art', slug: 'wall-art', Icon: Palette, dataAiHint: "decorative wall hanging"}, 
+  { id: 'nameplates', name: 'Nameplates', slug: 'nameplates', Icon: Pin, dataAiHint: "custom desk nameplate"}, 
+  { id: 'cushion', name: 'Cushion', slug: 'cushion', Icon: ToyBrick, dataAiHint: "personalized photo cushion"}, 
   { id: 'kitchen-barware', name: 'Kitchen & Barware', slug: 'kitchen-barware', Icon: Utensils, dataAiHint: "kitchen tools barware"},
-  { id: 'metal-prints', name: 'Metal Prints', slug: 'metal-prints', Icon: Newspaper, dataAiHint: "photo print metal"}, // Placeholder
-  { id: 'photo-tiles', name: 'Photo Tiles', slug: 'photo-tiles', Icon: Gem, dataAiHint: "custom ceramic tile"}, // Placeholder
+  { id: 'metal-prints', name: 'Metal Prints', slug: 'metal-prints', Icon: Newspaper, dataAiHint: "photo print metal"}, 
+  { id: 'photo-tiles', name: 'Photo Tiles', slug: 'photo-tiles', Icon: Gem, dataAiHint: "custom ceramic tile"}, 
   { id: 'sketch-painting', name: 'Sketch & Painting', slug: 'sketch-painting', Icon: Palette, dataAiHint: "hand drawn painting"},
   { id: 'motivational-quotes', name: 'Motivational Quotes', slug: 'motivational-quotes', Icon: ThumbsUp, dataAiHint: "inspirational quote frame"},
-  { id: 'tabletop-decor', name: 'Tabletop Decor', slug: 'tabletop-decor', Icon: Leaf, dataAiHint: "desk decoration ornament"}, // Placeholder
-  { id: 'wooden-prints', name: 'Wooden Prints', slug: 'wooden-prints', Icon: Newspaper, dataAiHint: "photo print wood"}, // Placeholder
+  { id: 'tabletop-decor', name: 'Tabletop Decor', slug: 'tabletop-decor', Icon: Leaf, dataAiHint: "desk decoration ornament"}, 
+  { id: 'wooden-prints', name: 'Wooden Prints', slug: 'wooden-prints', Icon: Newspaper, dataAiHint: "photo print wood"}, 
   { id: 'flowers', name: 'Flowers', slug: 'flowers', Icon: Flower, dataAiHint: "fresh flower bouquet"},
   { id: 'best-seller-flower', name: 'Best Seller Flower', slug: 'best-seller-flower', Icon: Flower, dataAiHint: "popular flower arrangement"},
   { id: 'seasonal-flower', name: 'Seasonal Flower', slug: 'seasonal-flower', Icon: Sprout, dataAiHint: "seasonal bloom bouquet"},
-  { id: 'vase-collection', name: 'Vase Collection', slug: 'vase-collection', Icon: Wine, dataAiHint: "decorative flower vase"}, // Placeholder
+  { id: 'vase-collection', name: 'Vase Collection', slug: 'vase-collection', Icon: Wine, dataAiHint: "decorative flower vase"}, 
   { id: 'bouquet-collection', name: 'Bouquet Collection', slug: 'bouquet-collection', Icon: Flower, dataAiHint: "flower bouquet gift"},
   { id: 'gift-combos', name: 'Gift Combos', slug: 'gift-combos', Icon: Package, dataAiHint: "gift set hamper"},
   { id: 'desk-accessories', name: 'Desk Accessories', slug: 'desk-accessories', Icon: Pencil, dataAiHint: "office desk organizer"},
@@ -88,35 +88,35 @@ export const GIFT_TYPES_LIST: GiftType[] = [
   { id: 'crystal-awards', name: 'Crystal Awards', slug: 'crystal-awards', Icon: Gem, dataAiHint: "engraved crystal trophy"},
   { id: 'class-trophies', name: 'Class Trophies', slug: 'class-trophies', Icon: Trophy, dataAiHint: "school award trophy"},
   { id: 'acrylic-trophies', name: 'Acrylic Trophies', slug: 'acrylic-trophies', Icon: Award, dataAiHint: "custom acrylic award"},
-  { id: 'office-stationery', name: 'Office Stationery', slug: 'office-stationery', Icon: School, dataAiHint: "corporate stationery gift"}, // Placeholder
+  { id: 'office-stationery', name: 'Office Stationery', slug: 'office-stationery', Icon: School, dataAiHint: "corporate stationery gift"}, 
   { id: 'glassware', name: 'Glassware', slug: 'glassware', Icon: Wine, dataAiHint: "engraved glass gift"},
   { id: 'name-badges', name: 'Name Badges', slug: 'name-badges', Icon: Pin, dataAiHint: "custom name tag"},
   { id: 'premium-gifts', name: 'Premium Gifts', slug: 'premium-gifts', Icon: Diamond, dataAiHint: "luxury executive gift"},
-  { id: 'bottles', name: 'Bottles', slug: 'bottles', Icon: Package, dataAiHint: "custom water bottle"}, // Placeholder
+  { id: 'bottles', name: 'Bottles', slug: 'bottles', Icon: Package, dataAiHint: "custom water bottle"}, 
   { id: 'gift-boxes', name: 'Gift Boxes', slug: 'gift-boxes', Icon: Package, dataAiHint: "empty gift box"},
-  { id: 'coasters', name: 'Coasters', slug: 'coasters', Icon: Utensils, dataAiHint: "custom photo coaster"}, // Placeholder
+  { id: 'coasters', name: 'Coasters', slug: 'coasters', Icon: Utensils, dataAiHint: "custom photo coaster"}, 
 ];
 
 export const RECIPIENTS_LIST: Recipient[] = [
-  { id: 'men', name: 'Men', slug: 'men', Icon: User },
-  { id: 'husband', name: 'Husband', slug: 'husband', Icon: User },
-  { id: 'father', name: 'Father', slug: 'father', Icon: User },
-  { id: 'winner', name: 'Winner', slug: 'winner', Icon: Trophy }, // Generic winner
-  { id: 'male-friend', name: 'Male Friend', slug: 'male-friend', Icon: User },
-  { id: 'boyfriend', name: 'Boyfriend', slug: 'boyfriend', Icon: User },
-  { id: 'son', name: 'Son', slug: 'son', Icon: User },
-  { id: 'brother', name: 'Brother', slug: 'brother', Icon: User },
-  { id: 'grandfather', name: 'Grandfather', slug: 'grandfather', Icon: User },
-  { id: 'boy-child', name: 'Boy Child', slug: 'boy-child', Icon: User },
-  { id: 'women', name: 'Women', slug: 'women', Icon: User },
-  { id: 'wife', name: 'Wife', slug: 'wife', Icon: User },
-  { id: 'mother', name: 'Mother', slug: 'mother', Icon: User },
-  { id: 'female-friend', name: 'Female Friend', slug: 'female-friend', Icon: User },
-  { id: 'girlfriend', name: 'Girlfriend', slug: 'girlfriend', Icon: User },
-  { id: 'daughter', name: 'Daughter', slug: 'daughter', Icon: User },
-  { id: 'sister', name: 'Sister', slug: 'sister', Icon: User },
-  { id: 'grandmother', name: 'Grandmother', slug: 'grandmother', Icon: User },
-  { id: 'girl-child', name: 'Girl Child', slug: 'girl-child', Icon: User },
+  { id: 'men', name: 'Men', slug: 'men', Icon: User, dataAiHint: "man gift" },
+  { id: 'husband', name: 'Husband', slug: 'husband', Icon: Heart, dataAiHint: "husband gift" },
+  { id: 'father', name: 'Father', slug: 'father', Icon: Award, dataAiHint: "father gift" },
+  { id: 'winner', name: 'Winner', slug: 'winner', Icon: Trophy, dataAiHint: "winner prize" },
+  { id: 'male-friend', name: 'Male Friend', slug: 'male-friend', Icon: Users, dataAiHint: "male friend gift" },
+  { id: 'boyfriend', name: 'Boyfriend', slug: 'boyfriend', Icon: Rocket, dataAiHint: "boyfriend gift" },
+  { id: 'son', name: 'Son', slug: 'son', Icon: GraduationCap, dataAiHint: "son gift" },
+  { id: 'brother', name: 'Brother', slug: 'brother', Icon: Shield, dataAiHint: "brother gift" },
+  { id: 'grandfather', name: 'Grandfather', slug: 'grandfather', Icon: User, dataAiHint: "grandfather gift" },
+  { id: 'boy-child', name: 'Boy Child', slug: 'boy-child', Icon: ToyBrick, dataAiHint: "boy child toy" },
+  { id: 'women', name: 'Women', slug: 'women', Icon: ShoppingBag, dataAiHint: "woman gift" },
+  { id: 'wife', name: 'Wife', slug: 'wife', Icon: Gem, dataAiHint: "wife gift" },
+  { id: 'mother', name: 'Mother', slug: 'mother', Icon: Flower, dataAiHint: "mother gift" },
+  { id: 'female-friend', name: 'Female Friend', slug: 'female-friend', Icon: Users, dataAiHint: "female friend gift" },
+  { id: 'girlfriend', name: 'Girlfriend', slug: 'girlfriend', Icon: Sparkles, dataAiHint: "girlfriend gift" },
+  { id: 'daughter', name: 'Daughter', slug: 'daughter', Icon: Star, dataAiHint: "daughter gift" },
+  { id: 'sister', name: 'Sister', slug: 'sister', Icon: Feather, dataAiHint: "sister gift" },
+  { id: 'grandmother', name: 'Grandmother', slug: 'grandmother', Icon: User, dataAiHint: "grandmother gift" },
+  { id: 'girl-child', name: 'Girl Child', slug: 'girl-child', Icon: Smile, dataAiHint: "girl child toy" },
 ];
 
 // LEGACY CATEGORIES - map to new GiftType for compatibility if needed, or phase out.
@@ -276,3 +276,4 @@ export function getProductsByOccasion(occasionSlug: string): Product[] {
 export function getProductsByRecipient(recipientSlug: string): Product[] {
   return PRODUCTS.filter(product => product.recipient?.includes(recipientSlug));
 }
+

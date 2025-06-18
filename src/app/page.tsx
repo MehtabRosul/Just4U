@@ -8,7 +8,7 @@ import { SectionTitle } from '@/components/shared/SectionTitle';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, ChevronDown, Sparkles as SparklesIcon, Quote, Star, Gift, CalendarDays, PartyPopper, Heart, Briefcase, ToyBrick, Utensils, Gem, Camera, Lamp, Smile, ArrowRightCircle } from 'lucide-react';
+import { ArrowRight, ChevronDown, Sparkles as SparklesIcon, Quote, Star as StarIconLucide, Gift, CalendarDays, PartyPopper, Heart, Briefcase, ToyBrick, Utensils, Gem, Camera, Lamp, Smile, ArrowRightCircle, Users, Award, Trophy, Rocket, GraduationCap, Shield, ShoppingBag, Feather, Star as StarLucide } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
@@ -501,7 +501,7 @@ const TestimonialsSection = () => {
                     {testimonial.rating && (
                         <div className="flex">
                             {[...Array(5)].map((_, i) => (
-                                <Star key={i} className={`w-4 h-4 ${i < testimonial.rating ? 'text-yellow-400 fill-yellow-400' : 'text-neutral-600'}`} />
+                                <StarIconLucide key={i} className={`w-4 h-4 ${i < testimonial.rating ? 'text-yellow-400 fill-yellow-400' : 'text-neutral-600'}`} />
                             ))}
                         </div>
                     )}
@@ -517,7 +517,7 @@ const TestimonialsSection = () => {
 
 const OccasionSpotlight = () => {
   const occasionsToDisplay = OCCASIONS_LIST.slice(0, 10);
-  const marqueeItems = [...occasionsToDisplay, ...occasionsToDisplay];
+  const marqueeItems = [...occasionsToDisplay, ...occasionsToDisplay]; // Duplicate for seamless loop
 
   return (
     <section className="my-8 sm:my-12">
@@ -611,25 +611,66 @@ const GiftTypeHighlight = () => {
     )
 };
 
-const RecipientQuickLinks = () => (
-  <section className="my-8 sm:my-12">
-    <SectionTitle className="text-white">Who's it For?</SectionTitle>
-    <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3 sm:gap-4">
-        {RECIPIENTS_LIST.map(recipient => {
+const RecipientQuickLinks = () => {
+  const marqueeRecipients = [...RECIPIENTS_LIST, ...RECIPIENTS_LIST]; // Duplicate for seamless loop
+
+  return (
+    <section className="my-8 sm:my-12">
+      <SectionTitle className="text-white">Who's it For?</SectionTitle>
+      <div className="relative overflow-hidden group/marquee">
+        <div className="flex animate-marquee-horizontal group-hover/marquee:[animation-play-state:paused] whitespace-nowrap py-2">
+          {marqueeRecipients.map((recipient, index) => {
             const RecipientIcon = recipient.Icon;
+            const uniqueKey = `${recipient.id}-${index}`;
             return (
-                <Link key={recipient.id} href={`/products?recipient=${recipient.slug}`} className="block">
-                    <div className="flex flex-col items-center p-2 rounded-lg bg-neutral-800 group hover:bg-neutral-700 transition-colors">
-                        {RecipientIcon && <div className="bg-primary p-2 sm:p-2.5 rounded-full mb-1 sm:mb-1.5"><RecipientIcon className="h-5 w-5 sm:h-6 sm:w-6 text-primary-foreground"/></div>}
-                         {!RecipientIcon && <div className="bg-primary p-2 sm:p-2.5 rounded-full mb-1 sm:mb-1.5 w-9 h-9 sm:w-11 sm:w-11" data-ai-hint={recipient.dataAiHint || "recipient icon"}></div>}
-                        <span className="text-xs text-center text-white group-hover:text-primary transition-colors">{recipient.name}</span>
+              <Link
+                key={uniqueKey}
+                href={`/products?recipient=${recipient.slug}`}
+                className="group/item flex-shrink-0 w-36 h-40 mx-2"
+              >
+                <div
+                  className={cn(
+                    "flex flex-col items-center justify-center p-4 rounded-lg bg-neutral-800 text-center h-full",
+                    "transition-all duration-300 ease-in-out",
+                    "border-2 border-transparent",
+                    "group-hover/item:bg-primary/80 group-hover/item:shadow-xl group-hover/item:shadow-primary/30 group-hover/item:scale-105 group-hover/item:border-primary"
+                  )}
+                >
+                  {RecipientIcon ? (
+                    <RecipientIcon
+                      className={cn(
+                        "h-12 w-12 text-primary mb-3",
+                        "transition-colors duration-300 group-hover/item:text-primary-foreground"
+                      )}
+                    />
+                  ) : (
+                    <div
+                      className={cn(
+                        "h-12 w-12 rounded-md bg-muted flex items-center justify-center mb-3",
+                        "transition-colors duration-300 group-hover/item:bg-primary/20 group-hover/item:text-primary-foreground"
+                      )}
+                      data-ai-hint={recipient.dataAiHint || "recipient icon"}
+                    >
+                      <User className="h-7 w-7 text-muted-foreground group-hover/item:text-primary-foreground" />
                     </div>
-                </Link>
-            )
-        })}
-    </div>
-  </section>
-);
+                  )}
+                  <span
+                    className={cn(
+                      "text-sm font-medium text-neutral-200 line-clamp-2",
+                      "transition-colors duration-300 group-hover/item:text-primary-foreground"
+                    )}
+                  >
+                    {recipient.name}
+                  </span>
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+};
 
 
 export default function HomePage()
