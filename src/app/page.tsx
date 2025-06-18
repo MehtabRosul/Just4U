@@ -408,11 +408,36 @@ const TrendingSpotlight = ({ products }: { products: Product[] }) => {
 
 const Advertisements = () => {
   const bannerMessages = [
-    { id: 1, text: "Grand Opening Sale! Up to 50% Off Selected Gifts!", bgColor: "bg-red-600", textColor: "text-white" },
-    { id: 2, text: "New Arrivals: Personalized Miniatures - Create Yours Today!", bgColor: "bg-blue-600", textColor: "text-white" },
-    { id: 3, text: "Corporate Gifting Solutions - Impress Your Clients & Employees.", bgColor: "bg-green-600", textColor: "text-white" },
-    { id: 4, text: "Express Delivery Available for Last Minute Gifts!", bgColor: "bg-yellow-500", textColor: "text-black" },
-    { id: 5, text: "Join Our Loyalty Program and Earn Rewards with Every Purchase!", bgColor: "bg-purple-600", textColor: "text-white" },
+    { 
+      id: 1, 
+      text: "Grand Opening Sale! Up to 50% Off Selected Gifts!", 
+      animationClasses: "bg-gradient-to-b from-purple-600 via-pink-600 to-red-600 bg-[length:100%_300%] animate-gradient-y-flow", 
+      textColorClass: "text-white" 
+    },
+    { 
+      id: 2, 
+      text: "New Arrivals: Personalized Miniatures - Create Yours Today!", 
+      animationClasses: "bg-gradient-to-r from-sky-600 via-cyan-500 to-teal-600 bg-[length:300%_100%] animate-gradient-x-flow", 
+      textColorClass: "text-white" 
+    },
+    { 
+      id: 3, 
+      text: "Corporate Gifting Solutions - Impress Your Clients & Employees.", 
+      animationClasses: "bg-gradient-radial from-yellow-400 via-orange-500 to-amber-600 bg-[length:250%_250%] animate-radial-burst", 
+      textColorClass: "text-neutral-800" 
+    },
+    { 
+      id: 4, 
+      text: "Express Delivery Available for Last Minute Gifts!", 
+      animationClasses: "bg-gradient-to-br from-green-500 via-lime-500 to-emerald-600 bg-[length:250%_250%] animate-diagonal-bg-wave", 
+      textColorClass: "text-white" 
+    },
+    { 
+      id: 5, 
+      text: "Join Our Loyalty Program and Earn Rewards with Every Purchase!", 
+      animationClasses: "animate-bg-color-cycle", // Base colors defined in keyframes
+      textColorClass: "text-white" 
+    },
   ];
 
   const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
@@ -420,20 +445,28 @@ const Advertisements = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentBannerIndex((prevIndex) => (prevIndex + 1) % bannerMessages.length);
-    }, 10000);
+    }, 10000); // Change banner every 10 seconds
 
     return () => clearInterval(timer);
-  }, []);
+  }, [bannerMessages.length]);
 
   const currentBanner = bannerMessages[currentBannerIndex];
 
   return (
     <section className="my-8 sm:my-12">
       <div
-        className={`w-full h-24 sm:h-28 md:h-32 flex items-center justify-center p-4 rounded-lg shadow-lg transition-all duration-500 ease-in-out ${currentBanner.bgColor} ${currentBanner.textColor}`}
+        key={currentBanner.id} // Ensure key changes to re-apply animation classes if needed
+        className={cn(
+          "w-full h-24 sm:h-28 md:h-32 flex items-center justify-center p-4 rounded-lg shadow-lg relative overflow-hidden",
+          currentBanner.animationClasses
+        )}
         data-ai-hint="promotional banner"
       >
-        <p className="text-base sm:text-lg md:text-xl font-semibold text-center">
+        <p className={cn(
+            "text-base sm:text-lg md:text-xl font-semibold text-center relative z-10",
+            currentBanner.textColorClass
+          )}
+        >
           {currentBanner.text}
         </p>
       </div>
