@@ -202,7 +202,7 @@ export default function AuthPage() {
 
           <Button
             variant="outline"
-            className="w-full border-input text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+            className="w-full border-muted text-muted-foreground hover:bg-accent hover:text-accent-foreground"
             onClick={handleGoogleSignIn}
             disabled={isGoogleSubmitting}
           >
