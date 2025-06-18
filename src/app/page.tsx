@@ -458,14 +458,63 @@ const TestimonialsSection = () => {
     { id: 7, quote: "Photo collage for my parents' anniversary was beautifully arranged. So touched.", author: "Anjali T.", tag: "Heartfelt", tagColor: "bg-orange-500", rating: 4 },
     { id: 8, quote: "Loved the 3D lamp with our family picture. Unique night light and conversation starter.", author: "Karan N.", tag: "Unique!", tagColor: "bg-cyan-500", rating: 5 },
     { id: 9, quote: "The engraved wooden plaque for my dad's retirement was top-notch. He loved it!", author: "Deepa V.", tag: "Classy!", tagColor: "bg-indigo-500", rating: 5 },
-    { id: 10, quote: "Just4UGifts made our team awards so special with their crystal trophies. Great quality.", author: "Sunil M., Manager", tag: "Professional", tagColor: "bg-gray-700", rating: 5 }, // Adjusted gray to be darker for contrast
+    { id: 10, quote: "Just4UGifts made our team awards so special with their crystal trophies. Great quality.", author: "Sunil M., Manager", tag: "Professional", tagColor: "bg-gray-700", rating: 5 },
     { id: 11, quote: "My custom bobblehead looked exactly like me! Hilarious and well-made.", author: "Rohan P.", tag: "So Fun!", tagColor: "bg-lime-500", rating: 4 },
     { id: 12, quote: "The photo-to-art canvas turned our vacation picture into a masterpiece. Highly recommend!", author: "Aisha B.", tag: "Artistic", tagColor: "bg-fuchsia-500", rating: 5 },
     { id: 13, quote: "Got a set of personalized keychains for my friends. They were a big hit, great quality.", author: "Varun S.", tag: "Great Value", tagColor: "bg-amber-500", rating: 5 },
     { id: 14, quote: "The nameplate for our new home is beautiful and exactly what we wanted. Thank you!", author: "Neha & Raj K.", tag: "Perfect Finish", tagColor: "bg-emerald-500", rating: 5 },
     { id: 15, quote: "Ordered a custom t-shirt with a quirky design. Print quality is excellent and fabric is comfy.", author: "Tina G.", tag: "Cool Stuff", tagColor: "bg-sky-500", rating: 4 },
     { id: 16, quote: "The shadow box for my collectibles is stunning. It showcases them perfectly. Superb craftsmanship.", author: "Arjun M.", tag: "Masterpiece", tagColor: "bg-rose-500", rating: 5 },
+    { id: 17, quote: "Our wedding caricatures were a highlight! Everyone loved them as favors.", author: "Priya & Rahul", tag: "Wedding Hit!", tagColor: "bg-pink-600", rating: 5 },
+    { id: 18, quote: "The 3D miniature of our family is a treasure. The details are incredible!", author: "The Sharma Family", tag: "Family Treasure", tagColor: "bg-blue-600", rating: 5 },
+    { id: 19, quote: "My custom photo mug is my new favorite. Makes my coffee taste better!", author: "Aakash V.", tag: "Morning Joy", tagColor: "bg-orange-500", rating: 5 },
+    { id: 20, quote: "The photo clock for my office is both functional and beautiful. Great conversation starter.", author: "Anita D.", tag: "Office Decor", tagColor: "bg-teal-600", rating: 4 },
+    { id: 21, quote: "Just4UGifts has the best selection of unique gifts. I always find something perfect!", author: "Ravi K.", tag: "Go-To Store", tagColor: "bg-green-600", rating: 5 },
+    { id: 22, quote: "The personalized photo keychain was a small gift but made a big impact. Loved it!", author: "Sara J.", tag: "Sweet & Simple", tagColor: "bg-purple-600", rating: 5 },
+    { id: 23, quote: "My corporate clients were very impressed with the branded gift sets. Highly professional.", author: "Mr. Alok Verma", tag: "Corporate Choice", tagColor: "bg-indigo-600", rating: 5 },
+    { id: 24, quote: "The photo-to-art canvas of my pet is stunning. It's like having a museum piece at home.", author: "Meera N.", tag: "Pet Portrait Love", tagColor: "bg-fuchsia-600", rating: 5 },
+    { id: 25, quote: "I appreciate the quick turnaround for my last-minute gift. Saved the day!", author: "Kunal S.", tag: "Life Saver!", tagColor: "bg-red-600", rating: 5 },
+    { id: 26, quote: "The quality of the 3D lamp exceeded my expectations. It's a magical gift.", author: "Preeti G.", tag: "Magical!", tagColor: "bg-cyan-600", rating: 5 },
+    { id: 27, quote: "Finding the perfect birthday gift for my dad was easy here. He loved the wooden plaque.", author: "Aditi R.", tag: "Dad Approved", tagColor: "bg-amber-600", rating: 4 },
+    { id: 28, quote: "The bobblehead of my boss for his farewell was a huge laugh and a great memento.", author: "Team Innovate", tag: "Fun Farewell", tagColor: "bg-lime-600", rating: 5 },
+    { id: 29, quote: "I keep coming back for the unique personalized gifts. Always a hit with my friends and family.", author: "Sonia P.", tag: "Repeat Customer", tagColor: "bg-sky-600", rating: 5 },
+    { id: 30, quote: "The customer support helped me finalize the design for my photo collage. Very helpful!", author: "Vikram C.", tag: "Helpful Support", tagColor: "bg-yellow-600", rating: 5 },
+    { id: 31, quote: "Our anniversary photo frame is gorgeous. It’s a beautiful reminder of our special day.", author: "Rohan & Megha", tag: "Anniversary Love", tagColor: "bg-rose-600", rating: 5 },
+    { id: 32, quote: "The welcome kits for our new employees were fantastic. Made a great first impression.", author: "HR, Tech Solutions", tag: "Great Onboarding", tagColor: "bg-emerald-600", rating: 5 },
+    { id: 33, quote: "Ordered a caricature for my friend's wedding. It was unique and they adored it!", author: "Simran K.", tag: "Unique Wedding Gift", tagColor: "bg-green-500", rating: 5 },
+    { id: 34, quote: "The 3D crystal of our first home is a cherished keepsake. So detailed!", author: "Arjun & Priya", tag: "Home Sweet Home", tagColor: "bg-blue-500", rating: 5 },
+    { id: 35, quote: "My custom photo mug is perfect for my morning tea. Great print quality.", author: "Rajesh M.", tag: "Tea Time Favorite", tagColor: "bg-yellow-500", rating: 4 },
+    { id: 36, quote: "The photo clock is a stylish addition to my office. Always get compliments on it.", author: "Nisha S.", tag: "Office Style", tagColor: "bg-purple-500", rating: 5 },
+    { id: 37, quote: "Just4UGifts is my go-to for all special occasions. Never disappoints!", author: "Kavita L.", tag: "Reliable Gifting", tagColor: "bg-pink-500", rating: 5 },
+    { id: 38, quote: "The personalized keychain was a small but meaningful gift for my sister. She loved it.", author: "Amit P.", tag: "Thoughtful Token", tagColor: "bg-teal-500", rating: 5 },
+    { id: 39, quote: "Our corporate clients were thrilled with the elegant gift sets. Excellent service.", author: "Sunita G., Marketing Head", tag: "Client Impressed", tagColor: "bg-orange-500", rating: 5 },
+    { id: 40, quote: "The photo-to-art canvas of our family vacation is a masterpiece. Beautiful work.", author: "The Desai Family", tag: "Vacation Memories", tagColor: "bg-cyan-500", rating: 5 },
+    { id: 41, quote: "Needed a last-minute birthday gift and Just4UGifts delivered! Amazing service.", author: "Rohan J.", tag: "Speedy Delivery!", tagColor: "bg-indigo-500", rating: 5 },
+    { id: 42, quote: "The 3D photo lamp is magical. It creates such a cozy atmosphere in our room.", author: "Pooja B.", tag: "Cozy Ambiance", tagColor: "bg-lime-500", rating: 5 },
+    { id: 43, quote: "Finding a unique gift for my tech-savvy brother was easy here. He loved the gadget.", author: "Anjali M.", tag: "Tech Gift Win", tagColor: "bg-fuchsia-500", rating: 4 },
+    { id: 44, quote: "The bobblehead of my favorite cricketer is hilarious and so well-made. A collector's item!", author: "Suresh K.", tag: "Fan Favorite", tagColor: "bg-amber-500", rating: 5 },
+    { id: 45, quote: "I always recommend Just4UGifts for their creative and personalized options.", author: "Divya R.", tag: "Creative Choices", tagColor: "bg-emerald-500", rating: 5 },
+    { id: 46, quote: "The customer support team was incredibly helpful in customizing my photo collage.", author: "Vikas S.", tag: "Great Assistance", tagColor: "bg-sky-500", rating: 5 },
+    { id: 47, quote: "Our anniversary photo frame is a daily reminder of our love. Beautifully crafted.", author: "Karan & Tina", tag: "Love Frame", tagColor: "bg-rose-500", rating: 5 },
+    { id: 48, quote: "The welcome kits for our new team members were a big success. Set a positive tone.", author: "HR Department, Alpha Corp", tag: "Positive Start", tagColor: "bg-green-600", rating: 5 },
+    { id: 49, quote: "The custom caricature for my parents' 25th anniversary was the star of the party!", author: "Neha G.", tag: "Anniversary Star", tagColor: "bg-blue-600", rating: 5 },
+    { id: 50, quote: "My 3D crystal paperweight is a stunning desk accessory. So elegant.", author: "Rajiv M.", tag: "Desk Elegance", tagColor: "bg-yellow-600", rating: 4 },
+    { id: 51, quote: "The photo printed on a wooden plaque was a rustic and charming gift. Loved it.", author: "Sunita K.", tag: "Rustic Charm", tagColor: "bg-purple-600", rating: 5 },
+    { id: 52, quote: "Gifted a custom bobblehead to my best friend, and he couldn't stop laughing. Perfect!", author: "Akash D.", tag: "Best Friend Gift", tagColor: "bg-pink-600", rating: 5 },
+    { id: 53, quote: "The 3D lamp with our wedding photo is our favorite night light. So romantic.", author: "Priya & Sameer", tag: "Romantic Light", tagColor: "bg-teal-600", rating: 5 },
+    { id: 54, quote: "Quick delivery and excellent quality on the personalized T-shirts for our event.", author: "Event Organizers Inc.", tag: "Event Success", tagColor: "bg-orange-600", rating: 5 },
+    { id: 55, quote: "The engraved pen set was a sophisticated gift for my mentor. Highly appreciated.", author: "Rina S.", tag: "Sophisticated Choice", tagColor: "bg-cyan-600", rating: 5 },
+    { id: 56, quote: "My photo-to-art canvas turned a simple phone picture into a work of art. Amazing!", author: "Vijay P.", tag: "Art from Photo", tagColor: "bg-indigo-600", rating: 5 },
+    { id: 57, quote: "The personalized magnets are a fun way to display memories on the fridge.", author: "Lata M.", tag: "Fun Magnets", tagColor: "bg-lime-600", rating: 4 },
+    { id: 58, quote: "The crystal trophy for our company's top performer was of exceptional quality.", author: "CEO, Innovate Ltd.", tag: "Top Performer Award", tagColor: "bg-fuchsia-600", rating: 5 },
+    { id: 59, quote: "My daughter loves her custom nameplate for her room. So colorful and cute!", author: "Anil K.", tag: "Cute Nameplate", tagColor: "bg-amber-600", rating: 5 },
+    { id: 60, quote: "The shadow box perfectly displays my son's first shoes. A precious memento.", author: "Geeta R.", tag: "Precious Memento", tagColor: "bg-emerald-600", rating: 5 },
+    { id: 61, quote: "Just4UGifts helped me create a very special photo collage for my grandparents. They were overjoyed.", author: "Varun T.", tag: "Grandparents' Joy", tagColor: "bg-sky-600", rating: 5 },
+    { id: 62, quote: "The custom coasters are a great addition to our coffee table. Very well made.", author: "Meena & Suresh", tag: "Coffee Table Decor", tagColor: "bg-rose-600", rating: 4 },
+    { id: 63, quote: "I ordered a digital sketch for a friend who lives far away. It was a perfect and quick gift!", author: "Prakash S.", tag: "Perfect Digital Gift", tagColor: "bg-gray-700", rating: 5 },
+    { id: 64, quote: "The team at Just4UGifts is always helpful and the products are top-notch. My trusted gift store.", author: "Anita B.", tag: "Trusted & Top-Notch", tagColor: "bg-red-500", rating: 5 },
   ];
+  
 
   const ITEMS_PER_SET = 8;
   const ROTATION_INTERVAL = 15000; // 15 seconds
@@ -473,7 +522,7 @@ const TestimonialsSection = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    if (allTestimonialsData.length <= ITEMS_PER_SET) return; // No rotation if not enough items
+    if (allTestimonialsData.length <= ITEMS_PER_SET) return; 
 
     const intervalId = setInterval(() => {
       setCurrentIndex(prevIndex => (prevIndex + ITEMS_PER_SET) % allTestimonialsData.length);
@@ -483,15 +532,14 @@ const TestimonialsSection = () => {
 
   const displayedTestimonials = useMemo(() => {
     const endIndex = currentIndex + ITEMS_PER_SET;
-    // Slice will handle endIndex > length correctly, returning only available items.
     return allTestimonialsData.slice(currentIndex, endIndex);
-  }, [currentIndex]);
+  }, [currentIndex, allTestimonialsData]); // Added allTestimonialsData to dependencies
 
   return (
     <section className="my-8 sm:my-12">
       <SectionTitle className="text-white mb-6 sm:mb-8">Words from Our Happy Gifting Community</SectionTitle>
       <div 
-        key={currentIndex} // Re-keying the container to help trigger animations on children
+        key={currentIndex} 
         className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5"
       >
         {displayedTestimonials.map((testimonial) => (
