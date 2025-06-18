@@ -7,6 +7,7 @@ import Footer from '@/components/layout/Footer';
 // import TopUtilityBar from '@/components/layout/TopUtilityBar'; // Removed
 // import GlobalNavBar from '@/components/layout/GlobalNavBar'; // Removed
 import { WishlistProvider } from '@/hooks/useWishlist';
+import { AuthProvider } from '@/hooks/useAuth'; // Import AuthProvider
 
 export const metadata: Metadata = {
   title: 'Just4U - Gift with Personal Touch',
@@ -27,16 +28,18 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
       </head>
       <body className="font-body antialiased min-h-screen flex flex-col bg-background text-foreground">
-        <WishlistProvider>
-          {/* <TopUtilityBar /> // Removed */}
-          <Header />
-          {/* <GlobalNavBar /> // Removed */}
-          <main className="flex-grow container mx-auto px-4 py-8">
-            {children}
-          </main>
-          <Footer />
-          <Toaster />
-        </WishlistProvider>
+        <AuthProvider> {/* Wrap with AuthProvider */}
+          <WishlistProvider>
+            {/* <TopUtilityBar /> // Removed */}
+            <Header />
+            {/* <GlobalNavBar /> // Removed */}
+            <main className="flex-grow container mx-auto px-4 py-8">
+              {children}
+            </main>
+            <Footer />
+            <Toaster />
+          </WishlistProvider>
+        </AuthProvider>
       </body>
     </html>
   );

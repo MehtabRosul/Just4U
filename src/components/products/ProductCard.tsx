@@ -10,15 +10,40 @@ import { StarRating } from '@/components/shared/StarRating';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { ShoppingCart } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth'; // Import useAuth
+import { useToast } from '@/hooks/use-toast'; // Import useToast
 
 interface ProductCardProps {
   product: Product;
 }
 
 export function ProductCard({ product }: ProductCardProps) {
+  const { user } = useAuth(); // Get user
+  const { toast } = useToast(); // Get toast function
+
   const averageRating = product.reviews && product.reviews.length > 0
     ? product.reviews.reduce((acc, review) => acc + review.rating, 0) / product.reviews.length
     : 0;
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault(); // Prevent link navigation
+    e.stopPropagation(); // Stop event bubbling
+
+    if (!user) {
+      toast({
+        title: "Authentication Required",
+        description: "Please sign in to add items to your cart.",
+        variant: "destructive",
+      });
+      // Optionally, trigger sign-in flow here
+      // e.g., if (signInWithGoogle) signInWithGoogle();
+      return;
+    }
+    // Proceed with add to cart logic
+    console.log("Add to cart clicked for: ", product.name);
+    toast({ title: "Added to Cart", description: `${product.name} has been added to your cart.` });
+    // Actual add to cart logic would be implemented here (e.g., update cart context/state)
+  };
 
   return (
     <Link href={`/products/${product.slug}`} className="block group h-full" passHref>
@@ -90,11 +115,7 @@ export function ProductCard({ product }: ProductCardProps) {
               "transition-all duration-200 ease-in-out", // Button transition
               "group-hover:-translate-y-1 group-hover:shadow-lg group-hover:shadow-primary/40" // Button lift and shadow on card hover
             )}
-            onClick={(e) => {
-              e.preventDefault(); 
-              console.log("Add to cart clicked for: ", product.name);
-              // Actual add to cart logic would be implemented here
-            }}
+            onClick={handleAddToCart} // Updated onClick handler
           >
             <ShoppingCart className="mr-1.5 h-4 w-4" /> Add to Cart
           </Button>
@@ -103,4 +124,3 @@ export function ProductCard({ product }: ProductCardProps) {
     </Link>
   );
 }
-    

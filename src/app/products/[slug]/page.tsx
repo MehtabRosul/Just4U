@@ -17,6 +17,8 @@ import Link from 'next/link';
 import { ProductCard } from '@/components/products/ProductCard';
 import { SocialShareButtons } from '@/components/features/SocialShareButtons';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/hooks/useAuth'; // Import useAuth
+import { useToast } from '@/hooks/use-toast'; // Import useToast
 
 export default function ProductDetailPage() {
   const params = useParams();
@@ -25,6 +27,9 @@ export default function ProductDetailPage() {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [currentUrl, setCurrentUrl] = useState('');
+
+  const { user } = useAuth(); // Get user
+  const { toast } = useToast(); // Get toast
 
   useEffect(() => {
     if (slug) {
@@ -49,6 +54,24 @@ export default function ProductDetailPage() {
       setCurrentUrl(window.location.href);
     }
   }, []);
+
+  const handleAddToCart = () => {
+    if (!product) return;
+    if (!user) {
+      toast({
+        title: "Authentication Required",
+        description: "Please sign in to add items to your cart.",
+        variant: "destructive",
+      });
+      // Optionally, trigger sign-in flow here
+      return;
+    }
+    // Proceed with add to cart logic
+    console.log("Add to cart clicked for: ", product.name);
+    toast({ title: "Added to Cart", description: `${product.name} has been added to your cart.` });
+    // Actual add to cart logic would be implemented here
+  };
+
 
   if (!product) {
     return (
@@ -174,12 +197,12 @@ export default function ProductDetailPage() {
             <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
               <WishlistButton 
                 product={product} 
-                size="lg" 
-                className="w-full sm:w-auto px-6 py-3 border border-input hover:bg-accent/20 text-primary" 
+                className="w-full sm:w-auto px-6 py-3 border border-input hover:bg-accent/20 text-primary flex items-center justify-center text-base" // Ensure consistent styling like Button
+                size="lg" // Prop from WishlistButton might not directly map to Button's size, style manually
               > 
                  <Heart className="mr-2 h-5 w-5" /> Wishlist
               </WishlistButton>
-              <Button size="lg" variant="default" className="w-full sm:w-auto px-6 py-3 bg-primary text-primary-foreground hover:bg-primary/90"> 
+              <Button size="lg" variant="default" className="w-full sm:w-auto px-6 py-3 bg-primary text-primary-foreground hover:bg-primary/90" onClick={handleAddToCart}> 
                 <ShoppingCart className="mr-2 h-5 w-5" /> Add to Cart
               </Button>
             </div>

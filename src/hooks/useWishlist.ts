@@ -5,8 +5,9 @@ import React from 'react';
 import type { Product } from '@/lib/types';
 import { useState, useEffect, createContext, useContext, useCallback, type ReactNode } from 'react';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/hooks/useAuth'; // Import useAuth
 
-const WISHLIST_STORAGE_KEY = 'just4ugifts_wishlist';
+const WISHLIST_STORAGE_KEY_BASE = 'just4ugifts_wishlist';
 
 interface WishlistContextType {
   wishlist: Product[];
@@ -14,6 +15,7 @@ interface WishlistContextType {
   removeFromWishlist: (productId: string) => void;
   isProductInWishlist: (productId: string) => boolean;
   clearWishlist: () => void;
+  loadWishlistForUser: (userId: string) => void;
 }
 
 const WishlistContext = createContext<WishlistContextType | undefined>(undefined);
@@ -21,27 +23,72 @@ const WishlistContext = createContext<WishlistContextType | undefined>(undefined
 export function WishlistProvider({ children }: { children: ReactNode }) {
   const [wishlist, setWishlist] = useState<Product[]>([]);
   const { toast } = useToast();
+  const { user, loading: authLoading } = useAuth(); // Get user from useAuth
 
-  useEffect(() => {
+  const getWishlistStorageKey = useCallback(() => {
+    return user ? `${WISHLIST_STORAGE_KEY_BASE}_${user.uid}` : null;
+  }, [user]);
+
+  const loadWishlistForUser = useCallback((userId: string) => {
+    // This function can be called explicitly on login if needed,
+    // but useEffect below handles initial load based on user state.
     try {
-      const storedWishlist = localStorage.getItem(WISHLIST_STORAGE_KEY);
+      const storageKey = `${WISHLIST_STORAGE_KEY_BASE}_${userId}`;
+      const storedWishlist = localStorage.getItem(storageKey);
       if (storedWishlist) {
         setWishlist(JSON.parse(storedWishlist));
+      } else {
+        setWishlist([]); // Clear wishlist if no stored data for this user
       }
     } catch (error) {
-      console.error("Failed to load wishlist from localStorage", error);
+      console.error("Failed to load wishlist from localStorage for user", userId, error);
+      setWishlist([]);
     }
   }, []);
 
+  // Load wishlist when user changes or on initial load
   useEffect(() => {
-    try {
-      localStorage.setItem(WISHLIST_STORAGE_KEY, JSON.stringify(wishlist));
-    } catch (error)      {
-      console.error("Failed to save wishlist to localStorage", error);
+    if (!authLoading) {
+      if (user) {
+        loadWishlistForUser(user.uid);
+      } else {
+        setWishlist([]); // Clear wishlist if no user
+      }
     }
-  }, [wishlist]);
+  }, [user, authLoading, loadWishlistForUser]);
+
+  // Save wishlist to localStorage when it changes
+  useEffect(() => {
+    const storageKey = getWishlistStorageKey();
+    if (storageKey && wishlist.length > 0) {
+      try {
+        localStorage.setItem(storageKey, JSON.stringify(wishlist));
+      } catch (error) {
+        console.error("Failed to save wishlist to localStorage", error);
+      }
+    } else if (storageKey && wishlist.length === 0) {
+      // If wishlist is empty for a logged-in user, remove the item from local storage
+      try {
+        localStorage.removeItem(storageKey);
+      } catch (error) {
+        console.error("Failed to remove wishlist from localStorage", error);
+      }
+    }
+    // If no user (storageKey is null), wishlist is in-memory only and not persisted.
+  }, [wishlist, getWishlistStorageKey]);
 
   const addToWishlist = useCallback((product: Product) => {
+    if (!user) {
+      toast({
+        title: "Please Sign In",
+        description: "You need to be signed in to add items to your wishlist.",
+        variant: "destructive"
+      });
+      // Optionally, trigger sign-in flow here:
+      // const { signInWithGoogle } = useAuth(); // This would require useAuth in this scope or passed differently.
+      // signInWithGoogle(); 
+      return;
+    }
     setWishlist((prevWishlist) => {
       if (prevWishlist.find(item => item.id === product.id)) {
         toast({ title: "Already in Wishlist", description: `${product.name} is already in your wishlist.` });
@@ -50,9 +97,13 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
       toast({ title: "Added to Wishlist", description: `${product.name} has been added to your wishlist.` });
       return [...prevWishlist, product];
     });
-  }, [toast]);
+  }, [user, toast]);
 
   const removeFromWishlist = useCallback((productId: string) => {
+    if (!user) { // Should not happen if add is guarded, but good practice
+      toast({ title: "Error", description: "You must be signed in to modify your wishlist.", variant: "destructive" });
+      return;
+    }
     setWishlist((prevWishlist) => {
       const product = prevWishlist.find(item => item.id === productId);
       if (product) {
@@ -60,23 +111,33 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
       }
       return prevWishlist.filter(item => item.id !== productId);
     });
-  }, [toast]);
+  }, [user, toast]);
 
   const isProductInWishlist = useCallback((productId: string) => {
+    if (!user) return false; // Not in wishlist if not logged in
     return wishlist.some(item => item.id === productId);
-  }, [wishlist]);
+  }, [user, wishlist]);
 
   const clearWishlist = useCallback(() => {
+    if (!user) {
+      toast({ title: "Error", description: "You must be signed in to clear your wishlist.", variant: "destructive" });
+      return;
+    }
     setWishlist([]);
+    const storageKey = getWishlistStorageKey();
+    if (storageKey) {
+        localStorage.removeItem(storageKey); // Also clear from storage
+    }
     toast({ title: "Wishlist Cleared", description: "Your wishlist has been cleared." });
-  }, [toast]);
+  }, [user, toast, getWishlistStorageKey]);
 
   const providerValue: WishlistContextType = {
     wishlist,
     addToWishlist,
     removeFromWishlist,
     isProductInWishlist,
-    clearWishlist
+    clearWishlist,
+    loadWishlistForUser,
   };
 
   return React.createElement(

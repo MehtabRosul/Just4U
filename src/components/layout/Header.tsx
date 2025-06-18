@@ -11,10 +11,13 @@ import { useWishlist } from '@/hooks/useWishlist';
 import { Badge } from '@/components/ui/badge';
 import { NavMenu } from './NavMenu'; 
 import { GLOBAL_NAV_LINKS } from '@/config/site'; 
+import { useAuth } from '@/hooks/useAuth'; // Import useAuth
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'; // Import Avatar
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { wishlist } = useWishlist();
+  const { user, loading } = useAuth(); // Get user and loading state
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-[var(--primary-header-bg)] bg-opacity-75 backdrop-blur-md shadow-sm">
@@ -87,9 +90,16 @@ export default function Header() {
                 <span className="sr-only">Wishlist</span>
               </Button>
             </Link>
-            <Link href="/account" passHref> {/* Assuming /account for user profile */}
+            <Link href="/account" passHref>
               <Button variant="ghost" size="icon" className="text-foreground hover:text-primary hover:bg-accent/10 rounded-full">
-                <UserIcon className="h-5 w-5 sm:h-6 sm:w-6" />
+                {!loading && user && user.photoURL ? (
+                  <Avatar className="h-6 w-6 sm:h-7 sm:w-7">
+                    <AvatarImage src={user.photoURL} alt={user.displayName || 'User'} />
+                    <AvatarFallback>{user.displayName ? user.displayName.charAt(0).toUpperCase() : <UserIcon className="h-4 w-4 sm:h-5 sm:w-5" />}</AvatarFallback>
+                  </Avatar>
+                ) : (
+                  <UserIcon className="h-5 w-5 sm:h-6 sm:w-6" />
+                )}
                 <span className="sr-only">Account</span>
               </Button>
             </Link>
