@@ -79,35 +79,42 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
 
   const addToWishlist = useCallback((product: Product) => {
     if (!user) {
-      toast({
-        title: "Please Sign In",
-        description: "You need to be signed in to add items to your wishlist.",
-        variant: "destructive"
-      });
-      // Optionally, trigger sign-in flow here:
-      // const { signInWithGoogle } = useAuth(); // This would require useAuth in this scope or passed differently.
-      // signInWithGoogle(); 
+      setTimeout(() => {
+        toast({
+          title: "Please Sign In",
+          description: "You need to be signed in to add items to your wishlist.",
+          variant: "destructive"
+        });
+      }, 0);
       return;
     }
     setWishlist((prevWishlist) => {
       if (prevWishlist.find(item => item.id === product.id)) {
-        toast({ title: "Already in Wishlist", description: `${product.name} is already in your wishlist.` });
+        setTimeout(() => {
+          toast({ title: "Already in Wishlist", description: `${product.name} is already in your wishlist.` });
+        }, 0);
         return prevWishlist;
       }
-      toast({ title: "Added to Wishlist", description: `${product.name} has been added to your wishlist.` });
+      setTimeout(() => {
+        toast({ title: "Added to Wishlist", description: `${product.name} has been added to your wishlist.` });
+      }, 0);
       return [...prevWishlist, product];
     });
   }, [user, toast]);
 
   const removeFromWishlist = useCallback((productId: string) => {
     if (!user) { // Should not happen if add is guarded, but good practice
-      toast({ title: "Error", description: "You must be signed in to modify your wishlist.", variant: "destructive" });
+      setTimeout(() => {
+        toast({ title: "Error", description: "You must be signed in to modify your wishlist.", variant: "destructive" });
+      }, 0);
       return;
     }
     setWishlist((prevWishlist) => {
       const product = prevWishlist.find(item => item.id === productId);
       if (product) {
-        toast({ title: "Removed from Wishlist", description: `${product.name} has been removed from your wishlist.`, variant: 'default' });
+        setTimeout(() => {
+          toast({ title: "Removed from Wishlist", description: `${product.name} has been removed from your wishlist.`, variant: 'default' });
+        }, 0);
       }
       return prevWishlist.filter(item => item.id !== productId);
     });
@@ -120,7 +127,9 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
 
   const clearWishlist = useCallback(() => {
     if (!user) {
-      toast({ title: "Error", description: "You must be signed in to clear your wishlist.", variant: "destructive" });
+      setTimeout(() => {
+        toast({ title: "Error", description: "You must be signed in to clear your wishlist.", variant: "destructive" });
+      }, 0);
       return;
     }
     setWishlist([]);
@@ -128,7 +137,9 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
     if (storageKey) {
         localStorage.removeItem(storageKey); // Also clear from storage
     }
-    toast({ title: "Wishlist Cleared", description: "Your wishlist has been cleared." });
+    setTimeout(() => {
+      toast({ title: "Wishlist Cleared", description: "Your wishlist has been cleared." });
+    }, 0);
   }, [user, toast, getWishlistStorageKey]);
 
   const providerValue: WishlistContextType = {
