@@ -8,6 +8,7 @@ import { SectionTitle } from '@/components/shared/SectionTitle';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import Image from 'next/image';
+import LottiePlayer from 'react-lottie-player';
 import { ArrowRight, ChevronDown, Sparkles as SparklesIcon, Quote, Star as StarIconLucide, Gift, CalendarDays, PartyPopper, Heart, Briefcase, ToyBrick, Utensils, Gem, Camera, Lamp, Smile, ArrowRightCircle, Users, Award, Trophy, Rocket, GraduationCap, Shield, ShoppingBag, Feather, Star as StarLucide, User, Diamond, Plane, Baby, Flower, Palette, Music, Package, Anchor, Pencil, ThumbsUp, Leaf, Medal, Moon, Newspaper, Pin, School, Search, Sprout, Store, Sun, Tag, Ticket, TreeDeciduous, Wand, Watch, Wind, Wine, Zap, Home as HomeIcon } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -579,11 +580,36 @@ const OccasionSpotlight = () => {
 
 const GiftQuoteBanners = () => {
   const quoteBanners = [
-    { id: 1, text: "The best gifts come from the heart, not the store.", animationClasses: "bg-red-700 animate-soft-glow-red", textColorClass: "text-white" },
-    { id: 2, text: "Every gift from a friend is a wish for your happiness.", animationClasses: "bg-gradient-to-r from-neutral-800 via-neutral-700 to-neutral-800 bg-[length:200%_100%] animate-slow-pan-neutral", textColorClass: "text-neutral-100" },
-    { id: 3, text: "A gift is a wish for happiness.",  animationClasses: "bg-rose-700 animate-pulse-opacity-rose", textColorClass: "text-white" },
-    { id: 4, text: "The excellence of a gift lies in its appropriateness rather than in its value.", animationClasses: "bg-gradient-to-tr from-slate-900 via-purple-800 to-sky-700 bg-[length:250%_250%] animate-aurora-dark", textColorClass: "text-neutral-100" },
-    { id: 5, text: "The manner of giving is worth more than the gift.", animationClasses: "animate-color-cycle-stone-bg", textColorClass: "text-white" },
+    { 
+      id: 1, 
+      text: "The best gifts come from the heart, not the store.", 
+      lottieAnimationUrl: "https://lottie.host/801a2a89-3221-4f13-8877-353d537f190e/g9z4J8wY0Z.json", // Replace with actual Lottie URL
+      textColorClass: "text-white" 
+    },
+    { 
+      id: 2, 
+      text: "Every gift from a friend is a wish for your happiness.", 
+      lottieAnimationUrl: "https://lottie.host/8aa22f51-a212-4f34-8c81-801c40b82f8a/xmsL0jKA7z.json", // Replace with actual Lottie URL
+      textColorClass: "text-neutral-100" 
+    },
+    { 
+      id: 3, 
+      text: "A gift is a wish for happiness.",  
+      lottieAnimationUrl: "https://lottie.host/b8e0a1f2-1f7c-473a-ba92-23746797825b/1z2Y3x4W5v.json", // Replace with actual Lottie URL
+      textColorClass: "text-white" 
+    },
+    { 
+      id: 4, 
+      text: "The excellence of a gift lies in its appropriateness rather than in its value.", 
+      lottieAnimationUrl: "https://lottie.host/5e0f7f3a-9c29-4b95-8a8e-2f5a6e4d3c2b/oPqRsTuVwX.json", // Replace with actual Lottie URL
+      textColorClass: "text-neutral-100" 
+    },
+    { 
+      id: 5, 
+      text: "The manner of giving is worth more than the gift.", 
+      lottieAnimationUrl: "https://lottie.host/c4a3b2b1-d5e6-4f7a-8b9c-0d1e2f3a4b5c/AbCdEfGhIj.json", // Replace with actual Lottie URL
+      textColorClass: "text-white" 
+    },
   ];
 
   const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
@@ -597,18 +623,51 @@ const GiftQuoteBanners = () => {
   }, [quoteBanners.length]);
 
   const currentBanner = quoteBanners[currentBannerIndex];
+  const [lottieData, setLottieData] = useState<object | null>(null);
+
+  useEffect(() => {
+    if (currentBanner.lottieAnimationUrl) {
+      fetch(currentBanner.lottieAnimationUrl)
+        .then(response => response.json())
+        .then(data => setLottieData(data))
+        .catch(error => {
+          console.error("Error fetching Lottie animation:", error);
+          setLottieData(null); // Fallback or error state
+        });
+    } else {
+      setLottieData(null);
+    }
+  }, [currentBanner.lottieAnimationUrl]);
+
 
   return (
     <section className="my-8 sm:my-12">
       <div
-        key={currentBanner.id} // Add key here to help React re-render and restart animation
+        key={currentBanner.id} 
         className={cn(
           "w-full h-20 sm:h-24 md:h-28 flex items-center justify-center p-4 rounded-lg shadow-md relative overflow-hidden",
-          currentBanner.animationClasses
+          // Base background color if Lottie fails or not present for some reason
+          "bg-neutral-800" 
         )}
       >
+        {lottieData && (
+          <LottiePlayer
+            animationData={lottieData}
+            play
+            loop
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              zIndex: 0,
+              objectFit: 'cover',
+            }}
+          />
+        )}
         <p className={cn(
-          "text-sm sm:text-base md:text-lg font-medium text-center italic z-10",
+          "text-sm sm:text-base md:text-lg font-medium text-center italic relative z-10", // Added relative and z-10
            currentBanner.textColorClass
            )}>
           "{currentBanner.text}"

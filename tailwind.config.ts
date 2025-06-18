@@ -106,28 +106,6 @@ export default {
           '0%': { transform: 'translateX(-100%)' },
           '100%': { transform: 'translateX(0%)' },
         },
-        'soft-glow': {
-          '0%, 100%': { 'box-shadow': '0 0 10px 0px hsl(var(--primary) / 0.4)' },
-          '50%': { 'box-shadow': '0 0 20px 5px hsl(var(--primary) / 0.6)' },
-        },
-        'slow-pan': {
-          '0%': { 'background-position': '0% 50%' },
-          '100%': { 'background-position': '100% 50%' },
-        },
-        'pulse-opacity-anim': { // Renamed to avoid conflict if 'pulse-opacity' is a pre-existing Tailwind name
-          '0%, 100%': { opacity: '0.7' },
-          '50%': { opacity: '1' },
-        },
-        'aurora-bg': {
-          '0%': { 'background-position': '0% 0%' },
-          '50%': { 'background-position': '100% 100%' },
-          '100%': { 'background-position': '0% 0%' },
-        },
-        'color-cycle-stone': {
-          '0%, 100%': { 'background-color': 'hsl(var(--muted))' }, // Using CSS var for stone-like
-          '33%': { 'background-color': 'hsl(var(--secondary))' }, // Using CSS var
-          '66%': { 'background-color': 'hsl(var(--border))' }, // Using CSS var
-        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -135,11 +113,6 @@ export default {
         'marquee-text': 'marquee-text 25s linear infinite',
         'marquee-horizontal': 'marquee-horizontal 40s linear infinite', 
         'marquee-horizontal-reverse': 'marquee-horizontal-reverse 40s linear infinite',
-        'soft-glow-red': 'soft-glow 3s ease-in-out infinite alternate',
-        'slow-pan-neutral': 'slow-pan 15s ease-in-out infinite alternate',
-        'pulse-opacity-rose': 'pulse-opacity-anim 2.5s ease-in-out infinite alternate',
-        'aurora-dark': 'aurora-bg 20s ease-in-out infinite alternate',
-        'color-cycle-stone-bg': 'color-cycle-stone 10s ease-in-out infinite alternate',
       },
       height: { 
         '6': '1.5rem', 
