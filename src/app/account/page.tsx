@@ -6,9 +6,10 @@ import { SectionTitle } from '@/components/shared/SectionTitle';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { ShoppingBag, Heart, Gift, MapPin, Bell, LogOut, LogIn, UserPlus, User } from 'lucide-react';
+import { ShoppingBag, Heart, Gift, MapPin, Bell, LogOut, LogIn, User } from 'lucide-react';
 import Link from 'next/link';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useToast } from '@/hooks/use-toast';
 
 const accountSections = [
   { title: 'My Orders', description: 'View your order history and track shipments.', icon: ShoppingBag, href: '/account/orders' },
@@ -20,6 +21,7 @@ const accountSections = [
 
 export default function AccountPage() {
   const { user, loading, signInWithGoogle, signOutUser } = useAuth();
+  const { toast } = useToast();
 
   if (loading) {
     return (
@@ -37,7 +39,6 @@ export default function AccountPage() {
               </CardHeader>
               <CardContent className="space-y-3">
                 <Skeleton className="h-10 w-full" />
-                <Skeleton className="h-10 w-full" />
               </CardContent>
             </Card>
           </div>
@@ -49,7 +50,7 @@ export default function AccountPage() {
                 </CardHeader>
                 <CardContent>
                     <div className="grid sm:grid-cols-2 gap-4">
-                        {[...Array(4)].map((_, i) => (
+                        {[...Array(accountSections.length)].map((_, i) => (
                             <Skeleton key={i} className="h-[100px] rounded-lg" />
                         ))}
                     </div>
@@ -95,7 +96,6 @@ export default function AccountPage() {
                   <LogOut className="mr-2 h-4 w-4" /> Sign Out
                 </Button>
               ) : (
-                <>
                   <Button
                     variant="default"
                     size="sm"
@@ -104,16 +104,6 @@ export default function AccountPage() {
                   >
                     <LogIn className="mr-2 h-4 w-4" /> Sign in with Google
                   </Button>
-                   {/* Optionally, keep a separate Sign Up if the flow differs, but Google Sign-In handles both */}
-                   {/* <Button 
-                    variant="outline" 
-                    size="sm" 
-                    className="w-full text-primary border-primary hover:bg-primary/10 hover:border-red-700 hover:text-red-600 hover:shadow-lg transition-all duration-200 ease-in-out hover:scale-105"
-                    onClick={signInWithGoogle} // Can use the same Google Sign-In
-                  >
-                     <UserPlus className="mr-2 h-4 w-4" /> Sign Up with Google
-                  </Button> */}
-                </>
               )}
             </CardContent>
           </Card>
@@ -161,16 +151,3 @@ export default function AccountPage() {
     </div>
   );
 }
-// Placeholder toast function if not globally available or if you want it specific here
-// This would typically come from your toast hook context.
-const toast = (options: {title: string, description: string, variant?: 'default' | 'destructive'}) => {
-    // In a real app, this would trigger a global toast notification
-    if (typeof window !== 'undefined') {
-      alert(`${options.title}: ${options.description}`);
-    }
-    console.log("Toast:", options);
-};
-
-// TODO: Create sub-pages for each account section if user is logged in:
-// /account/orders, /account/registries, /account/addresses, /account/notifications
-// These pages should also be protected routes.

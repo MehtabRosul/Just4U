@@ -3,12 +3,80 @@
 
 import { SectionTitle } from '@/components/shared/SectionTitle';
 import { Button } from '@/components/ui/button';
-import { ShoppingBag } from 'lucide-react';
+import { ShoppingBag, LogIn } from 'lucide-react';
 import Link from 'next/link';
+import { useAuth } from '@/hooks/useAuth';
+import { useToast } from '@/hooks/use-toast';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function CartPage() {
-  // In a real app, you'd fetch cart items from state or context
+  const { user, loading, signInWithGoogle } = useAuth();
+  const { toast } = useToast();
+
+  // In a real app, you'd fetch cart items from state or context,
+  // potentially specific to the logged-in user.
   const cartItems: any[] = []; // Placeholder for cart items
+
+  const handleCheckout = () => {
+    if (!user) {
+      toast({
+        title: "Authentication Required",
+        description: "Please sign in to proceed to checkout.",
+        variant: "destructive",
+      });
+      signInWithGoogle(); // Prompt to sign in
+      return;
+    }
+    // Proceed with checkout logic for logged-in user
+    console.log("Proceeding to checkout for user:", user.email);
+    toast({
+      title: "Checkout Initiated",
+      description: "Redirecting to checkout page..."
+    });
+    // Example: router.push('/checkout');
+  };
+
+  if (loading) {
+    return (
+      <div className="container mx-auto px-4 py-6 sm:py-8">
+        <Skeleton className="h-8 w-1/2 mb-6 sm:mb-8" />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="md:col-span-2 space-y-4">
+            <Skeleton className="h-24 w-full rounded-lg" />
+            <Skeleton className="h-24 w-full rounded-lg" />
+          </div>
+          <div className="md:col-span-1 p-6 border rounded-lg bg-card shadow-lg h-fit">
+            <Skeleton className="h-6 w-3/4 mb-4" />
+            <div className="space-y-2 mb-4">
+              <Skeleton className="h-4 w-full" />
+              <Skeleton className="h-4 w-full" />
+              <hr className="my-2 border-border" />
+              <Skeleton className="h-6 w-full" />
+            </div>
+            <Skeleton className="h-12 w-full" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="container mx-auto px-4 py-6 sm:py-8 text-center">
+        <SectionTitle className="mb-6 sm:mb-8">Your Shopping Cart</SectionTitle>
+        <div className="py-10 sm:py-16 border border-dashed rounded-lg">
+          <ShoppingBag className="mx-auto h-12 w-12 sm:h-16 sm:w-16 text-muted-foreground mb-4" />
+          <p className="text-lg sm:text-xl font-semibold text-muted-foreground mb-2">Sign in to view your Cart</p>
+          <p className="text-sm sm:text-base text-muted-foreground mb-6 max-w-md mx-auto">
+            Log in or create an account to manage your shopping cart and proceed to checkout.
+          </p>
+          <Button size="lg" className="px-6 py-3 bg-primary text-primary-foreground hover:bg-primary/90" onClick={signInWithGoogle}>
+            <LogIn className="mr-2 h-5 w-5" /> Sign in with Google
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto px-4 py-6 sm:py-8">
@@ -55,7 +123,7 @@ export default function CartPage() {
                 <span>Rs. 0.00</span>
               </div>
             </div>
-            <Button size="lg" className="w-full bg-primary text-primary-foreground hover:bg-primary/90">
+            <Button size="lg" className="w-full bg-primary text-primary-foreground hover:bg-primary/90" onClick={handleCheckout}>
               Proceed to Checkout
             </Button>
           </div>
