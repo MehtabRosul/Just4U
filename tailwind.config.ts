@@ -105,24 +105,24 @@ export default {
           '0%': { transform: 'translateX(-100%)' },
           '100%': { transform: 'translateX(0%)' },
         },
-        'nebula-shift': {
+        'nebula-shift': { // More vibrant colors
           '0%': { backgroundPosition: '0% 50%' },
           '50%': { backgroundPosition: '100% 50%' },
           '100%': { backgroundPosition: '0% 50%' },
         },
-        'liquid-flow': {
+        'liquid-flow': { // More vibrant colors
           '0%': { backgroundPosition: '0% 50%' },
           '100%': { backgroundPosition: '200% 50%' },
         },
-        'bokeh-drift': {
+        'bokeh-drift': { // More vibrant colors and opacity
           '0%, 100%': { backgroundPosition: '0% 0%' },
           '50%': { backgroundPosition: '100% 100%' },
         },
-        'subtle-stripes': {
+        'subtle-stripes': { // Brighter, more contrast
           '0%, 100%': { backgroundPosition: '0% 50%' },
           '50%': { backgroundPosition: '100% 50%' },
         },
-        'watercolor-flow': {
+        'watercolor-flow': { // More vibrant colors and opacity
           '0%, 100%': { backgroundPosition: '0% 50%' },
           '50%': { backgroundPosition: '100% 50%' },
         },
@@ -140,7 +140,7 @@ export default {
         'nebula-shift': 'nebula-shift 20s ease infinite',
         'liquid-flow': 'liquid-flow 15s linear infinite',
         'bokeh-drift': 'bokeh-drift 25s ease-in-out infinite',
-        'subtle-stripes': 'subtle-stripes 30s linear infinite',
+        'subtle-stripes': 'subtle-stripes 20s linear infinite', // Faster for more shimmer if desired
         'watercolor-flow': 'watercolor-flow 18s ease-in-out infinite',
         'breathing-scale': 'breathing-scale 4s ease-in-out infinite',
       },

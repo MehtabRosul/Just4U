@@ -588,32 +588,32 @@ const GiftQuoteBanners = () => {
     {
       id: 1,
       text: "A truly thoughtful gift is a silent message of affection, a tangible reminder that someone holds you dear and took the time to express it beautifully.",
-      animationClasses: "bg-gradient-to-r from-indigo-800 via-purple-800 to-pink-800 bg-[length:300%_300%] animate-nebula-shift",
-      textColorClass: "text-sky-200"
+      animationClasses: "bg-gradient-to-r from-purple-600 via-pink-500 to-red-500 bg-[length:300%_300%] animate-nebula-shift",
+      textColorClass: "text-sky-100"
     },
     {
       id: 2,
       text: "The joy of gifting lies not in the object itself, but in the delight it brings to another's eyes, a shared moment of happiness that echoes long after the wrapping is gone.",
-      animationClasses: "bg-gradient-to-r from-neutral-600 via-neutral-400 to-neutral-600 bg-[length:200%_100%] animate-liquid-flow",
-      textColorClass: "text-neutral-100"
+      animationClasses: "bg-gradient-to-r from-orange-500 via-red-500 to-yellow-500 bg-[length:200%_100%] animate-liquid-flow",
+      textColorClass: "text-white"
     },
     {
       id: 3,
       text: "Gifts are more than mere possessions; they are bridges between hearts, tokens of appreciation, and symbols of the unspoken bonds that connect us.",
-      animationClasses: "bg-gradient-radial from-pink-600/60 via-purple-600/50 to-indigo-600/40 bg-[length:300%_300%] animate-bokeh-drift",
-      textColorClass: "text-pink-100"
+      animationClasses: "bg-gradient-radial from-pink-500/80 via-purple-500/70 to-indigo-500/60 bg-[length:300%_300%] animate-bokeh-drift",
+      textColorClass: "text-indigo-100"
     },
     {
       id: 4,
       text: "In every carefully chosen gift, there's a story whispered – a tale of understanding, remembrance, and the simple, profound desire to bring a smile to someone's face.",
-      animationClasses: "bg-gradient-to-r from-neutral-800 via-neutral-750 to-neutral-800 bg-[length:200%_100%] animate-subtle-stripes",
-      textColorClass: "text-red-300"
+      animationClasses: "bg-gradient-to-r from-slate-700 via-slate-500 to-slate-700 bg-[length:200%_100%] animate-subtle-stripes",
+      textColorClass: "text-slate-100"
     },
     {
       id: 5,
       text: "Giving a gift is an art form where the heart guides the hand, selecting not just an item, but a piece of joy intended to brighten another's world.",
-      animationClasses: "bg-gradient-to-br from-rose-700/70 via-red-700/60 to-orange-700/70 bg-[length:200%_200%] animate-watercolor-flow",
-      textColorClass: "text-rose-100"
+      animationClasses: "bg-gradient-to-br from-rose-500/90 via-red-500/80 to-orange-500/90 bg-[length:200%_200%] animate-watercolor-flow",
+      textColorClass: "text-white"
     },
   ];
 
