@@ -5,14 +5,14 @@ import { useWishlist } from '@/hooks/useWishlist';
 import { ProductList } from '@/components/products/ProductList';
 import { SectionTitle } from '@/components/shared/SectionTitle';
 import { Button } from '@/components/ui/button';
-import { HeartOff, ShoppingBag, LogIn } from 'lucide-react';
+import { HeartOff, ShoppingBag, UserPlus } from 'lucide-react';
 import Link from 'next/link';
 import { useAuth } from '@/hooks/useAuth';
 import { Skeleton } from '@/components/ui/skeleton';
 
 export default function WishlistPage() {
   const { wishlist, clearWishlist } = useWishlist();
-  const { user, loading, signInWithGoogle } = useAuth();
+  const { user, loading } = useAuth();
 
   if (loading) {
     return (
@@ -34,14 +34,16 @@ export default function WishlistPage() {
     return (
       <div className="container mx-auto px-4 py-6 sm:py-8 text-center">
         <SectionTitle className="mb-6 sm:mb-8">Your Wishlist</SectionTitle>
-        <div className="py-10 sm:py-16 border border-dashed rounded-lg">
+        <div className="py-10 sm:py-16 border border-dashed rounded-lg bg-card">
           <HeartOff className="mx-auto h-12 w-12 sm:h-16 sm:w-16 text-muted-foreground mb-4" />
-          <p className="text-lg sm:text-xl font-semibold text-muted-foreground mb-2">Sign in to view your Wishlist</p>
+          <p className="text-lg sm:text-xl font-semibold text-foreground mb-2">Access Your Wishlist</p>
           <p className="text-sm sm:text-base text-muted-foreground mb-6 max-w-md mx-auto">
-            Log in or create an account to save your favorite items and access them anytime, anywhere.
+            Please log in or sign up to view and manage your saved items.
           </p>
-          <Button size="lg" className="px-6 py-3 bg-primary text-primary-foreground hover:bg-primary/90" onClick={signInWithGoogle}>
-            <LogIn className="mr-2 h-5 w-5" /> Sign in with Google
+          <Button asChild size="lg" className="px-6 py-3 bg-primary text-primary-foreground hover:bg-primary/90">
+            <Link href="/auth">
+              <UserPlus className="mr-2 h-5 w-5" /> Login / Sign Up
+            </Link>
           </Button>
         </div>
       </div>
@@ -62,9 +64,9 @@ export default function WishlistPage() {
       {wishlist.length > 0 ? (
         <ProductList products={wishlist} />
       ) : (
-        <div className="text-center py-10 sm:py-16 border border-dashed rounded-lg mt-4 sm:mt-0">
+        <div className="text-center py-10 sm:py-16 border border-dashed rounded-lg mt-4 sm:mt-0 bg-card">
           <HeartOff className="mx-auto h-12 w-12 sm:h-16 sm:w-16 text-muted-foreground mb-4" />
-          <p className="text-lg sm:text-xl font-semibold text-muted-foreground mb-2">Your wishlist is empty.</p>
+          <p className="text-lg sm:text-xl font-semibold text-foreground mb-2">Your wishlist is empty.</p>
           <p className="text-sm sm:text-base text-muted-foreground mb-6 max-w-md mx-auto">Add items you love to your wishlist to save them for later.</p>
           <Button asChild size="lg" className="px-6 py-3 bg-primary text-primary-foreground hover:bg-primary/90">
             <Link href="/products">

@@ -3,15 +3,17 @@
 
 import { SectionTitle } from '@/components/shared/SectionTitle';
 import { Button } from '@/components/ui/button';
-import { ShoppingBag, LogIn } from 'lucide-react';
+import { ShoppingBag, UserPlus } from 'lucide-react';
 import Link from 'next/link';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useRouter } from 'next/navigation';
 
 export default function CartPage() {
-  const { user, loading, signInWithGoogle } = useAuth();
+  const { user, loading } = useAuth();
   const { toast } = useToast();
+  const router = useRouter();
 
   // In a real app, you'd fetch cart items from state or context,
   // potentially specific to the logged-in user.
@@ -21,10 +23,10 @@ export default function CartPage() {
     if (!user) {
       toast({
         title: "Authentication Required",
-        description: "Please sign in to proceed to checkout.",
-        variant: "destructive",
+        description: "Please log in or sign up to proceed to checkout.",
+        variant: "default", // Changed to default to be less alarming
       });
-      signInWithGoogle(); // Prompt to sign in
+      router.push('/auth'); // Redirect to the new auth page
       return;
     }
     // Proceed with checkout logic for logged-in user
@@ -64,14 +66,16 @@ export default function CartPage() {
     return (
       <div className="container mx-auto px-4 py-6 sm:py-8 text-center">
         <SectionTitle className="mb-6 sm:mb-8">Your Shopping Cart</SectionTitle>
-        <div className="py-10 sm:py-16 border border-dashed rounded-lg">
+        <div className="py-10 sm:py-16 border border-dashed rounded-lg bg-card">
           <ShoppingBag className="mx-auto h-12 w-12 sm:h-16 sm:w-16 text-muted-foreground mb-4" />
-          <p className="text-lg sm:text-xl font-semibold text-muted-foreground mb-2">Sign in to view your Cart</p>
+          <p className="text-lg sm:text-xl font-semibold text-foreground mb-2">Access Your Cart</p>
           <p className="text-sm sm:text-base text-muted-foreground mb-6 max-w-md mx-auto">
-            Log in or create an account to manage your shopping cart and proceed to checkout.
+            Please log in or sign up to manage your shopping cart and proceed to checkout.
           </p>
-          <Button size="lg" className="px-6 py-3 bg-primary text-primary-foreground hover:bg-primary/90" onClick={signInWithGoogle}>
-            <LogIn className="mr-2 h-5 w-5" /> Sign in with Google
+          <Button asChild size="lg" className="px-6 py-3 bg-primary text-primary-foreground hover:bg-primary/90">
+            <Link href="/auth">
+              <UserPlus className="mr-2 h-5 w-5" /> Login / Sign Up
+            </Link>
           </Button>
         </div>
       </div>
@@ -129,9 +133,9 @@ export default function CartPage() {
           </div>
         </div>
       ) : (
-        <div className="text-center py-10 sm:py-16 border border-dashed rounded-lg">
+        <div className="text-center py-10 sm:py-16 border border-dashed rounded-lg bg-card">
           <ShoppingBag className="mx-auto h-12 w-12 sm:h-16 sm:w-16 text-muted-foreground mb-4" />
-          <p className="text-lg sm:text-xl font-semibold text-muted-foreground mb-2">Your cart is empty.</p>
+          <p className="text-lg sm:text-xl font-semibold text-foreground mb-2">Your cart is empty.</p>
           <p className="text-sm sm:text-base text-muted-foreground mb-6 max-w-md mx-auto">
             Looks like you haven't added anything to your cart yet.
           </p>

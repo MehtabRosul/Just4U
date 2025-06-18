@@ -6,7 +6,7 @@ import { SectionTitle } from '@/components/shared/SectionTitle';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { ShoppingBag, Heart, Gift, MapPin, Bell, LogOut, LogIn, User } from 'lucide-react';
+import { ShoppingBag, Heart, Gift, MapPin, Bell, LogOut, UserPlus, User as UserIcon } from 'lucide-react';
 import Link from 'next/link';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/hooks/use-toast';
@@ -20,7 +20,7 @@ const accountSections = [
 ];
 
 export default function AccountPage() {
-  const { user, loading, signInWithGoogle, signOutUser } = useAuth();
+  const { user, loading, signOutUser } = useAuth();
   const { toast } = useToast();
 
   if (loading) {
@@ -73,15 +73,15 @@ export default function AccountPage() {
               <Avatar className="h-12 w-12">
                 <AvatarImage src={user?.photoURL || undefined} alt={user?.displayName || 'User'} />
                 <AvatarFallback>
-                  {user?.displayName ? user.displayName.charAt(0).toUpperCase() : <User className="h-6 w-6" />}
+                  {user?.displayName ? user.displayName.charAt(0).toUpperCase() : <UserIcon className="h-6 w-6" />}
                 </AvatarFallback>
               </Avatar>
               <div>
                 <CardTitle className="text-xl text-card-foreground">
-                  {user ? user.displayName || 'User' : 'Welcome, Guest'}
+                  {user ? user.displayName || user.email || 'User' : 'Welcome, Guest'}
                 </CardTitle>
                 <CardDescription className="text-sm">
-                  {user ? user.email : 'Sign in or register to personalize your experience.'}
+                  {user ? user.email : 'Log in or sign up to access your account.'}
                 </CardDescription>
               </div>
             </CardHeader>
@@ -97,12 +97,14 @@ export default function AccountPage() {
                 </Button>
               ) : (
                   <Button
+                    asChild
                     variant="default"
                     size="sm"
-                    className="w-full bg-primary text-primary-foreground hover:bg-red-700 hover:shadow-xl transition-all duration-200 ease-in-out hover:scale-105"
-                    onClick={signInWithGoogle}
+                    className="w-full bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-xl transition-all duration-200 ease-in-out hover:scale-105"
                   >
-                    <LogIn className="mr-2 h-4 w-4" /> Sign in with Google
+                    <Link href="/auth">
+                       <UserPlus className="mr-2 h-4 w-4" /> Login / Sign Up
+                    </Link>
                   </Button>
               )}
             </CardContent>
@@ -127,9 +129,11 @@ export default function AccountPage() {
                           e.preventDefault();
                           toast({
                             title: "Authentication Required",
-                            description: "Please sign in to access this section.",
-                            variant: "destructive"
+                            description: "Please log in or sign up to access this section.",
+                            variant: "default" // Changed to default
                           });
+                           // Optionally, redirect to /auth page
+                           // router.push('/auth');
                         }
                       }}
                     >
