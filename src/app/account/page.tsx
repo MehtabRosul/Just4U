@@ -9,7 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { ShoppingBag, Heart, Gift, MapPin, Bell, LogOut, User as UserIcon, Edit3, Camera } from 'lucide-react'; // Removed Save icon
+import { ShoppingBag, Heart, Gift, MapPin, Bell, LogOut, User as UserIcon, Edit3, Camera } from 'lucide-react';
 import Link from 'next/link';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/hooks/use-toast';
@@ -25,12 +25,12 @@ const accountSections = [
 ];
 
 export default function AccountPage() {
-  const { user, loading, signOutUser, updateUserFirebaseProfile } = useAuth(); // Removed signInWithGoogle as it's not directly used here anymore for this specific flow
+  const { user, loading, signOutUser, updateUserFirebaseProfile } = useAuth();
   const { toast } = useToast();
   const router = useRouter();
 
   const [isEditing, setIsEditing] = useState(false);
-  const [isSaving, setIsSaving] = useState(false); // Still used by handleProfileSave
+  const [isSaving, setIsSaving] = useState(false);
 
   const [displayName, setDisplayName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -41,26 +41,33 @@ export default function AccountPage() {
     if (user) {
       setDisplayName(user.displayName || '');
       setPhoneNumber(user.phoneNumber || ''); 
+      // Fields not directly on Firebase User object; initialize as empty or from other source if available
       setDeliveryAddress(''); 
       setAge(''); 
     }
   }, [user]);
 
-  const handleEditToggle = () => setIsEditing(!isEditing);
+  const handleEditToggle = async () => {
+    if (isEditing) { // If was editing, now "Done Editing" is clicked
+      await handleProfileSave(); // Attempt to save changes
+    }
+    setIsEditing(!isEditing);
+  };
 
-  const handleProfileSave = async (e: FormEvent) => {
-    e.preventDefault(); 
+  // This function is called when "Done Editing" is clicked (formerly "Save Profile")
+  const handleProfileSave = async () => { 
     if (!user) {
       toast({ title: "Error", description: "You must be logged in to save your profile.", variant: "destructive" });
       return;
     }
     setIsSaving(true);
     try {
+      // Only update displayName in Firebase Auth user profile
       await updateUserFirebaseProfile(user, { displayName });
       
       toast({ title: "Profile Updated", description: "Your display name has been updated." });
-      setIsEditing(false); // Exit edit mode after save
 
+      // For other fields, log or send to a different backend/database
       console.log("Phone number (placeholder save):", phoneNumber);
       console.log("Delivery address (placeholder save):", deliveryAddress);
       console.log("Age (placeholder save):", age);
@@ -147,8 +154,8 @@ export default function AccountPage() {
       <div className="grid md:grid-cols-3 gap-8">
         <div className="md:col-span-1 space-y-6">
           <Card className="bg-card border-border shadow-md">
-            {/* The form still exists to potentially handle submission via other means if needed, or just to group inputs */}
-            <form onSubmit={handleProfileSave}> 
+            {/* The form is no longer needed if the "Done Editing" button triggers save */}
+            {/* <form onSubmit={handleProfileSave}> */}
               <CardHeader className="items-center text-center pb-4">
                 <div className="relative group">
                   <Avatar className="h-24 w-24 mx-auto">
@@ -159,7 +166,7 @@ export default function AccountPage() {
                   </Avatar>
                   {isEditing && (
                     <Button 
-                      type="button" // Explicitly set type
+                      type="button"
                       size="icon" 
                       variant="outline" 
                       className="absolute bottom-0 right-0 rounded-full h-8 w-8 bg-background/80 hover:bg-background" 
@@ -176,7 +183,7 @@ export default function AccountPage() {
                     id="displayName"
                     value={displayName}
                     onChange={(e: ChangeEvent<HTMLInputElement>) => setDisplayName(e.target.value)}
-                    className="text-xl font-semibold text-center mt-3 bg-input border-border focus:ring-primary"
+                    className="text-xl font-semibold text-center mt-3 bg-input border-border focus:ring-primary text-foreground"
                     placeholder="Your Name"
                   />
                 ) : (
@@ -200,7 +207,7 @@ export default function AccountPage() {
                         value={phoneNumber}
                         onChange={(e: ChangeEvent<HTMLInputElement>) => setPhoneNumber(e.target.value)}
                         placeholder="Your phone number"
-                        className="mt-1 bg-input border-border focus:ring-primary"
+                        className="mt-1 bg-input border-border focus:ring-primary text-foreground"
                       />
                     </div>
                      <div>
@@ -211,7 +218,7 @@ export default function AccountPage() {
                         value={age}
                         onChange={(e: ChangeEvent<HTMLInputElement>) => setAge(e.target.value)}
                         placeholder="Your age"
-                        className="mt-1 bg-input border-border focus:ring-primary"
+                        className="mt-1 bg-input border-border focus:ring-primary text-foreground"
                       />
                     </div>
                     <div>
@@ -221,25 +228,24 @@ export default function AccountPage() {
                         value={deliveryAddress}
                         onChange={(e: ChangeEvent<HTMLInputElement>) => setDeliveryAddress(e.target.value)}
                         placeholder="Your delivery address"
-                        className="mt-1 bg-input border-border focus:ring-primary"
+                        className="mt-1 bg-input border-border focus:ring-primary text-foreground"
                       />
                     </div>
                   </>
                 )}
 
-                {/* Save Profile button removed from here */}
-                {/* The Edit Profile button will toggle the edit mode */}
                 <Button 
-                  type="button" // Ensure this is type="button"
+                  type="button" 
                   variant="outline" 
                   onClick={handleEditToggle} 
                   className="w-full text-primary border-primary hover:bg-primary/10 hover:text-primary"
+                  disabled={isSaving}
                 >
-                  <Edit3 className="mr-2 h-4 w-4" /> {isEditing ? 'Done Editing' : 'Edit Profile'}
+                  <Edit3 className="mr-2 h-4 w-4" /> {isEditing ? (isSaving ? 'Saving...' : 'Done Editing') : 'Edit Profile'}
                 </Button>
 
                 <Button
-                  type="button" // Ensure this is type="button"
+                  type="button"
                   variant="outline"
                   className="w-full text-destructive border-destructive hover:bg-destructive hover:text-destructive-foreground"
                   onClick={handleSignOut}
@@ -247,7 +253,7 @@ export default function AccountPage() {
                   <LogOut className="mr-2 h-4 w-4" /> Sign Out
                 </Button>
               </CardContent>
-            </form>
+            {/* </form> */}
           </Card>
         </div>
 
@@ -299,3 +305,5 @@ export default function AccountPage() {
     
 
       
+
+    
