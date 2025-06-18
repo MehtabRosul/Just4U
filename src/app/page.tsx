@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import Image from 'next/image';
 import LottiePlayer from 'react-lottie-player';
-import { ArrowRight, ChevronDown, Sparkles as SparklesIcon, Quote, Star as StarIconLucide, Gift, CalendarDays, PartyPopper, Heart, Briefcase, ToyBrick, Utensils, Gem, Camera, Lamp, Smile, ArrowRightCircle, Users, Award, Trophy, Rocket, GraduationCap, Shield, ShoppingBag, Feather, Star as StarLucide, User, Diamond, Plane, Baby, Flower, Palette, Music, Package, Anchor, Pencil, ThumbsUp, Leaf, Medal, Moon, Newspaper, Pin, School, Search, Sprout, Store, Sun, Tag, Ticket, TreeDeciduous, Wand, Watch, Wind, Wine, Zap, Home as HomeIcon } from 'lucide-react';
+import { ArrowRight, ChevronDown, Sparkles as SparklesIcon, Quote, Star as StarIconLucide, Gift, CalendarDays, PartyPopper, Heart, Briefcase, ToyBrick, Utensils, Gem, Camera, Lamp, Smile, ArrowRightCircle, Users, Award, Trophy, Rocket, GraduationCap, Shield, ShoppingBag, Feather, Star as StarLucide, User, Diamond, Plane, Baby, Flower, Palette, Music, Package, Anchor, Pencil, ThumbsUp, Leaf, Medal, Moon, Newspaper, Pin, School, Search, Sprout, Store, Sun, Tag, Ticket, TreeDeciduous, Wand, Watch, Wind, Wine, Zap, HomeIcon } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
@@ -542,17 +542,7 @@ const OccasionSpotlight = () => {
                     "group-hover/item:bg-primary/80 group-hover/item:shadow-xl group-hover/item:shadow-primary/30 group-hover/item:scale-105 group-hover/item:border-primary"
                   )}
                 >
-                  {occasion.lottieAnimationUrl ? (
-                    <LottiePlayer
-                      path={occasion.lottieAnimationUrl}
-                      play
-                      loop
-                      style={{ width: 48, height: 48, marginBottom: '0.75rem' }}
-                      className={cn(
-                        "transition-opacity duration-300 group-hover/item:opacity-80"
-                      )}
-                    />
-                  ) : OccIcon ? (
+                  {OccIcon ? (
                     <OccIcon
                       className={cn(
                         "h-12 w-12 text-primary mb-3",
@@ -636,7 +626,7 @@ const GiftQuoteBanners = () => {
   useEffect(() => {
     const currentBanner = quoteBanners[currentBannerIndex];
     if (currentBanner.lottieAnimationUrl) {
-      setLottieData(null); // Clear previous animation data
+      setLottieData(null); 
       fetch(currentBanner.lottieAnimationUrl)
         .then(response => response.json())
         .then(data => setLottieData(data))

@@ -35,14 +35,13 @@ export interface BaseCategory {
 
 export interface Occasion extends BaseCategory {
   Icon?: LucideIcon;
-  lottieAnimationUrl?: string; // Added for Lottie animations
   dataAiHint?: string;
 }
 export interface GiftType extends BaseCategory {
    Icon?: LucideIcon;
 }
 export interface Recipient extends BaseCategory {
-  dataAiHint?: string; // Icon property removed
+  dataAiHint?: string; 
 }
 
 // Legacy Category type, maps to GiftType now
