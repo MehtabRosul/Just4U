@@ -59,7 +59,7 @@ export default function AccountPage() {
                             const Icon = section.icon;
                             return (
                                 <Link key={section.title} href={section.href} className="block group">
-                                    <div className="p-4 border rounded-lg bg-card hover:bg-primary/10 hover:border-primary/40 hover:shadow-lg transition-all duration-200 h-full flex flex-col">
+                                    <div className="p-4 border rounded-lg bg-card hover:bg-primary/20 hover:border-primary/50 hover:shadow-lg transition-all duration-200 h-full flex flex-col">
                                         <div className="flex items-center mb-2">
                                             <Icon className="h-6 w-6 text-primary mr-3 transition-transform group-hover:scale-110" />
                                             <h3 className="text-md font-semibold text-card-foreground group-hover:text-primary">{section.title}</h3>
