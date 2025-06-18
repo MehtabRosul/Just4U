@@ -44,13 +44,13 @@ export default function AccountPage() {
   useEffect(() => {
     if (user) {
       setDisplayName(user.displayName || '');
-      setPhoneNumber(user.phoneNumber || '');
+      setPhoneNumber(user.phoneNumber || ''); 
       setDeliveryAddress(''); 
       setAge(''); 
-      // Do not reset photoPreview here if it's already set by a local selection.
-      // The AvatarImage src={photoPreview || user?.photoURL} will handle showing the correct image.
-      // Only reset photoFile as it's just the reference to the last selected file.
-      setPhotoFile(null);
+      // If a local photo was just selected and previewed, we don't want to discard it
+      // just because the user object (e.g. displayName) got updated from Firebase.
+      // So, photoPreview is NOT reset here unless the user logs out.
+      setPhotoFile(null); // Reset the file input state, as we don't hold the file itself after preview generation
     } else {
       // If user logs out, clear all fields including local preview
       setDisplayName('');
@@ -59,7 +59,7 @@ export default function AccountPage() {
       setAge('');
       setPhotoFile(null);
       setPhotoPreview(null);
-      setIsEditing(false); // Exit editing mode on logout
+      setIsEditing(false); // Ensure editing mode is turned off on logout
     }
   }, [user]);
 
@@ -82,15 +82,15 @@ export default function AccountPage() {
     }
     setIsSaving(true);
     try {
-      // Only include displayName for Firebase Auth profile update.
-      // photoURL from local file selection (data URI) is too long for Firebase Auth.
       const profileDataToUpdate: { displayName?: string } = {
         displayName: displayName,
       };
-      
+      // We are NOT updating photoURL with photoPreview (local data URI) to avoid "URL too long" error.
+      // Firebase Auth photoURL is best updated with a URL from a service like Firebase Storage.
+      // For this interaction, only displayName is saved to Firebase Auth.
       await updateUserFirebaseProfile(user, profileDataToUpdate);
       
-      toast({ title: "Profile Updated", description: "Your display name has been updated." });
+      toast({ title: "Profile Updated", description: "Your display name has been updated in Firebase." });
 
       // If a new photo was selected (photoFile was set), we keep photoPreview for this page's avatar.
       // Reset photoFile to allow for another selection if desired.
@@ -100,10 +100,10 @@ export default function AccountPage() {
         setPhotoFile(null); // Reset the file input state, but photoPreview remains for local display.
       }
 
-      // Log other non-Firebase Auth fields
-      console.log("Phone number (placeholder save):", phoneNumber);
-      console.log("Delivery address (placeholder save):", deliveryAddress);
-      console.log("Age (placeholder save):", age);
+      // Log other non-Firebase Auth fields (these are not persisted in Firebase Auth)
+      console.log("Phone number (local state, not saved to Firebase Auth):", phoneNumber);
+      console.log("Delivery address (local state, not saved to Firebase Auth):", deliveryAddress);
+      console.log("Age (local state, not saved to Firebase Auth):", age);
 
     } catch (error) {
       const authError = error as Error;
@@ -115,8 +115,10 @@ export default function AccountPage() {
   
   const handleEditToggle = async () => {
     if (isEditing) { 
+      // When clicking "Done Editing"
       await handleProfileSave(); 
     }
+    // Toggle editing mode
     setIsEditing(!isEditing);
   };
   
@@ -210,7 +212,7 @@ export default function AccountPage() {
                   </Avatar>
                   {isEditing && (
                     <Button 
-                      type="button"
+                      type="button" // Important: prevents form submission
                       size="icon" 
                       variant="outline" 
                       className="absolute bottom-0 right-0 rounded-full h-8 w-8 bg-background/80 hover:bg-background" 
@@ -279,7 +281,7 @@ export default function AccountPage() {
                 )}
 
                 <Button 
-                  type="button" 
+                  type="button" // Important: prevents form submission
                   variant="outline" 
                   onClick={handleEditToggle} 
                   className="w-full text-primary border-primary hover:bg-primary/10 hover:text-primary"
@@ -289,7 +291,7 @@ export default function AccountPage() {
                 </Button>
 
                 <Button
-                  type="button"
+                  type="button" // Important: prevents form submission
                   variant="outline"
                   className="w-full text-destructive border-destructive hover:bg-destructive hover:text-destructive-foreground"
                   onClick={handleSignOut}
@@ -352,4 +354,5 @@ export default function AccountPage() {
     
 
     
+
 
