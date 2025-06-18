@@ -9,7 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { ShoppingBag, Heart, Gift, MapPin, Bell, LogOut, User as UserIcon, Edit3, Save, Camera } from 'lucide-react';
+import { ShoppingBag, Heart, Gift, MapPin, Bell, LogOut, User as UserIcon, Edit3, Camera } from 'lucide-react'; // Removed Save icon
 import Link from 'next/link';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/hooks/use-toast';
@@ -25,12 +25,12 @@ const accountSections = [
 ];
 
 export default function AccountPage() {
-  const { user, loading, signOutUser, updateUserFirebaseProfile, signInWithGoogle } = useAuth();
+  const { user, loading, signOutUser, updateUserFirebaseProfile } = useAuth(); // Removed signInWithGoogle as it's not directly used here anymore for this specific flow
   const { toast } = useToast();
   const router = useRouter();
 
   const [isEditing, setIsEditing] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
+  const [isSaving, setIsSaving] = useState(false); // Still used by handleProfileSave
 
   const [displayName, setDisplayName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -59,7 +59,7 @@ export default function AccountPage() {
       await updateUserFirebaseProfile(user, { displayName });
       
       toast({ title: "Profile Updated", description: "Your display name has been updated." });
-      setIsEditing(false);
+      setIsEditing(false); // Exit edit mode after save
 
       console.log("Phone number (placeholder save):", phoneNumber);
       console.log("Delivery address (placeholder save):", deliveryAddress);
@@ -147,7 +147,8 @@ export default function AccountPage() {
       <div className="grid md:grid-cols-3 gap-8">
         <div className="md:col-span-1 space-y-6">
           <Card className="bg-card border-border shadow-md">
-            <form onSubmit={handleProfileSave}>
+            {/* The form still exists to potentially handle submission via other means if needed, or just to group inputs */}
+            <form onSubmit={handleProfileSave}> 
               <CardHeader className="items-center text-center pb-4">
                 <div className="relative group">
                   <Avatar className="h-24 w-24 mx-auto">
@@ -158,7 +159,7 @@ export default function AccountPage() {
                   </Avatar>
                   {isEditing && (
                     <Button 
-                      type="button" 
+                      type="button" // Explicitly set type
                       size="icon" 
                       variant="outline" 
                       className="absolute bottom-0 right-0 rounded-full h-8 w-8 bg-background/80 hover:bg-background" 
@@ -226,18 +227,19 @@ export default function AccountPage() {
                   </>
                 )}
 
-                {isEditing ? (
-                  <Button type="submit" className="w-full bg-primary text-primary-foreground hover:bg-primary/90" disabled={isSaving}>
-                    {isSaving ? <Save className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />}
-                    Save Profile
-                  </Button>
-                ) : (
-                  <Button type="button" variant="outline" onClick={handleEditToggle} className="w-full text-primary border-primary hover:bg-primary/10 hover:text-primary">
-                    <Edit3 className="mr-2 h-4 w-4" /> Edit Profile
-                  </Button>
-                )}
+                {/* Save Profile button removed from here */}
+                {/* The Edit Profile button will toggle the edit mode */}
+                <Button 
+                  type="button" // Ensure this is type="button"
+                  variant="outline" 
+                  onClick={handleEditToggle} 
+                  className="w-full text-primary border-primary hover:bg-primary/10 hover:text-primary"
+                >
+                  <Edit3 className="mr-2 h-4 w-4" /> {isEditing ? 'Done Editing' : 'Edit Profile'}
+                </Button>
+
                 <Button
-                  type="button"
+                  type="button" // Ensure this is type="button"
                   variant="outline"
                   className="w-full text-destructive border-destructive hover:bg-destructive hover:text-destructive-foreground"
                   onClick={handleSignOut}
@@ -294,5 +296,6 @@ export default function AccountPage() {
     </div>
   );
 }
-
     
+
+      
