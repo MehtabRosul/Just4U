@@ -236,11 +236,12 @@ export default function AccountPage() {
                     Save Profile
                   </Button>
                 ) : (
-                  <Button variant="outline" onClick={handleEditToggle} className="w-full text-primary border-primary hover:bg-primary/10 hover:text-primary">
+                  <Button type="button" variant="outline" onClick={handleEditToggle} className="w-full text-primary border-primary hover:bg-primary/10 hover:text-primary">
                     <Edit3 className="mr-2 h-4 w-4" /> Edit Profile
                   </Button>
                 )}
                 <Button
+                  type="button"
                   variant="outline"
                   className="w-full text-destructive border-destructive hover:bg-destructive hover:text-destructive-foreground"
                   onClick={handleSignOut}
