@@ -19,7 +19,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'ibb.co',
+        hostname: 'i.ibb.co', // Changed from ibb.co to i.ibb.co
         port: '',
         pathname: '/**',
       },
