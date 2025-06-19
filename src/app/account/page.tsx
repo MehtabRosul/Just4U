@@ -434,7 +434,7 @@ export default function AccountPage() {
                                 </DialogHeader>
                                 <form onSubmit={handleAddressSubmit(onAddressSubmit)} className="space-y-4">
                                   <div>
-                                    <Label htmlFor="addr-label" className="text-primary-foreground">Address Label</Label>
+                                    <Label htmlFor="addr-label" className="text-card-foreground">Address Label</Label>
                                     <Input 
                                       id="addr-label" 
                                       {...registerAddress("label")} 
@@ -444,7 +444,7 @@ export default function AccountPage() {
                                     {addressErrors.label && <p className="text-xs text-destructive mt-1">{addressErrors.label.message}</p>}
                                   </div>
                                   <div>
-                                    <Label htmlFor="addr-street" className="text-primary-foreground">Street Address</Label>
+                                    <Label htmlFor="addr-street" className="text-card-foreground">Street Address</Label>
                                     <Input 
                                       id="addr-street" 
                                       {...registerAddress("street")} 
@@ -455,7 +455,7 @@ export default function AccountPage() {
                                   </div>
                                   <div className="grid grid-cols-2 gap-4">
                                     <div>
-                                      <Label htmlFor="addr-city" className="text-primary-foreground">City</Label>
+                                      <Label htmlFor="addr-city" className="text-card-foreground">City</Label>
                                       <Input 
                                         id="addr-city" 
                                         {...registerAddress("city")} 
@@ -465,7 +465,7 @@ export default function AccountPage() {
                                       {addressErrors.city && <p className="text-xs text-destructive mt-1">{addressErrors.city.message}</p>}
                                     </div>
                                     <div>
-                                      <Label htmlFor="addr-state" className="text-primary-foreground">State/Province</Label>
+                                      <Label htmlFor="addr-state" className="text-card-foreground">State/Province</Label>
                                       <Input 
                                         id="addr-state" 
                                         {...registerAddress("state")} 
@@ -477,7 +477,7 @@ export default function AccountPage() {
                                   </div>
                                   <div className="grid grid-cols-2 gap-4">
                                     <div>
-                                      <Label htmlFor="addr-zip" className="text-primary-foreground">ZIP/Postal Code</Label>
+                                      <Label htmlFor="addr-zip" className="text-card-foreground">ZIP/Postal Code</Label>
                                       <Input 
                                         id="addr-zip" 
                                         {...registerAddress("zip")} 
@@ -487,7 +487,7 @@ export default function AccountPage() {
                                       {addressErrors.zip && <p className="text-xs text-destructive mt-1">{addressErrors.zip.message}</p>}
                                     </div>
                                     <div>
-                                      <Label htmlFor="addr-country" className="text-primary-foreground">Country</Label>
+                                      <Label htmlFor="addr-country" className="text-card-foreground">Country</Label>
                                       <Input 
                                         id="addr-country" 
                                         {...registerAddress("country")} 
@@ -498,7 +498,7 @@ export default function AccountPage() {
                                     </div>
                                   </div>
                                    <div>
-                                      <Label htmlFor="addr-phoneNumber" className="text-primary-foreground">Contact Phone Number (Optional)</Label>
+                                      <Label htmlFor="addr-phoneNumber" className="text-card-foreground">Contact Phone Number (Optional)</Label>
                                       <Input 
                                         id="addr-phoneNumber" 
                                         type="tel"
