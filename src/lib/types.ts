@@ -93,6 +93,7 @@ export interface Address {
   state: string;
   zip: string;
   country: string;
+  phoneNumber?: string; // Added phone number
   isDefault?: boolean;
 }
 
@@ -136,4 +137,3 @@ export interface GiftRegistry {
   items: Record<string, GiftRegistryItem>; // Product ID as key
   shippingAddress?: Address;
 }
-

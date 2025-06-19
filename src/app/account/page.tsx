@@ -49,14 +49,18 @@ const predefinedAvatarUrls = [
   { url: 'https://i.ibb.co/xSYh7h9H/pngwing-com-11.png', hint: 'avatar photo' }
 ];
 
-// Address Form Schema
+// Address Form Schema with enhanced validation
 const addressSchema = z.object({
-  label: z.string().min(1, "Label is required"),
-  street: z.string().min(3, "Street address is required"),
-  city: z.string().min(2, "City is required"),
-  state: z.string().min(2, "State is required"),
-  zip: z.string().min(5, "ZIP code is required").max(10),
-  country: z.string().min(2, "Country is required"),
+  label: z.string().trim().min(1, "Label is required"),
+  street: z.string().trim().min(3, "Street address is required"),
+  city: z.string().trim().min(2, "City is required"),
+  state: z.string().trim().min(2, "State is required"),
+  zip: z.string().regex(/^\d{5,10}$/, "Invalid ZIP code (must be 5-10 digits)").min(5, "ZIP code is required"),
+  country: z.string().trim().min(2, "Country is required"),
+  phoneNumber: z.string().trim()
+    .regex(/^\+?[1-9]\d{1,14}$/, "Invalid phone number format (e.g., +911234567890 or 1234567890)")
+    .min(10, "Phone number must be at least 10 digits")
+    .optional(),
 });
 type AddressFormInputs = z.infer<typeof addressSchema>;
 
@@ -104,7 +108,7 @@ export default function AccountPage() {
     formState: { errors: addressErrors } 
   } = useForm<AddressFormInputs>({
     resolver: zodResolver(addressSchema),
-    defaultValues: { country: "India" }
+    defaultValues: { country: "India", phoneNumber: "" }
   });
 
   useEffect(() => {
@@ -137,8 +141,9 @@ export default function AccountPage() {
       setAddressValue("state", editingAddress.state);
       setAddressValue("zip", editingAddress.zip);
       setAddressValue("country", editingAddress.country);
+      setAddressValue("phoneNumber", editingAddress.phoneNumber || "");
     } else if (isAddressFormOpen && !editingAddress) {
-      resetAddressForm({ country: "India", label: "", street: "", city: "", state: "", zip: "" });
+      resetAddressForm({ country: "India", label: "", street: "", city: "", state: "", zip: "", phoneNumber: "" });
     }
   }, [isAddressFormOpen, editingAddress, setAddressValue, resetAddressForm]);
 
@@ -434,7 +439,7 @@ export default function AccountPage() {
                                       id="addr-label" 
                                       {...registerAddress("label")} 
                                       placeholder="E.g. Home, Work"
-                                      className={cn('mt-1 placeholder:text-primary-foreground bg-muted', addressErrors.label ? 'border-destructive' : 'border-border')} 
+                                      className={cn('mt-1 placeholder:text-primary-foreground bg-muted border-border', addressErrors.label ? 'border-destructive' : 'border-border')} 
                                     />
                                     {addressErrors.label && <p className="text-xs text-destructive mt-1">{addressErrors.label.message}</p>}
                                   </div>
@@ -444,7 +449,7 @@ export default function AccountPage() {
                                       id="addr-street" 
                                       {...registerAddress("street")} 
                                       placeholder="123 Main St, Apt 4B"
-                                      className={cn('mt-1 placeholder:text-primary-foreground bg-muted', addressErrors.street ? 'border-destructive' : 'border-border')} 
+                                      className={cn('mt-1 placeholder:text-primary-foreground bg-muted border-border', addressErrors.street ? 'border-destructive' : 'border-border')} 
                                     />
                                     {addressErrors.street && <p className="text-xs text-destructive mt-1">{addressErrors.street.message}</p>}
                                   </div>
@@ -455,7 +460,7 @@ export default function AccountPage() {
                                         id="addr-city" 
                                         {...registerAddress("city")} 
                                         placeholder="Your City"
-                                        className={cn('mt-1 placeholder:text-primary-foreground bg-muted', addressErrors.city ? 'border-destructive' : 'border-border')} 
+                                        className={cn('mt-1 placeholder:text-primary-foreground bg-muted border-border', addressErrors.city ? 'border-destructive' : 'border-border')} 
                                       />
                                       {addressErrors.city && <p className="text-xs text-destructive mt-1">{addressErrors.city.message}</p>}
                                     </div>
@@ -465,7 +470,7 @@ export default function AccountPage() {
                                         id="addr-state" 
                                         {...registerAddress("state")} 
                                         placeholder="Your State"
-                                        className={cn('mt-1 placeholder:text-primary-foreground bg-muted', addressErrors.state ? 'border-destructive' : 'border-border')} 
+                                        className={cn('mt-1 placeholder:text-primary-foreground bg-muted border-border', addressErrors.state ? 'border-destructive' : 'border-border')} 
                                       />
                                       {addressErrors.state && <p className="text-xs text-destructive mt-1">{addressErrors.state.message}</p>}
                                     </div>
@@ -476,8 +481,8 @@ export default function AccountPage() {
                                       <Input 
                                         id="addr-zip" 
                                         {...registerAddress("zip")} 
-                                        placeholder="Your ZIP Code"
-                                        className={cn('mt-1 placeholder:text-primary-foreground bg-muted', addressErrors.zip ? 'border-destructive' : 'border-border')} 
+                                        placeholder="12345 or 123456"
+                                        className={cn('mt-1 placeholder:text-primary-foreground bg-muted border-border', addressErrors.zip ? 'border-destructive' : 'border-border')} 
                                       />
                                       {addressErrors.zip && <p className="text-xs text-destructive mt-1">{addressErrors.zip.message}</p>}
                                     </div>
@@ -487,11 +492,22 @@ export default function AccountPage() {
                                         id="addr-country" 
                                         {...registerAddress("country")} 
                                         placeholder="Your Country"
-                                        className={cn('mt-1 placeholder:text-primary-foreground bg-muted', addressErrors.country ? 'border-destructive' : 'border-border')} 
+                                        className={cn('mt-1 placeholder:text-primary-foreground bg-muted border-border', addressErrors.country ? 'border-destructive' : 'border-border')} 
                                       />
                                       {addressErrors.country && <p className="text-xs text-destructive mt-1">{addressErrors.country.message}</p>}
                                     </div>
                                   </div>
+                                   <div>
+                                      <Label htmlFor="addr-phoneNumber" className="text-primary-foreground">Phone Number (Optional)</Label>
+                                      <Input 
+                                        id="addr-phoneNumber" 
+                                        type="tel"
+                                        {...registerAddress("phoneNumber")} 
+                                        placeholder="e.g. +911234567890"
+                                        className={cn('mt-1 placeholder:text-primary-foreground bg-muted border-border', addressErrors.phoneNumber ? 'border-destructive' : 'border-border')} 
+                                      />
+                                      {addressErrors.phoneNumber && <p className="text-xs text-destructive mt-1">{addressErrors.phoneNumber.message}</p>}
+                                    </div>
                                   <DialogFooter>
                                     <DialogClose asChild><Button type="button" variant="outline" onClick={() => {setIsAddressFormOpen(false); setEditingAddress(null);}}>Cancel</Button></DialogClose>
                                     <Button type="submit">{editingAddress ? 'Save Changes' : 'Add Address'}</Button>
@@ -521,6 +537,7 @@ export default function AccountPage() {
                                             </div>
                                         </div>
                                         <p className="text-muted-foreground mt-0.5">{addr.street}, {addr.city}, {addr.state} {addr.zip}, {addr.country}</p>
+                                        {addr.phoneNumber && <p className="text-muted-foreground mt-0.5">Phone: {addr.phoneNumber}</p>}
                                         {!addr.isDefault && (
                                             <Button variant="link" size="sm" className="p-0 h-auto text-xs mt-1 text-primary" onClick={() => setDefaultAddress(addr.id)}>Set as Default</Button>
                                         )}
