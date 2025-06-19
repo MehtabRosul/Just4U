@@ -54,7 +54,6 @@ export default function OrdersPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <SectionTitle className="mb-6">My Orders</SectionTitle>
-      {/* No separate loading state for orders here as isLoading covers it */}
       {orders.length > 0 ? (
         <div className="space-y-6">
           {orders.map((order) => (
@@ -83,16 +82,20 @@ export default function OrdersPage() {
               <CardContent className="p-4 space-y-4">
                 {order.items.map((item, index) => (
                   <div key={index} className="flex gap-4 items-center">
-                    <Image 
-                        src={item.imageUrls[0]} 
-                        alt={item.name} 
-                        width={64} 
-                        height={64} 
-                        className="rounded-md object-cover border border-muted"
-                        data-ai-hint={item.dataAiHint || "order item"}
-                    />
+                    <Link href={`/products/${item.slug}`} passHref className="shrink-0">
+                        <Image 
+                            src={item.imageUrls[0]} 
+                            alt={item.name} 
+                            width={64} 
+                            height={64} 
+                            className="rounded-md object-cover border border-muted hover:opacity-80 transition-opacity"
+                            data-ai-hint={item.dataAiHint || "order item"}
+                        />
+                    </Link>
                     <div className="flex-grow">
-                      <p className="font-medium text-sm text-secondary-foreground">{item.name}</p>
+                      <Link href={`/products/${item.slug}`} passHref>
+                        <p className="font-medium text-sm text-secondary-foreground hover:text-primary transition-colors">{item.name}</p>
+                      </Link>
                       <p className="text-xs text-muted-foreground">Qty: {item.quantity} | Price: Rs. {item.priceAtPurchase.toFixed(2)}</p>
                     </div>
                   </div>
