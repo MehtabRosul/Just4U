@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { 
   ShoppingBag, Heart, Gift, MapPin as MapPinIconLucide, Bell, LogOut, User as UserIcon, Edit3, Camera, CheckCircle,
-  PlusCircle, Home, Briefcase, Star, Trash2, ShoppingCart // Added ShoppingCart
+  PlusCircle, Home, Briefcase, Star, Trash2, ShoppingCart
 } from 'lucide-react';
 import Link from 'next/link';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -419,7 +419,7 @@ export default function AccountPage() {
                             <Label className="text-sm font-medium text-muted-foreground">Shipping Addresses</Label>
                             <Dialog open={isAddressFormOpen} onOpenChange={(open) => { setIsAddressFormOpen(open); if (!open) setEditingAddress(null); }}>
                               <DialogTrigger asChild>
-                                <Button variant="outline" size="sm" onClick={() => handleOpenAddressForm()} className="text-xs">
+                                <Button variant="secondary" size="sm" onClick={() => handleOpenAddressForm()} className="text-xs">
                                   <PlusCircle className="mr-1.5 h-3.5 w-3.5" /> Add Address
                                 </Button>
                               </DialogTrigger>
@@ -430,35 +430,35 @@ export default function AccountPage() {
                                 <form onSubmit={handleAddressSubmit(onAddressSubmit)} className="space-y-4">
                                   <div>
                                     <Label htmlFor="addr-label" className="text-primary-foreground">Label</Label>
-                                    <Input id="addr-label" {...registerAddress("label")} className={cn('mt-1 placeholder:text-primary-foreground', addressErrors.label ? 'border-destructive' : 'border-input')} />
+                                    <Input id="addr-label" {...registerAddress("label")} className={cn('mt-1 placeholder:text-primary-foreground bg-muted', addressErrors.label ? 'border-destructive' : 'border-border')} />
                                     {addressErrors.label && <p className="text-xs text-destructive mt-1">{addressErrors.label.message}</p>}
                                   </div>
                                   <div>
                                     <Label htmlFor="addr-street" className="text-primary-foreground">Street</Label>
-                                    <Input id="addr-street" {...registerAddress("street")} className={cn('mt-1 placeholder:text-primary-foreground', addressErrors.street ? 'border-destructive' : 'border-input')} />
+                                    <Input id="addr-street" {...registerAddress("street")} className={cn('mt-1 placeholder:text-primary-foreground bg-muted', addressErrors.street ? 'border-destructive' : 'border-border')} />
                                     {addressErrors.street && <p className="text-xs text-destructive mt-1">{addressErrors.street.message}</p>}
                                   </div>
                                   <div className="grid grid-cols-2 gap-4">
                                     <div>
                                       <Label htmlFor="addr-city" className="text-primary-foreground">City</Label>
-                                      <Input id="addr-city" {...registerAddress("city")} className={cn('mt-1 placeholder:text-primary-foreground', addressErrors.city ? 'border-destructive' : 'border-input')} />
+                                      <Input id="addr-city" {...registerAddress("city")} className={cn('mt-1 placeholder:text-primary-foreground bg-muted', addressErrors.city ? 'border-destructive' : 'border-border')} />
                                       {addressErrors.city && <p className="text-xs text-destructive mt-1">{addressErrors.city.message}</p>}
                                     </div>
                                     <div>
                                       <Label htmlFor="addr-state" className="text-primary-foreground">State</Label>
-                                      <Input id="addr-state" {...registerAddress("state")} className={cn('mt-1 placeholder:text-primary-foreground', addressErrors.state ? 'border-destructive' : 'border-input')} />
+                                      <Input id="addr-state" {...registerAddress("state")} className={cn('mt-1 placeholder:text-primary-foreground bg-muted', addressErrors.state ? 'border-destructive' : 'border-border')} />
                                       {addressErrors.state && <p className="text-xs text-destructive mt-1">{addressErrors.state.message}</p>}
                                     </div>
                                   </div>
                                   <div className="grid grid-cols-2 gap-4">
                                     <div>
                                       <Label htmlFor="addr-zip" className="text-primary-foreground">ZIP</Label>
-                                      <Input id="addr-zip" {...registerAddress("zip")} className={cn('mt-1 placeholder:text-primary-foreground', addressErrors.zip ? 'border-destructive' : 'border-input')} />
+                                      <Input id="addr-zip" {...registerAddress("zip")} className={cn('mt-1 placeholder:text-primary-foreground bg-muted', addressErrors.zip ? 'border-destructive' : 'border-border')} />
                                       {addressErrors.zip && <p className="text-xs text-destructive mt-1">{addressErrors.zip.message}</p>}
                                     </div>
                                     <div>
                                       <Label htmlFor="addr-country" className="text-primary-foreground">Country</Label>
-                                      <Input id="addr-country" {...registerAddress("country")} className={cn('mt-1 placeholder:text-primary-foreground', addressErrors.country ? 'border-destructive' : 'border-input')} />
+                                      <Input id="addr-country" {...registerAddress("country")} className={cn('mt-1 placeholder:text-primary-foreground bg-muted', addressErrors.country ? 'border-destructive' : 'border-border')} />
                                       {addressErrors.country && <p className="text-xs text-destructive mt-1">{addressErrors.country.message}</p>}
                                     </div>
                                   </div>
