@@ -60,33 +60,30 @@ export default function AccountPage() {
   const [displayName, setDisplayName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [age, setAge] = useState('');
-  const [photoPreview, setPhotoPreview] = useState<string | null>(null); // For avatar selection during edit
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
 
   const [isAvatarDialogOpen, setIsAvatarDialogOpen] = useState(false);
 
-  const overallLoading = authLoading || loadingProfileDetails;
-
-  // Effect to initialize and sync local form state from user and profileDetails
   useEffect(() => {
     if (user && !authLoading) {
       setDisplayName(user.displayName || '');
-      setPhotoPreview(user.photoURL || null); // This is the crucial init for photoPreview for edit form
+      setPhotoPreview(user.photoURL || null); 
 
       if (profileDetails && !loadingProfileDetails) {
         setPhoneNumber(profileDetails.phoneNumber || '');
         setAge(profileDetails.age || '');
-      } else if (!loadingProfileDetails) { // profileDetails is null or empty, but done loading
+      } else if (!loadingProfileDetails) { 
         setPhoneNumber('');
         setAge('');
       }
-    } else if (!user && !authLoading) { // User explicitly signed out or not yet loaded
+    } else if (!user && !authLoading) { 
       setDisplayName('');
       setPhoneNumber('');
       setAge('');
       setPhotoPreview(null);
-      if (isEditing) setIsEditing(false); // Turn off edit mode if user logs out
+      if (isEditing) setIsEditing(false); 
     }
-  }, [user, authLoading, profileDetails, loadingProfileDetails, isEditing]); // isEditing added back to re-sync on exiting edit mode
+  }, [user, authLoading, profileDetails, loadingProfileDetails, isEditing]);
 
 
   const handleProfileSave = async () => {
@@ -104,7 +101,7 @@ export default function AccountPage() {
         authProfileUpdate.displayName = displayName;
       }
       if (photoPreview !== currentAuthPhotoURL) {
-        authProfileUpdate.photoURL = photoPreview === null ? "" : photoPreview; // Send "" to remove photo
+        authProfileUpdate.photoURL = photoPreview === null ? "" : photoPreview;
       }
       
       if (Object.keys(authProfileUpdate).length > 0) {
@@ -133,16 +130,14 @@ export default function AccountPage() {
   const handleEditToggle = async () => {
     if (isEditing) { 
       await handleProfileSave(); 
-      // setIsEditing(false) is done in handleProfileSave's success path
     } else {
-      // When entering edit mode, explicitly populate form fields from the latest user/profileDetails
       if (user) {
         setDisplayName(user.displayName || '');
         setPhotoPreview(user.photoURL || null); 
         if (profileDetails) {
             setPhoneNumber(profileDetails.phoneNumber || '');
             setAge(profileDetails.age || '');
-        } else { // profileDetails could be null
+        } else {
             setPhoneNumber('');
             setAge('');
         }
@@ -152,7 +147,7 @@ export default function AccountPage() {
   };
 
   const handleAvatarSelect = (url: string) => {
-    setPhotoPreview(url); // Update local preview state
+    setPhotoPreview(url);
     setIsAvatarDialogOpen(false);
   };
   
@@ -163,7 +158,8 @@ export default function AccountPage() {
     }
   }
 
-  if (overallLoading && !user) { 
+  // Main skeleton shown while Firebase Auth is initializing
+  if (authLoading) { 
     return (
       <div className="container mx-auto px-4 py-8">
         <SectionTitle className="mb-8 text-center sm:text-left">My Account</SectionTitle>
@@ -199,7 +195,8 @@ export default function AccountPage() {
     );
   }
   
-  if (!user && !authLoading) { 
+  // If Auth is loaded but no user, show login prompt
+  if (!user) { // authLoading is false here
      return (
       <div className="container mx-auto px-4 py-8 text-center">
         <SectionTitle className="mb-6">My Account</SectionTitle>
@@ -221,11 +218,10 @@ export default function AccountPage() {
     );
   }
 
-  const displaySkeletonForText = overallLoading || (authLoading && !user); 
-  const effectiveDisplayName = user?.displayName || (user?.email || 'User');
-  const effectiveEmail = user?.email || 'user@example.com';
-  // For display in Avatar component (when not editing) or as fallback:
-  const avatarDisplaySrc = isEditing ? photoPreview : (user?.photoURL || null);
+  // User is logged in, authLoading is false. loadingProfileDetails might still be true.
+  const effectiveDisplayName = user.displayName || user.email || 'User';
+  const effectiveEmail = user.email || 'user@example.com';
+  const avatarDisplaySrc = isEditing ? photoPreview : (user.photoURL || null);
 
 
   return (
@@ -237,15 +233,13 @@ export default function AccountPage() {
           <Card className="bg-card border-border shadow-md">
               <CardHeader className="items-center text-center pb-4">
                 <div className="relative group">
-                  {displaySkeletonForText ? <Skeleton className="h-24 w-24 rounded-full mx-auto" /> : 
                     <Avatar className="h-24 w-24 mx-auto">
                       <AvatarImage src={avatarDisplaySrc || undefined} alt={effectiveDisplayName} />
                       <AvatarFallback>
                         {effectiveDisplayName ? effectiveDisplayName.charAt(0).toUpperCase() : <UserIcon className="h-10 w-10" />}
                       </AvatarFallback>
                     </Avatar>
-                  }
-                  {isEditing && !displaySkeletonForText && (
+                  {isEditing && (
                     <Dialog open={isAvatarDialogOpen} onOpenChange={setIsAvatarDialogOpen}>
                       <DialogTrigger asChild>
                         <Button 
@@ -290,21 +284,20 @@ export default function AccountPage() {
                 </div>
                 
                 {isEditing ? (
-                  displaySkeletonForText ? <Skeleton className="h-6 w-3/4 mx-auto mt-3" /> :
                   <Input
                     id="displayName"
-                    value={displayName} // Uses local form state
+                    value={displayName} 
                     onChange={(e: ChangeEvent<HTMLInputElement>) => setDisplayName(e.target.value)}
                     className="text-xl font-semibold text-center mt-3 bg-input border-border focus:ring-primary text-foreground"
                     placeholder="Your Name"
                   />
                 ) : (
                   <CardTitle className="text-xl text-center mt-3 text-card-foreground">
-                    {displaySkeletonForText ? <Skeleton className="h-6 w-3/4 mx-auto" /> : (user?.displayName || effectiveEmail)}
+                    {user.displayName || effectiveEmail}
                   </CardTitle>
                 )}
                  <CardDescription className="text-sm text-center text-muted-foreground">
-                  {displaySkeletonForText ? <Skeleton className="h-4 w-full mx-auto mt-1" /> : effectiveEmail}
+                  {effectiveEmail}
                 </CardDescription>
               </CardHeader>
 
@@ -313,11 +306,11 @@ export default function AccountPage() {
                   <>
                     <div>
                       <Label htmlFor="phoneNumber" className="text-xs text-muted-foreground">Phone Number</Label>
-                      {loadingProfileDetails || authLoading ? <Skeleton className="h-10 w-full mt-1" /> :
+                      {loadingProfileDetails ? <Skeleton className="h-10 w-full mt-1" /> :
                         <Input
                           id="phoneNumber"
                           type="tel"
-                          value={phoneNumber} // Uses local form state
+                          value={phoneNumber} 
                           onChange={(e: ChangeEvent<HTMLInputElement>) => setPhoneNumber(e.target.value)}
                           placeholder="Your phone number"
                           className="mt-1 bg-input border-border focus:ring-primary text-foreground"
@@ -326,11 +319,11 @@ export default function AccountPage() {
                     </div>
                      <div>
                       <Label htmlFor="age" className="text-xs text-muted-foreground">Age</Label>
-                      {loadingProfileDetails || authLoading ? <Skeleton className="h-10 w-full mt-1" /> :
+                      {loadingProfileDetails ? <Skeleton className="h-10 w-full mt-1" /> :
                         <Input
                           id="age"
                           type="number"
-                          value={age} // Uses local form state
+                          value={age} 
                           onChange={(e: ChangeEvent<HTMLInputElement>) => setAge(e.target.value)}
                           placeholder="Your age"
                           className="mt-1 bg-input border-border focus:ring-primary text-foreground"
@@ -345,7 +338,7 @@ export default function AccountPage() {
                   variant="outline" 
                   onClick={handleEditToggle} 
                   className="w-full text-foreground border-border hover:bg-muted hover:text-foreground"
-                  disabled={isSaving || overallLoading}
+                  disabled={isSaving || loadingProfileDetails} // Disable if saving OR if RTDB details are still loading
                 >
                   {isEditing ? (isSaving ? 'Saving...' : <><CheckCircle className="mr-2 h-4 w-4" />Done Editing</>) : <><Edit3 className="mr-2 h-4 w-4" /> Edit Profile</>}
                 </Button>
@@ -355,7 +348,6 @@ export default function AccountPage() {
                   variant="outline"
                   className="w-full text-foreground border-border hover:bg-muted hover:text-foreground"
                   onClick={handleSignOut}
-                  disabled={authLoading} 
                 >
                   <LogOut className="mr-2 h-4 w-4" /> Sign Out
                 </Button>
@@ -373,27 +365,12 @@ export default function AccountPage() {
               <div className="grid sm:grid-cols-2 gap-4">
                 {accountSections.map((section) => {
                   const Icon = section.icon;
-                  const isDisabled = !user && !overallLoading; 
                   return (
                     <Link 
                       key={section.title} 
-                      href={isDisabled ? '#' : section.href} 
+                      href={section.href} 
                       passHref
-                      className={cn(
-                        "block group",
-                        isDisabled ? 'opacity-50 cursor-not-allowed pointer-events-none' : '' 
-                      )}
-                      onClick={(e) => {
-                        if (isDisabled) {
-                          e.preventDefault();
-                           toast({
-                            title: "Authentication Required",
-                            description: "Please log in or sign up to access this section.",
-                            variant: "default"
-                          });
-                        }
-                      }}
-                      aria-disabled={isDisabled}
+                      className="block group"
                     >
                       <div className="p-4 border rounded-lg bg-card hover:bg-primary/30 hover:border-primary/50 hover:shadow-lg transition-all duration-200 h-full flex flex-col">
                         <div className="flex items-center mb-2">
