@@ -331,7 +331,7 @@ const TopCurations = () => {
     { name: 'Anniversaries', Icon: Gift, slug:'anniversary', type: 'occasion' },
     { name: 'Miniatures', Icon: ToyBrick, slug:'mini-you-series', type: 'giftType' },
     { name: 'Photo Frames', Icon: Camera, slug:'photo-frames', type: 'giftType' },
-    { name: 'Corporate', Icon: Briefcase, slug:'corporate-awards', type: 'giftType' }, // Updated to a valid corporate gift type
+    { name: 'Corporate', Icon: Briefcase, slug:'corporate-awards', type: 'giftType' },
     { name: 'Personalized', Icon: SparklesIcon, slug:'photo-gifts-general', type: 'giftType' },
   ];
   return (
@@ -710,36 +710,42 @@ const GiftQuoteBanners = () => {
 
 
 const GiftTypeHighlight = () => {
-    const featuredTypes = ['mini-you-caricatures', '3d-crystals', 'photo-frames', 'mini-you-series', 'utility-mugs', 'photo-lamps'];
-    const productsToShow = GIFT_TYPES_LIST.filter(gt => featuredTypes.includes(gt.slug));
+    const featuredTypeSlugs = ['mini-you-caricatures', '3d-crystals', 'photo-frames', 'mini-you-series', 'utility-mugs', 'photo-lamps'];
+    const featuredGiftTypes = GIFT_TYPES_LIST.filter(gt => featuredTypeSlugs.includes(gt.slug));
 
     return (
     <section className="my-8 sm:my-12">
         <SectionTitle className="text-white">Featured Gift Types</SectionTitle>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
-            {productsToShow.map(gt => {
-                const imageHint = gt.dataAiHint || "gift category";
+        <div className="space-y-8"> {/* Each gift type will be a block */}
+            {featuredGiftTypes.map(giftType => {
+                // Find up to 2 sample products for this gift type
+                const sampleProducts = PRODUCTS.filter(p => p.category === giftType.slug).slice(0, 2);
+
                 return (
-                  <Link key={gt.id} href={`/products?category=${gt.slug}`} className="block group">
-                    <div className="bg-card p-3 rounded-lg transition-all duration-200 ease-in-out group-hover:bg-primary/5 group-hover:shadow-xl border border-border group-hover:border-primary/30">
-                        <div className="relative w-full aspect-[4/3] rounded-md overflow-hidden mb-3">
-                            <Image
-                                src="https://placehold.co/400x300.jpg"
-                                alt={gt.name}
-                                fill
-                                className="object-cover transition-transform duration-200 group-hover:scale-105"
-                                data-ai-hint={imageHint}
-                            />
+                    <div key={giftType.id} className="bg-secondary p-4 sm:p-6 rounded-lg shadow-xl">
+                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2">
+                            <h3 className="text-xl sm:text-2xl font-semibold text-secondary-foreground font-headline">{giftType.name}</h3>
+                            <Button asChild variant="outline" size="sm" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground w-full sm:w-auto">
+                                <Link href={`/products?category=${giftType.slug}`}>
+                                    View All {giftType.name} <ArrowRight className="ml-1.5 h-4 w-4" />
+                                </Link>
+                            </Button>
                         </div>
-                        <h3 className="text-sm font-medium text-card-foreground text-center truncate group-hover:text-primary transition-colors">
-                            {gt.name}
-                        </h3>
+                        {sampleProducts.length > 0 ? (
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
+                                {sampleProducts.map(product => (
+                                    <ProductCard key={product.id} product={product} />
+                                ))}
+                            </div>
+                        ) : (
+                            <p className="text-center text-muted-foreground py-4">More {giftType.name} coming soon!</p>
+                        )}
                     </div>
-                  </Link>
-            )})}
+                );
+            })}
         </div>
     </section>
-    )
+    );
 };
 
 const RecipientQuickLinks = () => {
