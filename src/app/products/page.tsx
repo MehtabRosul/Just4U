@@ -35,7 +35,9 @@ export default function ProductsPage() {
   const initialPriceMaxQuery = searchParams.get('priceMax');
   const initialPriceMax = initialPriceMaxQuery !== null ? parseInt(initialPriceMaxQuery, 10) : serverMaxPrice;
   
-  const initialSort = (searchParams.get('sort') as SortOption) || 'popularity';
+  const initialSortQuery = searchParams.get('sort');
+  const initialSort = (initialSortQuery as SortOption) || 'popularity';
+
 
   const [activeFilters, setActiveFilters] = useState<ActiveFilters>({
     category: initialCategory,
@@ -54,6 +56,7 @@ export default function ProductsPage() {
     const newPriceMin = parseInt(searchParams.get('priceMin') || '0', 10);
     const newPriceMaxQuery = searchParams.get('priceMax');
     const newPriceMax = newPriceMaxQuery !== null ? parseInt(newPriceMaxQuery, 10) : serverMaxPrice;
+    const newSort = (searchParams.get('sort') as SortOption) || 'popularity';
 
     setActiveFilters({
         category: newCategory,
@@ -61,6 +64,7 @@ export default function ProductsPage() {
         occasion: newOccasion,
         recipient: newRecipient,
     });
+    setSortOption(newSort); // Update sort option based on URL parameters
     setCurrentPage(1); 
   }, [searchParams, serverMaxPrice]);
 
@@ -82,6 +86,7 @@ export default function ProductsPage() {
 
     tempProducts = tempProducts.filter(p => p.price >= activeFilters.priceRange[0] && p.price <= activeFilters.priceRange[1]);
 
+    // Use sortOption state for sorting, which is updated by ProductSortControl
     switch (sortOption) {
       case 'popularity':
         tempProducts.sort((a, b) => b.popularity - a.popularity);
@@ -99,12 +104,16 @@ export default function ProductsPage() {
         tempProducts.sort((a, b) => b.name.localeCompare(a.name));
         break;
     }
-    if (initialSort === 'trending') { 
+    
+    // This specific check for 'trending' from initialSort might need re-evaluation
+    // if `sortOption` state is the sole driver for sorting after initialization.
+    // Generally, `sortOption` state should be the source of truth for current sorting method.
+    if (sortOption === 'trending') { 
        tempProducts = tempProducts.filter(p => p.trending).sort((a,b) => b.popularity - a.popularity);
     }
 
     return tempProducts;
-  }, [activeFilters, sortOption, initialSort]);
+  }, [activeFilters, sortOption]); // Removed initialSort from here as sortOption state handles current sort
 
   const totalPages = Math.ceil(filteredAndSortedProducts.length / ITEMS_PER_PAGE);
   const currentProducts = filteredAndSortedProducts.slice(
@@ -141,10 +150,8 @@ export default function ProductsPage() {
     <div className="container mx-auto px-4 py-6 sm:py-8">
       <SectionTitle className="mb-4 sm:mb-6">{generatePageTitle()}</SectionTitle>
       
-      <div className="space-y-6"> {/* Changed from grid to simple div for content flow */}
-        {/* ProductFilters component removed from here */}
+      <div className="space-y-6">
         
-        {/* This div now takes full width as filters are removed */}
         <div className="space-y-6"> 
           <div className="flex flex-col sm:flex-row justify-between items-center p-3 sm:p-4 border rounded-lg shadow-sm bg-secondary gap-2 sm:gap-4">
             <p className="text-xs sm:text-sm text-muted-foreground text-center sm:text-left">
@@ -214,4 +221,3 @@ export default function ProductsPage() {
     </div>
   );
 }
-
