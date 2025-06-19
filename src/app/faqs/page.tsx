@@ -9,6 +9,8 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { HelpCircle } from 'lucide-react';
+import { Button } from '@/components/ui/button'; // Added this line
+import Link from 'next/link'; // Added this line as Link is used with Button asChild
 
 const faqData = [
   {
