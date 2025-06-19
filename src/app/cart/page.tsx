@@ -119,7 +119,10 @@ export default function CartPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
           <div className="lg:col-span-2 space-y-4">
             {cartItems.map((item: CartItem) => (
-              <Card key={item.product.id} className="bg-card border-border shadow-sm">
+              <Card 
+                key={item.product.id} 
+                className="bg-secondary text-secondary-foreground border-border shadow-sm hover:bg-muted transition-colors"
+              >
                 <CardContent className="p-3 sm:p-4 flex flex-col sm:flex-row items-center gap-3 sm:gap-4">
                   <Link href={`/products/${item.product.slug}`} className="block shrink-0">
                     <Image
@@ -133,7 +136,7 @@ export default function CartPage() {
                   </Link>
                   <div className="flex-grow text-center sm:text-left">
                     <Link href={`/products/${item.product.slug}`} className="block">
-                        <h3 className="text-sm sm:text-base font-semibold text-foreground hover:text-primary line-clamp-2">{item.product.name}</h3>
+                        <h3 className="text-sm sm:text-base font-semibold text-secondary-foreground hover:text-primary line-clamp-2">{item.product.name}</h3>
                     </Link>
                     <p className="text-xs text-muted-foreground mt-0.5">Category: {item.product.category}</p>
                     <p className="text-sm sm:text-base font-medium text-primary mt-1">Rs. {item.product.price.toFixed(2)}</p>
@@ -144,7 +147,7 @@ export default function CartPage() {
                       value={item.quantity}
                       onChange={(e) => handleQuantityChange(item.product.id, e.target.value)}
                       min="1"
-                      className="w-16 h-9 text-center text-sm bg-input border-border focus:ring-primary"
+                      className="w-16 h-9 text-center text-sm bg-input border-border focus:ring-primary text-foreground"
                       aria-label={`Quantity for ${item.product.name}`}
                     />
                     <Button
