@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState, useEffect, type ChangeEvent, type FormEvent, useRef } from 'react';
+import { useState, useEffect, type ChangeEvent } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { SectionTitle } from '@/components/shared/SectionTitle';
 import { Button } from '@/components/ui/button';
@@ -17,22 +17,15 @@ import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import Image from 'next/image';
+import type { UserProfileDetails } from '@/lib/types';
 
 const accountSections = [
   { title: 'My Orders', description: 'View your order history and track shipments.', icon: ShoppingBag, href: '/account/orders' },
   { title: 'My Wishlist', description: 'See your saved favorite items.', icon: Heart, href: '/wishlist' },
   { title: 'Gift Registries', description: 'Manage your gift registries for special occasions.', icon: Gift, href: '/account/registries' },
   { title: 'Address Book', description: 'Manage your shipping addresses.', icon: MapPin, href: '/account/addresses' },
-  { title: 'Notifications', description: 'Manage your notification preferences.', icon: Bell, href: '/account/notifications' },
+  { title: 'Notifications', description: 'Manage your notification preferences.', icon: Bell, href: '#' }, // Placeholder for now
 ];
-
-const LOCAL_STORAGE_PROFILE_KEY_PREFIX = 'just4u_profile_';
-
-interface StoredProfileData {
-  phoneNumber?: string;
-  deliveryAddress?: string;
-  age?: string;
-}
 
 const predefinedAvatarUrls = [
   { url: 'https://i.ibb.co/rfz6Rp2G/pngwing-com-1.png', hint: 'avatar photo' },
@@ -47,9 +40,16 @@ const predefinedAvatarUrls = [
   { url: 'https://i.ibb.co/xSYh7h9H/pngwing-com-11.png', hint: 'avatar photo' }
 ];
 
-
 export default function AccountPage() {
-  const { user, loading, signOutUser, updateUserFirebaseProfile } = useAuth();
+  const { 
+    user, 
+    loading: authLoading, 
+    signOutUser, 
+    updateUserFirebaseProfile,
+    profileDetails, // RTDB supplemental details (phone, age)
+    loadingProfileDetails,
+    saveUserProfileDetails 
+  } = useAuth();
   const { toast } = useToast();
   const router = useRouter();
 
@@ -58,51 +58,34 @@ export default function AccountPage() {
 
   const [displayName, setDisplayName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [deliveryAddress, setDeliveryAddress] = useState('');
   const [age, setAge] = useState('');
   
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [isAvatarDialogOpen, setIsAvatarDialogOpen] = useState(false);
 
+  const overallLoading = authLoading || loadingProfileDetails;
 
   useEffect(() => {
-    if (user && !loading) {
+    if (user && !authLoading) {
       setDisplayName(user.displayName || '');
-      // Only set photoPreview from user.photoURL if not already set by local selection
-      // This helps retain a locally chosen avatar preview even if displayName update triggers re-render
       if (!isEditing) { 
         setPhotoPreview(user.photoURL || null);
       }
-
-      const storageKey = `${LOCAL_STORAGE_PROFILE_KEY_PREFIX}${user.uid}`;
-      try {
-        const storedDataString = localStorage.getItem(storageKey);
-        if (storedDataString) {
-          const storedData: StoredProfileData = JSON.parse(storedDataString);
-          setPhoneNumber(storedData.phoneNumber || '');
-          setDeliveryAddress(storedData.deliveryAddress || '');
-          setAge(storedData.age || '');
-        } else {
-          setPhoneNumber('');
-          setDeliveryAddress('');
-          setAge('');
-        }
-      } catch (error) {
-        console.error("Error loading profile data from localStorage:", error);
+      if (profileDetails && !loadingProfileDetails) {
+        setPhoneNumber(profileDetails.phoneNumber || '');
+        setAge(profileDetails.age || '');
+      } else if (!loadingProfileDetails) { // profileDetails is null or empty but done loading
         setPhoneNumber('');
-        setDeliveryAddress('');
         setAge('');
       }
-    } else if (!user && !loading) {
-      // User logged out, clear all fields
+    } else if (!user && !authLoading) {
       setDisplayName('');
       setPhoneNumber('');
-      setDeliveryAddress('');
       setAge('');
       setPhotoPreview(null);
       setIsEditing(false); 
     }
-  }, [user, loading, isEditing]);
+  }, [user, authLoading, profileDetails, loadingProfileDetails, isEditing]);
 
 
   const handleProfileSave = async () => {
@@ -112,28 +95,29 @@ export default function AccountPage() {
     }
     setIsSaving(true);
     try {
-      const profileDataToUpdate: { displayName?: string; photoURL?: string } = {
-        displayName: displayName,
-      };
-
-      if (photoPreview && photoPreview !== user.photoURL) {
-        profileDataToUpdate.photoURL = photoPreview;
-      } else if (photoPreview === null && user.photoURL !== null) { // Case for removing avatar
-        profileDataToUpdate.photoURL = ""; // Set to empty string to remove in Firebase
+      // Update Firebase Auth profile (name, avatar)
+      const authProfileUpdate: { displayName?: string; photoURL?: string } = {};
+      if (displayName !== user.displayName) {
+        authProfileUpdate.displayName = displayName;
       }
-
-
-      await updateUserFirebaseProfile(user, profileDataToUpdate);
+      if (photoPreview && photoPreview !== user.photoURL) {
+        authProfileUpdate.photoURL = photoPreview;
+      } else if (photoPreview === null && user.photoURL !== null) {
+        authProfileUpdate.photoURL = ""; 
+      }
+      if (Object.keys(authProfileUpdate).length > 0) {
+        await updateUserFirebaseProfile(user, authProfileUpdate);
+      }
+      
+      // Update RTDB profile details (phone, age)
+      const rtdbProfileUpdate: UserProfileDetails = { phoneNumber, age };
+      await saveUserProfileDetails(user.uid, rtdbProfileUpdate);
       
       toast({ title: "Profile Updated", description: "Your profile details have been updated." });
-
-      const otherProfileData: StoredProfileData = { phoneNumber, deliveryAddress, age };
-      const storageKey = `${LOCAL_STORAGE_PROFILE_KEY_PREFIX}${user.uid}`;
-      localStorage.setItem(storageKey, JSON.stringify(otherProfileData));
       
     } catch (error) {
-      const authError = error as Error;
-      toast({ title: "Update Failed", description: authError.message || "Could not update profile.", variant: "destructive" });
+      const e = error as Error;
+      toast({ title: "Update Failed", description: e.message || "Could not update profile.", variant: "destructive" });
     } finally {
       setIsSaving(false);
       setIsEditing(false); 
@@ -144,16 +128,12 @@ export default function AccountPage() {
     if (isEditing) { 
       await handleProfileSave(); 
     } else {
-      if (user) {
+      if (user) { // Reset fields to current user state before editing
         setDisplayName(user.displayName || '');
         setPhotoPreview(user.photoURL || null); 
-        const storageKey = `${LOCAL_STORAGE_PROFILE_KEY_PREFIX}${user.uid}`;
-        const storedDataString = localStorage.getItem(storageKey);
-        if (storedDataString) {
-          const storedData: StoredProfileData = JSON.parse(storedDataString);
-          setPhoneNumber(storedData.phoneNumber || '');
-          setDeliveryAddress(storedData.deliveryAddress || '');
-          setAge(storedData.age || '');
+        if (profileDetails) {
+            setPhoneNumber(profileDetails.phoneNumber || '');
+            setAge(profileDetails.age || '');
         }
       }
       setIsEditing(true);
@@ -172,7 +152,7 @@ export default function AccountPage() {
     }
   }
 
-  if (loading) {
+  if (overallLoading && !user) { // Show full page skeleton only if no user data yet
     return (
       <div className="container mx-auto px-4 py-8">
         <SectionTitle className="mb-8 text-center sm:text-left">My Account</SectionTitle>
@@ -196,12 +176,10 @@ export default function AccountPage() {
                     <Skeleton className="h-6 w-1/2 mb-1" />
                     <Skeleton className="h-4 w-3/4" />
                 </CardHeader>
-                <CardContent>
-                    <div className="grid sm:grid-cols-2 gap-4">
-                        {[...Array(accountSections.length)].map((_, i) => (
-                            <Skeleton key={i} className="h-[100px] rounded-lg" />
-                        ))}
-                    </div>
+                <CardContent className="grid sm:grid-cols-2 gap-4">
+                  {[...Array(accountSections.length)].map((_, i) => (
+                      <Skeleton key={i} className="h-[100px] rounded-lg" />
+                  ))}
                 </CardContent>
             </Card>
           </div>
@@ -210,7 +188,7 @@ export default function AccountPage() {
     );
   }
   
-  if (!user && !loading) {
+  if (!user && !authLoading) { // User explicitly logged out or never logged in
      return (
       <div className="container mx-auto px-4 py-8 text-center">
         <SectionTitle className="mb-6">My Account</SectionTitle>
@@ -232,6 +210,11 @@ export default function AccountPage() {
     );
   }
 
+  // If user is loaded, but profile details might still be loading, show partial skeleton
+  const displayDisplayName = overallLoading ? <Skeleton className="h-6 w-3/4" /> : (displayName || user?.email || 'User Profile');
+  const displayEmail = overallLoading ? <Skeleton className="h-4 w-full" /> : user?.email;
+
+
   return (
     <div className="container mx-auto px-4 py-8">
       <SectionTitle className="mb-8 text-center sm:text-left">My Account</SectionTitle>
@@ -241,13 +224,15 @@ export default function AccountPage() {
           <Card className="bg-card border-border shadow-md">
               <CardHeader className="items-center text-center pb-4">
                 <div className="relative group">
-                  <Avatar className="h-24 w-24 mx-auto">
-                    <AvatarImage src={photoPreview || undefined} alt={displayName || user?.email || 'User'} />
-                    <AvatarFallback>
-                      {displayName ? displayName.charAt(0).toUpperCase() : (user?.email ? user.email.charAt(0).toUpperCase() : <UserIcon className="h-10 w-10" />)}
-                    </AvatarFallback>
-                  </Avatar>
-                  {isEditing && (
+                  {overallLoading ? <Skeleton className="h-24 w-24 rounded-full mx-auto" /> : 
+                    <Avatar className="h-24 w-24 mx-auto">
+                      <AvatarImage src={photoPreview || undefined} alt={displayName || user?.email || 'User'} />
+                      <AvatarFallback>
+                        {displayName ? displayName.charAt(0).toUpperCase() : (user?.email ? user.email.charAt(0).toUpperCase() : <UserIcon className="h-10 w-10" />)}
+                      </AvatarFallback>
+                    </Avatar>
+                  }
+                  {isEditing && !overallLoading && (
                     <Dialog open={isAvatarDialogOpen} onOpenChange={setIsAvatarDialogOpen}>
                       <DialogTrigger asChild>
                         <Button 
@@ -298,14 +283,15 @@ export default function AccountPage() {
                     onChange={(e: ChangeEvent<HTMLInputElement>) => setDisplayName(e.target.value)}
                     className="text-xl font-semibold text-center mt-3 bg-input border-border focus:ring-primary text-foreground"
                     placeholder="Your Name"
+                    disabled={overallLoading}
                   />
                 ) : (
                   <CardTitle className="text-xl text-center mt-3 text-card-foreground">
-                    {displayName || user?.email || 'User Profile'}
+                    {displayDisplayName}
                   </CardTitle>
                 )}
                  <CardDescription className="text-sm text-center text-muted-foreground">
-                  {user?.email}
+                  {displayEmail}
                 </CardDescription>
               </CardHeader>
 
@@ -314,35 +300,29 @@ export default function AccountPage() {
                   <>
                     <div>
                       <Label htmlFor="phoneNumber" className="text-xs text-muted-foreground">Phone Number</Label>
-                      <Input
-                        id="phoneNumber"
-                        type="tel"
-                        value={phoneNumber}
-                        onChange={(e: ChangeEvent<HTMLInputElement>) => setPhoneNumber(e.target.value)}
-                        placeholder="Your phone number"
-                        className="mt-1 bg-input border-border focus:ring-primary text-foreground"
-                      />
+                      {loadingProfileDetails ? <Skeleton className="h-10 w-full mt-1" /> :
+                        <Input
+                          id="phoneNumber"
+                          type="tel"
+                          value={phoneNumber}
+                          onChange={(e: ChangeEvent<HTMLInputElement>) => setPhoneNumber(e.target.value)}
+                          placeholder="Your phone number"
+                          className="mt-1 bg-input border-border focus:ring-primary text-foreground"
+                        />
+                      }
                     </div>
                      <div>
                       <Label htmlFor="age" className="text-xs text-muted-foreground">Age</Label>
-                      <Input
-                        id="age"
-                        type="number"
-                        value={age}
-                        onChange={(e: ChangeEvent<HTMLInputElement>) => setAge(e.target.value)}
-                        placeholder="Your age"
-                        className="mt-1 bg-input border-border focus:ring-primary text-foreground"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="deliveryAddress" className="text-xs text-muted-foreground">Delivery Address</Label>
-                      <Input
-                        id="deliveryAddress"
-                        value={deliveryAddress}
-                        onChange={(e: ChangeEvent<HTMLInputElement>) => setDeliveryAddress(e.target.value)}
-                        placeholder="Your delivery address"
-                        className="mt-1 bg-input border-border focus:ring-primary text-foreground"
-                      />
+                      {loadingProfileDetails ? <Skeleton className="h-10 w-full mt-1" /> :
+                        <Input
+                          id="age"
+                          type="number"
+                          value={age}
+                          onChange={(e: ChangeEvent<HTMLInputElement>) => setAge(e.target.value)}
+                          placeholder="Your age"
+                          className="mt-1 bg-input border-border focus:ring-primary text-foreground"
+                        />
+                      }
                     </div>
                   </>
                 )}
@@ -352,7 +332,7 @@ export default function AccountPage() {
                   variant="outline" 
                   onClick={handleEditToggle} 
                   className="w-full text-foreground border-border hover:bg-muted hover:text-foreground"
-                  disabled={isSaving}
+                  disabled={isSaving || overallLoading}
                 >
                   {isEditing ? (isSaving ? 'Saving...' : <><CheckCircle className="mr-2 h-4 w-4" />Done Editing</>) : <><Edit3 className="mr-2 h-4 w-4" /> Edit Profile</>}
                 </Button>
@@ -362,6 +342,7 @@ export default function AccountPage() {
                   variant="outline"
                   className="w-full text-foreground border-border hover:bg-muted hover:text-foreground"
                   onClick={handleSignOut}
+                  disabled={authLoading}
                 >
                   <LogOut className="mr-2 h-4 w-4" /> Sign Out
                 </Button>
@@ -383,10 +364,10 @@ export default function AccountPage() {
                     <Link key={section.title} href={user ? section.href : '#'} passHref
                       className={cn(
                         "block group",
-                        !user ? 'opacity-50 cursor-not-allowed' : ''
+                        (!user || overallLoading) ? 'opacity-50 cursor-not-allowed' : ''
                       )}
                       onClick={(e) => {
-                        if (!user) {
+                        if (!user && !overallLoading) {
                           e.preventDefault();
                           toast({
                             title: "Authentication Required",
@@ -414,6 +395,3 @@ export default function AccountPage() {
     </div>
   );
 }
-    
-
-    

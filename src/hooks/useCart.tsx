@@ -2,17 +2,22 @@
 "use client";
 
 import React, { useState, useEffect, createContext, useContext, useCallback, type ReactNode } from 'react';
-import type { Product } from '@/lib/types';
+import type { Product, CartRtdbItem } from '@/lib/types';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
+import { database } from '@/lib/firebase';
+import { ref, onValue, off, set, remove, update } from 'firebase/database';
+import { PRODUCTS } from '@/lib/data'; // To enrich product details from IDs
 
 export interface CartItem {
-  product: Product;
+  product: Product; // Full product details
   quantity: number;
+  addedAt?: string;
 }
 
 interface CartContextType {
-  cartItems: CartItem[];
+  cartItems: CartItem[]; // Now stores enriched CartItem objects
+  loading: boolean;
   addToCart: (product: Product, quantity?: number) => void;
   removeFromCart: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
@@ -23,126 +28,142 @@ interface CartContextType {
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-const CART_STORAGE_KEY_BASE = 'just4ugifts_cart';
-
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [rtdbCartItems, setRtdbCartItems] = useState<Record<string, CartRtdbItem>>({});
+  const [cartItems, setCartItems] = useState<CartItem[]>([]); // This will be the enriched list
+  const [loading, setLoading] = useState(true);
   const { toast } = useToast();
   const { user, loading: authLoading } = useAuth();
 
-  const getCartStorageKey = useCallback(() => {
-    return user ? `${CART_STORAGE_KEY_BASE}_${user.uid}` : null;
-  }, [user]);
-
-  const loadCartForUser = useCallback((userId: string) => {
-    try {
-      const storageKey = `${CART_STORAGE_KEY_BASE}_${userId}`;
-      const storedCart = localStorage.getItem(storageKey);
-      if (storedCart) {
-        setCartItems(JSON.parse(storedCart));
-      } else {
-        setCartItems([]);
-      }
-    } catch (error) {
-      console.error("Failed to load cart from localStorage for user", userId, error);
-      setCartItems([]);
-    }
-  }, []);
-
+  // Effect to fetch cart item IDs and quantities from RTDB
   useEffect(() => {
-    if (!authLoading) {
-      if (user) {
-        loadCartForUser(user.uid);
-      } else {
-        setCartItems([]); // Clear cart if no user
-      }
-    }
-  }, [user, authLoading, loadCartForUser]);
+    if (authLoading) return;
 
+    if (user) {
+      setLoading(true);
+      const cartRef = ref(database, `users/${user.uid}/cart`);
+      const listener = onValue(cartRef, (snapshot) => {
+        const data = snapshot.val();
+        setRtdbCartItems(data || {});
+        setLoading(false);
+      }, (error) => {
+        console.error("Error fetching cart: ", error);
+        toast({ title: "Error", description: "Could not fetch cart.", variant: "destructive" });
+        setRtdbCartItems({});
+        setLoading(false);
+      });
+      return () => off(cartRef, listener);
+    } else {
+      setRtdbCartItems({});
+      setCartItems([]); // Clear enriched cart too
+      setLoading(false);
+    }
+  }, [user, authLoading, toast]);
+
+  // Effect to populate full cart item details from rtdbCartItems
   useEffect(() => {
-    const storageKey = getCartStorageKey();
-    if (storageKey) { // Only save if user is logged in
-      try {
-        localStorage.setItem(storageKey, JSON.stringify(cartItems));
-      } catch (error) {
-        console.error("Failed to save cart to localStorage", error);
-      }
-    }
-    // If user logs out, cartItems is cleared by the effect above,
-    // and this effect will then save an empty array for that user's last key if it was set.
-    // Or if storageKey becomes null (logged out), nothing is saved.
-  }, [cartItems, getCartStorageKey]);
+    const enrichedCart: CartItem[] = Object.entries(rtdbCartItems)
+      .map(([productId, rtdbItem]) => {
+        const productDetail = PRODUCTS.find(p => p.id === productId);
+        if (productDetail) {
+          return {
+            product: productDetail,
+            quantity: rtdbItem.quantity,
+            addedAt: rtdbItem.addedAt,
+          };
+        }
+        return null;
+      })
+      .filter(Boolean) as CartItem[];
+    setCartItems(enrichedCart);
+  }, [rtdbCartItems]);
 
-  const addToCart = useCallback((product: Product, quantity: number = 1) => {
+
+  const addToCart = useCallback(async (product: Product, quantity: number = 1) => {
     if (!user) {
       setTimeout(() => {
-        toast({
-          title: "Please Sign In",
-          description: "You need to be signed in to add items to your cart.",
-          variant: "destructive"
-        });
+        toast({ title: "Please Sign In", description: "You need to be signed in to add items to your cart.", variant: "destructive" });
       }, 0);
       return;
     }
-    setCartItems((prevItems) => {
-      const existingItem = prevItems.find(item => item.product.id === product.id);
-      if (existingItem) {
-        setTimeout(() => {
-          toast({ title: "Item Updated", description: `${product.name} quantity updated in your cart.` });
-        }, 0);
-        return prevItems.map(item =>
-          item.product.id === product.id
-            ? { ...item, quantity: item.quantity + quantity }
-            : item
-        );
-      } else {
-        setTimeout(() => {
-          toast({ title: "Added to Cart", description: `${product.name} has been added to your cart.` });
-        }, 0);
-        return [...prevItems, { product, quantity }];
-      }
-    });
-  }, [user, toast]);
+    try {
+      const cartItemRef = ref(database, `users/${user.uid}/cart/${product.id}`);
+      const currentItem = rtdbCartItems[product.id];
+      const newQuantity = currentItem ? currentItem.quantity + quantity : quantity;
 
-  const removeFromCart = useCallback((productId: string) => {
+      await set(cartItemRef, { 
+        productId: product.id, 
+        quantity: newQuantity,
+        addedAt: currentItem?.addedAt || new Date().toISOString()
+      });
+      setTimeout(() => {
+        toast({ title: currentItem ? "Item Updated" : "Added to Cart", description: `${product.name} ${currentItem ? 'quantity updated in' : 'has been added to'} your cart.` });
+      }, 0);
+    } catch (error) {
+        console.error("Error adding to cart: ", error);
+        setTimeout(() => {
+            toast({ title: "Error", description: "Could not add item to cart.", variant: "destructive" });
+        },0);
+    }
+  }, [user, toast, rtdbCartItems]);
+
+  const removeFromCart = useCallback(async (productId: string) => {
     if (!user) return;
-    setCartItems((prevItems) => {
-      const productToRemove = prevItems.find(item => item.product.id === productId);
-      if (productToRemove) {
+    try {
+      await remove(ref(database, `users/${user.uid}/cart/${productId}`));
+      const product = PRODUCTS.find(p => p.id === productId);
+      setTimeout(() => {
+        if (product) {
+          toast({ title: "Removed from Cart", description: `${product.name} has been removed from your cart.` });
+        } else {
+          toast({ title: "Removed from Cart", description: `Item removed from your cart.` });
+        }
+      }, 0);
+    } catch (error) {
+        console.error("Error removing from cart: ", error);
         setTimeout(() => {
-          toast({ title: "Removed from Cart", description: `${productToRemove.product.name} has been removed from your cart.` });
-        }, 0);
-      }
-      return prevItems.filter(item => item.product.id !== productId);
-    });
+            toast({ title: "Error", description: "Could not remove item from cart.", variant: "destructive" });
+        },0);
+    }
   }, [user, toast]);
 
-  const updateQuantity = useCallback((productId: string, quantity: number) => {
+  const updateQuantity = useCallback(async (productId: string, quantity: number) => {
     if (!user) return;
     if (quantity <= 0) {
       removeFromCart(productId);
       return;
     }
-    setCartItems((prevItems) => {
+    try {
+      const cartItemRef = ref(database, `users/${user.uid}/cart/${productId}`);
+      await update(cartItemRef, { quantity }); // Only update quantity
+      
+      const product = PRODUCTS.find(p => p.id === productId);
       setTimeout(() => {
-        const product = prevItems.find(item => item.product.id === productId)?.product;
         if (product) {
           toast({ title: "Quantity Updated", description: `Quantity for ${product.name} updated.` });
         }
       }, 0);
-      return prevItems.map(item =>
-        item.product.id === productId ? { ...item, quantity } : item
-      );
-    });
+    } catch (error) {
+        console.error("Error updating quantity: ", error);
+        setTimeout(() => {
+            toast({ title: "Error", description: "Could not update item quantity.", variant: "destructive" });
+        },0);
+    }
   }, [user, toast, removeFromCart]);
 
-  const clearCart = useCallback(() => {
+  const clearCart = useCallback(async () => {
     if (!user) return;
-    setCartItems([]);
-    setTimeout(() => {
-      toast({ title: "Cart Cleared", description: "Your shopping cart has been cleared." });
-    }, 0);
-    // localStorage removal for the user's cart will be handled by the useEffect watching cartItems
+    try {
+      await set(ref(database, `users/${user.uid}/cart`), null);
+      setTimeout(() => {
+        toast({ title: "Cart Cleared", description: "Your shopping cart has been cleared." });
+      }, 0);
+    } catch (error) {
+      console.error("Error clearing cart: ", error);
+      setTimeout(() => {
+        toast({ title: "Error", description: "Could not clear cart.", variant: "destructive" });
+      }, 0);
+    }
   }, [user, toast]);
 
   const getCartTotal = useCallback(() => {
@@ -153,9 +174,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
     return cartItems.reduce((total, item) => total + item.quantity, 0);
   }, [cartItems]);
 
-
   const value: CartContextType = {
-    cartItems,
+    cartItems, // Provide enriched list
+    loading,
     addToCart,
     removeFromCart,
     updateQuantity,

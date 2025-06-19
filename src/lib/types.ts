@@ -78,3 +78,61 @@ export interface UtilityLink {
   label: string;
   href: string;
 }
+
+// ---- New Types for RTDB Integration ----
+export interface UserProfileDetails {
+  phoneNumber?: string;
+  age?: string;
+}
+
+export interface Address {
+  id: string; // Firebase key
+  label: string; // e.g., "Home", "Work"
+  street: string;
+  city: string;
+  state: string;
+  zip: string;
+  country: string;
+  isDefault?: boolean;
+}
+
+export interface CartRtdbItem {
+  productId: string; // Keep for clarity, though key is productId
+  quantity: number;
+  addedAt?: string; // ISO timestamp
+}
+
+// Wishlist in RTDB will store product IDs as keys, value can be true or timestamp
+// export type WishlistRtdb = Record<string, boolean | string>;
+
+export interface OrderItem extends Product { // Or a simplified version
+  quantity: number;
+  priceAtPurchase: number;
+}
+
+export interface Order {
+  id: string; // Firebase key
+  orderDate: string; // ISO timestamp
+  items: OrderItem[];
+  totalAmount: number;
+  shippingAddress: Address;
+  status: 'Pending' | 'Processing' | 'Shipped' | 'Delivered' | 'Cancelled';
+  trackingNumber?: string;
+}
+
+export interface GiftRegistryItem {
+  productId: string;
+  desiredQuantity: number;
+  fulfilledQuantity: number;
+}
+
+export interface GiftRegistry {
+  id: string; // Firebase key
+  name: string;
+  eventDate: string; // ISO timestamp or simple date
+  description?: string;
+  creatorUid: string;
+  isPublic: boolean;
+  items: Record<string, GiftRegistryItem>; // Product ID as key
+  shippingAddress?: Address;
+}

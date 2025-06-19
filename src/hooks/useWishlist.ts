@@ -5,150 +5,135 @@ import React from 'react';
 import type { Product } from '@/lib/types';
 import { useState, useEffect, createContext, useContext, useCallback, type ReactNode } from 'react';
 import { useToast } from '@/hooks/use-toast';
-import { useAuth } from '@/hooks/useAuth'; // Import useAuth
-
-const WISHLIST_STORAGE_KEY_BASE = 'just4ugifts_wishlist';
+import { useAuth } from '@/hooks/useAuth';
+import { database } from '@/lib/firebase';
+import { ref, onValue, off, set, remove } from 'firebase/database';
+import { PRODUCTS } from '@/lib/data'; // To enrich product details from IDs
 
 interface WishlistContextType {
-  wishlist: Product[];
+  wishlist: Product[]; // Now stores full Product objects, enriched from IDs
+  loading: boolean;
   addToWishlist: (product: Product) => void;
   removeFromWishlist: (productId: string) => void;
   isProductInWishlist: (productId: string) => boolean;
   clearWishlist: () => void;
-  loadWishlistForUser: (userId: string) => void;
 }
 
 const WishlistContext = createContext<WishlistContextType | undefined>(undefined);
 
 export function WishlistProvider({ children }: { children: ReactNode }) {
+  const [wishlistProductIds, setWishlistProductIds] = useState<Record<string, boolean>>({});
   const [wishlist, setWishlist] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
   const { toast } = useToast();
-  const { user, loading: authLoading } = useAuth(); // Get user from useAuth
+  const { user, loading: authLoading } = useAuth();
 
-  const getWishlistStorageKey = useCallback(() => {
-    return user ? `${WISHLIST_STORAGE_KEY_BASE}_${user.uid}` : null;
-  }, [user]);
-
-  const loadWishlistForUser = useCallback((userId: string) => {
-    // This function can be called explicitly on login if needed,
-    // but useEffect below handles initial load based on user state.
-    try {
-      const storageKey = `${WISHLIST_STORAGE_KEY_BASE}_${userId}`;
-      const storedWishlist = localStorage.getItem(storageKey);
-      if (storedWishlist) {
-        setWishlist(JSON.parse(storedWishlist));
-      } else {
-        setWishlist([]); // Clear wishlist if no stored data for this user
-      }
-    } catch (error) {
-      console.error("Failed to load wishlist from localStorage for user", userId, error);
-      setWishlist([]);
-    }
-  }, []);
-
-  // Load wishlist when user changes or on initial load
+  // Effect to fetch wishlist IDs from RTDB
   useEffect(() => {
-    if (!authLoading) {
-      if (user) {
-        loadWishlistForUser(user.uid);
-      } else {
-        setWishlist([]); // Clear wishlist if no user
-      }
-    }
-  }, [user, authLoading, loadWishlistForUser]);
+    if (authLoading) return;
 
-  // Save wishlist to localStorage when it changes
+    if (user) {
+      setLoading(true);
+      const wishlistRef = ref(database, `users/${user.uid}/wishlist`);
+      const listener = onValue(wishlistRef, (snapshot) => {
+        const data = snapshot.val();
+        setWishlistProductIds(data || {});
+        setLoading(false);
+      }, (error) => {
+        console.error("Error fetching wishlist: ", error);
+        toast({ title: "Error", description: "Could not fetch wishlist.", variant: "destructive" });
+        setWishlistProductIds({});
+        setLoading(false);
+      });
+      return () => off(wishlistRef, listener);
+    } else {
+      setWishlistProductIds({});
+      setWishlist([]); // Clear full wishlist too
+      setLoading(false);
+    }
+  }, [user, authLoading, toast]);
+
+  // Effect to populate full wishlist products from IDs
   useEffect(() => {
-    const storageKey = getWishlistStorageKey();
-    if (storageKey && wishlist.length > 0) {
-      try {
-        localStorage.setItem(storageKey, JSON.stringify(wishlist));
-      } catch (error) {
-        console.error("Failed to save wishlist to localStorage", error);
-      }
-    } else if (storageKey && wishlist.length === 0) {
-      // If wishlist is empty for a logged-in user, remove the item from local storage
-      try {
-        localStorage.removeItem(storageKey);
-      } catch (error) {
-        console.error("Failed to remove wishlist from localStorage", error);
-      }
-    }
-    // If no user (storageKey is null), wishlist is in-memory only and not persisted.
-  }, [wishlist, getWishlistStorageKey]);
+    const productDetails = Object.keys(wishlistProductIds)
+      .map(productId => PRODUCTS.find(p => p.id === productId))
+      .filter(Boolean) as Product[];
+    setWishlist(productDetails);
+  }, [wishlistProductIds]);
 
-  const addToWishlist = useCallback((product: Product) => {
+  const addToWishlist = useCallback(async (product: Product) => {
     if (!user) {
       setTimeout(() => {
-        toast({
-          title: "Please Sign In",
-          description: "You need to be signed in to add items to your wishlist.",
-          variant: "destructive"
-        });
+        toast({ title: "Please Sign In", description: "You need to be signed in to add items to your wishlist.", variant: "destructive" });
       }, 0);
       return;
     }
-    setWishlist((prevWishlist) => {
-      if (prevWishlist.find(item => item.id === product.id)) {
-        setTimeout(() => {
-          toast({ title: "Already in Wishlist", description: `${product.name} is already in your wishlist.` });
-        }, 0);
-        return prevWishlist;
-      }
+    if (wishlistProductIds[product.id]) {
+      setTimeout(() => {
+        toast({ title: "Already in Wishlist", description: `${product.name} is already in your wishlist.` });
+      }, 0);
+      return;
+    }
+    try {
+      await set(ref(database, `users/${user.uid}/wishlist/${product.id}`), true);
       setTimeout(() => {
         toast({ title: "Added to Wishlist", description: `${product.name} has been added to your wishlist.` });
       }, 0);
-      return [...prevWishlist, product];
-    });
-  }, [user, toast]);
-
-  const removeFromWishlist = useCallback((productId: string) => {
-    if (!user) { // Should not happen if add is guarded, but good practice
+    } catch (error) {
+      console.error("Error adding to wishlist: ", error);
       setTimeout(() => {
-        toast({ title: "Error", description: "You must be signed in to modify your wishlist.", variant: "destructive" });
+        toast({ title: "Error", description: "Could not add to wishlist.", variant: "destructive" });
       }, 0);
-      return;
     }
-    setWishlist((prevWishlist) => {
-      const product = prevWishlist.find(item => item.id === productId);
-      if (product) {
-        setTimeout(() => {
-          toast({ title: "Removed from Wishlist", description: `${product.name} has been removed from your wishlist.`, variant: 'default' });
-        }, 0);
-      }
-      return prevWishlist.filter(item => item.id !== productId);
-    });
+  }, [user, toast, wishlistProductIds]);
+
+  const removeFromWishlist = useCallback(async (productId: string) => {
+    if (!user) return;
+    try {
+      await remove(ref(database, `users/${user.uid}/wishlist/${productId}`));
+      const product = PRODUCTS.find(p => p.id === productId);
+      setTimeout(() => {
+        if (product) {
+          toast({ title: "Removed from Wishlist", description: `${product.name} has been removed from your wishlist.` });
+        } else {
+          toast({ title: "Removed from Wishlist", description: `Item removed from your wishlist.` });
+        }
+      }, 0);
+    } catch (error) {
+      console.error("Error removing from wishlist: ", error);
+      setTimeout(() => {
+        toast({ title: "Error", description: "Could not remove from wishlist.", variant: "destructive" });
+      }, 0);
+    }
   }, [user, toast]);
 
   const isProductInWishlist = useCallback((productId: string) => {
-    if (!user) return false; // Not in wishlist if not logged in
-    return wishlist.some(item => item.id === productId);
-  }, [user, wishlist]);
+    if (!user) return false;
+    return !!wishlistProductIds[productId];
+  }, [user, wishlistProductIds]);
 
-  const clearWishlist = useCallback(() => {
-    if (!user) {
+  const clearWishlist = useCallback(async () => {
+    if (!user) return;
+    try {
+      await set(ref(database, `users/${user.uid}/wishlist`), null);
       setTimeout(() => {
-        toast({ title: "Error", description: "You must be signed in to clear your wishlist.", variant: "destructive" });
+        toast({ title: "Wishlist Cleared", description: "Your wishlist has been cleared." });
       }, 0);
-      return;
+    } catch (error) {
+      console.error("Error clearing wishlist: ", error);
+      setTimeout(() => {
+        toast({ title: "Error", description: "Could not clear wishlist.", variant: "destructive" });
+      }, 0);
     }
-    setWishlist([]);
-    const storageKey = getWishlistStorageKey();
-    if (storageKey) {
-        localStorage.removeItem(storageKey); // Also clear from storage
-    }
-    setTimeout(() => {
-      toast({ title: "Wishlist Cleared", description: "Your wishlist has been cleared." });
-    }, 0);
-  }, [user, toast, getWishlistStorageKey]);
+  }, [user, toast]);
 
   const providerValue: WishlistContextType = {
-    wishlist,
+    wishlist, // Provide the enriched list
+    loading,
     addToWishlist,
     removeFromWishlist,
     isProductInWishlist,
     clearWishlist,
-    loadWishlistForUser,
   };
 
   return React.createElement(

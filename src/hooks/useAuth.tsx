@@ -9,20 +9,25 @@ import {
   type User,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  updateProfile, // Import updateProfile
+  updateProfile,
   type AuthError
 } from 'firebase/auth';
-import { auth, googleProvider } from '@/lib/firebase';
+import { auth, googleProvider, database } from '@/lib/firebase'; // Import database
+import { ref, set, get, child, onValue, off } from "firebase/database"; // Firebase RTDB functions
 import { useToast } from '@/hooks/use-toast';
+import type { UserProfileDetails } from '@/lib/types';
 
 interface AuthContextType {
   user: User | null;
   loading: boolean;
+  profileDetails: UserProfileDetails | null; // For phone, age
+  loadingProfileDetails: boolean;
   signInWithGoogle: () => Promise<boolean>;
   signOutUser: () => Promise<boolean>;
   signInWithEmailPass: (email: string, password: string) => Promise<boolean>;
   createUserWithEmailPass: (email: string, password: string) => Promise<boolean>;
-  updateUserFirebaseProfile: (currentUser: User, profileData: { displayName?: string; photoURL?: string }) => Promise<void>; // New function
+  updateUserFirebaseProfile: (currentUser: User, profileData: { displayName?: string; photoURL?: string }) => Promise<void>;
+  saveUserProfileDetails: (userId: string, details: UserProfileDetails) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -30,15 +35,36 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [profileDetails, setProfileDetails] = useState<UserProfileDetails | null>(null);
+  const [loadingProfileDetails, setLoadingProfileDetails] = useState(true);
   const { toast } = useToast();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    const unsubscribeAuth = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       setLoading(false);
+      if (currentUser) {
+        setLoadingProfileDetails(true);
+        const profileDetailsRef = ref(database, `users/${currentUser.uid}/profileDetails`);
+        onValue(profileDetailsRef, (snapshot) => {
+          const data = snapshot.val();
+          setProfileDetails(data || {});
+          setLoadingProfileDetails(false);
+        }, (error) => {
+          console.error("Error fetching profile details from RTDB: ", error);
+          toast({ title: "Error", description: "Could not fetch profile details.", variant: "destructive" });
+          setProfileDetails({});
+          setLoadingProfileDetails(false);
+        });
+        // Cleanup listener when user logs out or component unmounts
+        return () => off(profileDetailsRef);
+      } else {
+        setProfileDetails(null);
+        setLoadingProfileDetails(false);
+      }
     });
-    return () => unsubscribe();
-  }, []);
+    return () => unsubscribeAuth();
+  }, [toast]);
 
   const signInWithGoogle = useCallback(async () => {
     setLoading(true);
@@ -59,8 +85,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setLoading(true);
     try {
       await signOut(auth);
+      // User state and profileDetails will be cleared by onAuthStateChanged
       toast({ title: "Signed Out", description: "You have been successfully signed out." });
-      // setUser(null) // onAuthStateChanged will handle this
       return true;
     } catch (error) {
       const authError = error as AuthError;
@@ -94,7 +120,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const createUserWithEmailPass = useCallback(async (email: string, password: string) => {
     setLoading(true);
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      // Initialize profileDetails in RTDB
+      if (userCredential.user) {
+        await set(ref(database, `users/${userCredential.user.uid}/profileDetails`), {
+          phoneNumber: '',
+          age: ''
+        });
+      }
       return true;
     } catch (error) {
       const authError = error as AuthError;
@@ -120,11 +153,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (!currentUser) throw new Error("User not authenticated for profile update.");
     try {
       await updateProfile(currentUser, profileData);
-      // onAuthStateChanged should pick up the changes and update the user state globally.
-      // For immediate local update if needed, one might call setUser({...currentUser, ...profileData})
-      // but it's usually better to let Firebase be the source of truth.
-      // setUser(prevUser => prevUser ? ({ ...prevUser, ...profileData, displayName: profileData.displayName || prevUser.displayName }) : null);
-
+      // To reflect changes immediately if needed, though onAuthStateChanged often handles it
+      setUser(prevUser => prevUser ? { ...prevUser, ...profileData } : null);
     } catch (error) {
       const authError = error as AuthError;
       console.error("Error updating Firebase profile: ", authError);
@@ -132,14 +162,31 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
+  const saveUserProfileDetails = useCallback(async (userId: string, details: UserProfileDetails) => {
+    if (!userId) {
+      toast({ title: "Error", description: "User ID is missing.", variant: "destructive"});
+      return;
+    }
+    try {
+      await set(ref(database, `users/${userId}/profileDetails`), details);
+      // No toast here, account page will show success toast after all saves
+    } catch (error) {
+      console.error("Error saving profile details to RTDB: ", error);
+      throw new Error("Could not save profile details.");
+    }
+  }, [toast]);
+
   const value = { 
     user, 
     loading, 
+    profileDetails,
+    loadingProfileDetails,
     signInWithGoogle, 
     signOutUser, 
     signInWithEmailPass, 
     createUserWithEmailPass,
-    updateUserFirebaseProfile // Expose the new function
+    updateUserFirebaseProfile,
+    saveUserProfileDetails
   };
 
   return (

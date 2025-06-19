@@ -18,9 +18,11 @@ import { cn } from '@/lib/utils';
 
 export default function CartPage() {
   const { user, loading: authLoading } = useAuth();
-  const { cartItems, removeFromCart, updateQuantity, getCartTotal, clearCart } = useCart();
+  const { cartItems, removeFromCart, updateQuantity, getCartTotal, clearCart, loading: cartLoading } = useCart();
   const { toast } = useToast();
   const router = useRouter();
+
+  const isLoading = authLoading || cartLoading;
 
   const handleCheckout = () => {
     if (!user) {
@@ -48,7 +50,7 @@ export default function CartPage() {
   };
 
 
-  if (authLoading) {
+  if (isLoading && !user) { // Skeleton for initial load before user status is known
     return (
       <div className="container mx-auto px-4 py-6 sm:py-8">
         <Skeleton className="h-8 w-1/2 mb-6 sm:mb-8" />
@@ -72,7 +74,7 @@ export default function CartPage() {
     );
   }
 
-  if (!user && !authLoading) {
+  if (!user && !authLoading) { // User is definitely not logged in
     return (
       <div className="container mx-auto px-4 py-6 sm:py-8 text-center">
         <SectionTitle className="mb-6 sm:mb-8">Your Shopping Cart</SectionTitle>
@@ -93,9 +95,8 @@ export default function CartPage() {
   }
   
   const cartSubtotal = getCartTotal();
-  // Simple shipping and tax for now, can be expanded
-  const shippingCost = cartSubtotal > 0 ? 50 : 0; // Example: Rs. 50 shipping, free if cart empty
-  const taxRate = 0.05; // Example: 5% tax
+  const shippingCost = cartSubtotal > 0 ? 50 : 0;
+  const taxRate = 0.05;
   const taxAmount = cartSubtotal * taxRate;
   const orderTotal = cartSubtotal + shippingCost + taxAmount;
 
@@ -104,7 +105,7 @@ export default function CartPage() {
     <div className="container mx-auto px-2 sm:px-4 py-6 sm:py-8">
       <div className="flex flex-col sm:flex-row justify-between items-center mb-6 sm:mb-8 gap-3 sm:gap-4">
         <SectionTitle className="mb-0 text-center sm:text-left">Your Shopping Cart</SectionTitle>
-        {cartItems.length > 0 && (
+        {cartItems.length > 0 && !cartLoading && (
           <Button 
             variant="outline" 
             onClick={clearCart} 
@@ -115,7 +116,24 @@ export default function CartPage() {
         )}
       </div>
 
-      {cartItems.length > 0 ? (
+      {cartLoading && user ? ( // Skeleton for cart items if user is logged in but cart is loading
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+            <div className="lg:col-span-2 space-y-4">
+                <Skeleton className="h-28 w-full rounded-lg" />
+                <Skeleton className="h-28 w-full rounded-lg" />
+            </div>
+             <div className="lg:col-span-1 p-6 border rounded-lg bg-card shadow-lg h-fit">
+                <Skeleton className="h-6 w-3/4 mb-4" />
+                <div className="space-y-2 mb-4">
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-full" />
+                <hr className="my-2 border-border" />
+                <Skeleton className="h-6 w-full" />
+                </div>
+                <Skeleton className="h-12 w-full" />
+            </div>
+        </div>
+      ) : cartItems.length > 0 ? (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
           <div className="lg:col-span-2 space-y-4">
             {cartItems.map((item: CartItem) => (
@@ -200,7 +218,7 @@ export default function CartPage() {
             </Card>
           </div>
         </div>
-      ) : (
+      ) : ( // Cart is empty (and not loading for a logged-in user)
         <div className="text-center py-10 sm:py-16 border border-dashed rounded-lg bg-card">
           <ShoppingBag className="mx-auto h-12 w-12 sm:h-16 sm:w-16 text-muted-foreground mb-4" />
           <p className="text-lg sm:text-xl font-semibold text-foreground mb-2">Your cart is empty.</p>
