@@ -146,7 +146,7 @@ export default function ProductsPage() {
         
         {/* This div now takes full width as filters are removed */}
         <div className="space-y-6"> 
-          <div className="flex flex-col sm:flex-row justify-between items-center p-3 sm:p-4 border rounded-lg shadow-sm bg-card gap-2 sm:gap-4">
+          <div className="flex flex-col sm:flex-row justify-between items-center p-3 sm:p-4 border rounded-lg shadow-sm bg-secondary gap-2 sm:gap-4">
             <p className="text-xs sm:text-sm text-muted-foreground text-center sm:text-left">
               Showing {currentProducts.length > 0 ? ((currentPage - 1) * ITEMS_PER_PAGE) + 1 : 0}-{(Math.min(currentPage * ITEMS_PER_PAGE, filteredAndSortedProducts.length))} of {filteredAndSortedProducts.length} products
             </p>
