@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { 
   ShoppingBag, Heart, Gift, MapPin as MapPinIconLucide, Bell, LogOut, User as UserIcon, Edit3, Camera, CheckCircle,
-  PlusCircle, Home, Briefcase, Star, Trash2
+  PlusCircle, Home, Briefcase, Star, Trash2, ShoppingCart // Added ShoppingCart
 } from 'lucide-react';
 import Link from 'next/link';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -29,9 +29,10 @@ import { Separator } from '@/components/ui/separator';
 
 const accountSections = [
   { title: 'My Orders', description: 'View your order history and track shipments.', icon: ShoppingBag, href: '/account/orders' },
+  { title: 'My Cart', description: 'View and manage items in your shopping cart.', icon: ShoppingCart, href: '/cart' },
   { title: 'My Wishlist', description: 'See your saved favorite items.', icon: Heart, href: '/wishlist' },
+  { title: 'Address Book', description: 'Manage your shipping addresses.', icon: MapPinIconLucide, href: '/account/addresses' },
   { title: 'Gift Registries', description: 'Manage your gift registries for special occasions.', icon: Gift, href: '/account/registries' },
-  // { title: 'Address Book', description: 'Manage your shipping addresses.', icon: MapPinIconLucide, href: '/account/addresses' }, // Removed as it's integrated
   { title: 'Notifications', description: 'Manage your notification preferences.', icon: Bell, href: '#' }, // Placeholder for now
 ];
 
@@ -48,7 +49,7 @@ const predefinedAvatarUrls = [
   { url: 'https://i.ibb.co/xSYh7h9H/pngwing-com-11.png', hint: 'avatar photo' }
 ];
 
-// Address Form Schema (moved from addresses/page.tsx)
+// Address Form Schema
 const addressSchema = z.object({
   label: z.string().min(1, "Label is required"),
   street: z.string().min(3, "Street address is required"),
@@ -428,35 +429,35 @@ export default function AccountPage() {
                                 </DialogHeader>
                                 <form onSubmit={handleAddressSubmit(onAddressSubmit)} className="space-y-4">
                                   <div>
-                                    <Label htmlFor="addr-label" className="text-foreground">Label</Label>
+                                    <Label htmlFor="addr-label" className="text-primary-foreground">Label</Label>
                                     <Input id="addr-label" {...registerAddress("label")} className={cn('mt-1 placeholder:text-primary-foreground', addressErrors.label ? 'border-destructive' : 'border-input')} />
                                     {addressErrors.label && <p className="text-xs text-destructive mt-1">{addressErrors.label.message}</p>}
                                   </div>
                                   <div>
-                                    <Label htmlFor="addr-street" className="text-foreground">Street</Label>
+                                    <Label htmlFor="addr-street" className="text-primary-foreground">Street</Label>
                                     <Input id="addr-street" {...registerAddress("street")} className={cn('mt-1 placeholder:text-primary-foreground', addressErrors.street ? 'border-destructive' : 'border-input')} />
                                     {addressErrors.street && <p className="text-xs text-destructive mt-1">{addressErrors.street.message}</p>}
                                   </div>
                                   <div className="grid grid-cols-2 gap-4">
                                     <div>
-                                      <Label htmlFor="addr-city" className="text-foreground">City</Label>
+                                      <Label htmlFor="addr-city" className="text-primary-foreground">City</Label>
                                       <Input id="addr-city" {...registerAddress("city")} className={cn('mt-1 placeholder:text-primary-foreground', addressErrors.city ? 'border-destructive' : 'border-input')} />
                                       {addressErrors.city && <p className="text-xs text-destructive mt-1">{addressErrors.city.message}</p>}
                                     </div>
                                     <div>
-                                      <Label htmlFor="addr-state" className="text-foreground">State</Label>
+                                      <Label htmlFor="addr-state" className="text-primary-foreground">State</Label>
                                       <Input id="addr-state" {...registerAddress("state")} className={cn('mt-1 placeholder:text-primary-foreground', addressErrors.state ? 'border-destructive' : 'border-input')} />
                                       {addressErrors.state && <p className="text-xs text-destructive mt-1">{addressErrors.state.message}</p>}
                                     </div>
                                   </div>
                                   <div className="grid grid-cols-2 gap-4">
                                     <div>
-                                      <Label htmlFor="addr-zip" className="text-foreground">ZIP</Label>
+                                      <Label htmlFor="addr-zip" className="text-primary-foreground">ZIP</Label>
                                       <Input id="addr-zip" {...registerAddress("zip")} className={cn('mt-1 placeholder:text-primary-foreground', addressErrors.zip ? 'border-destructive' : 'border-input')} />
                                       {addressErrors.zip && <p className="text-xs text-destructive mt-1">{addressErrors.zip.message}</p>}
                                     </div>
                                     <div>
-                                      <Label htmlFor="addr-country" className="text-foreground">Country</Label>
+                                      <Label htmlFor="addr-country" className="text-primary-foreground">Country</Label>
                                       <Input id="addr-country" {...registerAddress("country")} className={cn('mt-1 placeholder:text-primary-foreground', addressErrors.country ? 'border-destructive' : 'border-input')} />
                                       {addressErrors.country && <p className="text-xs text-destructive mt-1">{addressErrors.country.message}</p>}
                                     </div>
