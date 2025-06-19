@@ -33,7 +33,7 @@ const carouselBannersData: CarouselBanner[] = [
     description: "Unique gifts that tell their story.",
     imageUrl: "https://placehold.co/1200x600.png",
     dataAiHint: "personalized gift assortment",
-    gradientClasses: "bg-gradient-to-br from-red-600 via-pink-600 to-fuchsia-700",
+    gradientClasses: "bg-gradient-to-br from-purple-600 via-pink-500 to-rose-600",
   },
   {
     id: 2,
@@ -41,7 +41,7 @@ const carouselBannersData: CarouselBanner[] = [
     description: "Find the perfect gift for any occasion.",
     imageUrl: "https://placehold.co/1200x600.png",
     dataAiHint: "birthday celebration gifts",
-    gradientClasses: "bg-gradient-to-tr from-rose-500 via-red-500 to-orange-600",
+    gradientClasses: "bg-gradient-to-tr from-teal-500 via-cyan-500 to-sky-500",
   },
   {
     id: 3,
@@ -49,7 +49,7 @@ const carouselBannersData: CarouselBanner[] = [
     description: "Lifelike miniatures and stunning crystal art.",
     imageUrl: "https://placehold.co/1200x600.png",
     dataAiHint: "3d crystal miniature",
-    gradientClasses: "bg-gradient-to-b from-neutral-800 via-red-900 to-black",
+    gradientClasses: "bg-gradient-to-b from-indigo-500 via-purple-600 to-pink-600",
   },
   {
     id: 4,
@@ -57,7 +57,7 @@ const carouselBannersData: CarouselBanner[] = [
     description: "Elegant photo frames for timeless keepsakes.",
     imageUrl: "https://placehold.co/1200x600.png",
     dataAiHint: "photo frame collection",
-    gradientClasses: "bg-gradient-to-bl from-red-700 via-rose-800 to-neutral-900",
+    gradientClasses: "bg-gradient-to-bl from-green-500 via-lime-500 to-yellow-400",
   },
   {
     id: 5,
@@ -65,7 +65,7 @@ const carouselBannersData: CarouselBanner[] = [
     description: "Impress clients with premium, branded gifts.",
     imageUrl: "https://placehold.co/1200x600.png",
     dataAiHint: "corporate gift basket",
-    gradientClasses: "bg-gradient-to-tl from-neutral-900 via-gray-800 to-red-900",
+    gradientClasses: "bg-gradient-to-tl from-blue-600 via-indigo-500 to-purple-500",
   },
   {
     id: 6,
@@ -73,7 +73,7 @@ const carouselBannersData: CarouselBanner[] = [
     description: "Handpicked selections for every recipient.",
     imageUrl: "https://placehold.co/1200x600.png",
     dataAiHint: "gift for her",
-    gradientClasses: "bg-gradient-to-r from-pink-700 via-red-600 to-rose-700",
+    gradientClasses: "bg-gradient-to-r from-pink-500 via-fuchsia-500 to-purple-600",
   },
   {
     id: 7,
@@ -81,7 +81,7 @@ const carouselBannersData: CarouselBanner[] = [
     description: "Unbeatable prices on popular gifts, daily.",
     imageUrl: "https://placehold.co/1200x600.png",
     dataAiHint: "gift sale discount",
-    gradientClasses: "bg-gradient-to-l from-orange-600 via-red-500 to-pink-500",
+    gradientClasses: "bg-gradient-to-l from-orange-400 via-amber-400 to-yellow-300", // Lighter
   },
   {
     id: 8,
@@ -89,7 +89,7 @@ const carouselBannersData: CarouselBanner[] = [
     description: "Fresh designs and innovative gift ideas.",
     imageUrl: "https://placehold.co/1200x600.png",
     dataAiHint: "new product launch",
-    gradientClasses: "bg-gradient-to-br from-fuchsia-700 via-purple-600 to-red-500",
+    gradientClasses: "bg-gradient-to-br from-rose-400 via-red-400 to-pink-400", // Lighter
   },
   {
     id: 9,
@@ -97,7 +97,7 @@ const carouselBannersData: CarouselBanner[] = [
     description: "Transform photos into unique art pieces.",
     imageUrl: "https://placehold.co/1200x600.png",
     dataAiHint: "photo to art canvas",
-    gradientClasses: "bg-gradient-to-tr from-red-800 via-neutral-900 to-rose-700",
+    gradientClasses: "bg-gradient-to-tr from-sky-300 via-blue-400 to-indigo-500", // Lighter
   },
   {
     id: 10,
@@ -105,7 +105,7 @@ const carouselBannersData: CarouselBanner[] = [
     description: "Get a custom 3D miniature of yourself or loved ones.",
     imageUrl: "https://placehold.co/1200x600.png",
     dataAiHint: "3d selfie miniature",
-    gradientClasses: "bg-gradient-to-bl from-rose-600 via-red-700 to-pink-800",
+    gradientClasses: "bg-gradient-to-bl from-lime-300 via-green-400 to-teal-500", // Lighter
   },
 ];
 
@@ -644,34 +644,34 @@ const OccasionSpotlight = () => {
 
 const GiftQuoteBanners = () => {
   const quoteBanners = [
-    {
+     {
       id: 1,
       text: "A truly thoughtful gift is a silent message of affection, a tangible reminder that someone holds you dear and took the time to express it beautifully.",
-      animationClasses: "bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 bg-[length:300%_300%] animate-nebula-shift",
+      animationClasses: "bg-gradient-to-r from-fuchsia-400 via-pink-400 to-rose-400 bg-[length:300%_300%] animate-nebula-shift", // Lighter: fuchsia, pink, rose
       textColorClass: "text-white"
     },
     {
       id: 2,
       text: "The joy of gifting lies not in the object itself, but in the delight it brings to another's eyes, a shared moment of happiness that echoes long after the wrapping is gone.",
-      animationClasses: "bg-gradient-to-r from-teal-400 via-cyan-400 to-sky-400 bg-[length:200%_100%] animate-liquid-flow",
+      animationClasses: "bg-gradient-to-r from-sky-300 via-cyan-300 to-teal-300 bg-[length:200%_100%] animate-liquid-flow", // Lighter: sky, cyan, teal
       textColorClass: "text-white"
     },
     {
       id: 3,
       text: "Gifts are more than mere possessions; they are bridges between hearts, tokens of appreciation, and symbols of the unspoken bonds that connect us.",
-      animationClasses: "bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-[length:300%_300%] animate-bokeh-drift",
+      animationClasses: "bg-gradient-to-r from-violet-400 via-purple-400 to-indigo-400 bg-[length:300%_300%] animate-bokeh-drift", // Lighter: violet, purple, indigo
       textColorClass: "text-white"
     },
     {
       id: 4,
       text: "In every carefully chosen gift, there's a story whispered – a tale of understanding, remembrance, and the simple, profound desire to bring a smile to someone's face.",
-      animationClasses: "bg-gradient-to-r from-green-500 via-lime-400 to-yellow-300 bg-[length:200%_100%] animate-subtle-stripes",
+      animationClasses: "bg-gradient-to-r from-lime-300 via-green-300 to-emerald-300 bg-[length:200%_100%] animate-subtle-stripes", // Lighter: lime, green, emerald
       textColorClass: "text-white"
     },
     {
       id: 5,
       text: "Giving a gift is an art form where the heart guides the hand, selecting not just an item, but a piece of joy intended to brighten another's world.",
-      animationClasses: "bg-gradient-to-br from-rose-400 via-fuchsia-500 to-purple-600 bg-[length:200%_200%] animate-watercolor-flow",
+      animationClasses: "bg-gradient-to-br from-pink-300 via-rose-400 to-fuchsia-500 bg-[length:200%_200%] animate-watercolor-flow", // Lighter: pink, rose, fuchsia
       textColorClass: "text-white"
     },
   ];
@@ -710,13 +710,22 @@ const GiftQuoteBanners = () => {
 
 
 const GiftTypeHighlight = () => {
-    const featuredTypeSlugs = ['mini-you-caricatures', '3d-crystals', 'photo-frames', 'mini-you-series', 'utility-mugs', 'photo-lamps'];
+    const featuredTypeSlugs = [
+        'mini-you-series', 
+        '3d-crystals', 
+        'photo-lamps', 
+        'photo-frames', 
+        'utility-mugs', 
+        'gift-hampers', 
+        'wooden-gifts', 
+        'spotify-gifts'
+    ]; // Now 8 items
     const featuredGiftTypes = GIFT_TYPES_LIST.filter(gt => featuredTypeSlugs.includes(gt.slug));
 
     return (
     <section className="my-8 sm:my-12">
         <SectionTitle className="text-white">Featured Gift Types</SectionTitle>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 md:gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4"> {/* Updated grid and gap */}
             {featuredGiftTypes.map(giftType => {
                 const IconComponent = giftType.Icon;
                 return (
@@ -726,20 +735,20 @@ const GiftTypeHighlight = () => {
                         className="group block"
                     >
                         <Card className="bg-neutral-800 border-neutral-700 shadow-lg hover:shadow-primary/30 hover:border-primary/50 transition-all duration-300 ease-in-out group-hover:-translate-y-1 h-full flex flex-col">
-                            <CardContent className="p-4 flex flex-col items-center justify-center text-center flex-grow">
+                            <CardContent className="p-2 sm:p-3 flex flex-col items-center justify-center text-center flex-grow"> {/* Reduced padding */}
                                 {IconComponent ? (
-                                <IconComponent className="h-10 w-10 sm:h-12 md:h-14 text-primary mb-2 sm:mb-3 transition-transform duration-300 group-hover:scale-110" />
+                                <IconComponent className="h-8 w-8 sm:h-10 text-primary mb-1.5 sm:mb-2 transition-transform duration-300 group-hover:scale-110" /> {/* Reduced icon size & margin */}
                                 ) : giftType.dataAiHint && (
                                     <Image
                                         src={`https://placehold.co/100x100.jpg`}
                                         alt={giftType.name}
-                                        width={60}
-                                        height={60}
-                                        className="rounded-md object-cover mb-2 sm:mb-3 transition-transform duration-300 group-hover:scale-110"
+                                        width={48} // Reduced image size
+                                        height={48}
+                                        className="rounded-md object-cover mb-1.5 sm:mb-2 transition-transform duration-300 group-hover:scale-110" // Reduced margin
                                         data-ai-hint={giftType.dataAiHint}
                                     />
                                 )}
-                                <h3 className="font-headline text-sm sm:text-base text-neutral-200 group-hover:text-primary transition-colors duration-300 line-clamp-2">
+                                <h3 className="font-headline text-xs sm:text-sm text-neutral-200 group-hover:text-primary transition-colors duration-300 line-clamp-2"> {/* Reduced font size */}
                                     {giftType.name}
                                 </h3>
                             </CardContent>
@@ -829,6 +838,8 @@ export default function HomePage()
   );
 }
 
+
+    
 
     
 
