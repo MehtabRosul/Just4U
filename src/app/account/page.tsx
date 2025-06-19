@@ -430,7 +430,7 @@ export default function AccountPage() {
                               </DialogTrigger>
                               <DialogContent className="sm:max-w-md bg-card border-border">
                                 <DialogHeader>
-                                  <DialogTitle className="text-primary-foreground">{editingAddress ? 'Edit Address' : 'Add New Address'}</DialogTitle>
+                                  <DialogTitle className="text-primary">{editingAddress ? 'Edit Address' : 'Add New Address'}</DialogTitle>
                                 </DialogHeader>
                                 <form onSubmit={handleAddressSubmit(onAddressSubmit)} className="space-y-4">
                                   <div>
