@@ -35,16 +35,16 @@ interface StoredProfileData {
 }
 
 const predefinedAvatarUrls = [
-  { url: 'https://ibb.co/Kzfqpsxj', hint: 'avatar photo' },
-  { url: 'https://ibb.co/BHZV3XtR', hint: 'avatar photo' },
-  { url: 'https://ibb.co/whCRBj9B', hint: 'avatar photo' },
-  { url: 'https://ibb.co/B2X4XCGW', hint: 'avatar photo' },
-  { url: 'https://ibb.co/gZ0G1cRj', hint: 'avatar photo' },
-  { url: 'https://ibb.co/6J4xWjMD', hint: 'avatar photo' },
-  { url: 'https://ibb.co/vRn5FK5', hint: 'avatar photo' },
-  { url: 'https://ibb.co/W1Yt7gy', hint: 'avatar photo' },
-  { url: 'https://ibb.co/mCcVJkNg', hint: 'avatar photo' },
-  { url: 'https://ibb.co/C56BHBC2', hint: 'avatar photo' }
+  { url: 'https://i.ibb.co/rfz6Rp2G/pngwing-com-1.png', hint: 'avatar photo' },
+  { url: 'https://i.ibb.co/Q7NFQ2fG/pngwing-com-2.png', hint: 'avatar photo' },
+  { url: 'https://i.ibb.co/HTYVB3WB/pngwing-com-3.png', hint: 'avatar photo' },
+  { url: 'https://i.ibb.co/xqpmp7Y9/pngwing-com-4.png', hint: 'avatar photo' },
+  { url: 'https://i.ibb.co/zV31ct4n/pngwing-com-5.png', hint: 'avatar photo' },
+  { url: 'https://i.ibb.co/XkzgCcQF/pngwing-com-6.png', hint: 'avatar photo' },
+  { url: 'https://i.ibb.co/bD9h08h/pngwing-com-7.png', hint: 'avatar photo' },
+  { url: 'https://i.ibb.co/rJ1sq46/pngwing-com-9.png', hint: 'avatar photo' },
+  { url: 'https://i.ibb.co/Z6Mpd527/pngwing-com-10.png', hint: 'avatar photo' },
+  { url: 'https://i.ibb.co/xSYh7h9H/pngwing-com-11.png', hint: 'avatar photo' }
 ];
 
 
@@ -70,7 +70,7 @@ export default function AccountPage() {
       setDisplayName(user.displayName || '');
       // Only set photoPreview from user.photoURL if not already set by local selection
       // This helps retain a locally chosen avatar preview even if displayName update triggers re-render
-      if (!photoPreview && !isEditing) { // Added !isEditing to ensure preview sticks during edit
+      if (!isEditing) { 
         setPhotoPreview(user.photoURL || null);
       }
 
@@ -102,7 +102,7 @@ export default function AccountPage() {
       setPhotoPreview(null);
       setIsEditing(false); 
     }
-  }, [user, loading, isEditing, photoPreview]); // photoPreview was added as a dependency
+  }, [user, loading, isEditing]);
 
 
   const handleProfileSave = async () => {
@@ -414,4 +414,6 @@ export default function AccountPage() {
     </div>
   );
 }
+    
+
     
