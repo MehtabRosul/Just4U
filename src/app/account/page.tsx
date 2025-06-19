@@ -9,21 +9,29 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { ShoppingBag, Heart, Gift, MapPin, Bell, LogOut, User as UserIcon, Edit3, Camera, CheckCircle } from 'lucide-react';
+import { 
+  ShoppingBag, Heart, Gift, MapPin as MapPinIconLucide, Bell, LogOut, User as UserIcon, Edit3, Camera, CheckCircle,
+  PlusCircle, Home, Briefcase, Star, Trash2
+} from 'lucide-react';
 import Link from 'next/link';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogClose } from '@/components/ui/dialog';
 import Image from 'next/image';
-import type { UserProfileDetails } from '@/lib/types';
+import type { UserProfileDetails, Address } from '@/lib/types';
+import { useAddresses } from '@/hooks/useAddresses';
+import { useForm, type SubmitHandler } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { Separator } from '@/components/ui/separator';
 
 const accountSections = [
   { title: 'My Orders', description: 'View your order history and track shipments.', icon: ShoppingBag, href: '/account/orders' },
   { title: 'My Wishlist', description: 'See your saved favorite items.', icon: Heart, href: '/wishlist' },
   { title: 'Gift Registries', description: 'Manage your gift registries for special occasions.', icon: Gift, href: '/account/registries' },
-  { title: 'Address Book', description: 'Manage your shipping addresses.', icon: MapPin, href: '/account/addresses' },
+  // { title: 'Address Book', description: 'Manage your shipping addresses.', icon: MapPinIconLucide, href: '/account/addresses' }, // Removed as it's integrated
   { title: 'Notifications', description: 'Manage your notification preferences.', icon: Bell, href: '#' }, // Placeholder for now
 ];
 
@@ -39,6 +47,18 @@ const predefinedAvatarUrls = [
   { url: 'https://i.ibb.co/Z6Mpd527/pngwing-com-10.png', hint: 'avatar photo' },
   { url: 'https://i.ibb.co/xSYh7h9H/pngwing-com-11.png', hint: 'avatar photo' }
 ];
+
+// Address Form Schema (moved from addresses/page.tsx)
+const addressSchema = z.object({
+  label: z.string().min(1, "Label is required"),
+  street: z.string().min(3, "Street address is required"),
+  city: z.string().min(2, "City is required"),
+  state: z.string().min(2, "State is required"),
+  zip: z.string().min(5, "ZIP code is required").max(10),
+  country: z.string().min(2, "Country is required"),
+});
+type AddressFormInputs = z.infer<typeof addressSchema>;
+
 
 export default function AccountPage() {
   const { 
@@ -56,13 +76,35 @@ export default function AccountPage() {
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
-  // Local state for form inputs
+  // Local state for profile form inputs
   const [displayName, setDisplayName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [age, setAge] = useState('');
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
-
   const [isAvatarDialogOpen, setIsAvatarDialogOpen] = useState(false);
+
+  // Address Management State and Hooks
+  const { 
+    addresses, 
+    loading: addressesLoading, 
+    addAddress, 
+    updateAddress, 
+    deleteAddress, 
+    setDefaultAddress 
+  } = useAddresses();
+  const [isAddressFormOpen, setIsAddressFormOpen] = useState(false);
+  const [editingAddress, setEditingAddress] = useState<Address | null>(null);
+
+  const { 
+    register: registerAddress, 
+    handleSubmit: handleAddressSubmit, 
+    reset: resetAddressForm, 
+    setValue: setAddressValue, 
+    formState: { errors: addressErrors } 
+  } = useForm<AddressFormInputs>({
+    resolver: zodResolver(addressSchema),
+    defaultValues: { country: "India" }
+  });
 
   useEffect(() => {
     if (user && !authLoading) {
@@ -84,6 +126,20 @@ export default function AccountPage() {
       if (isEditing) setIsEditing(false); 
     }
   }, [user, authLoading, profileDetails, loadingProfileDetails, isEditing]);
+
+  // Effect for address form population
+  useEffect(() => {
+    if (isAddressFormOpen && editingAddress) {
+      setAddressValue("label", editingAddress.label);
+      setAddressValue("street", editingAddress.street);
+      setAddressValue("city", editingAddress.city);
+      setAddressValue("state", editingAddress.state);
+      setAddressValue("zip", editingAddress.zip);
+      setAddressValue("country", editingAddress.country);
+    } else if (isAddressFormOpen && !editingAddress) {
+      resetAddressForm({ country: "India", label: "", street: "", city: "", state: "", zip: "" });
+    }
+  }, [isAddressFormOpen, editingAddress, setAddressValue, resetAddressForm]);
 
 
   const handleProfileSave = async () => {
@@ -158,6 +214,32 @@ export default function AccountPage() {
     }
   }
 
+  // Address Form Handlers
+  const handleOpenAddressForm = (address?: Address) => {
+    if (address) {
+      setEditingAddress(address);
+    } else {
+      setEditingAddress(null);
+    }
+    setIsAddressFormOpen(true);
+  };
+
+  const onAddressSubmit: SubmitHandler<AddressFormInputs> = async (data) => {
+    if (editingAddress) {
+      await updateAddress(editingAddress.id, data);
+    } else {
+      const makeDefault = addresses.length === 0;
+      await addAddress(data, makeDefault);
+    }
+    setIsAddressFormOpen(false); 
+  };
+  
+  const handleDeleteAddress = async (addressId: string) => {
+    if (window.confirm("Are you sure you want to delete this address?")) {
+      await deleteAddress(addressId);
+    }
+  };
+
   // Main skeleton shown while Firebase Auth is initializing
   if (authLoading) { 
     return (
@@ -196,7 +278,7 @@ export default function AccountPage() {
   }
   
   // If Auth is loaded but no user, show login prompt
-  if (!user) { // authLoading is false here
+  if (!user) { 
      return (
       <div className="container mx-auto px-4 py-8 text-center">
         <SectionTitle className="mb-6">My Account</SectionTitle>
@@ -218,11 +300,9 @@ export default function AccountPage() {
     );
   }
 
-  // User is logged in, authLoading is false. loadingProfileDetails might still be true.
   const effectiveDisplayName = user.displayName || user.email || 'User';
   const effectiveEmail = user.email || 'user@example.com';
   const avatarDisplaySrc = isEditing ? photoPreview : (user.photoURL || null);
-
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -330,6 +410,96 @@ export default function AccountPage() {
                         />
                       }
                     </div>
+
+                    <Separator className="my-4 bg-border" />
+                    
+                    <div className="space-y-3">
+                        <div className="flex justify-between items-center">
+                            <Label className="text-sm font-medium text-muted-foreground">Shipping Addresses</Label>
+                            <Dialog open={isAddressFormOpen} onOpenChange={(open) => { setIsAddressFormOpen(open); if (!open) setEditingAddress(null); }}>
+                              <DialogTrigger asChild>
+                                <Button variant="outline" size="sm" onClick={() => handleOpenAddressForm()} className="text-xs">
+                                  <PlusCircle className="mr-1.5 h-3.5 w-3.5" /> Add Address
+                                </Button>
+                              </DialogTrigger>
+                              <DialogContent className="sm:max-w-md bg-card border-border">
+                                <DialogHeader>
+                                  <DialogTitle className="text-card-foreground">{editingAddress ? 'Edit Address' : 'Add New Address'}</DialogTitle>
+                                </DialogHeader>
+                                <form onSubmit={handleAddressSubmit(onAddressSubmit)} className="space-y-4">
+                                  <div>
+                                    <Label htmlFor="addr-label" className="text-foreground">Label</Label>
+                                    <Input id="addr-label" {...registerAddress("label")} className={`mt-1 ${addressErrors.label ? 'border-destructive' : 'border-input'}`} />
+                                    {addressErrors.label && <p className="text-xs text-destructive mt-1">{addressErrors.label.message}</p>}
+                                  </div>
+                                  <div>
+                                    <Label htmlFor="addr-street" className="text-foreground">Street</Label>
+                                    <Input id="addr-street" {...registerAddress("street")} className={`mt-1 ${addressErrors.street ? 'border-destructive' : 'border-input'}`} />
+                                    {addressErrors.street && <p className="text-xs text-destructive mt-1">{addressErrors.street.message}</p>}
+                                  </div>
+                                  <div className="grid grid-cols-2 gap-4">
+                                    <div>
+                                      <Label htmlFor="addr-city" className="text-foreground">City</Label>
+                                      <Input id="addr-city" {...registerAddress("city")} className={`mt-1 ${addressErrors.city ? 'border-destructive' : 'border-input'}`} />
+                                      {addressErrors.city && <p className="text-xs text-destructive mt-1">{addressErrors.city.message}</p>}
+                                    </div>
+                                    <div>
+                                      <Label htmlFor="addr-state" className="text-foreground">State</Label>
+                                      <Input id="addr-state" {...registerAddress("state")} className={`mt-1 ${addressErrors.state ? 'border-destructive' : 'border-input'}`} />
+                                      {addressErrors.state && <p className="text-xs text-destructive mt-1">{addressErrors.state.message}</p>}
+                                    </div>
+                                  </div>
+                                  <div className="grid grid-cols-2 gap-4">
+                                    <div>
+                                      <Label htmlFor="addr-zip" className="text-foreground">ZIP</Label>
+                                      <Input id="addr-zip" {...registerAddress("zip")} className={`mt-1 ${addressErrors.zip ? 'border-destructive' : 'border-input'}`} />
+                                      {addressErrors.zip && <p className="text-xs text-destructive mt-1">{addressErrors.zip.message}</p>}
+                                    </div>
+                                    <div>
+                                      <Label htmlFor="addr-country" className="text-foreground">Country</Label>
+                                      <Input id="addr-country" {...registerAddress("country")} className={`mt-1 ${addressErrors.country ? 'border-destructive' : 'border-input'}`} />
+                                      {addressErrors.country && <p className="text-xs text-destructive mt-1">{addressErrors.country.message}</p>}
+                                    </div>
+                                  </div>
+                                  <DialogFooter>
+                                    <DialogClose asChild><Button type="button" variant="outline" onClick={() => {setIsAddressFormOpen(false); setEditingAddress(null);}}>Cancel</Button></DialogClose>
+                                    <Button type="submit">{editingAddress ? 'Save Changes' : 'Add Address'}</Button>
+                                  </DialogFooter>
+                                </form>
+                              </DialogContent>
+                            </Dialog>
+                        </div>
+                        {addressesLoading ? (
+                             <Skeleton className="h-20 w-full rounded-md" />
+                        ) : addresses.length > 0 ? (
+                            <div className="space-y-2 max-h-60 overflow-y-auto pr-1">
+                                {addresses.map(addr => (
+                                    <div key={addr.id} className={cn("p-2.5 border rounded-md bg-input text-xs", addr.isDefault && "border-primary ring-1 ring-primary")}>
+                                        <div className="flex justify-between items-start">
+                                            <div className="font-medium text-foreground flex items-center">
+                                                {addr.label.toLowerCase().includes('home') ? <Home className="h-3.5 w-3.5 mr-1.5 text-primary" /> : 
+                                                addr.label.toLowerCase().includes('work') || addr.label.toLowerCase().includes('office') ? <Briefcase className="h-3.5 w-3.5 mr-1.5 text-primary" /> :
+                                                <MapPinIconLucide className="h-3.5 w-3.5 mr-1.5 text-primary" />
+                                                }
+                                                {addr.label}
+                                                {addr.isDefault && <Star className="h-3 w-3 ml-1.5 fill-primary text-primary" />}
+                                            </div>
+                                             <div className="flex space-x-1">
+                                                <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => handleOpenAddressForm(addr)}><Edit3 className="h-3 w-3"/></Button>
+                                                <Button variant="ghost" size="icon" className="h-6 w-6 text-destructive" onClick={() => handleDeleteAddress(addr.id)}><Trash2 className="h-3 w-3"/></Button>
+                                            </div>
+                                        </div>
+                                        <p className="text-muted-foreground mt-0.5">{addr.street}, {addr.city}, {addr.state} {addr.zip}, {addr.country}</p>
+                                        {!addr.isDefault && (
+                                            <Button variant="link" size="sm" className="p-0 h-auto text-xs mt-1 text-primary" onClick={() => setDefaultAddress(addr.id)}>Set as Default</Button>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <p className="text-xs text-muted-foreground text-center py-2">No addresses saved yet.</p>
+                        )}
+                    </div>
                   </>
                 )}
 
@@ -338,7 +508,7 @@ export default function AccountPage() {
                   variant="outline" 
                   onClick={handleEditToggle} 
                   className="w-full text-foreground border-border hover:bg-muted hover:text-foreground"
-                  disabled={isSaving || loadingProfileDetails} // Disable if saving OR if RTDB details are still loading
+                  disabled={isSaving || loadingProfileDetails || addressesLoading} 
                 >
                   {isEditing ? (isSaving ? 'Saving...' : <><CheckCircle className="mr-2 h-4 w-4" />Done Editing</>) : <><Edit3 className="mr-2 h-4 w-4" /> Edit Profile</>}
                 </Button>
