@@ -38,3 +38,15 @@ const database = getDatabase(app); // Initialize Realtime Database
 
 export { app, auth, googleProvider, database, analytics };
 
+// Remember to configure your Firebase Realtime Database security rules in the Firebase console!
+// A common rule for user-specific data is:
+// {
+//   "rules": {
+//     "users": {
+//       "$uid": {
+//         ".read": "auth != null && auth.uid == $uid",
+//         ".write": "auth != null && auth.uid == $uid"
+//       }
+//     }
+//   }
+// }
