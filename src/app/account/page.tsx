@@ -35,16 +35,16 @@ interface StoredProfileData {
 }
 
 const predefinedAvatarUrls = [
-  { url: 'https://placehold.co/100x100/FF5733/FFFFFF.png', hint: 'avatar orange white' },
-  { url: 'https://placehold.co/100x100/33FF57/000000.png', hint: 'avatar green black' },
-  { url: 'https://placehold.co/100x100/3357FF/FFFFFF.png', hint: 'avatar blue white' },
-  { url: 'https://placehold.co/100x100/FF33A1/FFFFFF.png', hint: 'avatar pink white' },
-  { url: 'https://placehold.co/100x100/FFDD33/000000.png', hint: 'avatar yellow black' },
-  { url: 'https://placehold.co/100x100/A133FF/FFFFFF.png', hint: 'avatar purple white' },
-  { url: 'https://placehold.co/100x100/33FFF3/000000.png', hint: 'avatar cyan black' },
-  { url: 'https://placehold.co/100x100/FF7033/FFFFFF.png', hint: 'avatar coral white' },
-  { url: 'https://placehold.co/100x100/70FF33/000000.png', hint: 'avatar lime black' },
-  { url: 'https://placehold.co/100x100/808080/FFFFFF.png', hint: 'avatar gray white' }
+  { url: 'https://ibb.co/Kzfqpsxj', hint: 'avatar photo' },
+  { url: 'https://ibb.co/BHZV3XtR', hint: 'avatar photo' },
+  { url: 'https://ibb.co/whCRBj9B', hint: 'avatar photo' },
+  { url: 'https://ibb.co/B2X4XCGW', hint: 'avatar photo' },
+  { url: 'https://ibb.co/gZ0G1cRj', hint: 'avatar photo' },
+  { url: 'https://ibb.co/6J4xWjMD', hint: 'avatar photo' },
+  { url: 'https://ibb.co/vRn5FK5', hint: 'avatar photo' },
+  { url: 'https://ibb.co/W1Yt7gy', hint: 'avatar photo' },
+  { url: 'https://ibb.co/mCcVJkNg', hint: 'avatar photo' },
+  { url: 'https://ibb.co/C56BHBC2', hint: 'avatar photo' }
 ];
 
 
@@ -70,7 +70,7 @@ export default function AccountPage() {
       setDisplayName(user.displayName || '');
       // Only set photoPreview from user.photoURL if not already set by local selection
       // This helps retain a locally chosen avatar preview even if displayName update triggers re-render
-      if (!photoPreview) {
+      if (!photoPreview && !isEditing) { // Added !isEditing to ensure preview sticks during edit
         setPhotoPreview(user.photoURL || null);
       }
 
@@ -93,8 +93,6 @@ export default function AccountPage() {
         setDeliveryAddress('');
         setAge('');
       }
-      if (!isEditing && isSaving) setIsEditing(false); // Reset editing mode if saving completes.
-
     } else if (!user && !loading) {
       // User logged out, clear all fields
       setDisplayName('');
@@ -102,9 +100,9 @@ export default function AccountPage() {
       setDeliveryAddress('');
       setAge('');
       setPhotoPreview(null);
-      setIsEditing(false); // Reset editing state on logout
+      setIsEditing(false); 
     }
-  }, [user, loading, isEditing, isSaving, photoPreview]); 
+  }, [user, loading, isEditing, photoPreview]); // photoPreview was added as a dependency
 
 
   const handleProfileSave = async () => {
@@ -118,11 +116,12 @@ export default function AccountPage() {
         displayName: displayName,
       };
 
-      // Only include photoURL if photoPreview is a valid URL and different from current user.photoURL
-      // This ensures we save the selected predefined avatar
-      if (photoPreview && photoPreview !== user.photoURL && predefinedAvatarUrls.some(avatar => avatar.url === photoPreview)) {
+      if (photoPreview && photoPreview !== user.photoURL) {
         profileDataToUpdate.photoURL = photoPreview;
+      } else if (photoPreview === null && user.photoURL !== null) { // Case for removing avatar
+        profileDataToUpdate.photoURL = ""; // Set to empty string to remove in Firebase
       }
+
 
       await updateUserFirebaseProfile(user, profileDataToUpdate);
       
@@ -145,10 +144,9 @@ export default function AccountPage() {
     if (isEditing) { 
       await handleProfileSave(); 
     } else {
-      // Refresh data from user object when entering edit mode, in case it changed elsewhere or to discard local edits
       if (user) {
         setDisplayName(user.displayName || '');
-        setPhotoPreview(user.photoURL || null); // Reset to Firebase photoURL on entering edit
+        setPhotoPreview(user.photoURL || null); 
         const storageKey = `${LOCAL_STORAGE_PROFILE_KEY_PREFIX}${user.uid}`;
         const storedDataString = localStorage.getItem(storageKey);
         if (storedDataString) {
