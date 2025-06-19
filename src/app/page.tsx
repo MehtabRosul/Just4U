@@ -81,7 +81,7 @@ const carouselBannersData: CarouselBanner[] = [
     description: "Unbeatable prices on popular gifts, daily.",
     imageUrl: "https://placehold.co/1200x600.png",
     dataAiHint: "gift sale discount",
-    gradientClasses: "bg-gradient-to-l from-orange-400 via-amber-400 to-yellow-300", // Lighter
+    gradientClasses: "bg-gradient-to-l from-orange-400 via-amber-400 to-yellow-300", 
   },
   {
     id: 8,
@@ -89,7 +89,7 @@ const carouselBannersData: CarouselBanner[] = [
     description: "Fresh designs and innovative gift ideas.",
     imageUrl: "https://placehold.co/1200x600.png",
     dataAiHint: "new product launch",
-    gradientClasses: "bg-gradient-to-br from-rose-400 via-red-400 to-pink-400", // Lighter
+    gradientClasses: "bg-gradient-to-br from-rose-400 via-red-400 to-pink-400", 
   },
   {
     id: 9,
@@ -97,7 +97,7 @@ const carouselBannersData: CarouselBanner[] = [
     description: "Transform photos into unique art pieces.",
     imageUrl: "https://placehold.co/1200x600.png",
     dataAiHint: "photo to art canvas",
-    gradientClasses: "bg-gradient-to-tr from-sky-300 via-blue-400 to-indigo-500", // Lighter
+    gradientClasses: "bg-gradient-to-tr from-sky-300 via-blue-400 to-indigo-500", 
   },
   {
     id: 10,
@@ -105,7 +105,7 @@ const carouselBannersData: CarouselBanner[] = [
     description: "Get a custom 3D miniature of yourself or loved ones.",
     imageUrl: "https://placehold.co/1200x600.png",
     dataAiHint: "3d selfie miniature",
-    gradientClasses: "bg-gradient-to-bl from-lime-300 via-green-400 to-teal-500", // Lighter
+    gradientClasses: "bg-gradient-to-bl from-lime-300 via-green-400 to-teal-500", 
   },
 ];
 
@@ -322,7 +322,7 @@ const SmartFinderPanel = () => {
         </div>
       </div>
     </section>
-  )
+  );
 };
 
 const TopCurations = () => {
@@ -370,11 +370,11 @@ const TopCurations = () => {
                 </h3>
               </div>
             </Link>
-          )
+          );
         })}
       </div>
     </section>
-  )
+  );
 };
 
 const TrendingSpotlight = ({ products }: { products: Product[] }) => {
@@ -647,31 +647,31 @@ const GiftQuoteBanners = () => {
      {
       id: 1,
       text: "A truly thoughtful gift is a silent message of affection, a tangible reminder that someone holds you dear and took the time to express it beautifully.",
-      animationClasses: "bg-gradient-to-r from-fuchsia-400 via-pink-400 to-rose-400 bg-[length:300%_300%] animate-nebula-shift", // Lighter: fuchsia, pink, rose
+      animationClasses: "bg-gradient-to-r from-fuchsia-500 via-pink-500 to-rose-500 bg-[length:300%_300%] animate-nebula-shift",
       textColorClass: "text-white"
     },
     {
       id: 2,
       text: "The joy of gifting lies not in the object itself, but in the delight it brings to another's eyes, a shared moment of happiness that echoes long after the wrapping is gone.",
-      animationClasses: "bg-gradient-to-r from-sky-300 via-cyan-300 to-teal-300 bg-[length:200%_100%] animate-liquid-flow", // Lighter: sky, cyan, teal
+      animationClasses: "bg-gradient-to-r from-sky-400 via-cyan-400 to-teal-400 bg-[length:200%_100%] animate-liquid-flow",
       textColorClass: "text-white"
     },
     {
       id: 3,
       text: "Gifts are more than mere possessions; they are bridges between hearts, tokens of appreciation, and symbols of the unspoken bonds that connect us.",
-      animationClasses: "bg-gradient-to-r from-violet-400 via-purple-400 to-indigo-400 bg-[length:300%_300%] animate-bokeh-drift", // Lighter: violet, purple, indigo
+      animationClasses: "bg-gradient-to-r from-violet-500 via-purple-500 to-indigo-500 bg-[length:300%_300%] animate-bokeh-drift",
       textColorClass: "text-white"
     },
     {
       id: 4,
       text: "In every carefully chosen gift, there's a story whispered – a tale of understanding, remembrance, and the simple, profound desire to bring a smile to someone's face.",
-      animationClasses: "bg-gradient-to-r from-lime-300 via-green-300 to-emerald-300 bg-[length:200%_100%] animate-subtle-stripes", // Lighter: lime, green, emerald
+      animationClasses: "bg-gradient-to-r from-lime-400 via-green-400 to-emerald-400 bg-[length:200%_100%] animate-subtle-stripes",
       textColorClass: "text-white"
     },
     {
       id: 5,
       text: "Giving a gift is an art form where the heart guides the hand, selecting not just an item, but a piece of joy intended to brighten another's world.",
-      animationClasses: "bg-gradient-to-br from-pink-300 via-rose-400 to-fuchsia-500 bg-[length:200%_200%] animate-watercolor-flow", // Lighter: pink, rose, fuchsia
+      animationClasses: "bg-gradient-to-br from-pink-400 via-rose-500 to-fuchsia-600 bg-[length:200%_200%] animate-watercolor-flow",
       textColorClass: "text-white"
     },
   ];
@@ -837,10 +837,3 @@ export default function HomePage()
     </div>
   );
 }
-
-
-    
-
-    
-
-    
