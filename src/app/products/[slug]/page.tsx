@@ -17,8 +17,9 @@ import Link from 'next/link';
 import { ProductCard } from '@/components/products/ProductCard';
 import { SocialShareButtons } from '@/components/features/SocialShareButtons';
 import { cn } from '@/lib/utils';
-import { useAuth } from '@/hooks/useAuth'; // Import useAuth
-import { useToast } from '@/hooks/use-toast'; // Import useToast
+import { useAuth } from '@/hooks/useAuth';
+import { useToast } from '@/hooks/use-toast';
+import { useCart } from '@/hooks/useCart'; // Import useCart
 
 export default function ProductDetailPage() {
   const params = useParams();
@@ -28,8 +29,9 @@ export default function ProductDetailPage() {
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [currentUrl, setCurrentUrl] = useState('');
 
-  const { user } = useAuth(); // Get user
-  const { toast } = useToast(); // Get toast
+  const { user } = useAuth(); 
+  const { toast } = useToast(); 
+  const { addToCart } = useCart(); // Get addToCart from useCart
 
   useEffect(() => {
     if (slug) {
@@ -63,13 +65,9 @@ export default function ProductDetailPage() {
         description: "Please sign in to add items to your cart.",
         variant: "destructive",
       });
-      // Optionally, trigger sign-in flow here
       return;
     }
-    // Proceed with add to cart logic
-    console.log("Add to cart clicked for: ", product.name);
-    toast({ title: "Added to Cart", description: `${product.name} has been added to your cart.` });
-    // Actual add to cart logic would be implemented here
+    addToCart(product); // Use addToCart from context
   };
 
 
@@ -197,8 +195,8 @@ export default function ProductDetailPage() {
             <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
               <WishlistButton 
                 product={product} 
-                className="w-full sm:w-auto px-6 py-3 border border-input hover:bg-accent/20 text-primary flex items-center justify-center text-base" // Ensure consistent styling like Button
-                size="lg" // Prop from WishlistButton might not directly map to Button's size, style manually
+                className="w-full sm:w-auto px-6 py-3 border border-input hover:bg-accent/20 text-primary flex items-center justify-center text-base" 
+                size="lg" 
               > 
                  <Heart className="mr-2 h-5 w-5" /> Wishlist
               </WishlistButton>

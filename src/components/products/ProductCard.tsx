@@ -10,24 +10,26 @@ import { StarRating } from '@/components/shared/StarRating';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { ShoppingCart } from 'lucide-react';
-import { useAuth } from '@/hooks/useAuth'; // Import useAuth
-import { useToast } from '@/hooks/use-toast'; // Import useToast
+import { useAuth } from '@/hooks/useAuth'; 
+import { useToast } from '@/hooks/use-toast';
+import { useCart } from '@/hooks/useCart'; // Import useCart
 
 interface ProductCardProps {
   product: Product;
 }
 
 export function ProductCard({ product }: ProductCardProps) {
-  const { user } = useAuth(); // Get user
-  const { toast } = useToast(); // Get toast function
+  const { user } = useAuth(); 
+  const { toast } = useToast(); 
+  const { addToCart } = useCart(); // Get addToCart from useCart
 
   const averageRating = product.reviews && product.reviews.length > 0
     ? product.reviews.reduce((acc, review) => acc + review.rating, 0) / product.reviews.length
     : 0;
 
   const handleAddToCart = (e: React.MouseEvent) => {
-    e.preventDefault(); // Prevent link navigation
-    e.stopPropagation(); // Stop event bubbling
+    e.preventDefault(); 
+    e.stopPropagation(); 
 
     if (!user) {
       toast({
@@ -35,14 +37,9 @@ export function ProductCard({ product }: ProductCardProps) {
         description: "Please sign in to add items to your cart.",
         variant: "destructive",
       });
-      // Optionally, trigger sign-in flow here
-      // e.g., if (signInWithGoogle) signInWithGoogle();
       return;
     }
-    // Proceed with add to cart logic
-    console.log("Add to cart clicked for: ", product.name);
-    toast({ title: "Added to Cart", description: `${product.name} has been added to your cart.` });
-    // Actual add to cart logic would be implemented here (e.g., update cart context/state)
+    addToCart(product); // Use addToCart from context
   };
 
   return (
@@ -50,7 +47,7 @@ export function ProductCard({ product }: ProductCardProps) {
       <Card className={cn(
         "flex flex-col rounded-lg overflow-hidden shadow-md bg-card border border-border h-full cursor-pointer",
         "transition-all duration-300 ease-in-out",
-        "group-hover:shadow-2xl group-hover:border-primary/60 group-hover:bg-primary/5" // Enhanced card hover
+        "group-hover:shadow-2xl group-hover:border-primary/60 group-hover:bg-primary/5" 
       )}>
         {/* Image Section */}
         <div className="relative aspect-square w-full overflow-hidden">
@@ -58,7 +55,7 @@ export function ProductCard({ product }: ProductCardProps) {
             src={product.imageUrls[0]}
             alt={product.name}
             fill
-            className="object-cover group-hover:scale-110 transition-transform duration-300" // Image zoom
+            className="object-cover group-hover:scale-110 transition-transform duration-300" 
             sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
             data-ai-hint={product.dataAiHint || "gift item"}
           />
@@ -104,7 +101,6 @@ export function ProductCard({ product }: ProductCardProps) {
             </div>
           )}
           
-          {/* Spacer to push button to bottom */}
           <div className="flex-grow" /> 
 
           <Button
@@ -112,10 +108,10 @@ export function ProductCard({ product }: ProductCardProps) {
             size="sm"
             className={cn(
               "w-full mt-2 text-xs py-2 px-3",
-              "transition-all duration-200 ease-in-out", // Button transition
-              "group-hover:-translate-y-1 group-hover:shadow-lg group-hover:shadow-primary/40" // Button lift and shadow on card hover
+              "transition-all duration-200 ease-in-out", 
+              "group-hover:-translate-y-1 group-hover:shadow-lg group-hover:shadow-primary/40" 
             )}
-            onClick={handleAddToCart} // Updated onClick handler
+            onClick={handleAddToCart} 
           >
             <ShoppingCart className="mr-1.5 h-4 w-4" /> Add to Cart
           </Button>

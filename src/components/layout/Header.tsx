@@ -14,11 +14,15 @@ import { GLOBAL_NAV_LINKS } from '@/config/site';
 import { useAuth } from '@/hooks/useAuth'; 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'; 
 import { cn } from '@/lib/utils';
+import { useCart } from '@/hooks/useCart'; // Import useCart
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { wishlist } = useWishlist();
   const { user, loading } = useAuth(); 
+  const { getTotalItems: getTotalCartItems } = useCart(); // Get cart item count
+
+  const totalCartItems = getTotalCartItems();
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-[var(--primary-header-bg)] bg-opacity-75 backdrop-blur-md shadow-sm">
@@ -117,8 +121,13 @@ export default function Header() {
             </Link>
 
             <Link href="/cart" passHref>
-              <Button variant="ghost" size="icon" className="text-foreground hover:text-primary hover:bg-accent/10 rounded-full">
+              <Button variant="ghost" size="icon" className="relative text-foreground hover:text-primary hover:bg-accent/10 rounded-full">
                 <ShoppingCart className="h-5 w-5 sm:h-6 sm:w-6" />
+                 {totalCartItems > 0 && (
+                  <Badge variant="destructive" className="absolute -top-1 -right-1 h-4 w-4 sm:h-5 sm:w-5 p-0 flex items-center justify-center text-xs">
+                    {totalCartItems}
+                  </Badge>
+                )}
                 <span className="sr-only">Cart</span>
               </Button>
             </Link>
