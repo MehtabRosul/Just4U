@@ -647,31 +647,31 @@ const GiftQuoteBanners = () => {
     {
       id: 1,
       text: "A truly thoughtful gift is a silent message of affection, a tangible reminder that someone holds you dear and took the time to express it beautifully.",
-      animationClasses: "bg-gradient-to-r from-red-500 via-rose-400 to-pink-400 bg-[length:300%_300%] animate-nebula-shift",
+      animationClasses: "bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 bg-[length:300%_300%] animate-nebula-shift",
       textColorClass: "text-white"
     },
     {
       id: 2,
       text: "The joy of gifting lies not in the object itself, but in the delight it brings to another's eyes, a shared moment of happiness that echoes long after the wrapping is gone.",
-      animationClasses: "bg-gradient-to-r from-orange-400 via-red-400 to-yellow-300 bg-[length:200%_100%] animate-liquid-flow",
+      animationClasses: "bg-gradient-to-r from-teal-400 via-cyan-400 to-sky-400 bg-[length:200%_100%] animate-liquid-flow",
       textColorClass: "text-white"
     },
     {
       id: 3,
       text: "Gifts are more than mere possessions; they are bridges between hearts, tokens of appreciation, and symbols of the unspoken bonds that connect us.",
-      animationClasses: "bg-gradient-to-r from-pink-400 via-purple-400 to-red-400 bg-[length:300%_300%] animate-bokeh-drift",
+      animationClasses: "bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-[length:300%_300%] animate-bokeh-drift",
       textColorClass: "text-white"
     },
     {
       id: 4,
       text: "In every carefully chosen gift, there's a story whispered – a tale of understanding, remembrance, and the simple, profound desire to bring a smile to someone's face.",
-      animationClasses: "bg-gradient-to-r from-red-500 via-pink-400 to-rose-300 bg-[length:200%_100%] animate-subtle-stripes",
+      animationClasses: "bg-gradient-to-r from-green-500 via-lime-400 to-yellow-300 bg-[length:200%_100%] animate-subtle-stripes",
       textColorClass: "text-white"
     },
     {
       id: 5,
       text: "Giving a gift is an art form where the heart guides the hand, selecting not just an item, but a piece of joy intended to brighten another's world.",
-      animationClasses: "bg-gradient-to-br from-rose-400 via-orange-400 to-red-400 bg-[length:200%_200%] animate-watercolor-flow",
+      animationClasses: "bg-gradient-to-br from-rose-400 via-fuchsia-500 to-purple-600 bg-[length:200%_200%] animate-watercolor-flow",
       textColorClass: "text-white"
     },
   ];
@@ -716,31 +716,35 @@ const GiftTypeHighlight = () => {
     return (
     <section className="my-8 sm:my-12">
         <SectionTitle className="text-white">Featured Gift Types</SectionTitle>
-        <div className="space-y-8"> {/* Each gift type will be a block */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 md:gap-6">
             {featuredGiftTypes.map(giftType => {
-                // Find up to 2 sample products for this gift type
-                const sampleProducts = PRODUCTS.filter(p => p.category === giftType.slug).slice(0, 2);
-
+                const IconComponent = giftType.Icon;
                 return (
-                    <div key={giftType.id} className="bg-secondary p-4 sm:p-6 rounded-lg shadow-xl">
-                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2">
-                            <h3 className="text-xl sm:text-2xl font-semibold text-secondary-foreground font-headline">{giftType.name}</h3>
-                            <Button asChild variant="outline" size="sm" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground w-full sm:w-auto">
-                                <Link href={`/products?category=${giftType.slug}`}>
-                                    View All {giftType.name} <ArrowRight className="ml-1.5 h-4 w-4" />
-                                </Link>
-                            </Button>
-                        </div>
-                        {sampleProducts.length > 0 ? (
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
-                                {sampleProducts.map(product => (
-                                    <ProductCard key={product.id} product={product} />
-                                ))}
-                            </div>
-                        ) : (
-                            <p className="text-center text-muted-foreground py-4">More {giftType.name} coming soon!</p>
-                        )}
-                    </div>
+                    <Link
+                        key={giftType.id}
+                        href={`/products?category=${giftType.slug}`}
+                        className="group block"
+                    >
+                        <Card className="bg-neutral-800 border-neutral-700 shadow-lg hover:shadow-primary/30 hover:border-primary/50 transition-all duration-300 ease-in-out group-hover:-translate-y-1 h-full flex flex-col">
+                            <CardContent className="p-4 flex flex-col items-center justify-center text-center flex-grow">
+                                {IconComponent ? (
+                                <IconComponent className="h-10 w-10 sm:h-12 md:h-14 text-primary mb-2 sm:mb-3 transition-transform duration-300 group-hover:scale-110" />
+                                ) : giftType.dataAiHint && (
+                                    <Image
+                                        src={`https://placehold.co/100x100.jpg`}
+                                        alt={giftType.name}
+                                        width={60}
+                                        height={60}
+                                        className="rounded-md object-cover mb-2 sm:mb-3 transition-transform duration-300 group-hover:scale-110"
+                                        data-ai-hint={giftType.dataAiHint}
+                                    />
+                                )}
+                                <h3 className="font-headline text-sm sm:text-base text-neutral-200 group-hover:text-primary transition-colors duration-300 line-clamp-2">
+                                    {giftType.name}
+                                </h3>
+                            </CardContent>
+                        </Card>
+                    </Link>
                 );
             })}
         </div>
@@ -825,3 +829,5 @@ export default function HomePage()
   );
 }
 
+
+    
