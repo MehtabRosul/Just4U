@@ -12,15 +12,15 @@ import { Badge } from '@/components/ui/badge';
 import { NavMenu } from './NavMenu'; 
 import { GLOBAL_NAV_LINKS } from '@/config/site'; 
 import { useAuth } from '@/hooks/useAuth'; 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'; 
+// Avatar components are no longer needed here for the user icon
 import { cn } from '@/lib/utils';
-import { useCart } from '@/hooks/useCart'; // Import useCart
+import { useCart } from '@/hooks/useCart';
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { wishlist } = useWishlist();
   const { user, loading } = useAuth(); 
-  const { getTotalItems: getTotalCartItems } = useCart(); // Get cart item count
+  const { getTotalItems: getTotalCartItems } = useCart();
 
   const totalCartItems = getTotalCartItems();
 
@@ -96,26 +96,8 @@ export default function Header() {
             </Link>
             
             <Link href="/account" passHref>
-              <Button variant="ghost" className="text-foreground hover:text-primary hover:bg-accent/10 rounded-full px-2 py-1 h-auto min-h-[40px]">
-                <div className="flex items-center gap-2">
-                  {!loading && user ? (
-                    <>
-                      <Avatar className="h-7 w-7">
-                        <AvatarImage src={user.photoURL || undefined} alt={user.displayName || 'User'} />
-                        <AvatarFallback>
-                          {user.displayName ? user.displayName.charAt(0).toUpperCase() : <UserIcon className="h-4 w-4" />}
-                        </AvatarFallback>
-                      </Avatar>
-                      {user.displayName && (
-                        <span className="hidden md:inline text-sm font-medium truncate max-w-[100px]">
-                          {user.displayName}
-                        </span>
-                      )}
-                    </>
-                  ) : (
-                    <UserIcon className="h-5 w-5" /> 
-                  )}
-                </div>
+              <Button variant="ghost" size="icon" className="text-foreground hover:text-primary hover:bg-accent/10 rounded-full">
+                <UserIcon className="h-5 w-5 sm:h-6 sm:w-6" />
                 <span className="sr-only">Account</span>
               </Button>
             </Link>
