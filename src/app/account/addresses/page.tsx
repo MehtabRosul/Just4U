@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAddresses } from '@/hooks/useAddresses';
 import type { Address } from '@/lib/types';
 import { Button } from '@/components/ui/button';
@@ -43,19 +43,26 @@ export default function AddressesPage() {
 
   const isLoading = authLoading || addressesLoading;
 
+  useEffect(() => {
+    // If the form is opened for editing, populate it
+    if (isFormOpen && editingAddress) {
+      setValue("label", editingAddress.label);
+      setValue("street", editingAddress.street);
+      setValue("city", editingAddress.city);
+      setValue("state", editingAddress.state);
+      setValue("zip", editingAddress.zip);
+      setValue("country", editingAddress.country);
+    } else if (isFormOpen && !editingAddress) {
+      // If form is opened for new address, reset to defaults
+      reset({ country: "India", label: "", street: "", city: "", state: "", zip: "" });
+    }
+  }, [isFormOpen, editingAddress, setValue, reset]);
+
   const handleOpenForm = (address?: Address) => {
-    reset();
     if (address) {
       setEditingAddress(address);
-      setValue("label", address.label);
-      setValue("street", address.street);
-      setValue("city", address.city);
-      setValue("state", address.state);
-      setValue("zip", address.zip);
-      setValue("country", address.country);
     } else {
       setEditingAddress(null);
-      setValue("country", "India"); // Reset country for new form
     }
     setIsFormOpen(true);
   };
@@ -68,30 +75,32 @@ export default function AddressesPage() {
       const makeDefault = addresses.length === 0;
       await addAddress(data, makeDefault);
     }
-    setIsFormOpen(false);
-    reset();
+    setIsFormOpen(false); // This will trigger useEffect to reset or clear form state
   };
   
   const handleDeleteAddress = async (addressId: string) => {
+    // Consider adding a confirmation dialog here
     if (window.confirm("Are you sure you want to delete this address?")) {
       await deleteAddress(addressId);
     }
   };
 
-  if (isLoading && !user) {
+  if (isLoading) { // Generic loading skeleton for auth or addresses
     return (
         <div className="container mx-auto px-4 py-8">
             <SectionTitle className="mb-6">Manage Addresses</SectionTitle>
-            <div className="space-y-4">
-                <Skeleton className="h-10 w-1/4 mb-4" />
-                <Skeleton className="h-32 w-full rounded-lg" />
-                <Skeleton className="h-32 w-full rounded-lg" />
+            <div className="flex justify-end mb-4">
+                 <Skeleton className="h-10 w-40" />
+            </div>
+            <div className="grid md:grid-cols-2 gap-6">
+                <Skeleton className="h-40 rounded-lg" />
+                <Skeleton className="h-40 rounded-lg" />
             </div>
         </div>
     );
   }
 
-  if (!user && !authLoading) {
+  if (!user && !authLoading) { // User explicitly not logged in (auth has finished loading)
      return (
       <div className="container mx-auto px-4 py-8 text-center">
         <SectionTitle className="mb-6">Manage Addresses</SectionTitle>
@@ -114,7 +123,7 @@ export default function AddressesPage() {
     <div className="container mx-auto px-4 py-8">
       <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-3">
         <SectionTitle className="mb-0 text-center sm:text-left">Manage Addresses</SectionTitle>
-        <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
+        <Dialog open={isFormOpen} onOpenChange={(open) => { setIsFormOpen(open); if (!open) setEditingAddress(null); }}>
           <DialogTrigger asChild>
             <Button onClick={() => handleOpenForm()} className="w-full sm:w-auto">
               <PlusCircle className="mr-2 h-5 w-5" /> Add New Address
@@ -161,7 +170,7 @@ export default function AddressesPage() {
               </div>
               <DialogFooter>
                 <DialogClose asChild>
-                    <Button type="button" variant="outline" onClick={() => reset()}>Cancel</Button>
+                    <Button type="button" variant="outline" onClick={() => { setIsFormOpen(false); setEditingAddress(null); }}>Cancel</Button>
                 </DialogClose>
                 <Button type="submit">{editingAddress ? 'Save Changes' : 'Add Address'}</Button>
               </DialogFooter>
@@ -170,12 +179,7 @@ export default function AddressesPage() {
         </Dialog>
       </div>
 
-      {addressesLoading ? (
-        <div className="grid md:grid-cols-2 gap-6">
-          <Skeleton className="h-40 rounded-lg" />
-          <Skeleton className="h-40 rounded-lg" />
-        </div>
-      ) : addresses.length > 0 ? (
+      {addresses.length > 0 ? (
         <div className="grid md:grid-cols-2 gap-6">
           {addresses.map((address) => (
             <Card key={address.id} className={cn("bg-secondary border-border shadow-md", address.isDefault && "border-primary ring-2 ring-primary")}>
@@ -226,3 +230,4 @@ export default function AddressesPage() {
     </div>
   );
 }
+

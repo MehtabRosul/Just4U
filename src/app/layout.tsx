@@ -33,10 +33,10 @@ export default function RootLayout({
       <body className="font-body antialiased min-h-screen flex flex-col bg-background text-foreground">
         <AuthProvider>
           <AddressesProvider> {/* AddressesProvider depends on AuthProvider */}
-            <WishlistProvider>
-              <CartProvider>
-                <OrdersProvider> {/* OrdersProvider can also depend on AuthProvider */}
-                  <GiftRegistriesProvider> {/* GiftRegistriesProvider too */}
+            <WishlistProvider> {/* WishlistProvider depends on AuthProvider */}
+              <CartProvider> {/* CartProvider depends on AuthProvider */}
+                <OrdersProvider> {/* OrdersProvider depends on AuthProvider */}
+                  <GiftRegistriesProvider> {/* GiftRegistriesProvider depends on AuthProvider */}
                     <Header />
                     <main className="flex-grow container mx-auto px-4 py-8">
                       {children}
@@ -53,3 +53,4 @@ export default function RootLayout({
     </html>
   );
 }
+

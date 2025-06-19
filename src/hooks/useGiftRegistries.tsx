@@ -28,7 +28,10 @@ export function GiftRegistriesProvider({ children }: { children: ReactNode }) {
   const { toast } = useToast();
 
   useEffect(() => {
-    if (authLoading) return;
+    if (authLoading) {
+      setLoading(true);
+      return;
+    }
 
     if (user) {
       setLoading(true);
@@ -39,7 +42,7 @@ export function GiftRegistriesProvider({ children }: { children: ReactNode }) {
           ? Object.entries(data).map(([id, value]) => ({ 
               id, 
               ...(value as Omit<GiftRegistry, 'id'>),
-              items: (value as GiftRegistry).items || {} // Ensure items is an object
+              items: (value as GiftRegistry).items || {} // Ensure items is an object, even if empty
             }))
           : [];
         setRegistries(loadedRegistries);
@@ -59,7 +62,7 @@ export function GiftRegistriesProvider({ children }: { children: ReactNode }) {
 
   const createRegistry = useCallback(async (registryData: Omit<GiftRegistry, 'id' | 'creatorUid' | 'items'>): Promise<string | null> => {
     if (!user) {
-      toast({ title: "Authentication Required", variant: "destructive" });
+      toast({ title: "Authentication Required", description: "Please sign in to create a registry.", variant: "destructive" });
       return null;
     }
     try {
@@ -85,7 +88,10 @@ export function GiftRegistriesProvider({ children }: { children: ReactNode }) {
   }, [user, toast]);
 
   const updateRegistryDetails = useCallback(async (registryId: string, updates: Partial<Omit<GiftRegistry, 'id' | 'creatorUid' | 'items'>>) => {
-    if (!user) return;
+    if (!user) {
+      toast({ title: "Authentication Required", variant: "destructive" });
+      return;
+    }
     try {
       await update(ref(database, `users/${user.uid}/giftRegistries/${registryId}`), updates);
       toast({ title: "Registry Updated", description: "Registry details updated." });
@@ -96,7 +102,10 @@ export function GiftRegistriesProvider({ children }: { children: ReactNode }) {
   }, [user, toast]);
 
   const deleteRegistry = useCallback(async (registryId: string) => {
-    if (!user) return;
+    if (!user) {
+      toast({ title: "Authentication Required", variant: "destructive" });
+      return;
+    }
     try {
       await remove(ref(database, `users/${user.uid}/giftRegistries/${registryId}`));
       toast({ title: "Registry Deleted", description: "Registry removed successfully." });
@@ -107,9 +116,13 @@ export function GiftRegistriesProvider({ children }: { children: ReactNode }) {
   }, [user, toast]);
 
   const addRegistryItem = useCallback(async (registryId: string, productId: string, itemDetails: Omit<GiftRegistryItem, 'productId'>) => {
-    if (!user) return;
+    if (!user) {
+      toast({ title: "Authentication Required", variant: "destructive" });
+      return;
+    }
     try {
       const itemRef = ref(database, `users/${user.uid}/giftRegistries/${registryId}/items/${productId}`);
+      // Ensure productId is part of the item data being set
       await set(itemRef, {productId, ...itemDetails});
       toast({ title: "Item Added", description: "Item added to registry." });
     } catch (error) {
@@ -119,10 +132,15 @@ export function GiftRegistriesProvider({ children }: { children: ReactNode }) {
   }, [user, toast]);
 
   const updateRegistryItem = useCallback(async (registryId: string, productId: string, updates: Partial<GiftRegistryItem>) => {
-    if (!user) return;
+    if (!user) {
+      toast({ title: "Authentication Required", variant: "destructive" });
+      return;
+    }
     try {
       const itemRef = ref(database, `users/${user.uid}/giftRegistries/${registryId}/items/${productId}`);
-      await update(itemRef, updates);
+       // Ensure 'productId' is not part of the updates object if it was accidentally included
+      const { productId: pId, ...updatesWithoutProductId } = updates as GiftRegistryItem;
+      await update(itemRef, updatesWithoutProductId);
       toast({ title: "Item Updated", description: "Registry item updated." });
     } catch (error) {
       console.error("Error updating registry item: ", error);
@@ -131,7 +149,10 @@ export function GiftRegistriesProvider({ children }: { children: ReactNode }) {
   }, [user, toast]);
 
   const removeRegistryItem = useCallback(async (registryId: string, productId: string) => {
-    if (!user) return;
+    if (!user) {
+      toast({ title: "Authentication Required", variant: "destructive" });
+      return;
+    }
     try {
       const itemRef = ref(database, `users/${user.uid}/giftRegistries/${registryId}/items/${productId}`);
       await remove(itemRef);
@@ -166,3 +187,4 @@ export function useGiftRegistries() {
   }
   return context;
 }
+

@@ -23,7 +23,10 @@ export function OrdersProvider({ children }: { children: ReactNode }) {
   const { toast } = useToast();
 
   useEffect(() => {
-    if (authLoading) return;
+    if (authLoading) {
+      setLoading(true);
+      return;
+    }
 
     if (user) {
       setLoading(true);
@@ -48,7 +51,7 @@ export function OrdersProvider({ children }: { children: ReactNode }) {
     }
   }, [user, authLoading, toast]);
 
-  // Basic addOrder (example, full implementation is more complex)
+  // Basic addOrder (example, full implementation is more complex and typically server-side)
   // const addOrder = useCallback(async (orderData: Omit<Order, 'id'>): Promise<string | null> => {
   //   if (!user) {
   //     toast({ title: "Authentication Required", variant: "destructive" });
@@ -88,3 +91,4 @@ export function useOrders() {
   }
   return context;
 }
+

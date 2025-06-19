@@ -20,7 +20,7 @@ export default function OrdersPage() {
 
   const isLoading = authLoading || ordersLoading;
 
-  if (isLoading && !user) {
+  if (isLoading) { // Generic loading skeleton
     return (
         <div className="container mx-auto px-4 py-8">
             <SectionTitle className="mb-6">My Orders</SectionTitle>
@@ -32,7 +32,7 @@ export default function OrdersPage() {
     );
   }
 
-  if (!user && !authLoading) {
+  if (!user && !authLoading) { // User explicitly not logged in
      return (
       <div className="container mx-auto px-4 py-8 text-center">
         <SectionTitle className="mb-6">My Orders</SectionTitle>
@@ -54,12 +54,8 @@ export default function OrdersPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <SectionTitle className="mb-6">My Orders</SectionTitle>
-      {ordersLoading ? (
-        <div className="space-y-6">
-            <Skeleton className="h-48 w-full rounded-lg" />
-            <Skeleton className="h-48 w-full rounded-lg" />
-        </div>
-      ) : orders.length > 0 ? (
+      {/* No separate loading state for orders here as isLoading covers it */}
+      {orders.length > 0 ? (
         <div className="space-y-6">
           {orders.map((order) => (
             <Card key={order.id} className="bg-secondary border-border shadow-md overflow-hidden">
@@ -131,3 +127,4 @@ export default function OrdersPage() {
     </div>
   );
 }
+

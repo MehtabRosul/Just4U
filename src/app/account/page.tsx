@@ -46,7 +46,7 @@ export default function AccountPage() {
     loading: authLoading, 
     signOutUser, 
     updateUserFirebaseProfile,
-    profileDetails, // RTDB supplemental details (phone, age)
+    profileDetails, 
     loadingProfileDetails,
     saveUserProfileDetails 
   } = useAuth();
@@ -68,9 +68,11 @@ export default function AccountPage() {
   useEffect(() => {
     if (user && !authLoading) {
       setDisplayName(user.displayName || '');
-      if (!isEditing) { 
+      // Only set photoPreview from user.photoURL if not currently editing or photoPreview isn't already set by avatar dialog
+      if (!isEditing || !photoPreview) { 
         setPhotoPreview(user.photoURL || null);
       }
+      // For profileDetails (phone, age), always reflect the latest from the hook
       if (profileDetails && !loadingProfileDetails) {
         setPhoneNumber(profileDetails.phoneNumber || '');
         setAge(profileDetails.age || '');
@@ -78,14 +80,14 @@ export default function AccountPage() {
         setPhoneNumber('');
         setAge('');
       }
-    } else if (!user && !authLoading) {
+    } else if (!user && !authLoading) { // Explicitly not logged in or initial load without user
       setDisplayName('');
       setPhoneNumber('');
       setAge('');
       setPhotoPreview(null);
       setIsEditing(false); 
     }
-  }, [user, authLoading, profileDetails, loadingProfileDetails, isEditing]);
+  }, [user, authLoading, profileDetails, loadingProfileDetails, isEditing, photoPreview]); // Added photoPreview to deps
 
 
   const handleProfileSave = async () => {
@@ -97,30 +99,32 @@ export default function AccountPage() {
     try {
       // Update Firebase Auth profile (name, avatar)
       const authProfileUpdate: { displayName?: string; photoURL?: string } = {};
-      if (displayName !== user.displayName) {
+      if (displayName !== (user.displayName || '')) { // Compare with current user.displayName or empty string
         authProfileUpdate.displayName = displayName;
       }
-      if (photoPreview && photoPreview !== user.photoURL) {
-        authProfileUpdate.photoURL = photoPreview;
-      } else if (photoPreview === null && user.photoURL !== null) {
-        authProfileUpdate.photoURL = ""; 
+      if (photoPreview !== (user.photoURL || null)) { // Compare with current user.photoURL or null
+         authProfileUpdate.photoURL = photoPreview === null ? "" : photoPreview; // Send "" to remove photo
       }
+      
       if (Object.keys(authProfileUpdate).length > 0) {
         await updateUserFirebaseProfile(user, authProfileUpdate);
       }
       
       // Update RTDB profile details (phone, age)
       const rtdbProfileUpdate: UserProfileDetails = { phoneNumber, age };
-      await saveUserProfileDetails(user.uid, rtdbProfileUpdate);
+      // Only save if different from current RTDB profile details to avoid unnecessary writes
+      if (phoneNumber !== (profileDetails?.phoneNumber || '') || age !== (profileDetails?.age || '')) {
+          await saveUserProfileDetails(user.uid, rtdbProfileUpdate);
+      }
       
       toast({ title: "Profile Updated", description: "Your profile details have been updated." });
+      setIsEditing(false); 
       
     } catch (error) {
       const e = error as Error;
       toast({ title: "Update Failed", description: e.message || "Could not update profile.", variant: "destructive" });
     } finally {
       setIsSaving(false);
-      setIsEditing(false); 
     }
   };
   
@@ -128,12 +132,16 @@ export default function AccountPage() {
     if (isEditing) { 
       await handleProfileSave(); 
     } else {
-      if (user) { // Reset fields to current user state before editing
+      // When entering edit mode, ensure form fields are populated from current state
+      if (user) {
         setDisplayName(user.displayName || '');
         setPhotoPreview(user.photoURL || null); 
         if (profileDetails) {
             setPhoneNumber(profileDetails.phoneNumber || '');
             setAge(profileDetails.age || '');
+        } else {
+            setPhoneNumber('');
+            setAge('');
         }
       }
       setIsEditing(true);
@@ -143,6 +151,7 @@ export default function AccountPage() {
   const handleAvatarSelect = (url: string) => {
     setPhotoPreview(url);
     setIsAvatarDialogOpen(false);
+    // No need to immediately call updateUserFirebaseProfile here, will be done on main save
   };
   
   const handleSignOut = async () => {
@@ -152,7 +161,7 @@ export default function AccountPage() {
     }
   }
 
-  if (overallLoading && !user) { // Show full page skeleton only if no user data yet
+  if (overallLoading && !user) { // Show full page skeleton only if no user data yet and still loading
     return (
       <div className="container mx-auto px-4 py-8">
         <SectionTitle className="mb-8 text-center sm:text-left">My Account</SectionTitle>
@@ -188,7 +197,7 @@ export default function AccountPage() {
     );
   }
   
-  if (!user && !authLoading) { // User explicitly logged out or never logged in
+  if (!user && !authLoading) { // User explicitly logged out or never logged in (auth has finished loading)
      return (
       <div className="container mx-auto px-4 py-8 text-center">
         <SectionTitle className="mb-6">My Account</SectionTitle>
@@ -210,9 +219,15 @@ export default function AccountPage() {
     );
   }
 
-  // If user is loaded, but profile details might still be loading, show partial skeleton
-  const displayDisplayName = overallLoading ? <Skeleton className="h-6 w-3/4" /> : (displayName || user?.email || 'User Profile');
-  const displayEmail = overallLoading ? <Skeleton className="h-4 w-full" /> : user?.email;
+  // User is present, or auth is still loading (but we assume user might appear)
+  const displaySkeletonForText = overallLoading || (authLoading && !user); // Show skeleton if any relevant loading is happening
+
+  const currentDisplayName = user?.displayName || '';
+  const currentUserEmail = user?.email || 'user@example.com'; // Fallback for skeleton
+  const currentPhotoURL = user?.photoURL || null;
+
+  const currentPhoneNumber = profileDetails?.phoneNumber || '';
+  const currentAge = profileDetails?.age || '';
 
 
   return (
@@ -224,15 +239,15 @@ export default function AccountPage() {
           <Card className="bg-card border-border shadow-md">
               <CardHeader className="items-center text-center pb-4">
                 <div className="relative group">
-                  {overallLoading ? <Skeleton className="h-24 w-24 rounded-full mx-auto" /> : 
+                  {displaySkeletonForText ? <Skeleton className="h-24 w-24 rounded-full mx-auto" /> : 
                     <Avatar className="h-24 w-24 mx-auto">
-                      <AvatarImage src={photoPreview || undefined} alt={displayName || user?.email || 'User'} />
+                      <AvatarImage src={photoPreview || undefined} alt={displayName || currentUserEmail} />
                       <AvatarFallback>
-                        {displayName ? displayName.charAt(0).toUpperCase() : (user?.email ? user.email.charAt(0).toUpperCase() : <UserIcon className="h-10 w-10" />)}
+                        {displayName ? displayName.charAt(0).toUpperCase() : (currentUserEmail ? currentUserEmail.charAt(0).toUpperCase() : <UserIcon className="h-10 w-10" />)}
                       </AvatarFallback>
                     </Avatar>
                   }
-                  {isEditing && !overallLoading && (
+                  {isEditing && !displaySkeletonForText && (
                     <Dialog open={isAvatarDialogOpen} onOpenChange={setIsAvatarDialogOpen}>
                       <DialogTrigger asChild>
                         <Button 
@@ -277,21 +292,21 @@ export default function AccountPage() {
                 </div>
                 
                 {isEditing ? (
+                  displaySkeletonForText ? <Skeleton className="h-6 w-3/4 mx-auto mt-3" /> :
                   <Input
                     id="displayName"
                     value={displayName}
                     onChange={(e: ChangeEvent<HTMLInputElement>) => setDisplayName(e.target.value)}
                     className="text-xl font-semibold text-center mt-3 bg-input border-border focus:ring-primary text-foreground"
                     placeholder="Your Name"
-                    disabled={overallLoading}
                   />
                 ) : (
                   <CardTitle className="text-xl text-center mt-3 text-card-foreground">
-                    {displayDisplayName}
+                    {displaySkeletonForText ? <Skeleton className="h-6 w-3/4 mx-auto" /> : (displayName || currentUserEmail)}
                   </CardTitle>
                 )}
                  <CardDescription className="text-sm text-center text-muted-foreground">
-                  {displayEmail}
+                  {displaySkeletonForText ? <Skeleton className="h-4 w-full mx-auto mt-1" /> : currentUserEmail}
                 </CardDescription>
               </CardHeader>
 
@@ -300,7 +315,7 @@ export default function AccountPage() {
                   <>
                     <div>
                       <Label htmlFor="phoneNumber" className="text-xs text-muted-foreground">Phone Number</Label>
-                      {loadingProfileDetails ? <Skeleton className="h-10 w-full mt-1" /> :
+                      {loadingProfileDetails || authLoading ? <Skeleton className="h-10 w-full mt-1" /> :
                         <Input
                           id="phoneNumber"
                           type="tel"
@@ -313,7 +328,7 @@ export default function AccountPage() {
                     </div>
                      <div>
                       <Label htmlFor="age" className="text-xs text-muted-foreground">Age</Label>
-                      {loadingProfileDetails ? <Skeleton className="h-10 w-full mt-1" /> :
+                      {loadingProfileDetails || authLoading ? <Skeleton className="h-10 w-full mt-1" /> :
                         <Input
                           id="age"
                           type="number"
@@ -342,7 +357,7 @@ export default function AccountPage() {
                   variant="outline"
                   className="w-full text-foreground border-border hover:bg-muted hover:text-foreground"
                   onClick={handleSignOut}
-                  disabled={authLoading}
+                  disabled={authLoading} // Only disable if auth state itself is changing
                 >
                   <LogOut className="mr-2 h-4 w-4" /> Sign Out
                 </Button>
@@ -360,22 +375,27 @@ export default function AccountPage() {
               <div className="grid sm:grid-cols-2 gap-4">
                 {accountSections.map((section) => {
                   const Icon = section.icon;
+                  const isDisabled = !user && !overallLoading; // Disable if definitely logged out
                   return (
-                    <Link key={section.title} href={user ? section.href : '#'} passHref
+                    <Link 
+                      key={section.title} 
+                      href={isDisabled ? '#' : section.href} 
+                      passHref
                       className={cn(
                         "block group",
-                        (!user || overallLoading) ? 'opacity-50 cursor-not-allowed' : ''
+                        isDisabled ? 'opacity-50 cursor-not-allowed pointer-events-none' : '' 
                       )}
                       onClick={(e) => {
-                        if (!user && !overallLoading) {
+                        if (isDisabled) {
                           e.preventDefault();
-                          toast({
+                           toast({
                             title: "Authentication Required",
                             description: "Please log in or sign up to access this section.",
                             variant: "default"
                           });
                         }
                       }}
+                      aria-disabled={isDisabled}
                     >
                       <div className="p-4 border rounded-lg bg-card hover:bg-primary/30 hover:border-primary/50 hover:shadow-lg transition-all duration-200 h-full flex flex-col">
                         <div className="flex items-center mb-2">
@@ -395,3 +415,4 @@ export default function AccountPage() {
     </div>
   );
 }
+

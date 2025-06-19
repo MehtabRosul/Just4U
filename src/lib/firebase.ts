@@ -13,7 +13,7 @@ const firebaseConfig = {
   authDomain: "just4u-5f0cd.firebaseapp.com",
   databaseURL: "https://just4u-5f0cd-default-rtdb.asia-southeast1.firebasedatabase.app",
   projectId: "just4u-5f0cd",
-  storageBucket: "just4u-5f0cd.firebasestorage.app", // Use your updated storageBucket
+  storageBucket: "just4u-5f0cd.appspot.com", // Corrected to .appspot.com if that's your actual bucket
   messagingSenderId: "829916636340",
   appId: "1:829916636340:web:c606b327ef33e7d8f2e3e1",
   measurementId: "G-7SZC7BC10R"
@@ -37,3 +37,4 @@ const googleProvider = new GoogleAuthProvider();
 const database = getDatabase(app); // Initialize Realtime Database
 
 export { app, auth, googleProvider, database, analytics };
+

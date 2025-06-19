@@ -37,7 +37,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   // Effect to fetch cart item IDs and quantities from RTDB
   useEffect(() => {
-    if (authLoading) return;
+    if (authLoading) {
+      setLoading(true);
+      return;
+    }
 
     if (user) {
       setLoading(true);
@@ -92,7 +95,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       const newQuantity = currentItem ? currentItem.quantity + quantity : quantity;
 
       await set(cartItemRef, { 
-        productId: product.id, 
+        productId: product.id, // Storing productId for easier reference if needed, though key is the ID
         quantity: newQuantity,
         addedAt: currentItem?.addedAt || new Date().toISOString()
       });
@@ -135,7 +138,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }
     try {
       const cartItemRef = ref(database, `users/${user.uid}/cart/${productId}`);
-      await update(cartItemRef, { quantity }); // Only update quantity
+      // Only update quantity, preserve other fields like addedAt
+      await update(cartItemRef, { quantity }); 
       
       const product = PRODUCTS.find(p => p.id === productId);
       setTimeout(() => {
@@ -195,3 +199,4 @@ export function useCart() {
   }
   return context;
 }
+

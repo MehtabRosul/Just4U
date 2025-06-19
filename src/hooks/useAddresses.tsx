@@ -26,7 +26,10 @@ export function AddressesProvider({ children }: { children: ReactNode }) {
   const { toast } = useToast();
 
   useEffect(() => {
-    if (authLoading) return;
+    if (authLoading) {
+      setLoading(true); // Ensure loading is true while auth is resolving
+      return;
+    }
 
     if (user) {
       setLoading(true);
@@ -57,24 +60,26 @@ export function AddressesProvider({ children }: { children: ReactNode }) {
       return null;
     }
     try {
-      const addressesRef = ref(database, `users/${user.uid}/addresses`);
+      const addressesPath = `users/${user.uid}/addresses`;
+      const addressesRef = ref(database, addressesPath);
       const newAddressRef = push(addressesRef);
       const newAddressId = newAddressRef.key;
       if (!newAddressId) throw new Error("Failed to generate address ID.");
 
+      const isFirstAddress = addresses.length === 0;
       const newAddress: Address = { 
         id: newAddressId, 
         ...addressData,
-        isDefault: makeDefault || addresses.length === 0 // Make first address default
+        isDefault: makeDefault || isFirstAddress 
       };
       
       const updates: Record<string, any> = {};
-      updates[`users/${user.uid}/addresses/${newAddressId}`] = newAddress;
+      updates[`${addressesPath}/${newAddressId}`] = newAddress;
 
-      if (newAddress.isDefault) {
+      if (newAddress.isDefault && !isFirstAddress) { // Only run this if it's not the first address being made default
         addresses.forEach(addr => {
           if (addr.isDefault && addr.id !== newAddressId) {
-            updates[`users/${user.uid}/addresses/${addr.id}/isDefault`] = false;
+            updates[`${addressesPath}/${addr.id}/isDefault`] = false;
           }
         });
       }
@@ -96,7 +101,9 @@ export function AddressesProvider({ children }: { children: ReactNode }) {
     }
     try {
       const addressRef = ref(database, `users/${user.uid}/addresses/${addressId}`);
-      await update(addressRef, addressUpdates);
+      // Ensure 'id' is not part of the updates object if it was accidentally included
+      const { id, ...updatesWithoutId } = addressUpdates as Address; 
+      await update(addressRef, updatesWithoutId);
       toast({ title: "Address Updated", description: "Address updated successfully." });
     } catch (error) {
       console.error("Error updating address: ", error);
@@ -112,14 +119,19 @@ export function AddressesProvider({ children }: { children: ReactNode }) {
     try {
       const addressRef = ref(database, `users/${user.uid}/addresses/${addressId}`);
       await remove(addressRef);
+      // If the deleted address was default, and there are other addresses, make the first one default.
+      const remainingAddresses = addresses.filter(addr => addr.id !== addressId);
+      if (addresses.find(a => a.id === addressId)?.isDefault && remainingAddresses.length > 0) {
+        await setDefaultAddress(remainingAddresses[0].id);
+      }
       toast({ title: "Address Deleted", description: "Address removed successfully." });
     } catch (error) {
       console.error("Error deleting address: ", error);
       toast({ title: "Error", description: "Could not delete address.", variant: "destructive" });
     }
-  }, [user, toast]);
+  }, [user, toast, addresses]);
 
-  const setDefaultAddress = useCallback(async (addressId: string) => {
+  const setDefaultAddress = useCallback(async (newDefaultAddressId: string) => {
     if (!user) {
       toast({ title: "Authentication Required", variant: "destructive" });
       return;
@@ -127,9 +139,14 @@ export function AddressesProvider({ children }: { children: ReactNode }) {
     try {
       const updates: Record<string, any> = {};
       addresses.forEach(addr => {
-        updates[`users/${user.uid}/addresses/${addr.id}/isDefault`] = addr.id === addressId;
+        const isNewDefault = addr.id === newDefaultAddressId;
+        if (addr.isDefault !== isNewDefault) { // Only update if changed
+          updates[`users/${user.uid}/addresses/${addr.id}/isDefault`] = isNewDefault;
+        }
       });
-      await update(ref(database), updates);
+      if (Object.keys(updates).length > 0) {
+        await update(ref(database), updates);
+      }
       toast({ title: "Default Address Set", description: "Default shipping address updated." });
     } catch (error) {
       console.error("Error setting default address: ", error);
@@ -152,3 +169,4 @@ export function useAddresses() {
   }
   return context;
 }
+

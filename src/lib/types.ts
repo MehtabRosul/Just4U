@@ -136,3 +136,4 @@ export interface GiftRegistry {
   items: Record<string, GiftRegistryItem>; // Product ID as key
   shippingAddress?: Address;
 }
+

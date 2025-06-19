@@ -22,7 +22,9 @@ interface WishlistContextType {
 const WishlistContext = createContext<WishlistContextType | undefined>(undefined);
 
 export function WishlistProvider({ children }: { children: ReactNode }) {
-  const [wishlistProductIds, setWishlistProductIds] = useState<Record<string, boolean>>({});
+  // Stores product IDs as keys with a boolean true or timestamp as value from RTDB
+  const [wishlistProductIds, setWishlistProductIds] = useState<Record<string, boolean | string>>({});
+  // Stores the enriched Product objects for the UI
   const [wishlist, setWishlist] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
@@ -30,7 +32,10 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
 
   // Effect to fetch wishlist IDs from RTDB
   useEffect(() => {
-    if (authLoading) return;
+    if (authLoading) {
+      setLoading(true);
+      return;
+    }
 
     if (user) {
       setLoading(true);
@@ -57,7 +62,7 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const productDetails = Object.keys(wishlistProductIds)
       .map(productId => PRODUCTS.find(p => p.id === productId))
-      .filter(Boolean) as Product[];
+      .filter(Boolean) as Product[]; // Filter out any undefined products if IDs don't match
     setWishlist(productDetails);
   }, [wishlistProductIds]);
 
@@ -75,7 +80,8 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
       return;
     }
     try {
-      await set(ref(database, `users/${user.uid}/wishlist/${product.id}`), true);
+      // Store boolean true or a timestamp if needed, e.g., new Date().toISOString()
+      await set(ref(database, `users/${user.uid}/wishlist/${product.id}`), true); 
       setTimeout(() => {
         toast({ title: "Added to Wishlist", description: `${product.name} has been added to your wishlist.` });
       }, 0);
@@ -150,3 +156,4 @@ export function useWishlist() {
   }
   return context;
 }
+

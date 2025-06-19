@@ -46,18 +46,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (currentUser) {
         setLoadingProfileDetails(true);
         const profileDetailsRef = ref(database, `users/${currentUser.uid}/profileDetails`);
-        onValue(profileDetailsRef, (snapshot) => {
+        const listener = onValue(profileDetailsRef, (snapshot) => {
           const data = snapshot.val();
-          setProfileDetails(data || {});
+          setProfileDetails(data || {}); // Initialize with empty object if no data
           setLoadingProfileDetails(false);
         }, (error) => {
           console.error("Error fetching profile details from RTDB: ", error);
           toast({ title: "Error", description: "Could not fetch profile details.", variant: "destructive" });
-          setProfileDetails({});
+          setProfileDetails({}); // Initialize with empty object on error
           setLoadingProfileDetails(false);
         });
         // Cleanup listener when user logs out or component unmounts
-        return () => off(profileDetailsRef);
+        return () => off(profileDetailsRef, listener);
       } else {
         setProfileDetails(null);
         setLoadingProfileDetails(false);
@@ -69,7 +69,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const signInWithGoogle = useCallback(async () => {
     setLoading(true);
     try {
-      await signInWithPopup(auth, googleProvider);
+      const result = await signInWithPopup(auth, googleProvider);
+      // Check if it's a new user to initialize profileDetails
+      const profileDetailsRef = ref(database, `users/${result.user.uid}/profileDetails`);
+      const snapshot = await get(profileDetailsRef);
+      if (!snapshot.exists()) {
+        await set(profileDetailsRef, { phoneNumber: '', age: '' });
+      }
       toast({ title: "Signed In", description: "Successfully signed in with Google." });
       return true;
     } catch (error) {
@@ -101,6 +107,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setLoading(true);
     try {
       await signInWithEmailAndPassword(auth, email, password);
+      // Profile details should load via onAuthStateChanged listener
       return true;
     } catch (error) {
       const authError = error as AuthError;
@@ -121,12 +128,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setLoading(true);
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      // Initialize profileDetails in RTDB
+      // Initialize profileDetails in RTDB for new user
       if (userCredential.user) {
         await set(ref(database, `users/${userCredential.user.uid}/profileDetails`), {
           phoneNumber: '',
           age: ''
         });
+        // Set a default display name if desired, e.g., from email prefix
+        const defaultDisplayName = email.split('@')[0];
+        await updateProfile(userCredential.user, { displayName: defaultDisplayName });
+
       }
       return true;
     } catch (error) {
@@ -154,7 +165,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       await updateProfile(currentUser, profileData);
       // To reflect changes immediately if needed, though onAuthStateChanged often handles it
-      setUser(prevUser => prevUser ? { ...prevUser, ...profileData } : null);
+      // Forcing a re-fetch or local update of user object might be needed in some cases
+      // For now, relying on onAuthStateChanged or page refresh
+      setUser(prevUser => {
+        if (prevUser && prevUser.uid === currentUser.uid) {
+          return { ...prevUser, ...profileData, photoURL: profileData.photoURL ?? prevUser.photoURL };
+        }
+        return prevUser;
+      });
     } catch (error) {
       const authError = error as AuthError;
       console.error("Error updating Firebase profile: ", authError);
@@ -169,10 +187,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
     try {
       await set(ref(database, `users/${userId}/profileDetails`), details);
-      // No toast here, account page will show success toast after all saves
+      // This will trigger the onValue listener in useEffect to update profileDetails state
     } catch (error) {
       console.error("Error saving profile details to RTDB: ", error);
-      throw new Error("Could not save profile details.");
+      throw new Error("Could not save profile details."); // Re-throw for AccountPage to handle
     }
   }, [toast]);
 
@@ -203,3 +221,4 @@ export function useAuth() {
   }
   return context;
 }
+
