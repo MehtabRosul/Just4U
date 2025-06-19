@@ -665,8 +665,8 @@ const GiftQuoteBanners = () => {
     {
       id: 4,
       text: "In every carefully chosen gift, there's a story whispered – a tale of understanding, remembrance, and the simple, profound desire to bring a smile to someone's face.",
-      animationClasses: "bg-gradient-to-r from-slate-700 via-slate-500 to-slate-700 bg-[length:200%_100%] animate-subtle-stripes",
-      textColorClass: "text-slate-100"
+      animationClasses: "bg-gradient-to-r from-red-600 via-rose-500 to-pink-500 bg-[length:200%_100%] animate-subtle-stripes",
+      textColorClass: "text-white"
     },
     {
       id: 5,
@@ -818,3 +818,4 @@ export default function HomePage()
     </div>
   );
 }
+
