@@ -424,40 +424,40 @@ export default function AccountPage() {
                               </DialogTrigger>
                               <DialogContent className="sm:max-w-md bg-card border-border">
                                 <DialogHeader>
-                                  <DialogTitle className="text-card-foreground">{editingAddress ? 'Edit Address' : 'Add New Address'}</DialogTitle>
+                                  <DialogTitle className="text-primary-foreground">{editingAddress ? 'Edit Address' : 'Add New Address'}</DialogTitle>
                                 </DialogHeader>
                                 <form onSubmit={handleAddressSubmit(onAddressSubmit)} className="space-y-4">
                                   <div>
                                     <Label htmlFor="addr-label" className="text-foreground">Label</Label>
-                                    <Input id="addr-label" {...registerAddress("label")} className={`mt-1 ${addressErrors.label ? 'border-destructive' : 'border-input'}`} />
+                                    <Input id="addr-label" {...registerAddress("label")} className={cn('mt-1 placeholder:text-primary-foreground', addressErrors.label ? 'border-destructive' : 'border-input')} />
                                     {addressErrors.label && <p className="text-xs text-destructive mt-1">{addressErrors.label.message}</p>}
                                   </div>
                                   <div>
                                     <Label htmlFor="addr-street" className="text-foreground">Street</Label>
-                                    <Input id="addr-street" {...registerAddress("street")} className={`mt-1 ${addressErrors.street ? 'border-destructive' : 'border-input'}`} />
+                                    <Input id="addr-street" {...registerAddress("street")} className={cn('mt-1 placeholder:text-primary-foreground', addressErrors.street ? 'border-destructive' : 'border-input')} />
                                     {addressErrors.street && <p className="text-xs text-destructive mt-1">{addressErrors.street.message}</p>}
                                   </div>
                                   <div className="grid grid-cols-2 gap-4">
                                     <div>
                                       <Label htmlFor="addr-city" className="text-foreground">City</Label>
-                                      <Input id="addr-city" {...registerAddress("city")} className={`mt-1 ${addressErrors.city ? 'border-destructive' : 'border-input'}`} />
+                                      <Input id="addr-city" {...registerAddress("city")} className={cn('mt-1 placeholder:text-primary-foreground', addressErrors.city ? 'border-destructive' : 'border-input')} />
                                       {addressErrors.city && <p className="text-xs text-destructive mt-1">{addressErrors.city.message}</p>}
                                     </div>
                                     <div>
                                       <Label htmlFor="addr-state" className="text-foreground">State</Label>
-                                      <Input id="addr-state" {...registerAddress("state")} className={`mt-1 ${addressErrors.state ? 'border-destructive' : 'border-input'}`} />
+                                      <Input id="addr-state" {...registerAddress("state")} className={cn('mt-1 placeholder:text-primary-foreground', addressErrors.state ? 'border-destructive' : 'border-input')} />
                                       {addressErrors.state && <p className="text-xs text-destructive mt-1">{addressErrors.state.message}</p>}
                                     </div>
                                   </div>
                                   <div className="grid grid-cols-2 gap-4">
                                     <div>
                                       <Label htmlFor="addr-zip" className="text-foreground">ZIP</Label>
-                                      <Input id="addr-zip" {...registerAddress("zip")} className={`mt-1 ${addressErrors.zip ? 'border-destructive' : 'border-input'}`} />
+                                      <Input id="addr-zip" {...registerAddress("zip")} className={cn('mt-1 placeholder:text-primary-foreground', addressErrors.zip ? 'border-destructive' : 'border-input')} />
                                       {addressErrors.zip && <p className="text-xs text-destructive mt-1">{addressErrors.zip.message}</p>}
                                     </div>
                                     <div>
                                       <Label htmlFor="addr-country" className="text-foreground">Country</Label>
-                                      <Input id="addr-country" {...registerAddress("country")} className={`mt-1 ${addressErrors.country ? 'border-destructive' : 'border-input'}`} />
+                                      <Input id="addr-country" {...registerAddress("country")} className={cn('mt-1 placeholder:text-primary-foreground', addressErrors.country ? 'border-destructive' : 'border-input')} />
                                       {addressErrors.country && <p className="text-xs text-destructive mt-1">{addressErrors.country.message}</p>}
                                     </div>
                                   </div>
