@@ -3,15 +3,21 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { PRODUCTS, CATEGORIES, OCCASIONS_LIST, RECIPIENTS_LIST } from '@/lib/data';
+import { PRODUCTS, CATEGORIES, OCCASIONS_LIST, RECIPIENTS_LIST } from '@/lib/data'; // Key import
 import type { Product } from '@/lib/types';
 import { ProductList } from '@/components/products/ProductList';
 import { ProductSortControl, type SortOption } from '@/components/products/ProductSortControl';
 import { SectionTitle } from '@/components/shared/SectionTitle';
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 
-// This console.log runs when the module is loaded.
-console.log("[DIAGNOSTIC] Top-level: PRODUCTS imported. Length:", PRODUCTS ? PRODUCTS.length : 'undefined');
+// Top-level diagnostic: Check if PRODUCTS is loaded at module scope
+console.log("[DIAGNOSTIC_TOP_LEVEL] PRODUCTS imported. Length:", PRODUCTS ? PRODUCTS.length : 'undefined');
+if (PRODUCTS && PRODUCTS.length > 0) {
+  console.log("[DIAGNOSTIC_TOP_LEVEL] First product ID from PRODUCTS:", PRODUCTS[0].id, "Name:", PRODUCTS[0].name, "Price:", PRODUCTS[0].price);
+} else {
+  console.warn("[DIAGNOSTIC_TOP_LEVEL] PRODUCTS array is empty or undefined at module scope! This is a critical issue if data.ts is populated.");
+}
+
 
 const ITEMS_PER_PAGE = 50; 
 
@@ -25,49 +31,54 @@ interface ActiveFilters {
 // Helper function to calculate the maximum price from the products dataset
 const calculateMaxProductPrice = (products: Product[]): number => {
   if (!products || products.length === 0) {
-    console.warn("[DIAGNOSTIC] calculateMaxProductPrice: PRODUCTS array is empty or undefined during calculation.");
-    return Number.MAX_SAFE_INTEGER; // Fallback if no products
+    console.warn("[DIAGNOSTIC_CALC_MAX_PRICE] PRODUCTS array is empty or undefined during calculation. Defaulting max price to Number.MAX_SAFE_INTEGER.");
+    return Number.MAX_SAFE_INTEGER; 
   }
   const prices = products.map(p => p.price).filter(price => typeof price === 'number' && !isNaN(price));
   if (prices.length === 0) {
-    console.warn("[DIAGNOSTIC] calculateMaxProductPrice: No valid prices found in PRODUCTS.");
-    return Number.MAX_SAFE_INTEGER; // Fallback if no valid prices
+    console.warn("[DIAGNOSTIC_CALC_MAX_PRICE] No valid prices found in PRODUCTS. Defaulting max price to Number.MAX_SAFE_INTEGER.");
+    return Number.MAX_SAFE_INTEGER; 
   }
   const maxActualPrice = Math.max(...prices);
-  const result = maxActualPrice > 0 ? maxActualPrice : Number.MAX_SAFE_INTEGER; // Ensure it's a positive sensible max
-  console.log("[DIAGNOSTIC] calculateMaxProductPrice calculated:", result);
+  // Ensure result is a positive sensible max, otherwise default to a very large number.
+  const result = maxActualPrice > 0 ? maxActualPrice : Number.MAX_SAFE_INTEGER; 
+  console.log("[DIAGNOSTIC_CALC_MAX_PRICE] Calculated initialMaxPrice:", result);
   return result;
 };
 
 
 export default function ProductsPage() {
-  // This console.log runs every time the component renders.
-  console.log("[DIAGNOSTIC] ProductsPage rendered. PRODUCTS length from within component:", PRODUCTS ? PRODUCTS.length : 'undefined');
+  console.log("[DIAGNOSTIC_RENDER] ProductsPage component rendering. Base PRODUCTS length:", PRODUCTS ? PRODUCTS.length : 'undefined');
 
   const searchParams = useSearchParams();
+  const [hasMounted, setHasMounted] = useState(false);
 
   // Calculate initialMaxPrice once using useMemo based on the PRODUCTS data
   const initialMaxPrice = useMemo(() => {
+    console.log("[DIAGNOSTIC_MEMO_initialMaxPrice] Calculating initialMaxPrice. PRODUCTS length:", PRODUCTS ? PRODUCTS.length : 'undefined');
     return calculateMaxProductPrice(PRODUCTS);
-  }, []); // Empty dependency array means this runs once on mount
+  }, []); 
 
   const [activeFilters, setActiveFilters] = useState<ActiveFilters>({
     category: 'all',
-    priceRange: [0, initialMaxPrice], // Initialize with the calculated initialMaxPrice
+    priceRange: [0, Number.MAX_SAFE_INTEGER], // Default to widest possible range initially
     occasion: 'all',
     recipient: 'all',
   });
-  // Log initial state right after setting it
-  useEffect(() => {
-    console.log("[DIAGNOSTIC] Initial activeFilters state (inside a useEffect to ensure it's after initialMaxPrice is set):", activeFilters);
-  }, [activeFilters]); // Log when activeFilters changes
   
   const [sortOption, setSortOption] = useState<SortOption>('popularity');
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    console.log("[DIAGNOSTIC] useEffect for searchParams triggered. searchParams:", searchParams.toString());
-    console.log("[DIAGNOSTIC] useEffect: initialMaxPrice available:", initialMaxPrice);
+    setHasMounted(true); // Signal that the component has mounted
+  }, []);
+
+  useEffect(() => {
+    // Only run this effect if the component has mounted and initialMaxPrice is calculated
+    if (!hasMounted || initialMaxPrice === undefined) return;
+
+    console.log("[DIAGNOSTIC_URL_EFFECT] Running. searchParams:", searchParams.toString());
+    console.log("[DIAGNOSTIC_URL_EFFECT] initialMaxPrice available in this effect:", initialMaxPrice);
 
     const categoryFromUrl = searchParams.get('category') || 'all';
     const occasionFromUrl = searchParams.get('occasion') || 'all';
@@ -76,116 +87,111 @@ export default function ProductsPage() {
 
     const priceMinQuery = searchParams.get('priceMin');
     const priceMaxQuery = searchParams.get('priceMax');
-    console.log(`[DIAGNOSTIC] useEffect: priceMinQuery='${priceMinQuery}', priceMaxQuery='${priceMaxQuery}'`);
-
+    
     let newMinPrice = 0;
     if (priceMinQuery !== null) {
-        const parsed = parseInt(priceMinQuery, 10);
-        if (!isNaN(parsed) && parsed >= 0) {
-            newMinPrice = parsed;
+        const parsedMin = parseInt(priceMinQuery, 10);
+        if (!isNaN(parsedMin) && parsedMin >= 0) {
+            newMinPrice = parsedMin;
         } else {
-            console.warn(`[DIAGNOSTIC] useEffect: priceMinQuery '${priceMinQuery}' is invalid. Defaulting to 0.`);
+            console.warn(`[DIAGNOSTIC_URL_EFFECT] priceMinQuery '${priceMinQuery}' is invalid. Defaulting min to 0.`);
         }
     }
 
-    // Default newMaxPrice to initialMaxPrice (derived from actual data)
-    // This ensures that if priceMaxQuery is missing or invalid, we use a sensible upper bound.
-    let newMaxPrice = initialMaxPrice; 
+    let newMaxPrice = initialMaxPrice; // Default to the actual max price from data
     if (priceMaxQuery !== null) {
-        const parsed = parseInt(priceMaxQuery, 10);
-        if (!isNaN(parsed) && parsed >= 0) {
-            // If a valid max price is given in URL, use it, but don't exceed the absolute max from data.
-            // Or, if we want to allow users to set a max lower than initialMaxPrice, this is fine.
-            // The important part is that `parsed` is a valid number.
-            newMaxPrice = parsed; // Allow user-defined max price
+        const parsedMax = parseInt(priceMaxQuery, 10);
+        if (!isNaN(parsedMax) && parsedMax >= 0) {
+            newMaxPrice = parsedMax; 
         } else {
-            console.warn(`[DIAGNOSTIC] useEffect: priceMaxQuery '${priceMaxQuery}' is invalid. Defaulting to initialMaxPrice (${initialMaxPrice}).`);
-            // newMaxPrice remains initialMaxPrice
+            console.warn(`[DIAGNOSTIC_URL_EFFECT] priceMaxQuery '${priceMaxQuery}' is invalid. Defaulting max to initialMaxPrice (${initialMaxPrice}).`);
         }
     }
     
-    // Final sanity check for price range
     if (newMinPrice > newMaxPrice) {
-        console.warn(`[DIAGNOSTIC] useEffect: Corrected newMinPrice (${newMinPrice}) was > newMaxPrice (${newMaxPrice}). Resetting to [0, ${initialMaxPrice}].`);
+        console.warn(`[DIAGNOSTIC_URL_EFFECT] Corrected newMinPrice (${newMinPrice}) was > newMaxPrice (${newMaxPrice}). Resetting range to [0, ${initialMaxPrice}].`);
         newMinPrice = 0; 
-        newMaxPrice = initialMaxPrice; // Fallback to full range based on data
+        newMaxPrice = initialMaxPrice;
     }
     
-    const newFilters = {
+    const newFilters: ActiveFilters = {
         category: categoryFromUrl,
-        priceRange: [newMinPrice, newMaxPrice] as [number, number],
+        priceRange: [newMinPrice, newMaxPrice],
         occasion: occasionFromUrl,
         recipient: recipientFromUrl,
     };
-    console.log("[DIAGNOSTIC] useEffect: Setting new activeFilters:", newFilters);
+    console.log("[DIAGNOSTIC_URL_EFFECT] Setting new activeFilters:", newFilters);
     setActiveFilters(newFilters);
     
     if (sortOption !== sortFromUrl) {
       setSortOption(sortFromUrl);
     }
     setCurrentPage(1); 
-  }, [searchParams, initialMaxPrice, sortOption]);
+  }, [searchParams, initialMaxPrice, hasMounted, sortOption]);
 
 
   const filteredAndSortedProducts = useMemo(() => {
-    console.log("[DIAGNOSTIC] useMemo for filteredAndSortedProducts: Base PRODUCTS length:", PRODUCTS ? PRODUCTS.length : 'undefined');
+    console.log("[DIAGNOSTIC_FILTER_MEMO] Recalculating filteredAndSortedProducts.");
+    console.log("[DIAGNOSTIC_FILTER_MEMO] Base PRODUCTS length:", PRODUCTS ? PRODUCTS.length : 'undefined');
+
     if (!PRODUCTS || PRODUCTS.length === 0) {
-      console.warn("[DIAGNOSTIC] filteredAndSortedProducts: PRODUCTS array is empty or undefined at start of memo.");
+      console.warn("[DIAGNOSTIC_FILTER_MEMO] PRODUCTS array is empty or undefined at start of memo. Returning empty array.");
       return [];
     }
-    console.log("[DIAGNOSTIC] useMemo: current activeFilters:", activeFilters, "initialMaxPrice used in this memo's scope:", initialMaxPrice);
-    console.log("[DIAGNOSTIC] useMemo: current sortOption:", sortOption);
+
+    console.log("[DIAGNOSTIC_FILTER_MEMO] Current activeFilters:", activeFilters);
+    console.log("[DIAGNOSTIC_FILTER_MEMO] Current sortOption:", sortOption);
 
     let tempProducts = [...PRODUCTS];
-    console.log(`[DIAGNOSTIC] Initial tempProducts count for memo: ${tempProducts.length}`);
+    console.log(`[DIAGNOSTIC_FILTER_MEMO] Initial tempProducts count: ${tempProducts.length}`);
 
     // Category Filter
     if (activeFilters.category !== 'all') {
       tempProducts = tempProducts.filter(p => p.category === activeFilters.category);
-      console.log(`[DIAGNOSTIC] After category filter ('${activeFilters.category}'), count: ${tempProducts.length}`);
+      console.log(`[DIAGNOSTIC_FILTER_MEMO] After category filter ('${activeFilters.category}'), count: ${tempProducts.length}`);
     }
 
     // Occasion Filter
     if (activeFilters.occasion !== 'all') {
       tempProducts = tempProducts.filter(p => p.occasion?.includes(activeFilters.occasion));
-      console.log(`[DIAGNOSTIC] After occasion filter ('${activeFilters.occasion}'), count: ${tempProducts.length}`);
+      console.log(`[DIAGNOSTIC_FILTER_MEMO] After occasion filter ('${activeFilters.occasion}'), count: ${tempProducts.length}`);
     }
     
     // Recipient Filter
     if (activeFilters.recipient !== 'all') {
       tempProducts = tempProducts.filter(p => p.recipient?.includes(activeFilters.recipient));
-      console.log(`[DIAGNOSTIC] After recipient filter ('${activeFilters.recipient}'), count: ${tempProducts.length}`);
+      console.log(`[DIAGNOSTIC_FILTER_MEMO] After recipient filter ('${activeFilters.recipient}'), count: ${tempProducts.length}`);
     }
     
     // Price Filter
     const minPrice = activeFilters.priceRange[0];
     const maxPrice = activeFilters.priceRange[1];
 
-    // This check is crucial
     if (typeof minPrice !== 'number' || isNaN(minPrice) || typeof maxPrice !== 'number' || isNaN(maxPrice)) {
-      console.error("[DIAGNOSTIC] filteredAndSortedProducts: Critical error: Invalid priceRange in activeFilters:", activeFilters.priceRange, ". Displaying all products as fallback for price filter.");
-      // If priceRange somehow becomes invalid, we effectively don't filter by price for this pass
-      // This means other filters (category, occasion, recipient) will still apply.
+      console.error("[DIAGNOSTIC_FILTER_MEMO] CRITICAL: Invalid priceRange in activeFilters:", activeFilters.priceRange, ". Price filter effectively skipped for safety, showing all non-price filtered items.");
+      // Fallback: if price range is invalid, don't filter by price to avoid showing nothing.
     } else {
+      console.log(`[DIAGNOSTIC_FILTER_MEMO] Applying price filter: min=${minPrice}, max=${maxPrice}`);
       tempProducts = tempProducts.filter(p => {
           if (typeof p.price !== 'number' || isNaN(p.price)) {
-            console.warn(`[DIAGNOSTIC] Product ID ${p.id} (name: ${p.name}) has invalid price: ${p.price}. Filtering out.`);
+            console.warn(`[DIAGNOSTIC_FILTER_MEMO] Product ID ${p.id} (name: ${p.name}) has invalid price: ${p.price}. Filtering out.`);
             return false; 
           }
-          return p.price >= minPrice && p.price <= maxPrice;
+          const isInRange = p.price >= minPrice && p.price <= maxPrice;
+          return isInRange;
       });
-      console.log(`[DIAGNOSTIC] After price filter ([${minPrice}, ${maxPrice}]), count: ${tempProducts.length}`);
+      console.log(`[DIAGNOSTIC_FILTER_MEMO] After price filter ([${minPrice}, ${maxPrice}]), count: ${tempProducts.length}`);
     }
     
     // Apply sorting
-    let sortedProducts = [...tempProducts]; // Create a new array for sorting
+    let sortedProducts = [...tempProducts]; 
 
     if (sortOption === 'trending') { 
-       sortedProducts = sortedProducts.filter(p => p.trending).sort((a,b) => b.popularity - a.popularity);
+       sortedProducts = sortedProducts.filter(p => p.trending).sort((a,b) => (b.popularity || 0) - (a.popularity || 0));
     } else {
         switch (sortOption) {
           case 'popularity':
-            sortedProducts.sort((a, b) => b.popularity - a.popularity);
+            sortedProducts.sort((a, b) => (b.popularity || 0) - (a.popularity || 0));
             break;
           case 'price_asc':
             sortedProducts.sort((a, b) => a.price - b.price);
@@ -200,23 +206,22 @@ export default function ProductsPage() {
             sortedProducts.sort((a, b) => b.name.localeCompare(a.name));
             break;
           default:
-            // Optional: default sort if sortOption is somehow invalid
-            console.warn(`[DIAGNOSTIC] Invalid sortOption: '${sortOption}'. Defaulting to popularity.`);
-            sortedProducts.sort((a, b) => b.popularity - a.popularity); 
+            console.warn(`[DIAGNOSTIC_FILTER_MEMO] Invalid sortOption: '${sortOption}'. Defaulting to popularity.`);
+            sortedProducts.sort((a, b) => (b.popularity || 0) - (a.popularity || 0)); 
             break;
         }
     }
-    console.log(`[DIAGNOSTIC] After sorting by '${sortOption}', final count for memo: ${sortedProducts.length}`);
+    console.log(`[DIAGNOSTIC_FILTER_MEMO] After sorting by '${sortOption}', final count for memo: ${sortedProducts.length}`);
     return sortedProducts;
 
-  }, [activeFilters, sortOption, initialMaxPrice]); // initialMaxPrice is stable after first render.
+  }, [activeFilters, sortOption, initialMaxPrice]); 
   
   const totalPages = Math.ceil(filteredAndSortedProducts.length / ITEMS_PER_PAGE);
   const currentProducts = filteredAndSortedProducts.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
     currentPage * ITEMS_PER_PAGE
   );
-  console.log(`[DIAGNOSTIC] currentProducts for page ${currentPage}: ${currentProducts.length} items. Total pages: ${totalPages}`);
+  console.log(`[DIAGNOSTIC_RENDER] currentProducts for page ${currentPage}: ${currentProducts.length} items. Total pages: ${totalPages}. Total filtered: ${filteredAndSortedProducts.length}`);
 
   const handlePageChange = (page: number) => {
     if (page >= 1 && page <= totalPages) {
@@ -242,6 +247,11 @@ export default function ProductsPage() {
     if (titleParts.length === 0) return "All Gifts";
     return titleParts.join(" ") + (titleParts.length > 0 ? " Gifts" : "");
   };
+
+  // Final check before rendering ProductList
+  if (hasMounted && PRODUCTS && PRODUCTS.length > 0 && currentProducts.length === 0 && filteredAndSortedProducts.length === 0 && activeFilters.category === 'all' && activeFilters.occasion === 'all' && activeFilters.recipient === 'all' && activeFilters.priceRange[0] === 0 && activeFilters.priceRange[1] === Number.MAX_SAFE_INTEGER) {
+    console.error("[DIAGNOSTIC_RENDER_ISSUE] All filters are 'all'/max range, PRODUCTS array is populated, but no products are displayed. This indicates a deeper issue in filtering logic or data integrity within PRODUCTS (e.g. invalid prices for all items).");
+  }
 
   return (
     <div className="container mx-auto px-4 py-6 sm:py-8">
@@ -315,3 +325,4 @@ export default function ProductsPage() {
     </div>
   );
 }
+

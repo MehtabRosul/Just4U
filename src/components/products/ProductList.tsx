@@ -12,7 +12,7 @@ export function ProductList({ products }: ProductListProps) {
     // Log only a sample to avoid flooding console if many products
     console.log("[ProductList Component] First product sample name:", products[0].name, "ID:", products[0].id, "Price:", products[0].price);
   } else {
-    console.warn("[ProductList Component] Received empty or undefined products array.");
+    console.warn("[ProductList Component] Received empty or undefined products array. This means either filtering removed all items, or the initial data was empty.");
   }
 
   if (!products || products.length === 0) {
@@ -21,7 +21,7 @@ export function ProductList({ products }: ProductListProps) {
       <div className="text-center text-muted-foreground py-10">
         <p className="text-lg font-semibold">No Products Found</p>
         <p>We couldn't find any products matching your current filters.</p>
-        <p className="text-sm mt-2">(Diagnostic: ProductList component received no products to display.)</p>
+        <p className="text-sm mt-2">(If you expect products, please check console logs for "[DIAGNOSTIC]" messages on the product page.)</p>
       </div>
     );
   }
