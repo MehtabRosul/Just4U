@@ -10,13 +10,6 @@ import { ProductSortControl, type SortOption } from '@/components/products/Produ
 import { SectionTitle } from '@/components/shared/SectionTitle';
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 
-console.log("[DIAGNOSTIC_TOP_LEVEL] PRODUCTS imported. Length:", PRODUCTS ? PRODUCTS.length : 'undefined');
-if (PRODUCTS && PRODUCTS.length > 0) {
-  console.log("[DIAGNOSTIC_TOP_LEVEL] First product ID from PRODUCTS:", PRODUCTS[0].id, "Name:", PRODUCTS[0].name, "Price:", PRODUCTS[0].price);
-} else {
-  console.warn("[DIAGNOSTIC_TOP_LEVEL] PRODUCTS array is empty or undefined at module scope! This is a critical issue if data.ts is populated.");
-}
-
 const ITEMS_PER_PAGE = 50;
 
 interface ActiveFilters {
@@ -28,39 +21,31 @@ interface ActiveFilters {
 
 const calculateInitialMaxPrice = (products: Product[]): number => {
   if (!products || products.length === 0) {
-    console.warn("[DIAGNOSTIC_CALC_MAX_PRICE] PRODUCTS array is empty during calculation. Defaulting max price to Number.MAX_SAFE_INTEGER.");
     return Number.MAX_SAFE_INTEGER;
   }
   const prices = products.map(p => p.price).filter(price => typeof price === 'number' && !isNaN(price));
   if (prices.length === 0) {
-    console.warn("[DIAGNOSTIC_CALC_MAX_PRICE] No valid prices found in PRODUCTS. Defaulting max price to Number.MAX_SAFE_INTEGER.");
     return Number.MAX_SAFE_INTEGER;
   }
   const maxActualPrice = Math.max(...prices);
-  const result = maxActualPrice > 0 ? maxActualPrice : Number.MAX_SAFE_INTEGER;
-  console.log("[DIAGNOSTIC_CALC_MAX_PRICE] Calculated initialMaxPrice to be:", result);
-  return result;
+  return maxActualPrice > 0 ? maxActualPrice : Number.MAX_SAFE_INTEGER;
 };
 
 export default function ProductsPage() {
-  console.log("[DIAGNOSTIC_RENDER] ProductsPage component rendering. Base PRODUCTS length:", PRODUCTS ? PRODUCTS.length : 'undefined');
   const searchParams = useSearchParams();
   const [hasMounted, setHasMounted] = useState(false);
-
-  // Calculate initialMaxPrice once on mount based on actual product data
   const [initialMaxPrice, setInitialMaxPrice] = useState<number>(Number.MAX_SAFE_INTEGER);
 
   useEffect(() => {
     setHasMounted(true);
     const calculatedMax = calculateInitialMaxPrice(PRODUCTS);
     setInitialMaxPrice(calculatedMax);
-    console.log("[DIAGNOSTIC_MOUNT_EFFECT] Component mounted. InitialMaxPrice calculated and set to:", calculatedMax);
   }, []);
 
 
   const [activeFilters, setActiveFilters] = useState<ActiveFilters>({
     category: 'all',
-    priceRange: [0, Number.MAX_SAFE_INTEGER], // Initialize with widest possible range
+    priceRange: [0, Number.MAX_SAFE_INTEGER],
     occasion: 'all',
     recipient: 'all',
   });
@@ -69,13 +54,9 @@ export default function ProductsPage() {
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    // Wait for mount and for initialMaxPrice to be calculated
-    if (!hasMounted || initialMaxPrice === Number.MAX_SAFE_INTEGER && PRODUCTS.length > 0) {
-        console.log(`[DIAGNOSTIC_URL_EFFECT] Skipping effect: hasMounted=${hasMounted}, initialMaxPrice=${initialMaxPrice}`);
+    if (!hasMounted || (initialMaxPrice === Number.MAX_SAFE_INTEGER && PRODUCTS.length > 0)) {
         return;
     }
-
-    console.log("[DIAGNOSTIC_URL_EFFECT] Running. searchParams:", searchParams.toString(), "Current initialMaxPrice:", initialMaxPrice);
 
     const categoryFromUrl = searchParams.get('category') || 'all';
     const occasionFromUrl = searchParams.get('occasion') || 'all';
@@ -90,28 +71,22 @@ export default function ProductsPage() {
         const parsedMin = parseInt(priceMinQuery, 10);
         if (!isNaN(parsedMin) && parsedMin >= 0) {
             newMinPrice = parsedMin;
-        } else {
-            console.warn(`[DIAGNOSTIC_URL_EFFECT] priceMinQuery '${priceMinQuery}' is invalid. Defaulting min to 0.`);
         }
     }
 
-    let newMaxPrice = initialMaxPrice; // Default to the calculated initialMaxPrice
+    let newMaxPrice = initialMaxPrice; 
     if (priceMaxQuery !== null) {
         const parsedMax = parseInt(priceMaxQuery, 10);
-        // Ensure parsedMax is a valid number and not less than newMinPrice
         if (!isNaN(parsedMax) && parsedMax >= newMinPrice) { 
             newMaxPrice = parsedMax;
-        } else if (!isNaN(parsedMax) && parsedMax < newMinPrice && newMinPrice > 0) { // If max is less than min (and min is not 0)
-            console.warn(`[DIAGNOSTIC_URL_EFFECT] priceMaxQuery '${priceMaxQuery}' is less than newMinPrice '${newMinPrice}'. Setting max to initialMaxPrice.`);
-            newMaxPrice = initialMaxPrice; // Use a wide range if max is invalid relative to min
+        } else if (!isNaN(parsedMax) && parsedMax < newMinPrice && newMinPrice > 0) {
+            newMaxPrice = initialMaxPrice; 
         } else if (isNaN(parsedMax)) {
-             console.warn(`[DIAGNOSTIC_URL_EFFECT] priceMaxQuery '${priceMaxQuery}' is NaN. Defaulting max to initialMaxPrice.`);
+            // Keep newMaxPrice as initialMaxPrice
         }
     }
     
-    // Safety Net: Reset if range is invalid or max is 0 when it shouldn't be
     if (newMinPrice > newMaxPrice || (newMaxPrice === 0 && initialMaxPrice > 0) || isNaN(newMinPrice) || isNaN(newMaxPrice)) {
-        console.warn(`[DIAGNOSTIC_URL_EFFECT] Corrected invalid price range. Resetting to [0, ${initialMaxPrice}]. Initial attempt: [${newMinPrice}, ${newMaxPrice}]`);
         newMinPrice = 0; 
         newMaxPrice = initialMaxPrice;
     }
@@ -123,74 +98,48 @@ export default function ProductsPage() {
         recipient: recipientFromUrl,
     };
 
-    // Only update state if there's an actual change to avoid infinite loops
     const filtersChanged = JSON.stringify(activeFilters) !== JSON.stringify(newFilters);
     const sortChanged = sortOption !== sortFromUrl;
 
     if (filtersChanged) {
-      console.log("[DIAGNOSTIC_URL_EFFECT] Setting new activeFilters from URL:", newFilters);
       setActiveFilters(newFilters);
-      setCurrentPage(1); // Reset page if filters change
-    } else {
-       console.log("[DIAGNOSTIC_URL_EFFECT] No change in activeFilters needed from URL.");
+      setCurrentPage(1); 
     }
     
     if (sortChanged) {
-      console.log(`[DIAGNOSTIC_URL_EFFECT] Updating sortOption from '${sortOption}' to '${sortFromUrl}'`);
       setSortOption(sortFromUrl);
-      if (!filtersChanged) setCurrentPage(1); // Reset page if only sort changes
+      if (!filtersChanged) setCurrentPage(1); 
     }
 
   }, [searchParams, hasMounted, initialMaxPrice, activeFilters, sortOption]);
 
 
   const filteredAndSortedProducts = useMemo(() => {
-    console.log("[DIAGNOSTIC_FILTER_MEMO] Recalculating filteredAndSortedProducts.");
-    console.log("[DIAGNOSTIC_FILTER_MEMO] Base PRODUCTS length:", PRODUCTS ? PRODUCTS.length : 'undefined');
-    console.log("[DIAGNOSTIC_FILTER_MEMO] Current activeFilters:", activeFilters);
-    console.log("[DIAGNOSTIC_FILTER_MEMO] Current initialMaxPrice (for reference in price filter):", initialMaxPrice);
-
-
     if (!PRODUCTS || PRODUCTS.length === 0) {
-      console.warn("[DIAGNOSTIC_FILTER_MEMO] PRODUCTS array is empty or undefined at start of memo. Returning empty array.");
       return [];
     }
 
     let tempProducts = [...PRODUCTS];
-    console.log(`[DIAGNOSTIC_FILTER_MEMO] Initial product count: ${tempProducts.length}`);
 
-    // Apply category filter
     if (activeFilters.category !== 'all') {
       tempProducts = tempProducts.filter(p => p.category === activeFilters.category);
-      console.log(`[DIAGNOSTIC_FILTER_MEMO] After category filter ('${activeFilters.category}'): ${tempProducts.length} products`);
     }
 
-    // Apply occasion filter
     if (activeFilters.occasion !== 'all') {
       tempProducts = tempProducts.filter(p => p.occasion?.includes(activeFilters.occasion));
-      console.log(`[DIAGNOSTIC_FILTER_MEMO] After occasion filter ('${activeFilters.occasion}'): ${tempProducts.length} products`);
     }
 
-    // Apply recipient filter
     if (activeFilters.recipient !== 'all') {
       tempProducts = tempProducts.filter(p => p.recipient?.includes(activeFilters.recipient));
-      console.log(`[DIAGNOSTIC_FILTER_MEMO] After recipient filter ('${activeFilters.recipient}'): ${tempProducts.length} products`);
     }
 
-    // Apply price range filter
     const [minPrice, maxPrice] = activeFilters.priceRange;
-    // Ensure minPrice and maxPrice are valid numbers before filtering
     if (typeof minPrice === 'number' && typeof maxPrice === 'number' && !isNaN(minPrice) && !isNaN(maxPrice) && minPrice <= maxPrice) {
-        if (minPrice > 0 || maxPrice < initialMaxPrice) { // Only apply if not the default widest range
+        if (minPrice > 0 || maxPrice < initialMaxPrice) { 
             tempProducts = tempProducts.filter(p => p.price >= minPrice && p.price <= maxPrice);
-            console.log(`[DIAGNOSTIC_FILTER_MEMO] After price filter ([${minPrice}, ${maxPrice}]): ${tempProducts.length} products`);
         }
-    } else {
-        console.warn(`[DIAGNOSTIC_FILTER_MEMO] Invalid priceRange in activeFilters: [${minPrice}, ${maxPrice}]. Skipping price filter.`);
     }
     
-    console.log(`[DIAGNOSTIC_FILTER_MEMO] Products before sorting: ${tempProducts.length}. Sort option: ${sortOption}`);
-    // Apply sorting
     switch (sortOption) {
       case 'popularity': tempProducts.sort((a, b) => (b.popularity || 0) - (a.popularity || 0)); break;
       case 'price_asc': tempProducts.sort((a, b) => (a.price || 0) - (b.price || 0)); break;
@@ -208,11 +157,9 @@ export default function ProductsPage() {
         });
         break;
       default:
-        console.warn(`[DIAGNOSTIC_FILTER_MEMO] Invalid sortOption: '${sortOption}'. Defaulting to popularity.`);
         tempProducts.sort((a, b) => (b.popularity || 0) - (a.popularity || 0));
         break;
     }
-    console.log(`[DIAGNOSTIC_FILTER_MEMO] After sorting by '${sortOption}', final count for memo: ${tempProducts.length}`);
     return tempProducts;
 
   }, [activeFilters, sortOption, initialMaxPrice]); 
@@ -222,7 +169,6 @@ export default function ProductsPage() {
     (currentPage - 1) * ITEMS_PER_PAGE,
     currentPage * ITEMS_PER_PAGE
   );
-  console.log(`[DIAGNOSTIC_RENDER] currentProducts for page ${currentPage}: ${currentProducts.length} items. Total pages: ${totalPages}. Total in filteredAndSortedProducts: ${filteredAndSortedProducts.length}`);
 
   const handlePageChange = (page: number) => {
     if (page >= 1 && page <= totalPages) {
@@ -238,7 +184,7 @@ export default function ProductsPage() {
       if (occasionObj) titleParts.push(occasionObj.name);
     }
     if (activeFilters.category !== 'all') {
-        const categoryObj = CATEGORIES.find(c => c.slug === activeFilters.category); // Using CATEGORIES (alias for GIFT_TYPES_LIST)
+        const categoryObj = CATEGORIES.find(c => c.slug === activeFilters.category);
         if (categoryObj) titleParts.push(categoryObj.name);
     }
     if (activeFilters.recipient !== 'all') {
@@ -246,20 +192,19 @@ export default function ProductsPage() {
       if (recipientObj) titleParts.push(`for ${recipientObj.name}`);
     }
     
-    if (titleParts.length === 0 && searchParams.toString() === '') { // Default page with no URL params
+    if (titleParts.length === 0 && searchParams.toString() === '') {
         return "All Gifts";
-    } else if (titleParts.length === 0 && searchParams.toString() !== '') { // Has URL params but they didn't match known filters for title
+    } else if (titleParts.length === 0 && searchParams.toString() !== '') {
         return "Filtered Gifts";
     }
 
     const baseTitle = titleParts.join(" ");
-    // Ensure "Gifts" is appended intelligently, avoiding "Gifts Gifts"
     return baseTitle.toLowerCase().endsWith("gifts") ? baseTitle : baseTitle + " Gifts";
   };
 
-  // More detailed check for "No products found" scenario
-  if (PRODUCTS && PRODUCTS.length > 0 && currentProducts.length === 0 && filteredAndSortedProducts.length === 0) {
-    console.error("[DIAGNOSTIC_RENDER_ISSUE] PRODUCTS array is populated, but no products are displayed. Active Filters:", activeFilters, "Initial Max Price:", initialMaxPrice, "Current Sort:", sortOption);
+  if (PRODUCTS && PRODUCTS.length > 0 && currentProducts.length === 0 && filteredAndSortedProducts.length === 0 && hasMounted) {
+    // This condition might indicate that filters are too restrictive for the *available data*
+    // Or if PRODUCTS is somehow empty after initial load, which top-level logs would show.
   }
 
   return (
@@ -289,10 +234,9 @@ export default function ProductsPage() {
                 </PaginationItem>
                 {[...Array(totalPages)].map((_, i) => {
                   const pageNum = i + 1;
-                  // Simplified pagination display logic for brevity
-                  const showPage = totalPages <= 7 || // Show all if 7 or less pages
-                                   pageNum === 1 || pageNum === totalPages || // Always show first and last
-                                   (pageNum >= currentPage - 2 && pageNum <= currentPage + 2); // Show current and 2 adjacent on each side
+                  const showPage = totalPages <= 7 || 
+                                   pageNum === 1 || pageNum === totalPages || 
+                                   (pageNum >= currentPage - 2 && pageNum <= currentPage + 2); 
 
                   if (showPage) {
                     return (
@@ -307,7 +251,6 @@ export default function ProductsPage() {
                       </PaginationItem>
                     );
                   } else if (totalPages > 7 && (pageNum === currentPage - 3 || pageNum === currentPage + 3)) {
-                     // Show ellipsis if conditions met
                      return <PaginationItem key={`ellipsis-${pageNum}`}><PaginationEllipsis /></PaginationItem>;
                   }
                   return null;
