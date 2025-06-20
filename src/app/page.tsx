@@ -20,97 +20,156 @@ import { useToast } from "@/hooks/use-toast";
 
 interface CarouselBanner {
   id: number;
-  title: string; // Kept for alt text and potential future use
-  description: string; // Kept for potential future use
+  title: string;
+  description: string;
   imageUrl: string;
   dataAiHint: string;
+  buttonText: string;
+  buttonLink: string;
   gradientClasses: string;
+  titleTextClass?: string;
+  descriptionTextClass?: string;
 }
 
 const carouselBannersData: CarouselBanner[] = [
   {
     id: 1,
     title: "Personalized Magic",
-    description: "Unique gifts that tell their story.",
+    description: "Unique gifts that tell their story. Find the perfect custom present today!",
     imageUrl: "https://i.ibb.co/gv62ZJ0/pexels-arina-krasnikova-5422790-1.jpg",
     dataAiHint: "personalized gift assortment",
+    buttonText: "Shop Personalised",
+    buttonLink: "/products?category=photo-gifts-general",
     gradientClasses: "bg-gradient-to-br from-purple-600 via-pink-500 to-rose-600",
+    titleTextClass: "text-white",
+    descriptionTextClass: "text-rose-100",
   },
   {
     id: 2,
     title: "Celebrate Every Moment",
-    description: "Find the perfect gift for any occasion.",
+    description: "Find the perfect gift for any occasion, from birthdays to anniversaries.",
     imageUrl: "https://i.ibb.co/yY5QxV1/pexels-antoni-shkraba-4347872-1.jpg",
     dataAiHint: "birthday celebration gifts",
+    buttonText: "Explore Occasions",
+    buttonLink: "/products", // General products page, or link to occasions filter
     gradientClasses: "bg-gradient-to-tr from-teal-500 via-cyan-500 to-sky-500",
+    titleTextClass: "text-white",
+    descriptionTextClass: "text-sky-100",
   },
   {
     id: 3,
     title: "3D Wonders",
-    description: "Lifelike miniatures and stunning crystal art.",
+    description: "Lifelike miniatures and stunning crystal art that capture memories in three dimensions.",
     imageUrl: "https://i.ibb.co/3RkC7j8/pexels-ann-h-45017-16070854-1.jpg",
     dataAiHint: "3d crystal miniature",
+    buttonText: "Discover 3D Gifts",
+    buttonLink: "/products?category=3d-crystals",
     gradientClasses: "bg-gradient-to-b from-indigo-500 via-purple-600 to-pink-600",
+    titleTextClass: "text-white",
+    descriptionTextClass: "text-pink-100",
   },
   {
     id: 4,
     title: "Frame Your Memories",
-    description: "Elegant photo frames for timeless keepsakes.",
+    description: "Elegant photo frames for timeless keepsakes. Personalize your favorite moments.",
     imageUrl: "https://i.ibb.co/mH9c1tH/pexels-ketut-subiyanto-4350108-1.jpg",
     dataAiHint: "photo frame collection",
+    buttonText: "View Photo Frames",
+    buttonLink: "/products?category=photo-frames",
     gradientClasses: "bg-gradient-to-bl from-green-500 via-lime-500 to-yellow-400",
+    titleTextClass: "text-neutral-800",
+    descriptionTextClass: "text-green-900",
   },
   {
     id: 5,
     title: "Corporate Gifting",
-    description: "Impress clients with premium, branded gifts.",
+    description: "Impress clients and reward employees with premium, branded corporate gifts.",
     imageUrl: "https://i.ibb.co/vVmsZ1f/pexels-karolina-grabowska-4491444-1.jpg",
     dataAiHint: "corporate gift basket",
+    buttonText: "Corporate Solutions",
+    buttonLink: "/products?category=corporate-awards", // Link to a corporate category
     gradientClasses: "bg-gradient-to-tl from-blue-600 via-indigo-500 to-purple-500",
+    titleTextClass: "text-white",
+    descriptionTextClass: "text-purple-100",
   },
   {
     id: 6,
     title: "Just For You",
-    description: "Handpicked selections for every recipient.",
+    description: "Handpicked selections for every recipient. Find a gift that speaks from the heart.",
     imageUrl: "https://i.ibb.co/8XnQhBv/pexels-ron-lach-7871177-1.jpg",
     dataAiHint: "gift for her",
+    buttonText: "Find Your Gift",
+    buttonLink: "/products",
     gradientClasses: "bg-gradient-to-r from-pink-500 via-fuchsia-500 to-purple-600",
+    titleTextClass: "text-white",
+    descriptionTextClass: "text-purple-100",
   },
   {
     id: 7,
     title: "Daily Deals",
-    description: "Unbeatable prices on popular gifts, daily.",
+    description: "Unbeatable prices on popular gifts, updated daily. Don't miss out!",
     imageUrl: "https://i.ibb.co/Jj8b0zQ/pexels-karolina-grabowska-5632345-1.jpg",
     dataAiHint: "gift sale discount",
+    buttonText: "Shop Deals",
+    buttonLink: "/products?sort=trending", // Example: link to trending/sale items
     gradientClasses: "bg-gradient-to-l from-orange-400 via-amber-400 to-yellow-300",
+    titleTextClass: "text-neutral-800",
+    descriptionTextClass: "text-orange-900",
   },
   {
     id: 8,
     title: "New Arrivals",
-    description: "Fresh designs and innovative gift ideas.",
+    description: "Fresh designs and innovative gift ideas landing every week. Be the first to explore!",
     imageUrl: "https://i.ibb.co/4p5jD9Y/pexels-nothing-ahead-4067766-1.jpg",
     dataAiHint: "new product launch",
+    buttonText: "Explore New In",
+    buttonLink: "/products?sort=newest", // Example: link to sort by newest
     gradientClasses: "bg-gradient-to-br from-rose-400 via-red-400 to-pink-400",
+    titleTextClass: "text-white",
+    descriptionTextClass: "text-pink-100",
   },
   {
     id: 9,
     title: "Artistic Touch",
-    description: "Transform photos into unique art pieces.",
+    description: "Transform photos into unique art pieces. Personalized canvases, sketches, and more.",
     imageUrl: "https://i.ibb.co/d26pM6c/pexels-ann-h-1766938-1.jpg",
     dataAiHint: "photo to art canvas",
+    buttonText: "Create Your Art",
+    buttonLink: "/products?category=photo-gifts-general",
     gradientClasses: "bg-gradient-to-tr from-sky-300 via-blue-400 to-indigo-500",
+    titleTextClass: "text-white",
+    descriptionTextClass: "text-indigo-100",
   },
   {
     id: 10,
     title: "Miniature You!",
-    description: "Get a custom 3D miniature of yourself or loved ones.",
+    description: "Get a custom 3D miniature of yourself or loved ones. A unique and memorable gift.",
     imageUrl: "https://i.ibb.co/BqTmnkR/pexels-antoni-shkraba-production-8040228-1.jpg",
     dataAiHint: "3d selfie miniature",
+    buttonText: "Get Your Mini You",
+    buttonLink: "/products?category=mini-you-series",
     gradientClasses: "bg-gradient-to-bl from-lime-300 via-green-400 to-teal-500",
+    titleTextClass: "text-neutral-800",
+    descriptionTextClass: "text-green-900",
   },
 ];
 
-// Removed HeroCarouselButton component as it's no longer used directly in the simplified banner
+const HeroCarouselButton = ({ href, children, className }: { href: string; children: React.ReactNode, className?: string }) => (
+  <Button
+    asChild
+    size="lg"
+    className={cn(
+      "bg-white text-primary hover:bg-opacity-90 hover:text-primary-dark shadow-lg transition-transform hover:scale-105 mt-4 sm:mt-6",
+      "border-2 border-transparent focus:ring-2 focus:ring-offset-2 focus:ring-white focus:ring-offset-transparent",
+      className
+    )}
+  >
+    <Link href={href}>
+      {children} <ArrowRightCircle className="ml-2 h-5 w-5" />
+    </Link>
+  </Button>
+);
+
 
 const HeroCarousel = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -118,7 +177,7 @@ const HeroCarousel = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prevSlide) => (prevSlide + 1) % carouselBannersData.length);
-    }, 5000); // Increased interval for image-only banners
+    }, 5000); // Change slide every 5 seconds
 
     return () => clearInterval(timer);
   }, []);
@@ -133,21 +192,33 @@ const HeroCarousel = () => {
         <div
           key={banner.id}
           className={cn(
-            "absolute inset-0 w-full h-full", // Removed flex and padding
+            "absolute inset-0 w-full h-full flex flex-col items-center justify-center text-center p-6 sm:p-10 md:p-16",
             banner.gradientClasses,
             bannerBaseTransition,
             index === currentSlide ? bannerAnimationActiveClasses : bannerAnimationInactiveClasses + " pointer-events-none"
           )}
         >
-          {/* Content inside banner is removed to focus on image + gradient */}
           <Image
             src={banner.imageUrl}
-            alt={banner.title} // Alt text remains important
+            alt={banner.title}
             fill
-            className="object-cover opacity-60 pointer-events-none" // Increased opacity from 20 to 60
+            className="object-cover opacity-20 pointer-events-none"
             data-ai-hint={banner.dataAiHint}
             priority={index === 0}
           />
+          <div className="relative z-10 max-w-xl md:max-w-2xl"> {/* Content wrapper */}
+            <h2 className={cn("font-headline text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2 sm:mb-3 md:mb-4", banner.titleTextClass || "text-white", "transition-all duration-500 ease-out", index === currentSlide ? "translate-y-0 opacity-100" : "translate-y-5 opacity-0 delay-100")}>
+              {banner.title}
+            </h2>
+            <p className={cn("text-sm sm:text-base md:text-lg mb-4 sm:mb-6 md:mb-8 leading-relaxed", banner.descriptionTextClass || "text-neutral-200", "transition-all duration-500 ease-out", index === currentSlide ? "translate-y-0 opacity-100 delay-200" : "translate-y-5 opacity-0 delay-200")}>
+              {banner.description}
+            </p>
+            <div className={cn("transition-all duration-500 ease-out", index === currentSlide ? "translate-y-0 opacity-100 delay-300" : "translate-y-5 opacity-0 delay-300")}>
+              <HeroCarouselButton href={banner.buttonLink}>
+                {banner.buttonText}
+              </HeroCarouselButton>
+            </div>
+          </div>
         </div>
       ))}
       <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex space-x-2">
@@ -196,9 +267,9 @@ const SmartFinderPanel = () => {
       toast({
         title: "Select Filters",
         description: "Please select at least one filter to find gifts.",
-        variant: "default", // Or "destructive" if you prefer a more warning style
+        variant: "default", 
       });
-      return; // Stop execution if no filters are selected
+      return; 
     }
 
     const queryParams = new URLSearchParams();
@@ -219,7 +290,6 @@ const SmartFinderPanel = () => {
       queryParams.append('priceMin', minPrice.toString());
       queryParams.append('priceMax', maxPrice.toString());
     } else {
-        // Default to showing all prices if 'All Prices' is selected or no specific range
         queryParams.append('priceMin', '0');
         queryParams.append('priceMax', Number.MAX_SAFE_INTEGER.toString());
     }
@@ -698,7 +768,7 @@ const GiftTypeHighlight = () => {
     return (
     <section className="my-8 sm:my-12">
         <SectionTitle className="text-white">Featured Gift Types</SectionTitle>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4"> {/* Updated grid and gap */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4">
             {featuredGiftTypes.map(giftType => {
                 const IconComponent = giftType.Icon;
                 return (
@@ -708,20 +778,20 @@ const GiftTypeHighlight = () => {
                         className="group block"
                     >
                         <Card className="bg-neutral-800 border-neutral-700 shadow-lg hover:shadow-primary/30 hover:border-primary/50 transition-all duration-300 ease-in-out group-hover:-translate-y-1 h-full flex flex-col">
-                            <CardContent className="p-2 sm:p-3 flex flex-col items-center justify-center text-center flex-grow"> {/* Reduced padding */}
+                            <CardContent className="p-2 sm:p-3 flex flex-col items-center justify-center text-center flex-grow">
                                 {IconComponent ? (
-                                <IconComponent className="h-6 w-6 sm:h-8 text-primary mb-1 sm:mb-1.5 transition-transform duration-300 group-hover:scale-110" /> /* Smaller Icon */
+                                <IconComponent className="h-6 w-6 sm:h-8 text-primary mb-1 sm:mb-1.5 transition-transform duration-300 group-hover:scale-110" />
                                 ) : giftType.dataAiHint && (
                                     <Image
-                                        src={`https://placehold.co/40x40.jpg`}  /* Smaller placeholder */
+                                        src={`https://placehold.co/40x40.jpg`}
                                         alt={giftType.name}
-                                        width={28} // Adjusted size
-                                        height={28} // Adjusted size
+                                        width={28}
+                                        height={28}
                                         className="rounded-md object-cover mb-1 sm:mb-1.5 transition-transform duration-300 group-hover:scale-110"
                                         data-ai-hint={giftType.dataAiHint}
                                     />
                                 )}
-                                <h3 className="font-headline text-[10px] sm:text-xs text-neutral-200 group-hover:text-primary transition-colors duration-300 line-clamp-2"> {/* Smaller font */}
+                                <h3 className="font-headline text-[10px] sm:text-xs text-neutral-200 group-hover:text-primary transition-colors duration-300 line-clamp-2">
                                     {giftType.name}
                                 </h3>
                             </CardContent>
