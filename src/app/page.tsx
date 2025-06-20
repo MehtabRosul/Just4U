@@ -20,8 +20,8 @@ import { useToast } from "@/hooks/use-toast";
 
 interface CarouselBanner {
   id: number;
-  title: string;
-  description: string;
+  title: string; // Kept for alt text and potential future use
+  description: string; // Kept for potential future use
   imageUrl: string;
   dataAiHint: string;
   gradientClasses: string;
@@ -110,13 +110,7 @@ const carouselBannersData: CarouselBanner[] = [
   },
 ];
 
-const HeroCarouselButton = () => {
-  return (
-    <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg transition-transform hover:scale-105 rounded-md px-6 py-3 sm:px-8 sm:py-3.5">
-      <Link href="/products">Shop Now</Link>
-    </Button>
-  );
-};
+// Removed HeroCarouselButton component as it's no longer used directly in the simplified banner
 
 const HeroCarousel = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -124,7 +118,7 @@ const HeroCarousel = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prevSlide) => (prevSlide + 1) % carouselBannersData.length);
-    }, 3000);
+    }, 5000); // Increased interval for image-only banners
 
     return () => clearInterval(timer);
   }, []);
@@ -133,64 +127,24 @@ const HeroCarousel = () => {
   const bannerAnimationActiveClasses = "opacity-100";
   const bannerBaseTransition = "transition-opacity duration-[2000ms] ease-in-out";
 
-  const commonTextInactiveAnimation = "opacity-0";
-  const commonTextActiveAnimation = "opacity-100";
-
-  const iconBaseTransition = "transition-opacity duration-[1200ms] ease-out delay-[300ms]";
-  const titleBaseTransition = "transition-opacity duration-[1200ms] ease-out delay-[450ms]";
-  const descriptionBaseTransition = "transition-opacity duration-[1200ms] ease-out delay-[600ms]";
-  const buttonBaseTransition = "transition-opacity duration-[1200ms] ease-out delay-[750ms]";
-
-
   return (
-    <section className="relative min-h-[400px] md:min-h-[500px] w-full mb-8 sm:mb-12 rounded-lg overflow-hidden">
+    <section className="relative min-h-[300px] md:min-h-[400px] lg:min-h-[500px] w-full mb-8 sm:mb-12 rounded-lg overflow-hidden shadow-lg">
       {carouselBannersData.map((banner, index) => (
         <div
           key={banner.id}
           className={cn(
-            "absolute inset-0 w-full h-full flex p-6 md:p-10",
+            "absolute inset-0 w-full h-full", // Removed flex and padding
             banner.gradientClasses,
-            'items-start',
             bannerBaseTransition,
             index === currentSlide ? bannerAnimationActiveClasses : bannerAnimationInactiveClasses + " pointer-events-none"
           )}
         >
-          <div className={cn("relative z-10 w-full flex justify-start")}>
-            <div className="max-w-md md:max-w-lg lg:max-w-xl text-left">
-              <SparklesIcon className={cn(
-                "w-10 h-10 sm:w-12 sm:h-12 text-white opacity-70 mb-2 sm:mb-3 hidden md:inline-block",
-                iconBaseTransition,
-                index === currentSlide ? commonTextActiveAnimation : commonTextInactiveAnimation
-                )} />
-              <h1 className={cn(
-                "font-headline text-3xl sm:text-4xl md:text-5xl font-extrabold mb-3 sm:mb-4 text-white",
-                "text-left",
-                titleBaseTransition,
-                index === currentSlide ? commonTextActiveAnimation : commonTextInactiveAnimation
-                )}>
-                {banner.title}
-              </h1>
-              <p className={cn(
-                "text-neutral-200 text-sm sm:text-base lg:text-md max-w-md mb-6 sm:mb-8",
-                 "mr-auto",
-                descriptionBaseTransition,
-                index === currentSlide ? commonTextActiveAnimation : commonTextInactiveAnimation
-                )}>
-                {banner.description}
-              </p>
-              <div className={cn(
-                  buttonBaseTransition,
-                  index === currentSlide ? commonTextActiveAnimation : commonTextInactiveAnimation
-              )}>
-                <HeroCarouselButton />
-              </div>
-            </div>
-          </div>
+          {/* Content inside banner is removed to focus on image + gradient */}
           <Image
             src={banner.imageUrl}
-            alt={banner.title}
+            alt={banner.title} // Alt text remains important
             fill
-            className="object-cover opacity-20 pointer-events-none"
+            className="object-cover opacity-60 pointer-events-none" // Increased opacity from 20 to 60
             data-ai-hint={banner.dataAiHint}
             priority={index === 0}
           />
@@ -242,9 +196,9 @@ const SmartFinderPanel = () => {
       toast({
         title: "Select Filters",
         description: "Please select at least one filter to find gifts.",
-        variant: "default",
+        variant: "default", // Or "destructive" if you prefer a more warning style
       });
-      return; 
+      return; // Stop execution if no filters are selected
     }
 
     const queryParams = new URLSearchParams();
@@ -265,6 +219,7 @@ const SmartFinderPanel = () => {
       queryParams.append('priceMin', minPrice.toString());
       queryParams.append('priceMax', maxPrice.toString());
     } else {
+        // Default to showing all prices if 'All Prices' is selected or no specific range
         queryParams.append('priceMin', '0');
         queryParams.append('priceMax', Number.MAX_SAFE_INTEGER.toString());
     }
@@ -743,7 +698,7 @@ const GiftTypeHighlight = () => {
     return (
     <section className="my-8 sm:my-12">
         <SectionTitle className="text-white">Featured Gift Types</SectionTitle>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4"> {/* Updated grid and gap */}
             {featuredGiftTypes.map(giftType => {
                 const IconComponent = giftType.Icon;
                 return (
@@ -753,20 +708,20 @@ const GiftTypeHighlight = () => {
                         className="group block"
                     >
                         <Card className="bg-neutral-800 border-neutral-700 shadow-lg hover:shadow-primary/30 hover:border-primary/50 transition-all duration-300 ease-in-out group-hover:-translate-y-1 h-full flex flex-col">
-                            <CardContent className="p-2 sm:p-3 flex flex-col items-center justify-center text-center flex-grow">
+                            <CardContent className="p-2 sm:p-3 flex flex-col items-center justify-center text-center flex-grow"> {/* Reduced padding */}
                                 {IconComponent ? (
-                                <IconComponent className="h-8 w-8 sm:h-10 text-primary mb-1.5 sm:mb-2 transition-transform duration-300 group-hover:scale-110" />
+                                <IconComponent className="h-6 w-6 sm:h-8 text-primary mb-1 sm:mb-1.5 transition-transform duration-300 group-hover:scale-110" /> /* Smaller Icon */
                                 ) : giftType.dataAiHint && (
                                     <Image
-                                        src={`https://placehold.co/60x60.jpg`} 
+                                        src={`https://placehold.co/40x40.jpg`}  /* Smaller placeholder */
                                         alt={giftType.name}
-                                        width={32} 
-                                        height={32}
-                                        className="rounded-md object-cover mb-1.5 sm:mb-2 transition-transform duration-300 group-hover:scale-110"
+                                        width={28} // Adjusted size
+                                        height={28} // Adjusted size
+                                        className="rounded-md object-cover mb-1 sm:mb-1.5 transition-transform duration-300 group-hover:scale-110"
                                         data-ai-hint={giftType.dataAiHint}
                                     />
                                 )}
-                                <h3 className="font-headline text-xs sm:text-sm text-neutral-200 group-hover:text-primary transition-colors duration-300 line-clamp-2">
+                                <h3 className="font-headline text-[10px] sm:text-xs text-neutral-200 group-hover:text-primary transition-colors duration-300 line-clamp-2"> {/* Smaller font */}
                                     {giftType.name}
                                 </h3>
                             </CardContent>
