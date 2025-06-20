@@ -24,8 +24,7 @@ interface CarouselBanner {
   description: string;
   imageUrl: string;
   dataAiHint: string;
-  buttonText: string;
-  buttonLink: string;
+  // buttonText and buttonLink are no longer used directly per banner for the main button
   gradientClasses: string;
   titleTextClass?: string;
   descriptionTextClass?: string;
@@ -38,8 +37,6 @@ const carouselBannersData: CarouselBanner[] = [
     description: "Unique gifts that tell their story. Find the perfect custom present today!",
     imageUrl: "https://i.ibb.co/gv62ZJ0/pexels-arina-krasnikova-5422790-1.jpg",
     dataAiHint: "personalized gift assortment",
-    buttonText: "Shop Personalised",
-    buttonLink: "/products?category=photo-gifts-general",
     gradientClasses: "bg-gradient-to-br from-purple-600 via-pink-500 to-rose-600",
     titleTextClass: "text-white",
     descriptionTextClass: "text-rose-100",
@@ -50,8 +47,6 @@ const carouselBannersData: CarouselBanner[] = [
     description: "Find the perfect gift for any occasion, from birthdays to anniversaries.",
     imageUrl: "https://i.ibb.co/yY5QxV1/pexels-antoni-shkraba-4347872-1.jpg",
     dataAiHint: "birthday celebration gifts",
-    buttonText: "Explore Occasions",
-    buttonLink: "/products", // General products page, or link to occasions filter
     gradientClasses: "bg-gradient-to-tr from-teal-500 via-cyan-500 to-sky-500",
     titleTextClass: "text-white",
     descriptionTextClass: "text-sky-100",
@@ -62,8 +57,6 @@ const carouselBannersData: CarouselBanner[] = [
     description: "Lifelike miniatures and stunning crystal art that capture memories in three dimensions.",
     imageUrl: "https://i.ibb.co/3RkC7j8/pexels-ann-h-45017-16070854-1.jpg",
     dataAiHint: "3d crystal miniature",
-    buttonText: "Discover 3D Gifts",
-    buttonLink: "/products?category=3d-crystals",
     gradientClasses: "bg-gradient-to-b from-indigo-500 via-purple-600 to-pink-600",
     titleTextClass: "text-white",
     descriptionTextClass: "text-pink-100",
@@ -74,8 +67,6 @@ const carouselBannersData: CarouselBanner[] = [
     description: "Elegant photo frames for timeless keepsakes. Personalize your favorite moments.",
     imageUrl: "https://i.ibb.co/mH9c1tH/pexels-ketut-subiyanto-4350108-1.jpg",
     dataAiHint: "photo frame collection",
-    buttonText: "View Photo Frames",
-    buttonLink: "/products?category=photo-frames",
     gradientClasses: "bg-gradient-to-bl from-green-500 via-lime-500 to-yellow-400",
     titleTextClass: "text-neutral-800",
     descriptionTextClass: "text-green-900",
@@ -86,8 +77,6 @@ const carouselBannersData: CarouselBanner[] = [
     description: "Impress clients and reward employees with premium, branded corporate gifts.",
     imageUrl: "https://i.ibb.co/vVmsZ1f/pexels-karolina-grabowska-4491444-1.jpg",
     dataAiHint: "corporate gift basket",
-    buttonText: "Corporate Solutions",
-    buttonLink: "/products?category=corporate-awards", // Link to a corporate category
     gradientClasses: "bg-gradient-to-tl from-blue-600 via-indigo-500 to-purple-500",
     titleTextClass: "text-white",
     descriptionTextClass: "text-purple-100",
@@ -98,8 +87,6 @@ const carouselBannersData: CarouselBanner[] = [
     description: "Handpicked selections for every recipient. Find a gift that speaks from the heart.",
     imageUrl: "https://i.ibb.co/8XnQhBv/pexels-ron-lach-7871177-1.jpg",
     dataAiHint: "gift for her",
-    buttonText: "Find Your Gift",
-    buttonLink: "/products",
     gradientClasses: "bg-gradient-to-r from-pink-500 via-fuchsia-500 to-purple-600",
     titleTextClass: "text-white",
     descriptionTextClass: "text-purple-100",
@@ -110,8 +97,6 @@ const carouselBannersData: CarouselBanner[] = [
     description: "Unbeatable prices on popular gifts, updated daily. Don't miss out!",
     imageUrl: "https://i.ibb.co/Jj8b0zQ/pexels-karolina-grabowska-5632345-1.jpg",
     dataAiHint: "gift sale discount",
-    buttonText: "Shop Deals",
-    buttonLink: "/products?sort=trending", // Example: link to trending/sale items
     gradientClasses: "bg-gradient-to-l from-orange-400 via-amber-400 to-yellow-300",
     titleTextClass: "text-neutral-800",
     descriptionTextClass: "text-orange-900",
@@ -122,8 +107,6 @@ const carouselBannersData: CarouselBanner[] = [
     description: "Fresh designs and innovative gift ideas landing every week. Be the first to explore!",
     imageUrl: "https://i.ibb.co/4p5jD9Y/pexels-nothing-ahead-4067766-1.jpg",
     dataAiHint: "new product launch",
-    buttonText: "Explore New In",
-    buttonLink: "/products?sort=newest", // Example: link to sort by newest
     gradientClasses: "bg-gradient-to-br from-rose-400 via-red-400 to-pink-400",
     titleTextClass: "text-white",
     descriptionTextClass: "text-pink-100",
@@ -134,8 +117,6 @@ const carouselBannersData: CarouselBanner[] = [
     description: "Transform photos into unique art pieces. Personalized canvases, sketches, and more.",
     imageUrl: "https://i.ibb.co/d26pM6c/pexels-ann-h-1766938-1.jpg",
     dataAiHint: "photo to art canvas",
-    buttonText: "Create Your Art",
-    buttonLink: "/products?category=photo-gifts-general",
     gradientClasses: "bg-gradient-to-tr from-sky-300 via-blue-400 to-indigo-500",
     titleTextClass: "text-white",
     descriptionTextClass: "text-indigo-100",
@@ -146,8 +127,6 @@ const carouselBannersData: CarouselBanner[] = [
     description: "Get a custom 3D miniature of yourself or loved ones. A unique and memorable gift.",
     imageUrl: "https://i.ibb.co/BqTmnkR/pexels-antoni-shkraba-production-8040228-1.jpg",
     dataAiHint: "3d selfie miniature",
-    buttonText: "Get Your Mini You",
-    buttonLink: "/products?category=mini-you-series",
     gradientClasses: "bg-gradient-to-bl from-lime-300 via-green-400 to-teal-500",
     titleTextClass: "text-neutral-800",
     descriptionTextClass: "text-green-900",
@@ -186,49 +165,67 @@ const HeroCarousel = () => {
   const bannerAnimationActiveClasses = "opacity-100";
   const bannerBaseTransition = "transition-opacity duration-[2000ms] ease-in-out";
 
+  const activeBanner = carouselBannersData[currentSlide];
+
   return (
-    <section className="relative min-h-[300px] md:min-h-[400px] lg:min-h-[500px] w-full mb-8 sm:mb-12 rounded-lg overflow-hidden shadow-lg">
+    <section className="relative min-h-[350px] md:min-h-[450px] lg:min-h-[550px] w-full mb-8 sm:mb-12 rounded-lg overflow-hidden shadow-2xl">
+      {/* Background Images and Gradients Layer */}
       {carouselBannersData.map((banner, index) => (
         <div
           key={banner.id}
           className={cn(
-            "absolute inset-0 w-full h-full flex flex-col items-center justify-center text-center p-6 sm:p-10 md:p-16",
+            "absolute inset-0 w-full h-full",
             banner.gradientClasses,
             bannerBaseTransition,
             index === currentSlide ? bannerAnimationActiveClasses : bannerAnimationInactiveClasses + " pointer-events-none"
           )}
+          style={{ zIndex: 1 }} // Ensure background images are behind the text content
         >
           <Image
             src={banner.imageUrl}
-            alt={banner.title}
+            alt="" // Decorative, as text is handled separately
             fill
-            className="object-cover opacity-20 pointer-events-none"
+            className="object-cover opacity-30 pointer-events-none" // Increased opacity slightly
             data-ai-hint={banner.dataAiHint}
-            priority={index === 0}
+            priority={index === 0} // Prioritize loading the first image
           />
-          <div className="relative z-10 max-w-xl md:max-w-2xl"> {/* Content wrapper */}
-            <h2 className={cn("font-headline text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2 sm:mb-3 md:mb-4", banner.titleTextClass || "text-white", "transition-all duration-500 ease-out", index === currentSlide ? "translate-y-0 opacity-100" : "translate-y-5 opacity-0 delay-100")}>
-              {banner.title}
-            </h2>
-            <p className={cn("text-sm sm:text-base md:text-lg mb-4 sm:mb-6 md:mb-8 leading-relaxed", banner.descriptionTextClass || "text-neutral-200", "transition-all duration-500 ease-out", index === currentSlide ? "translate-y-0 opacity-100 delay-200" : "translate-y-5 opacity-0 delay-200")}>
-              {banner.description}
-            </p>
-            <div className={cn("transition-all duration-500 ease-out", index === currentSlide ? "translate-y-0 opacity-100 delay-300" : "translate-y-5 opacity-0 delay-300")}>
-              <HeroCarouselButton href={banner.buttonLink}>
-                {banner.buttonText}
-              </HeroCarouselButton>
-            </div>
-          </div>
         </div>
       ))}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex space-x-2">
+
+      {/* Static Content Layer (Left Aligned) */}
+      <div className="absolute inset-y-0 left-0 flex items-center p-6 sm:p-10 md:p-16 z-10 w-full md:w-3/5 lg:w-1/2">
+        <div className="relative max-w-lg md:max-w-xl text-left"> {/* Text alignment and max width */}
+          <h2 className={cn(
+            "font-headline text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold mb-3 sm:mb-4 md:mb-6",
+            activeBanner.titleTextClass || "text-white",
+            "transition-opacity duration-700 ease-out" // Simple fade for text content change
+          )}>
+            {activeBanner.title}
+          </h2>
+          <p className={cn(
+            "text-base sm:text-lg md:text-xl mb-6 sm:mb-8 md:mb-10 leading-relaxed",
+            activeBanner.descriptionTextClass || "text-neutral-100",
+             "transition-opacity duration-700 ease-out delay-100" // Simple fade for text content change
+          )}>
+            {activeBanner.description}
+          </p>
+          <div className="transition-opacity duration-700 ease-out delay-200">
+            <HeroCarouselButton href="/products">
+              Explore More
+            </HeroCarouselButton>
+          </div>
+        </div>
+      </div>
+
+      {/* Pagination Dots */}
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex space-x-2.5">
         {carouselBannersData.map((_, index) => (
           <button
-            key={index}
+            key={`dot-${index}`}
             onClick={() => setCurrentSlide(index)}
             className={cn(
-              "w-2.5 h-2.5 rounded-full transition-all duration-300",
-              currentSlide === index ? "bg-primary scale-125" : "bg-white/50 hover:bg-white/80"
+              "w-2.5 h-2.5 rounded-full transition-all duration-300 ease-out transform",
+              currentSlide === index ? "bg-primary scale-125 ring-2 ring-white/50 ring-offset-1 ring-offset-transparent" : "bg-white/60 hover:bg-white"
             )}
             aria-label={`Go to slide ${index + 1}`}
           />
@@ -768,7 +765,7 @@ const GiftTypeHighlight = () => {
     return (
     <section className="my-8 sm:my-12">
         <SectionTitle className="text-white">Featured Gift Types</SectionTitle>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4"> {/* Updated grid and gap */}
             {featuredGiftTypes.map(giftType => {
                 const IconComponent = giftType.Icon;
                 return (
@@ -778,20 +775,20 @@ const GiftTypeHighlight = () => {
                         className="group block"
                     >
                         <Card className="bg-neutral-800 border-neutral-700 shadow-lg hover:shadow-primary/30 hover:border-primary/50 transition-all duration-300 ease-in-out group-hover:-translate-y-1 h-full flex flex-col">
-                            <CardContent className="p-2 sm:p-3 flex flex-col items-center justify-center text-center flex-grow">
+                            <CardContent className="p-2 sm:p-3 flex flex-col items-center justify-center text-center flex-grow"> {/* Reduced padding */}
                                 {IconComponent ? (
-                                <IconComponent className="h-6 w-6 sm:h-8 text-primary mb-1 sm:mb-1.5 transition-transform duration-300 group-hover:scale-110" />
+                                <IconComponent className="h-6 w-6 sm:h-7 text-primary mb-1 sm:mb-1.5 transition-transform duration-300 group-hover:scale-110" /> /* Reduced icon size */
                                 ) : giftType.dataAiHint && (
                                     <Image
-                                        src={`https://placehold.co/40x40.jpg`}
+                                        src={`https://placehold.co/40x40.jpg`} 
                                         alt={giftType.name}
-                                        width={28}
-                                        height={28}
+                                        width={24} // Reduced image size
+                                        height={24} // Reduced image size
                                         className="rounded-md object-cover mb-1 sm:mb-1.5 transition-transform duration-300 group-hover:scale-110"
                                         data-ai-hint={giftType.dataAiHint}
                                     />
                                 )}
-                                <h3 className="font-headline text-[10px] sm:text-xs text-neutral-200 group-hover:text-primary transition-colors duration-300 line-clamp-2">
+                                <h3 className="font-headline text-[10px] sm:text-[11px] text-neutral-200 group-hover:text-primary transition-colors duration-300 line-clamp-2"> {/* Reduced font size */}
                                     {giftType.name}
                                 </h3>
                             </CardContent>
@@ -880,3 +877,4 @@ export default function HomePage()
   );
 }
     
+
