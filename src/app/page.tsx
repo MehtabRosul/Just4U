@@ -183,7 +183,7 @@ const HeroCarousel = () => {
             src={banner.imageUrl}
             alt="" 
             fill
-            className="object-cover opacity-40 pointer-events-none" // Increased opacity
+            className="object-cover opacity-40 pointer-events-none" 
             data-ai-hint={banner.dataAiHint}
             priority={index === 0} 
           />
@@ -876,5 +876,6 @@ export default function HomePage()
     
 
     
+
 
 

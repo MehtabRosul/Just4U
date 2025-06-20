@@ -11,9 +11,9 @@ import { ProductSortControl, type SortOption } from '@/components/products/Produ
 import { SectionTitle } from '@/components/shared/SectionTitle';
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 
-const ITEMS_PER_PAGE = 50; // Ensuring this aligns with 50-60 items request
+const ITEMS_PER_PAGE = 50; 
 
-interface ActiveFilters { // Renamed from ProductFilterInputs to ActiveFilters to be more generic
+interface ActiveFilters { 
   category: string;
   priceRange: [number, number];
   occasion: string;
@@ -28,7 +28,7 @@ export default function ProductsPage() {
     return Math.max(...PRODUCTS.map(p => p.price), 0);
   }, []);
 
-  const initialCategory = searchParams.get('category') || 'all'; // For gift type
+  const initialCategory = searchParams.get('category') || 'all'; 
   const initialOccasion = searchParams.get('occasion') || 'all';
   const initialRecipient = searchParams.get('recipient') || 'all';
   const initialPriceMin = parseInt(searchParams.get('priceMin') || '0', 10);
@@ -64,7 +64,7 @@ export default function ProductsPage() {
         occasion: newOccasion,
         recipient: newRecipient,
     });
-    setSortOption(newSort); // Update sort option based on URL parameters
+    setSortOption(newSort); 
     setCurrentPage(1); 
   }, [searchParams, serverMaxPrice]);
 
@@ -86,7 +86,7 @@ export default function ProductsPage() {
 
     tempProducts = tempProducts.filter(p => p.price >= activeFilters.priceRange[0] && p.price <= activeFilters.priceRange[1]);
 
-    // Use sortOption state for sorting, which is updated by ProductSortControl
+    
     switch (sortOption) {
       case 'popularity':
         tempProducts.sort((a, b) => b.popularity - a.popularity);
@@ -105,15 +105,13 @@ export default function ProductsPage() {
         break;
     }
     
-    // This specific check for 'trending' from initialSort might need re-evaluation
-    // if `sortOption` state is the sole driver for sorting after initialization.
-    // Generally, `sortOption` state should be the source of truth for current sorting method.
+    
     if (sortOption === 'trending') { 
        tempProducts = tempProducts.filter(p => p.trending).sort((a,b) => b.popularity - a.popularity);
     }
 
     return tempProducts;
-  }, [activeFilters, sortOption]); // Removed initialSort from here as sortOption state handles current sort
+  }, [activeFilters, sortOption]); 
 
   const totalPages = Math.ceil(filteredAndSortedProducts.length / ITEMS_PER_PAGE);
   const currentProducts = filteredAndSortedProducts.slice(
@@ -221,5 +219,6 @@ export default function ProductsPage() {
     </div>
   );
 }
+
 
 
