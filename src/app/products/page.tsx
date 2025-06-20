@@ -11,7 +11,7 @@ import { ProductSortControl, type SortOption } from '@/components/products/Produ
 import { SectionTitle } from '@/components/shared/SectionTitle';
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 
-const ITEMS_PER_PAGE = 12; // Changed from 60 to 12
+const ITEMS_PER_PAGE = 24; // Changed from 12 to 24
 
 interface ActiveFilters { // Renamed from ProductFilterInputs to ActiveFilters to be more generic
   category: string;
