@@ -32,7 +32,7 @@ const carouselBannersData: CarouselBanner[] = [
     id: 1,
     title: "Personalized Magic",
     description: "Unique gifts that tell their story.",
-    imageUrl: "https://placehold.co/1200x600.png",
+    imageUrl: "https://i.ibb.co/gv62ZJ0/pexels-arina-krasnikova-5422790-1.jpg",
     dataAiHint: "personalized gift assortment",
     gradientClasses: "bg-gradient-to-br from-purple-600 via-pink-500 to-rose-600",
   },
@@ -40,7 +40,7 @@ const carouselBannersData: CarouselBanner[] = [
     id: 2,
     title: "Celebrate Every Moment",
     description: "Find the perfect gift for any occasion.",
-    imageUrl: "https://placehold.co/1200x600.png",
+    imageUrl: "https://i.ibb.co/yY5QxV1/pexels-antoni-shkraba-4347872-1.jpg",
     dataAiHint: "birthday celebration gifts",
     gradientClasses: "bg-gradient-to-tr from-teal-500 via-cyan-500 to-sky-500",
   },
@@ -48,7 +48,7 @@ const carouselBannersData: CarouselBanner[] = [
     id: 3,
     title: "3D Wonders",
     description: "Lifelike miniatures and stunning crystal art.",
-    imageUrl: "https://placehold.co/1200x600.png",
+    imageUrl: "https://i.ibb.co/3RkC7j8/pexels-ann-h-45017-16070854-1.jpg",
     dataAiHint: "3d crystal miniature",
     gradientClasses: "bg-gradient-to-b from-indigo-500 via-purple-600 to-pink-600",
   },
@@ -56,7 +56,7 @@ const carouselBannersData: CarouselBanner[] = [
     id: 4,
     title: "Frame Your Memories",
     description: "Elegant photo frames for timeless keepsakes.",
-    imageUrl: "https://placehold.co/1200x600.png",
+    imageUrl: "https://i.ibb.co/mH9c1tH/pexels-ketut-subiyanto-4350108-1.jpg",
     dataAiHint: "photo frame collection",
     gradientClasses: "bg-gradient-to-bl from-green-500 via-lime-500 to-yellow-400",
   },
@@ -64,7 +64,7 @@ const carouselBannersData: CarouselBanner[] = [
     id: 5,
     title: "Corporate Gifting",
     description: "Impress clients with premium, branded gifts.",
-    imageUrl: "https://placehold.co/1200x600.png",
+    imageUrl: "https://i.ibb.co/vVmsZ1f/pexels-karolina-grabowska-4491444-1.jpg",
     dataAiHint: "corporate gift basket",
     gradientClasses: "bg-gradient-to-tl from-blue-600 via-indigo-500 to-purple-500",
   },
@@ -72,7 +72,7 @@ const carouselBannersData: CarouselBanner[] = [
     id: 6,
     title: "Just For You",
     description: "Handpicked selections for every recipient.",
-    imageUrl: "https://placehold.co/1200x600.png",
+    imageUrl: "https://i.ibb.co/8XnQhBv/pexels-ron-lach-7871177-1.jpg",
     dataAiHint: "gift for her",
     gradientClasses: "bg-gradient-to-r from-pink-500 via-fuchsia-500 to-purple-600",
   },
@@ -80,7 +80,7 @@ const carouselBannersData: CarouselBanner[] = [
     id: 7,
     title: "Daily Deals",
     description: "Unbeatable prices on popular gifts, daily.",
-    imageUrl: "https://placehold.co/1200x600.png",
+    imageUrl: "https://i.ibb.co/Jj8b0zQ/pexels-karolina-grabowska-5632345-1.jpg",
     dataAiHint: "gift sale discount",
     gradientClasses: "bg-gradient-to-l from-orange-400 via-amber-400 to-yellow-300",
   },
@@ -88,7 +88,7 @@ const carouselBannersData: CarouselBanner[] = [
     id: 8,
     title: "New Arrivals",
     description: "Fresh designs and innovative gift ideas.",
-    imageUrl: "https://placehold.co/1200x600.png",
+    imageUrl: "https://i.ibb.co/4p5jD9Y/pexels-nothing-ahead-4067766-1.jpg",
     dataAiHint: "new product launch",
     gradientClasses: "bg-gradient-to-br from-rose-400 via-red-400 to-pink-400",
   },
@@ -96,7 +96,7 @@ const carouselBannersData: CarouselBanner[] = [
     id: 9,
     title: "Artistic Touch",
     description: "Transform photos into unique art pieces.",
-    imageUrl: "https://placehold.co/1200x600.png",
+    imageUrl: "https://i.ibb.co/d26pM6c/pexels-ann-h-1766938-1.jpg",
     dataAiHint: "photo to art canvas",
     gradientClasses: "bg-gradient-to-tr from-sky-300 via-blue-400 to-indigo-500",
   },
@@ -104,7 +104,7 @@ const carouselBannersData: CarouselBanner[] = [
     id: 10,
     title: "Miniature You!",
     description: "Get a custom 3D miniature of yourself or loved ones.",
-    imageUrl: "https://placehold.co/1200x600.png",
+    imageUrl: "https://i.ibb.co/BqTmnkR/pexels-antoni-shkraba-production-8040228-1.jpg",
     dataAiHint: "3d selfie miniature",
     gradientClasses: "bg-gradient-to-bl from-lime-300 via-green-400 to-teal-500",
   },
@@ -244,7 +244,7 @@ const SmartFinderPanel = () => {
         description: "Please select at least one filter to find gifts.",
         variant: "default",
       });
-      return;
+      return; 
     }
 
     const queryParams = new URLSearchParams();
@@ -252,7 +252,7 @@ const SmartFinderPanel = () => {
       queryParams.append('occasion', selectedOccasion);
     }
     if (selectedGiftType && selectedGiftType !== 'all') {
-      queryParams.append('category', selectedGiftType);
+      queryParams.append('category', selectedGiftType); 
     }
     if (selectedRecipient && selectedRecipient !== 'all') {
       queryParams.append('recipient', selectedRecipient);
@@ -422,11 +422,11 @@ const TrendingSpotlight = ({ products }: { products: Product[] }) => {
 
 const Advertisements = () => {
   const bannerImagesData = [
-    { id: 1, imageUrl: "https://placehold.co/1200x300.jpg", dataAiHint: "seasonal sale event" },
-    { id: 2, imageUrl: "https://placehold.co/1200x300.jpg", dataAiHint: "new product showcase" },
-    { id: 3, imageUrl: "https://placehold.co/1200x300.jpg", dataAiHint: "gift ideas inspiration" },
-    { id: 4, imageUrl: "https://placehold.co/1200x300.jpg", dataAiHint: "special offer discount" },
-    { id: 5, imageUrl: "https://placehold.co/1200x300.jpg", dataAiHint: "brand promotion" },
+    { id: 1, imageUrl: "https://i.ibb.co/y06t0g7/pexels-august-de-richelieu-4261250-1.jpg", dataAiHint: "seasonal sale event" },
+    { id: 2, imageUrl: "https://i.ibb.co/VxgkK4x/pexels-karolina-grabowska-4207783-1.jpg", dataAiHint: "new product showcase" },
+    { id: 3, imageUrl: "https://i.ibb.co/9Y4jR7N/pexels-karolina-grabowska-4386466-1.jpg", dataAiHint: "gift ideas inspiration" },
+    { id: 4, imageUrl: "https://i.ibb.co/C26zN1H/pexels-julia-m-cameron-4144923-1.jpg", dataAiHint: "special offer discount" },
+    { id: 5, imageUrl: "https://i.ibb.co/QCS9kqc/pexels-karolina-grabowska-4207892-1.jpg", dataAiHint: "brand promotion" },
   ];
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -664,31 +664,31 @@ const GiftQuoteBanners = () => {
     {
       id: 1,
       text: "A truly thoughtful gift is a silent message of affection, a tangible reminder that someone holds you dear and took the time to express it beautifully.",
-      animationClasses: "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-400 bg-[length:300%_300%] animate-nebula-shift",
+      animationClasses: "bg-gradient-to-r from-sky-400 via-cyan-400 to-blue-500 bg-[length:300%_300%] animate-nebula-shift",
       textColorClass: "text-white"
     },
     {
       id: 2,
       text: "The joy of gifting lies not in the object itself, but in the delight it brings to another's eyes, a shared moment of happiness that echoes long after the wrapping is gone.",
-      animationClasses: "bg-gradient-to-r from-green-400 via-emerald-400 to-teal-300 bg-[length:200%_100%] animate-liquid-flow",
+      animationClasses: "bg-gradient-to-r from-emerald-400 via-teal-400 to-green-500 bg-[length:200%_100%] animate-liquid-flow",
       textColorClass: "text-white"
     },
     {
       id: 3,
       text: "Gifts are more than mere possessions; they are bridges between hearts, tokens of appreciation, and symbols of the unspoken bonds that connect us.",
-      animationClasses: "bg-gradient-to-r from-purple-400 via-fuchsia-400 to-pink-400 bg-[length:300%_300%] animate-bokeh-drift",
+      animationClasses: "bg-gradient-to-r from-fuchsia-400 via-pink-400 to-purple-500 bg-[length:300%_300%] animate-bokeh-drift",
       textColorClass: "text-white"
     },
     {
       id: 4,
       text: "In every carefully chosen gift, there's a story whispered – a tale of understanding, remembrance, and the simple, profound desire to bring a smile to someone's face.",
-      animationClasses: "bg-gradient-to-r from-yellow-400 via-amber-400 to-orange-300 bg-[length:200%_100%] animate-subtle-stripes",
-      textColorClass: "text-neutral-800" // Darker text for light background
+      animationClasses: "bg-gradient-to-r from-amber-300 via-orange-400 to-yellow-400 bg-[length:200%_100%] animate-subtle-stripes",
+      textColorClass: "text-neutral-800" 
     },
     {
       id: 5,
       text: "Giving a gift is an art form where the heart guides the hand, selecting not just an item, but a piece of joy intended to brighten another's world.",
-      animationClasses: "bg-gradient-to-br from-rose-400 via-red-400 to-pink-500 bg-[length:200%_200%] animate-watercolor-flow",
+      animationClasses: "bg-gradient-to-br from-pink-400 via-rose-400 to-red-500 bg-[length:200%_200%] animate-watercolor-flow",
       textColorClass: "text-white"
     },
   ];
@@ -708,18 +708,17 @@ const GiftQuoteBanners = () => {
   return (
     <section className="my-8 sm:my-12">
       <div
-        key={currentBanner.id} // Add key here for proper re-rendering on change
+        key={currentBanner.id} 
         className={cn(
           "w-full h-20 sm:h-24 md:h-28 flex items-center justify-center p-4 rounded-lg shadow-md relative overflow-hidden animate-breathing-scale",
           currentBanner.animationClasses,
-          // Add a transition for background color changes if the classes themselves don't handle it smoothly
           "transition-all duration-1000 ease-in-out" 
         )}
       >
         <p className={cn(
           "text-sm sm:text-base md:text-lg font-medium text-center italic relative z-10",
            currentBanner.textColorClass,
-           "transition-opacity duration-500 ease-in-out" // For text fade in/out if needed
+           "transition-opacity duration-500 ease-in-out"
            )}>
           "{currentBanner.text}"
         </p>
@@ -759,10 +758,10 @@ const GiftTypeHighlight = () => {
                                 <IconComponent className="h-8 w-8 sm:h-10 text-primary mb-1.5 sm:mb-2 transition-transform duration-300 group-hover:scale-110" />
                                 ) : giftType.dataAiHint && (
                                     <Image
-                                        src={`https://placehold.co/80x80.jpg`} 
+                                        src={`https://placehold.co/60x60.jpg`} 
                                         alt={giftType.name}
-                                        width={40} 
-                                        height={40}
+                                        width={32} 
+                                        height={32}
                                         className="rounded-md object-cover mb-1.5 sm:mb-2 transition-transform duration-300 group-hover:scale-110"
                                         data-ai-hint={giftType.dataAiHint}
                                     />
@@ -855,5 +854,4 @@ export default function HomePage()
     </div>
   );
 }
-
     
