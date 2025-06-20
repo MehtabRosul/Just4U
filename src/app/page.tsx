@@ -155,7 +155,7 @@ const HeroCarousel = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prevSlide) => (prevSlide + 1) % carouselBannersData.length);
-    }, 5000); // Change slide every 5 seconds
+    }, 5000); 
 
     return () => clearInterval(timer);
   }, []);
@@ -168,7 +168,6 @@ const HeroCarousel = () => {
 
   return (
     <section className="relative min-h-[350px] md:min-h-[450px] lg:min-h-[550px] w-full mb-8 sm:mb-12 rounded-lg overflow-hidden shadow-2xl">
-      {/* Background Images and Gradients Layer */}
       {carouselBannersData.map((banner, index) => (
         <div
           key={banner.id}
@@ -178,46 +177,43 @@ const HeroCarousel = () => {
             bannerBaseTransition,
             index === currentSlide ? bannerAnimationActiveClasses : bannerAnimationInactiveClasses + " pointer-events-none"
           )}
-          style={{ zIndex: 1 }} // Ensure background images are behind the text content
+          style={{ zIndex: 1 }} 
         >
           <Image
             src={banner.imageUrl}
-            alt="" // Decorative, as text is handled separately
+            alt="" 
             fill
-            className="object-cover opacity-30 pointer-events-none" // Image opacity
+            className="object-cover opacity-30 pointer-events-none"
             data-ai-hint={banner.dataAiHint}
-            priority={index === 0} // Prioritize loading the first image
+            priority={index === 0} 
           />
         </div>
       ))}
 
-      {/* Static Content Layer (Left Aligned) */}
       <div className="absolute inset-y-0 left-0 flex items-center p-6 sm:p-10 md:p-16 z-10 w-full md:w-3/5 lg:w-1/2">
-        <div className="relative max-w-lg md:max-w-xl text-left"> {/* Text alignment and max width */}
+        <div className="relative max-w-lg md:max-w-xl text-left"> 
           <h2 className={cn(
             "font-headline text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold mb-3 sm:mb-4 md:mb-6",
             activeBanner.titleTextClass || "text-white",
-            "transition-opacity duration-700 ease-out" // Simple fade for text content change
+            "transition-opacity duration-700 ease-out" 
           )}>
             {activeBanner.title}
           </h2>
           <p className={cn(
             "text-base sm:text-lg md:text-xl mb-6 sm:mb-8 md:mb-10 leading-relaxed",
             activeBanner.descriptionTextClass || "text-neutral-100",
-             "transition-opacity duration-700 ease-out delay-100" // Simple fade for text content change
+             "transition-opacity duration-700 ease-out delay-100" 
           )}>
             {activeBanner.description}
           </p>
           <div className="transition-opacity duration-700 ease-out delay-200">
-            {/* Single "Explore More" button linking to /products */}
-            <HeroCarouselButton href="/products">
+            <HeroCarouselButton href="/products" className="bg-primary text-primary-foreground hover:bg-primary/90 focus:ring-primary-foreground">
               Explore More
             </HeroCarouselButton>
           </div>
         </div>
       </div>
 
-      {/* Pagination Dots */}
       <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex space-x-2.5">
         {carouselBannersData.map((_, index) => (
           <button
@@ -456,7 +452,7 @@ const Advertisements = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentImageIndex((prevIndex) => (prevIndex + 1) % bannerImagesData.length);
-    }, 5000); // Change image every 5 seconds
+    }, 5000); 
 
     return () => clearInterval(timer);
   }, [bannerImagesData.length]);
@@ -553,7 +549,7 @@ const TestimonialsSection = () => {
 
 
   const ITEMS_PER_SET = 8;
-  const ROTATION_INTERVAL = 15000; // 15 seconds
+  const ROTATION_INTERVAL = 15000; 
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -568,7 +564,6 @@ const TestimonialsSection = () => {
 
   const displayedTestimonials = useMemo(() => {
     const endIndex = currentIndex + ITEMS_PER_SET;
-    // Handle wrap-around for the last set if it's smaller than ITEMS_PER_SET
     if (endIndex > allTestimonialsData.length) {
         return allTestimonialsData.slice(currentIndex).concat(allTestimonialsData.slice(0, endIndex % allTestimonialsData.length));
     }
@@ -720,7 +715,7 @@ const GiftQuoteBanners = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentBannerIndex((prevIndex) => (prevIndex + 1) % quoteBanners.length);
-    }, 10000); // Change banner every 10 seconds
+    }, 10000); 
 
     return () => clearInterval(timer);
   }, [quoteBanners.length]);
@@ -765,7 +760,7 @@ const GiftTypeHighlight = () => {
     return (
     <section className="my-8 sm:my-12">
         <SectionTitle className="text-white">Featured Gift Types</SectionTitle>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4"> {/* Updated grid and gap */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4">
             {featuredGiftTypes.map(giftType => {
                 const IconComponent = giftType.Icon;
                 return (
@@ -775,20 +770,20 @@ const GiftTypeHighlight = () => {
                         className="group block"
                     >
                         <Card className="bg-neutral-800 border-neutral-700 shadow-lg hover:shadow-primary/30 hover:border-primary/50 transition-all duration-300 ease-in-out group-hover:-translate-y-1 h-full flex flex-col">
-                            <CardContent className="p-2 sm:p-3 flex flex-col items-center justify-center text-center flex-grow"> {/* Reduced padding */}
+                            <CardContent className="p-2 sm:p-3 flex flex-col items-center justify-center text-center flex-grow">
                                 {IconComponent ? (
-                                <IconComponent className="h-6 w-6 sm:h-7 text-primary mb-1 sm:mb-1.5 transition-transform duration-300 group-hover:scale-110" /> /* Reduced icon size */
+                                <IconComponent className="h-6 w-6 sm:h-7 text-primary mb-1 sm:mb-1.5 transition-transform duration-300 group-hover:scale-110" />
                                 ) : giftType.dataAiHint && (
                                     <Image
                                         src={`https://placehold.co/40x40.jpg`} 
                                         alt={giftType.name}
-                                        width={24} // Reduced image size
-                                        height={24} // Reduced image size
+                                        width={24} 
+                                        height={24} 
                                         className="rounded-md object-cover mb-1 sm:mb-1.5 transition-transform duration-300 group-hover:scale-110"
                                         data-ai-hint={giftType.dataAiHint}
                                     />
                                 )}
-                                <h3 className="font-headline text-[10px] sm:text-[11px] text-neutral-200 group-hover:text-primary transition-colors duration-300 line-clamp-2"> {/* Reduced font size */}
+                                <h3 className="font-headline text-[10px] sm:text-[11px] text-neutral-200 group-hover:text-primary transition-colors duration-300 line-clamp-2">
                                     {giftType.name}
                                 </h3>
                             </CardContent>
@@ -876,4 +871,6 @@ export default function HomePage()
     </div>
   );
 }
+    
+
     
