@@ -12,11 +12,10 @@ export function ProductList({ products }: ProductListProps) {
     // Log only a sample to avoid flooding console if many products
     console.log("[ProductList Component] First product sample name:", products[0].name, "ID:", products[0].id, "Price:", products[0].price);
   } else {
-    console.warn("[ProductList Component] Received empty or undefined products array. This means either filtering removed all items, or the initial data was empty.");
+    console.warn("[ProductList Component] Received empty or undefined products array.");
   }
 
   if (!products || products.length === 0) {
-    // Adding more specific user-facing message here if this state is reached.
     return (
       <div className="text-center text-muted-foreground py-10">
         <p className="text-lg font-semibold">No Products Found</p>
@@ -34,3 +33,5 @@ export function ProductList({ products }: ProductListProps) {
     </div>
   );
 }
+
+    
