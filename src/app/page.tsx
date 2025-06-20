@@ -137,8 +137,9 @@ const HeroCarouselButton = ({ href, children, className }: { href: string; child
     asChild
     size="lg"
     className={cn(
-      "bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg transition-transform hover:scale-105 mt-4 sm:mt-6",
-      "border-2 border-transparent focus:ring-2 focus:ring-offset-2 focus:ring-primary-foreground focus:ring-offset-transparent",
+      "shadow-lg transition-transform hover:scale-105 mt-4 sm:mt-6",
+      "border-2 border-transparent focus:ring-2 focus:ring-offset-2 focus:ring-offset-transparent",
+      "bg-primary text-primary-foreground hover:bg-primary/90 focus:ring-primary-foreground", // Updated colors
       className
     )}
   >
@@ -208,7 +209,7 @@ const HeroCarousel = () => {
             {activeBanner.description}
           </p>
           <div className="transition-opacity duration-700 ease-out delay-200">
-            <HeroCarouselButton href="/products" className="bg-primary text-primary-foreground hover:bg-primary/90 focus:ring-primary-foreground">
+            <HeroCarouselButton href="/products">
               Explore More
             </HeroCarouselButton>
           </div>
@@ -876,6 +877,7 @@ export default function HomePage()
     
 
     
+
 
 
 
