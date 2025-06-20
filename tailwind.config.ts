@@ -130,23 +130,6 @@ export default {
           '0%, 100%': { transform: 'scale(1)' },
           '50%': { transform: 'scale(1.02)' },
         },
-        'animated-glow-border': { // Keyframes for the glowing border
-          '0%': {
-            boxShadow: '0 0 6px hsl(var(--primary)), 0 0 12px hsl(var(--primary)), 0 0 18px hsl(var(--primary))'
-          },
-          '25%': {
-            boxShadow: '0 0 8px hsl(var(--chart-2)), 0 0 16px hsl(var(--chart-2)), 0 0 24px hsl(var(--chart-2))'
-          },
-          '50%': {
-            boxShadow: '0 0 6px hsl(var(--chart-3)), 0 0 12px hsl(var(--chart-3)), 0 0 18px hsl(var(--chart-3))'
-          },
-          '75%': {
-            boxShadow: '0 0 8px hsl(var(--chart-4)), 0 0 16px hsl(var(--chart-4)), 0 0 24px hsl(var(--chart-4))'
-          },
-          '100%': {
-            boxShadow: '0 0 6px hsl(var(--primary)), 0 0 12px hsl(var(--primary)), 0 0 18px hsl(var(--primary))'
-          },
-        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -160,7 +143,6 @@ export default {
         'subtle-stripes': 'subtle-stripes 20s linear infinite',
         'watercolor-flow': 'watercolor-flow 18s ease-in-out infinite',
         'breathing-scale': 'breathing-scale 4s ease-in-out infinite',
-        'animated-glow-border': 'animated-glow-border 6s linear infinite', // Animation for the glowing border
       },
       height: {
         '6': '1.5rem',
@@ -173,3 +155,4 @@ export default {
     require('tailwind-scrollbar')({ nocompatible: true }),
   ],
 } satisfies Config;
+

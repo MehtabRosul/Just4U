@@ -139,7 +139,7 @@ const HeroCarouselButton = ({ href, children, className }: { href: string; child
     className={cn(
       "shadow-lg transition-transform hover:scale-105 mt-4 sm:mt-6",
       "border-2 border-transparent focus:ring-2 focus:ring-offset-2 focus:ring-offset-transparent",
-      "bg-primary text-primary-foreground hover:bg-primary/90 focus:ring-primary",
+      "bg-primary text-primary-foreground hover:bg-primary/90 focus:ring-primary", // Updated classes
       className
     )}
   >
@@ -680,6 +680,19 @@ const OccasionSpotlight = () => {
 };
 
 const GiftQuoteBanners = () => {
+  const giftQuotesData = [
+    { id: 1, quote: "The best gifts come from the heart, not the store.", author: "Sarah Dessen (adapted)" },
+    { id: 2, quote: "A gift consists not in what is done or given, but in the intention of the giver or doer.", author: "Lucius Annaeus Seneca" },
+    { id: 3, quote: "It's not how much we give but how much love we put into giving.", author: "Mother Teresa" },
+    { id: 4, quote: "The manner of giving is worth more than the gift.", author: "Pierre Corneille" },
+    { id: 5, quote: "Every gift from a friend is a wish for your happiness.", author: "Richard Bach" },
+    { id: 6, quote: "Gifts of time and love are surely the basic ingredients of a truly merry Christmas.", author: "Peg Bracken (adapted for general gifting)" },
+    { id: 7, quote: "Personalized gifts show you took the time to make it unique, just like them.", author: "Just4UGifts" },
+    { id: 8, quote: "A thoughtful gift can speak volumes when words fall short.", author: "Just4UGifts" },
+    { id: 9, quote: "Celebrate every moment with a gift that tells a story.", author: "Just4UGifts" },
+    { id: 10, quote: "The joy of gifting is in making someone feel truly special.", author: "Just4UGifts" },
+  ];
+
   // Banner styles for the internal background of the banner
   const bannerBackgroundStyles = [
     {
@@ -704,32 +717,45 @@ const GiftQuoteBanners = () => {
     },
   ];
 
+  const [currentQuoteIndex, setCurrentQuoteIndex] = useState(0);
   const [currentBackgroundIndex, setCurrentBackgroundIndex] = useState(0);
 
   useEffect(() => {
-    const timer = setInterval(() => {
+    const quoteTimer = setInterval(() => {
+      setCurrentQuoteIndex((prevIndex) => (prevIndex + 1) % giftQuotesData.length);
+    }, 7000); // Change quote every 7 seconds
+
+    const backgroundTimer = setInterval(() => {
       setCurrentBackgroundIndex((prevIndex) => (prevIndex + 1) % bannerBackgroundStyles.length);
-    }, 7000); 
+    }, 7000); // Change background at the same interval for sync or slightly offset if desired
 
-    return () => clearInterval(timer);
-  }, [bannerBackgroundStyles.length]);
+    return () => {
+      clearInterval(quoteTimer);
+      clearInterval(backgroundTimer);
+    };
+  }, [giftQuotesData.length, bannerBackgroundStyles.length]);
 
+  const currentQuote = giftQuotesData[currentQuoteIndex];
   const currentBackgroundStyle = bannerBackgroundStyles[currentBackgroundIndex];
 
   return (
     <section className="my-8 sm:my-12">
       <div
-        key={currentBackgroundStyle.id}
+        key={currentQuote.id} // Use quote ID for key to trigger re-render on quote change
         className={cn(
           "w-full h-20 sm:h-24 md:h-28",
-          "flex items-center justify-center",
-          "rounded-lg relative", // Removed shadow-md, glow provides visual distinction
-          "animate-animated-glow-border", 
-          currentBackgroundStyle.animationClasses, 
-          "transition-all duration-1000 ease-in-out" 
+          "flex flex-col items-center justify-center text-center",
+          "rounded-lg shadow-md p-3 sm:p-4",
+          currentBackgroundStyle.animationClasses,
+          "transition-all duration-1000 ease-in-out" // For background transition
         )}
       >
-        {/* Content removed as per request */}
+        <p className="font-headline text-sm sm:text-base md:text-lg font-semibold text-white/90 drop-shadow-sm animate-in fade-in duration-1000">
+          "{currentQuote.quote}"
+        </p>
+        <p className="text-xs sm:text-sm text-white/70 mt-1 animate-in fade-in delay-200 duration-1000">
+          - {currentQuote.author}
+        </p>
       </div>
     </section>
   );
@@ -862,3 +888,4 @@ export default function HomePage()
     </div>
   );
 }
+
