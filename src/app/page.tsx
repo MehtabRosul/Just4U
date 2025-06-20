@@ -15,6 +15,7 @@ import { cn } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
 import { Label } from '@/components/ui/label';
 import { ProductCard } from '@/components/products/ProductCard';
+import { useToast } from "@/hooks/use-toast";
 
 
 interface CarouselBanner {
@@ -223,6 +224,7 @@ const priceRangeOptions = [
 
 const SmartFinderPanel = () => {
   const router = useRouter();
+  const { toast } = useToast();
 
   const [selectedOccasion, setSelectedOccasion] = useState<string>('all');
   const [selectedGiftType, setSelectedGiftType] = useState<string>('all');
@@ -230,6 +232,21 @@ const SmartFinderPanel = () => {
   const [selectedPriceRangeKey, setSelectedPriceRangeKey] = useState<string>('all');
 
   const handleFindGifts = () => {
+    const noFiltersSelected = 
+      selectedOccasion === 'all' &&
+      selectedGiftType === 'all' &&
+      selectedRecipient === 'all' &&
+      selectedPriceRangeKey === 'all';
+
+    if (noFiltersSelected) {
+      toast({
+        title: "Select Filters",
+        description: "Please select at least one filter to find gifts.",
+        variant: "default", // Changed from destructive
+      });
+      return;
+    }
+
     const queryParams = new URLSearchParams();
     if (selectedOccasion && selectedOccasion !== 'all') {
       queryParams.append('occasion', selectedOccasion);
@@ -647,31 +664,31 @@ const GiftQuoteBanners = () => {
      {
       id: 1,
       text: "A truly thoughtful gift is a silent message of affection, a tangible reminder that someone holds you dear and took the time to express it beautifully.",
-      animationClasses: "bg-gradient-to-r from-fuchsia-600 via-pink-600 to-rose-500 bg-[length:300%_300%] animate-nebula-shift",
+      animationClasses: "bg-gradient-to-r from-purple-500 via-pink-500 to-rose-400 bg-[length:300%_300%] animate-nebula-shift",
       textColorClass: "text-white"
     },
     {
       id: 2,
       text: "The joy of gifting lies not in the object itself, but in the delight it brings to another's eyes, a shared moment of happiness that echoes long after the wrapping is gone.",
-      animationClasses: "bg-gradient-to-r from-sky-500 via-cyan-500 to-teal-400 bg-[length:200%_100%] animate-liquid-flow",
+      animationClasses: "bg-gradient-to-r from-sky-400 via-cyan-400 to-teal-300 bg-[length:200%_100%] animate-liquid-flow",
       textColorClass: "text-white"
     },
     {
       id: 3,
       text: "Gifts are more than mere possessions; they are bridges between hearts, tokens of appreciation, and symbols of the unspoken bonds that connect us.",
-      animationClasses: "bg-gradient-to-r from-violet-600 via-purple-500 to-indigo-500 bg-[length:300%_300%] animate-bokeh-drift",
+      animationClasses: "bg-gradient-to-r from-violet-500 via-purple-400 to-indigo-400 bg-[length:300%_300%] animate-bokeh-drift",
       textColorClass: "text-white"
     },
     {
       id: 4,
       text: "In every carefully chosen gift, there's a story whispered – a tale of understanding, remembrance, and the simple, profound desire to bring a smile to someone's face.",
-      animationClasses: "bg-gradient-to-r from-lime-500 via-green-500 to-emerald-400 bg-[length:200%_100%] animate-subtle-stripes",
+      animationClasses: "bg-gradient-to-r from-lime-400 via-green-400 to-emerald-300 bg-[length:200%_100%] animate-subtle-stripes",
       textColorClass: "text-white"
     },
     {
       id: 5,
       text: "Giving a gift is an art form where the heart guides the hand, selecting not just an item, but a piece of joy intended to brighten another's world.",
-      animationClasses: "bg-gradient-to-br from-pink-500 via-rose-500 to-fuchsia-600 bg-[length:200%_200%] animate-watercolor-flow",
+      animationClasses: "bg-gradient-to-br from-pink-400 via-rose-400 to-fuchsia-500 bg-[length:200%_200%] animate-watercolor-flow",
       textColorClass: "text-white"
     },
   ];
@@ -710,7 +727,7 @@ const GiftQuoteBanners = () => {
 
 
 const GiftTypeHighlight = () => {
-    const featuredTypeSlugs = [
+    const featuredGiftTypes = GIFT_TYPES_LIST.filter(gt => [
         'mini-you-series',
         '3d-crystals',
         'photo-lamps',
@@ -719,13 +736,12 @@ const GiftTypeHighlight = () => {
         'gift-hampers',
         'wooden-gifts',
         'spotify-gifts'
-    ];
-    const featuredGiftTypes = GIFT_TYPES_LIST.filter(gt => featuredTypeSlugs.includes(gt.slug));
+    ].includes(gt.slug));
 
     return (
     <section className="my-8 sm:my-12">
         <SectionTitle className="text-white">Featured Gift Types</SectionTitle>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4"> {/* Updated grid and gap */}
             {featuredGiftTypes.map(giftType => {
                 const IconComponent = giftType.Icon;
                 return (
@@ -735,20 +751,20 @@ const GiftTypeHighlight = () => {
                         className="group block"
                     >
                         <Card className="bg-neutral-800 border-neutral-700 shadow-lg hover:shadow-primary/30 hover:border-primary/50 transition-all duration-300 ease-in-out group-hover:-translate-y-1 h-full flex flex-col">
-                            <CardContent className="p-2 sm:p-3 flex flex-col items-center justify-center text-center flex-grow">
+                            <CardContent className="p-2 sm:p-3 flex flex-col items-center justify-center text-center flex-grow"> {/* Reduced padding */}
                                 {IconComponent ? (
-                                <IconComponent className="h-8 w-8 sm:h-10 text-primary mb-1.5 sm:mb-2 transition-transform duration-300 group-hover:scale-110" />
+                                <IconComponent className="h-8 w-8 sm:h-10 text-primary mb-1.5 sm:mb-2 transition-transform duration-300 group-hover:scale-110" /> {/* Icon size adjusted */}
                                 ) : giftType.dataAiHint && (
                                     <Image
-                                        src={`https://placehold.co/100x100.jpg`}
+                                        src={`https://placehold.co/80x80.jpg`} // Slightly smaller placeholder
                                         alt={giftType.name}
-                                        width={48}
-                                        height={48}
+                                        width={40} // Reduced image size
+                                        height={40}
                                         className="rounded-md object-cover mb-1.5 sm:mb-2 transition-transform duration-300 group-hover:scale-110"
                                         data-ai-hint={giftType.dataAiHint}
                                     />
                                 )}
-                                <h3 className="font-headline text-xs sm:text-sm text-neutral-200 group-hover:text-primary transition-colors duration-300 line-clamp-2">
+                                <h3 className="font-headline text-xs sm:text-sm text-neutral-200 group-hover:text-primary transition-colors duration-300 line-clamp-2"> {/* Font size can be kept or reduced */}
                                     {giftType.name}
                                 </h3>
                             </CardContent>
@@ -837,3 +853,4 @@ export default function HomePage()
   );
 }
 
+    
