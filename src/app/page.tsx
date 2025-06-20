@@ -139,7 +139,7 @@ const HeroCarouselButton = ({ href, children, className }: { href: string; child
     className={cn(
       "shadow-lg transition-transform hover:scale-105 mt-4 sm:mt-6",
       "border-2 border-transparent focus:ring-2 focus:ring-offset-2 focus:ring-offset-transparent",
-      "bg-primary text-primary-foreground hover:bg-primary/90 focus:ring-primary", // Updated classes
+      "bg-primary text-primary-foreground hover:bg-primary/90 focus:ring-primary", 
       className
     )}
   >
@@ -168,7 +168,6 @@ const HeroCarousel = () => {
 
   return (
     <section className="relative min-h-[350px] md:min-h-[450px] lg:min-h-[550px] w-full mb-8 sm:mb-12 rounded-lg overflow-hidden shadow-2xl">
-      {/* Background Image Layers */}
       {carouselBannersData.map((banner, index) => (
         <div
           key={banner.id}
@@ -191,7 +190,6 @@ const HeroCarousel = () => {
         </div>
       ))}
 
-      {/* Static Content Area: Title, Description, and Button */}
       <div className="absolute inset-y-0 left-0 flex items-center p-6 sm:p-10 md:p-16 z-10 w-full md:w-3/5 lg:w-1/2">
         <div className="relative max-w-lg md:max-w-xl text-left">
           <h2 className={cn(
@@ -216,7 +214,6 @@ const HeroCarousel = () => {
         </div>
       </div>
 
-      {/* Navigation Dots */}
       <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex space-x-2.5">
         {carouselBannersData.map((_, index) => (
           <button
@@ -441,46 +438,181 @@ const TrendingSpotlight = ({ products }: { products: Product[] }) => {
 };
 
 
-const Advertisements = () => {
-  const bannerImagesData = [
-    { id: 1, imageUrl: "https://i.ibb.co/y06t0g7/pexels-august-de-richelieu-4261250-1.jpg", dataAiHint: "seasonal sale event" },
-    { id: 2, imageUrl: "https://i.ibb.co/VxgkK4x/pexels-karolina-grabowska-4207783-1.jpg", dataAiHint: "new product showcase" },
-    { id: 3, imageUrl: "https://i.ibb.co/9Y4jR7N/pexels-karolina-grabowska-4386466-1.jpg", dataAiHint: "gift ideas inspiration" },
-    { id: 4, imageUrl: "https://i.ibb.co/C26zN1H/pexels-julia-m-cameron-4144923-1.jpg", dataAiHint: "special offer discount" },
-    { id: 5, imageUrl: "https://i.ibb.co/QCS9kqc/pexels-karolina-grabowska-4207892-1.jpg", dataAiHint: "brand promotion" },
-  ];
+interface AdvertisementItem {
+  id: number;
+  title: string;
+  description: string;
+  imageUrl: string;
+  dataAiHint: string;
+  link: string;
+  buttonText: string;
+  gradientClasses?: string;
+  titleTextClass?: string;
+  descriptionTextClass?: string;
+  buttonVariant?: "default" | "outline" | "secondary";
+}
 
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+const advertisementItemsData: AdvertisementItem[] = [
+  {
+    id: 1,
+    title: "Weekend Mega Sale!",
+    description: "Up to 50% off on selected personalized gifts. Don't miss out!",
+    imageUrl: "https://i.ibb.co/y06t0g7/pexels-august-de-richelieu-4261250-1.jpg",
+    dataAiHint: "gift sale discount",
+    link: "/products?sort=price_asc&category=all",
+    buttonText: "Shop Sale",
+    gradientClasses: "bg-gradient-to-br from-rose-600 via-red-500 to-orange-500",
+    titleTextClass: "text-white",
+    descriptionTextClass: "text-orange-100",
+    buttonVariant: "default",
+  },
+  {
+    id: 2,
+    title: "New: 3D Miniatures",
+    description: "Capture moments in stunning 3D. Explore our latest collection.",
+    imageUrl: "https://i.ibb.co/VxgkK4x/pexels-karolina-grabowska-4207783-1.jpg",
+    dataAiHint: "3d miniature product",
+    link: "/products?category=mini-you-series",
+    buttonText: "Discover Now",
+    gradientClasses: "bg-gradient-to-tr from-sky-500 via-cyan-400 to-blue-500",
+    titleTextClass: "text-white",
+    descriptionTextClass: "text-blue-100",
+    buttonVariant: "default",
+  },
+  {
+    id: 3,
+    title: "Anniversary Perfect Gifts",
+    description: "Unique gifts to celebrate your special milestones.",
+    imageUrl: "https://i.ibb.co/9Y4jR7N/pexels-karolina-grabowska-4386466-1.jpg",
+    dataAiHint: "anniversary gift ideas",
+    link: "/products?occasion=anniversary",
+    buttonText: "Find Gifts",
+    gradientClasses: "bg-gradient-to-bl from-purple-600 via-pink-500 to-fuchsia-500",
+    titleTextClass: "text-white",
+    descriptionTextClass: "text-fuchsia-100",
+    buttonVariant: "default",
+  },
+  {
+    id: 4,
+    title: "Corporate Gifting",
+    description: "Impress clients & motivate employees with bespoke gifts.",
+    imageUrl: "https://i.ibb.co/C26zN1H/pexels-julia-m-cameron-4144923-1.jpg",
+    dataAiHint: "corporate gifts bulk",
+    link: "/products?category=corporate-awards",
+    buttonText: "Enquire Now",
+    gradientClasses: "bg-gradient-to-tl from-slate-800 via-gray-700 to-neutral-900",
+    titleTextClass: "text-white",
+    descriptionTextClass: "text-gray-300",
+    buttonVariant: "outline",
+  },
+  {
+    id: 5,
+    title: "Personalize Your World",
+    description: "From mugs to phone cases, add your unique touch.",
+    imageUrl: "https://i.ibb.co/QCS9kqc/pexels-karolina-grabowska-4207892-1.jpg",
+    dataAiHint: "personalized items custom",
+    link: "/products?category=photo-gifts-general",
+    buttonText: "Explore Custom",
+    gradientClasses: "bg-gradient-to-br from-green-500 via-emerald-500 to-teal-600",
+    titleTextClass: "text-white",
+    descriptionTextClass: "text-teal-100",
+    buttonVariant: "default",
+  },
+];
+
+
+const Advertisements = () => {
+  const [currentAdIndex, setCurrentAdIndex] = useState(0);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % bannerImagesData.length);
-    }, 5000);
-
+      setCurrentAdIndex((prevIndex) => (prevIndex + 1) % advertisementItemsData.length);
+    }, 6000); // Change ad every 6 seconds
     return () => clearInterval(timer);
-  }, [bannerImagesData.length]);
+  }, []);
+
+  const activeAd = advertisementItemsData[currentAdIndex];
+  const adBaseTransition = "transition-opacity duration-1500ms ease-in-out";
+  const adAnimationActiveClasses = "opacity-100";
+  const adAnimationInactiveClasses = "opacity-0";
 
   return (
-    <section className="my-8 sm:my-12">
-      <div className="relative w-full h-48 sm:h-56 md:h-64 rounded-lg shadow-lg overflow-hidden">
-        {bannerImagesData.map((banner, index) => (
+    <section className="relative h-48 sm:h-56 md:h-64 w-full my-8 sm:my-12 rounded-lg overflow-hidden shadow-xl">
+      {/* Background Image & Gradient Layers */}
+      {advertisementItemsData.map((ad, index) => (
+        <div
+          key={ad.id}
+          className={cn(
+            "absolute inset-0 w-full h-full",
+            ad.gradientClasses || "bg-neutral-800", // Fallback gradient
+            adBaseTransition,
+            index === currentAdIndex ? adAnimationActiveClasses : adAnimationInactiveClasses + " pointer-events-none"
+          )}
+          style={{ zIndex: 1 }}
+        >
           <Image
-            key={banner.id}
-            src={banner.imageUrl}
-            alt={banner.dataAiHint || `Advertisement ${banner.id}`}
+            src={ad.imageUrl}
+            alt="" // Decorative
             fill
-            className={cn(
-              "object-cover absolute inset-0 transition-opacity duration-1000 ease-in-out",
-              index === currentImageIndex ? "opacity-100 z-10" : "opacity-0 z-0"
-            )}
-            data-ai-hint={banner.dataAiHint}
+            className="object-cover opacity-30 sm:opacity-40 pointer-events-none" // Adjust opacity as needed
+            data-ai-hint={ad.dataAiHint}
             priority={index === 0}
+          />
+        </div>
+      ))}
+
+      {/* Content Area */}
+      <div className="absolute inset-y-0 left-0 flex items-center p-4 sm:p-6 md:p-8 z-10 w-full sm:w-3/4 md:w-2/3">
+        <div className="relative max-w-md text-left">
+          <h3 className={cn(
+            "font-headline text-xl sm:text-2xl md:text-3xl font-bold mb-1 sm:mb-2",
+            activeAd.titleTextClass || "text-white",
+            "transition-opacity duration-700 ease-out"
+          )}>
+            {activeAd.title}
+          </h3>
+          <p className={cn(
+            "text-xs sm:text-sm md:text-base mb-3 sm:mb-4 leading-snug",
+            activeAd.descriptionTextClass || "text-neutral-200",
+            "transition-opacity duration-700 ease-out delay-100"
+          )}>
+            {activeAd.description}
+          </p>
+          <div className="transition-opacity duration-700 ease-out delay-200">
+            <Link href={activeAd.link} passHref>
+              <Button 
+                size="sm" 
+                variant={activeAd.buttonVariant || "default"} 
+                className={cn(
+                    "text-xs sm:text-sm py-1.5 px-3 sm:py-2 sm:px-4 shadow-md hover:shadow-lg transition-shadow",
+                    activeAd.buttonVariant === "outline" ? "border-white text-white hover:bg-white/10" : "text-primary-foreground"
+                )}
+              >
+                {activeAd.buttonText} <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* Navigation Dots */}
+      <div className="absolute bottom-2 sm:bottom-3 left-1/2 -translate-x-1/2 z-20 flex space-x-2">
+        {advertisementItemsData.map((_, index) => (
+          <button
+            key={`ad-dot-${index}`}
+            onClick={() => setCurrentAdIndex(index)}
+            className={cn(
+              "w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full transition-all duration-300 ease-out transform",
+              currentAdIndex === index ? "bg-primary scale-125 ring-1 ring-white/50" : "bg-white/50 hover:bg-white/80"
+            )}
+            aria-label={`Go to advertisement ${index + 1}`}
           />
         ))}
       </div>
     </section>
   );
 };
+
 
 const TestimonialsSection = () => {
   const allTestimonialsData = [
@@ -693,7 +825,6 @@ const GiftQuoteBanners = () => {
     { id: 10, quote: "The joy of gifting is in making someone feel truly special.", author: "Just4UGifts" },
   ];
 
-  // Banner styles for the internal background of the banner
   const bannerBackgroundStyles = [
     {
       id: 1,
@@ -723,11 +854,11 @@ const GiftQuoteBanners = () => {
   useEffect(() => {
     const quoteTimer = setInterval(() => {
       setCurrentQuoteIndex((prevIndex) => (prevIndex + 1) % giftQuotesData.length);
-    }, 7000); // Change quote every 7 seconds
+    }, 7000); 
 
     const backgroundTimer = setInterval(() => {
       setCurrentBackgroundIndex((prevIndex) => (prevIndex + 1) % bannerBackgroundStyles.length);
-    }, 7000); // Change background at the same interval for sync or slightly offset if desired
+    }, 7000); 
 
     return () => {
       clearInterval(quoteTimer);
@@ -741,13 +872,13 @@ const GiftQuoteBanners = () => {
   return (
     <section className="my-8 sm:my-12">
       <div
-        key={currentQuote.id} // Use quote ID for key to trigger re-render on quote change
+        key={currentQuote.id} 
         className={cn(
           "w-full h-20 sm:h-24 md:h-28",
           "flex flex-col items-center justify-center text-center",
           "rounded-lg shadow-md p-3 sm:p-4",
           currentBackgroundStyle.animationClasses,
-          "transition-all duration-1000 ease-in-out" // For background transition
+          "transition-all duration-1000 ease-in-out" 
         )}
       >
         <p className="font-headline text-sm sm:text-base md:text-lg font-semibold text-white/90 drop-shadow-sm animate-in fade-in duration-1000">
