@@ -23,48 +23,52 @@ export default function ProductsPage() {
   const searchParams = useSearchParams();
 
   const serverMaxPrice = useMemo(() => {
-    if (PRODUCTS.length === 0) return Number.MAX_SAFE_INTEGER; // Default to a very large number if no products
-    const maxProductPrice = Math.max(...PRODUCTS.map(p => p.price));
-    return maxProductPrice > 0 ? maxProductPrice : Number.MAX_SAFE_INTEGER; // If max price is 0, also use large number
-  }, []);
+    if (!PRODUCTS || PRODUCTS.length === 0) return Number.MAX_SAFE_INTEGER;
+    const prices = PRODUCTS.map(p => p.price).filter(p => typeof p === 'number' && !isNaN(p));
+    if (prices.length === 0) return Number.MAX_SAFE_INTEGER;
+    const maxProductPrice = Math.max(...prices);
+    return maxProductPrice > 0 ? maxProductPrice : Number.MAX_SAFE_INTEGER;
+  }, []); // PRODUCTS is static, so empty array dependency is fine.
 
-  const initialCategory = searchParams.get('category') || 'all'; 
-  const initialOccasion = searchParams.get('occasion') || 'all';
-  const initialRecipient = searchParams.get('recipient') || 'all';
-  const initialPriceMin = parseInt(searchParams.get('priceMin') || '0', 10);
-  const initialPriceMaxQuery = searchParams.get('priceMax');
-  const initialPriceMax = initialPriceMaxQuery !== null ? parseInt(initialPriceMaxQuery, 10) : serverMaxPrice;
-  
-  const initialSortQuery = searchParams.get('sort');
-  const initialSort = (initialSortQuery as SortOption) || 'popularity';
-
-
+  // Initialize state directly, useEffect will refine it based on params
   const [activeFilters, setActiveFilters] = useState<ActiveFilters>({
-    category: initialCategory,
-    priceRange: [initialPriceMin, Math.min(initialPriceMax, serverMaxPrice)],
-    occasion: initialOccasion,
-    recipient: initialRecipient,
+    category: 'all',
+    priceRange: [0, serverMaxPrice], // Initial guess, will be refined by useEffect
+    occasion: 'all',
+    recipient: 'all',
   });
   
-  const [sortOption, setSortOption] = useState<SortOption>(initialSort);
+  const [sortOption, setSortOption] = useState<SortOption>('popularity');
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    const newCategory = searchParams.get('category') || 'all';
-    const newOccasion = searchParams.get('occasion') || 'all';
-    const newRecipient = searchParams.get('recipient') || 'all';
-    const newPriceMin = parseInt(searchParams.get('priceMin') || '0', 10);
-    const newPriceMaxQuery = searchParams.get('priceMax');
-    const newPriceMax = newPriceMaxQuery !== null ? parseInt(newPriceMaxQuery, 10) : serverMaxPrice;
-    const newSort = (searchParams.get('sort') as SortOption) || 'popularity';
+    const categoryFromUrl = searchParams.get('category') || 'all';
+    const occasionFromUrl = searchParams.get('occasion') || 'all';
+    const recipientFromUrl = searchParams.get('recipient') || 'all';
+    const sortFromUrl = (searchParams.get('sort') as SortOption) || 'popularity';
 
+    const priceMinQuery = searchParams.get('priceMin');
+    const parsedPriceMin = parseInt(priceMinQuery || '0', 10);
+    // Ensure safePriceMin is a valid number, defaulting to 0 if NaN
+    const safePriceMin = !isNaN(parsedPriceMin) ? parsedPriceMin : 0;
+
+    const priceMaxQuery = searchParams.get('priceMax');
+    let safePriceMax;
+    if (priceMaxQuery !== null) {
+        const parsedPriceMax = parseInt(priceMaxQuery, 10);
+        // If parsedPriceMax is NaN, default to serverMaxPrice. Otherwise, use the parsed value (capped by serverMaxPrice).
+        safePriceMax = !isNaN(parsedPriceMax) ? Math.min(parsedPriceMax, serverMaxPrice) : serverMaxPrice;
+    } else {
+        safePriceMax = serverMaxPrice;
+    }
+    
     setActiveFilters({
-        category: newCategory,
-        priceRange: [newPriceMin, Math.min(newPriceMax, serverMaxPrice)],
-        occasion: newOccasion,
-        recipient: newRecipient,
+        category: categoryFromUrl,
+        priceRange: [safePriceMin, safePriceMax],
+        occasion: occasionFromUrl,
+        recipient: recipientFromUrl,
     });
-    setSortOption(newSort); 
+    setSortOption(sortFromUrl); 
     setCurrentPage(1); 
   }, [searchParams, serverMaxPrice]);
 
@@ -83,9 +87,16 @@ export default function ProductsPage() {
     if (activeFilters.recipient !== 'all') {
       tempProducts = tempProducts.filter(p => p.recipient?.includes(activeFilters.recipient));
     }
+    
+    // Ensure priceRange values are numbers before filtering
+    const minPrice = typeof activeFilters.priceRange[0] === 'number' ? activeFilters.priceRange[0] : 0;
+    const maxPrice = typeof activeFilters.priceRange[1] === 'number' ? activeFilters.priceRange[1] : Number.MAX_SAFE_INTEGER;
 
-    tempProducts = tempProducts.filter(p => p.price >= activeFilters.priceRange[0] && p.price <= activeFilters.priceRange[1]);
-
+    tempProducts = tempProducts.filter(p => 
+        typeof p.price === 'number' && // Ensure product price is a number
+        p.price >= minPrice && 
+        p.price <= maxPrice
+    );
     
     switch (sortOption) {
       case 'popularity':
@@ -104,8 +115,7 @@ export default function ProductsPage() {
         tempProducts.sort((a, b) => b.name.localeCompare(a.name));
         break;
     }
-    
-    
+        
     if (sortOption === 'trending') { 
        tempProducts = tempProducts.filter(p => p.trending).sort((a,b) => b.popularity - a.popularity);
     }
