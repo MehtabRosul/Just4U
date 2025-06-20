@@ -242,7 +242,7 @@ const SmartFinderPanel = () => {
       toast({
         title: "Select Filters",
         description: "Please select at least one filter to find gifts.",
-        variant: "default", // Changed from destructive
+        variant: "default",
       });
       return;
     }
@@ -661,34 +661,34 @@ const OccasionSpotlight = () => {
 
 const GiftQuoteBanners = () => {
   const quoteBanners = [
-     {
+    {
       id: 1,
       text: "A truly thoughtful gift is a silent message of affection, a tangible reminder that someone holds you dear and took the time to express it beautifully.",
-      animationClasses: "bg-gradient-to-r from-purple-500 via-pink-500 to-rose-400 bg-[length:300%_300%] animate-nebula-shift",
+      animationClasses: "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-400 bg-[length:300%_300%] animate-nebula-shift",
       textColorClass: "text-white"
     },
     {
       id: 2,
       text: "The joy of gifting lies not in the object itself, but in the delight it brings to another's eyes, a shared moment of happiness that echoes long after the wrapping is gone.",
-      animationClasses: "bg-gradient-to-r from-sky-400 via-cyan-400 to-teal-300 bg-[length:200%_100%] animate-liquid-flow",
+      animationClasses: "bg-gradient-to-r from-green-400 via-emerald-400 to-teal-300 bg-[length:200%_100%] animate-liquid-flow",
       textColorClass: "text-white"
     },
     {
       id: 3,
       text: "Gifts are more than mere possessions; they are bridges between hearts, tokens of appreciation, and symbols of the unspoken bonds that connect us.",
-      animationClasses: "bg-gradient-to-r from-violet-500 via-purple-400 to-indigo-400 bg-[length:300%_300%] animate-bokeh-drift",
+      animationClasses: "bg-gradient-to-r from-purple-400 via-fuchsia-400 to-pink-400 bg-[length:300%_300%] animate-bokeh-drift",
       textColorClass: "text-white"
     },
     {
       id: 4,
       text: "In every carefully chosen gift, there's a story whispered – a tale of understanding, remembrance, and the simple, profound desire to bring a smile to someone's face.",
-      animationClasses: "bg-gradient-to-r from-lime-400 via-green-400 to-emerald-300 bg-[length:200%_100%] animate-subtle-stripes",
-      textColorClass: "text-white"
+      animationClasses: "bg-gradient-to-r from-yellow-400 via-amber-400 to-orange-300 bg-[length:200%_100%] animate-subtle-stripes",
+      textColorClass: "text-neutral-800" // Darker text for light background
     },
     {
       id: 5,
       text: "Giving a gift is an art form where the heart guides the hand, selecting not just an item, but a piece of joy intended to brighten another's world.",
-      animationClasses: "bg-gradient-to-br from-pink-400 via-rose-400 to-fuchsia-500 bg-[length:200%_200%] animate-watercolor-flow",
+      animationClasses: "bg-gradient-to-br from-rose-400 via-red-400 to-pink-500 bg-[length:200%_200%] animate-watercolor-flow",
       textColorClass: "text-white"
     },
   ];
@@ -698,7 +698,7 @@ const GiftQuoteBanners = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentBannerIndex((prevIndex) => (prevIndex + 1) % quoteBanners.length);
-    }, 10000);
+    }, 10000); // Change banner every 10 seconds
 
     return () => clearInterval(timer);
   }, [quoteBanners.length]);
@@ -708,15 +708,18 @@ const GiftQuoteBanners = () => {
   return (
     <section className="my-8 sm:my-12">
       <div
-        key={currentBanner.id}
+        key={currentBanner.id} // Add key here for proper re-rendering on change
         className={cn(
           "w-full h-20 sm:h-24 md:h-28 flex items-center justify-center p-4 rounded-lg shadow-md relative overflow-hidden animate-breathing-scale",
-          currentBanner.animationClasses
+          currentBanner.animationClasses,
+          // Add a transition for background color changes if the classes themselves don't handle it smoothly
+          "transition-all duration-1000 ease-in-out" 
         )}
       >
         <p className={cn(
           "text-sm sm:text-base md:text-lg font-medium text-center italic relative z-10",
-           currentBanner.textColorClass
+           currentBanner.textColorClass,
+           "transition-opacity duration-500 ease-in-out" // For text fade in/out if needed
            )}>
           "{currentBanner.text}"
         </p>
@@ -741,7 +744,7 @@ const GiftTypeHighlight = () => {
     return (
     <section className="my-8 sm:my-12">
         <SectionTitle className="text-white">Featured Gift Types</SectionTitle>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4"> {/* Updated grid and gap */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4">
             {featuredGiftTypes.map(giftType => {
                 const IconComponent = giftType.Icon;
                 return (
@@ -751,20 +754,20 @@ const GiftTypeHighlight = () => {
                         className="group block"
                     >
                         <Card className="bg-neutral-800 border-neutral-700 shadow-lg hover:shadow-primary/30 hover:border-primary/50 transition-all duration-300 ease-in-out group-hover:-translate-y-1 h-full flex flex-col">
-                            <CardContent className="p-2 sm:p-3 flex flex-col items-center justify-center text-center flex-grow"> {/* Reduced padding */}
+                            <CardContent className="p-2 sm:p-3 flex flex-col items-center justify-center text-center flex-grow">
                                 {IconComponent ? (
-                                <IconComponent className="h-8 w-8 sm:h-10 text-primary mb-1.5 sm:mb-2 transition-transform duration-300 group-hover:scale-110" /> {/* Icon size adjusted */}
+                                <IconComponent className="h-8 w-8 sm:h-10 text-primary mb-1.5 sm:mb-2 transition-transform duration-300 group-hover:scale-110" />
                                 ) : giftType.dataAiHint && (
                                     <Image
-                                        src={`https://placehold.co/80x80.jpg`} // Slightly smaller placeholder
+                                        src={`https://placehold.co/80x80.jpg`} 
                                         alt={giftType.name}
-                                        width={40} // Reduced image size
+                                        width={40} 
                                         height={40}
                                         className="rounded-md object-cover mb-1.5 sm:mb-2 transition-transform duration-300 group-hover:scale-110"
                                         data-ai-hint={giftType.dataAiHint}
                                     />
                                 )}
-                                <h3 className="font-headline text-xs sm:text-sm text-neutral-200 group-hover:text-primary transition-colors duration-300 line-clamp-2"> {/* Font size can be kept or reduced */}
+                                <h3 className="font-headline text-xs sm:text-sm text-neutral-200 group-hover:text-primary transition-colors duration-300 line-clamp-2">
                                     {giftType.name}
                                 </h3>
                             </CardContent>
