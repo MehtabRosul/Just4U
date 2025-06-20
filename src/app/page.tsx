@@ -137,8 +137,8 @@ const HeroCarouselButton = ({ href, children, className }: { href: string; child
     asChild
     size="lg"
     className={cn(
-      "bg-white text-primary hover:bg-opacity-90 hover:text-primary-dark shadow-lg transition-transform hover:scale-105 mt-4 sm:mt-6",
-      "border-2 border-transparent focus:ring-2 focus:ring-offset-2 focus:ring-white focus:ring-offset-transparent",
+      "bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg transition-transform hover:scale-105 mt-4 sm:mt-6",
+      "border-2 border-transparent focus:ring-2 focus:ring-offset-2 focus:ring-primary-foreground focus:ring-offset-transparent",
       className
     )}
   >
@@ -877,4 +877,3 @@ export default function HomePage()
   );
 }
     
-
