@@ -446,9 +446,6 @@ interface AdvertisementItem {
   dataAiHint: string;
   link: string;
   buttonText: string;
-  gradientClasses?: string;
-  titleTextClass?: string;
-  descriptionTextClass?: string;
   buttonVariant?: "default" | "outline" | "secondary";
 }
 
@@ -461,9 +458,6 @@ const advertisementItemsData: AdvertisementItem[] = [
     dataAiHint: "gift sale discount",
     link: "/products?sort=price_asc&category=all",
     buttonText: "Shop Sale",
-    gradientClasses: "bg-gradient-to-br from-rose-600 via-red-500 to-orange-500",
-    titleTextClass: "text-white",
-    descriptionTextClass: "text-orange-100",
     buttonVariant: "default",
   },
   {
@@ -474,9 +468,6 @@ const advertisementItemsData: AdvertisementItem[] = [
     dataAiHint: "3d miniature product",
     link: "/products?category=mini-you-series",
     buttonText: "Discover Now",
-    gradientClasses: "bg-gradient-to-tr from-sky-500 via-cyan-400 to-blue-500",
-    titleTextClass: "text-white",
-    descriptionTextClass: "text-blue-100",
     buttonVariant: "default",
   },
   {
@@ -487,9 +478,6 @@ const advertisementItemsData: AdvertisementItem[] = [
     dataAiHint: "anniversary gift ideas",
     link: "/products?occasion=anniversary",
     buttonText: "Find Gifts",
-    gradientClasses: "bg-gradient-to-bl from-purple-600 via-pink-500 to-fuchsia-500",
-    titleTextClass: "text-white",
-    descriptionTextClass: "text-fuchsia-100",
     buttonVariant: "default",
   },
   {
@@ -500,9 +488,6 @@ const advertisementItemsData: AdvertisementItem[] = [
     dataAiHint: "corporate gifts bulk",
     link: "/products?category=corporate-awards",
     buttonText: "Enquire Now",
-    gradientClasses: "bg-gradient-to-tl from-slate-800 via-gray-700 to-neutral-900",
-    titleTextClass: "text-white",
-    descriptionTextClass: "text-gray-300",
     buttonVariant: "outline",
   },
   {
@@ -513,9 +498,6 @@ const advertisementItemsData: AdvertisementItem[] = [
     dataAiHint: "personalized items custom",
     link: "/products?category=photo-gifts-general",
     buttonText: "Explore Custom",
-    gradientClasses: "bg-gradient-to-br from-green-500 via-emerald-500 to-teal-600",
-    titleTextClass: "text-white",
-    descriptionTextClass: "text-teal-100",
     buttonVariant: "default",
   },
 ];
@@ -538,13 +520,13 @@ const Advertisements = () => {
 
   return (
     <section className="relative h-48 sm:h-56 md:h-64 w-full my-8 sm:my-12 rounded-lg overflow-hidden shadow-xl">
-      {/* Background Image & Gradient Layers */}
+      {/* Background Image Layers */}
       {advertisementItemsData.map((ad, index) => (
         <div
           key={ad.id}
           className={cn(
             "absolute inset-0 w-full h-full",
-            ad.gradientClasses || "bg-neutral-800", // Fallback gradient
+            // No specific background gradient class here, relying on image
             adBaseTransition,
             index === currentAdIndex ? adAnimationActiveClasses : adAnimationInactiveClasses + " pointer-events-none"
           )}
@@ -554,7 +536,7 @@ const Advertisements = () => {
             src={ad.imageUrl}
             alt="" // Decorative
             fill
-            className="object-cover opacity-30 sm:opacity-40 pointer-events-none" // Adjust opacity as needed
+            className="object-cover opacity-100 pointer-events-none" // Image is fully opaque
             data-ai-hint={ad.dataAiHint}
             priority={index === 0}
           />
@@ -563,17 +545,15 @@ const Advertisements = () => {
 
       {/* Content Area */}
       <div className="absolute inset-y-0 left-0 flex items-center p-4 sm:p-6 md:p-8 z-10 w-full sm:w-3/4 md:w-2/3">
-        <div className="relative max-w-md text-left">
+        <div className="relative max-w-md text-left bg-black/30 backdrop-blur-sm p-3 rounded-md">
           <h3 className={cn(
-            "font-headline text-xl sm:text-2xl md:text-3xl font-bold mb-1 sm:mb-2",
-            activeAd.titleTextClass || "text-white",
+            "font-headline text-xl sm:text-2xl md:text-3xl font-bold mb-1 sm:mb-2 text-white drop-shadow-md",
             "transition-opacity duration-700 ease-out"
           )}>
             {activeAd.title}
           </h3>
           <p className={cn(
-            "text-xs sm:text-sm md:text-base mb-3 sm:mb-4 leading-snug",
-            activeAd.descriptionTextClass || "text-neutral-200",
+            "text-xs sm:text-sm md:text-base mb-3 sm:mb-4 leading-snug text-gray-200 drop-shadow-sm",
             "transition-opacity duration-700 ease-out delay-100"
           )}>
             {activeAd.description}
@@ -585,7 +565,7 @@ const Advertisements = () => {
                 variant={activeAd.buttonVariant || "default"} 
                 className={cn(
                     "text-xs sm:text-sm py-1.5 px-3 sm:py-2 sm:px-4 shadow-md hover:shadow-lg transition-shadow",
-                    activeAd.buttonVariant === "outline" ? "border-white text-white hover:bg-white/10" : "text-primary-foreground"
+                    activeAd.buttonVariant === "outline" ? "border-white text-white hover:bg-white/10" : "bg-primary text-primary-foreground hover:bg-primary/90"
                 )}
               >
                 {activeAd.buttonText} <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
@@ -923,9 +903,9 @@ const GiftTypeHighlight = () => {
                                 <IconComponent className="h-6 w-6 sm:h-7 text-primary mb-1 sm:mb-1.5 transition-transform duration-300 group-hover:scale-110" />
                                 ) : giftType.dataAiHint && (
                                     <Image
-                                        src={`https://placehold.co/40x40.png`}
+                                        src={`https://placehold.co/40x40.png`} 
                                         alt={giftType.name}
-                                        width={24}
+                                        width={24} 
                                         height={24}
                                         className="rounded-md object-cover mb-1 sm:mb-1.5 transition-transform duration-300 group-hover:scale-110"
                                         data-ai-hint={giftType.dataAiHint}
@@ -968,7 +948,7 @@ const RecipientQuickLinks = () => {
                 >
                   <div className="relative w-full aspect-[1/1]">
                     <Image
-                      src={`https://placehold.co/200x200.png`}
+                      src={`https://placehold.co/200x200.png`} 
                       alt={recipient.name}
                       fill
                       className="object-cover group-hover/item:scale-105 transition-transform duration-300"
