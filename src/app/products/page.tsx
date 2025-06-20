@@ -26,7 +26,7 @@ interface ActiveFilters {
   recipient: string;
 }
 
-const calculateMaxProductPrice = (products: Product[]): number => {
+const calculateInitialMaxPrice = (products: Product[]): number => {
   if (!products || products.length === 0) {
     console.warn("[DIAGNOSTIC_CALC_MAX_PRICE] PRODUCTS array is empty during calculation. Defaulting max price to Number.MAX_SAFE_INTEGER.");
     return Number.MAX_SAFE_INTEGER;
@@ -47,11 +47,12 @@ export default function ProductsPage() {
   const searchParams = useSearchParams();
   const [hasMounted, setHasMounted] = useState(false);
 
+  // Calculate initialMaxPrice once on mount based on actual product data
   const [initialMaxPrice, setInitialMaxPrice] = useState<number>(Number.MAX_SAFE_INTEGER);
 
   useEffect(() => {
     setHasMounted(true);
-    const calculatedMax = calculateMaxProductPrice(PRODUCTS);
+    const calculatedMax = calculateInitialMaxPrice(PRODUCTS);
     setInitialMaxPrice(calculatedMax);
     console.log("[DIAGNOSTIC_MOUNT_EFFECT] Component mounted. InitialMaxPrice calculated and set to:", calculatedMax);
   }, []);
@@ -59,7 +60,7 @@ export default function ProductsPage() {
 
   const [activeFilters, setActiveFilters] = useState<ActiveFilters>({
     category: 'all',
-    priceRange: [0, Number.MAX_SAFE_INTEGER], 
+    priceRange: [0, Number.MAX_SAFE_INTEGER], // Initialize with widest possible range
     occasion: 'all',
     recipient: 'all',
   });
@@ -68,18 +69,9 @@ export default function ProductsPage() {
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    if (!hasMounted || initialMaxPrice === Number.MAX_SAFE_INTEGER && PRODUCTS.length > 0) { // Ensure initialMaxPrice is realistically set before proceeding
+    // Wait for mount and for initialMaxPrice to be calculated
+    if (!hasMounted || initialMaxPrice === Number.MAX_SAFE_INTEGER && PRODUCTS.length > 0) {
         console.log(`[DIAGNOSTIC_URL_EFFECT] Skipping effect: hasMounted=${hasMounted}, initialMaxPrice=${initialMaxPrice}`);
-        if (initialMaxPrice === Number.MAX_SAFE_INTEGER && PRODUCTS.length > 0 && hasMounted) {
-             // This condition suggests initialMaxPrice might not have updated from its default MAX_SAFE_INTEGER
-             // to a calculated one if calculateMaxProductPrice was still running or yielded MAX_SAFE_INTEGER.
-             // Re-calculate or use a safe default if initialMaxPrice seems off.
-            const recalcMaxPrice = calculateMaxProductPrice(PRODUCTS);
-            if (initialMaxPrice !== recalcMaxPrice) { // If it's different, update and log
-                console.warn(`[DIAGNOSTIC_URL_EFFECT] initialMaxPrice was MAX_SAFE_INTEGER, recalculating to ${recalcMaxPrice}. Consider if initial calculation is completing correctly.`);
-                 // Potentially setInitialMaxPrice(recalcMaxPrice) here if confident, or just use recalcMaxPrice for current op.
-            }
-        }
         return;
     }
 
@@ -106,16 +98,20 @@ export default function ProductsPage() {
     let newMaxPrice = initialMaxPrice; // Default to the calculated initialMaxPrice
     if (priceMaxQuery !== null) {
         const parsedMax = parseInt(priceMaxQuery, 10);
-        if (!isNaN(parsedMax) && parsedMax >= 0) {
+        // Ensure parsedMax is a valid number and not less than newMinPrice
+        if (!isNaN(parsedMax) && parsedMax >= newMinPrice) { 
             newMaxPrice = parsedMax;
-        } else {
-            console.warn(`[DIAGNOSTIC_URL_EFFECT] priceMaxQuery '${priceMaxQuery}' is invalid. Defaulting max to initialMaxPrice (${initialMaxPrice}).`);
+        } else if (!isNaN(parsedMax) && parsedMax < newMinPrice && newMinPrice > 0) { // If max is less than min (and min is not 0)
+            console.warn(`[DIAGNOSTIC_URL_EFFECT] priceMaxQuery '${priceMaxQuery}' is less than newMinPrice '${newMinPrice}'. Setting max to initialMaxPrice.`);
+            newMaxPrice = initialMaxPrice; // Use a wide range if max is invalid relative to min
+        } else if (isNaN(parsedMax)) {
+             console.warn(`[DIAGNOSTIC_URL_EFFECT] priceMaxQuery '${priceMaxQuery}' is NaN. Defaulting max to initialMaxPrice.`);
         }
     }
     
-    // Safety Net: Reset if range is invalid
+    // Safety Net: Reset if range is invalid or max is 0 when it shouldn't be
     if (newMinPrice > newMaxPrice || (newMaxPrice === 0 && initialMaxPrice > 0) || isNaN(newMinPrice) || isNaN(newMaxPrice)) {
-        console.warn(`[DIAGNOSTIC_URL_EFFECT] Invalid price range detected (min: ${newMinPrice}, max: ${newMaxPrice}, initialMax: ${initialMaxPrice}). Resetting to [0, ${initialMaxPrice}].`);
+        console.warn(`[DIAGNOSTIC_URL_EFFECT] Corrected invalid price range. Resetting to [0, ${initialMaxPrice}]. Initial attempt: [${newMinPrice}, ${newMaxPrice}]`);
         newMinPrice = 0; 
         newMaxPrice = initialMaxPrice;
     }
@@ -128,60 +124,98 @@ export default function ProductsPage() {
     };
 
     // Only update state if there's an actual change to avoid infinite loops
-    if (JSON.stringify(activeFilters) !== JSON.stringify(newFilters)) {
-      console.log("[DIAGNOSTIC_URL_EFFECT] Setting new activeFilters:", newFilters);
+    const filtersChanged = JSON.stringify(activeFilters) !== JSON.stringify(newFilters);
+    const sortChanged = sortOption !== sortFromUrl;
+
+    if (filtersChanged) {
+      console.log("[DIAGNOSTIC_URL_EFFECT] Setting new activeFilters from URL:", newFilters);
       setActiveFilters(newFilters);
+      setCurrentPage(1); // Reset page if filters change
+    } else {
+       console.log("[DIAGNOSTIC_URL_EFFECT] No change in activeFilters needed from URL.");
     }
     
-    if (sortOption !== sortFromUrl) {
+    if (sortChanged) {
       console.log(`[DIAGNOSTIC_URL_EFFECT] Updating sortOption from '${sortOption}' to '${sortFromUrl}'`);
       setSortOption(sortFromUrl);
+      if (!filtersChanged) setCurrentPage(1); // Reset page if only sort changes
     }
-    setCurrentPage(1); // Reset to page 1 on any filter/sort change from URL
-  }, [searchParams, hasMounted, initialMaxPrice]); // activeFilters removed to prevent loop, sortOption removed as it's set directly
+
+  }, [searchParams, hasMounted, initialMaxPrice, activeFilters, sortOption]);
 
 
   const filteredAndSortedProducts = useMemo(() => {
     console.log("[DIAGNOSTIC_FILTER_MEMO] Recalculating filteredAndSortedProducts.");
     console.log("[DIAGNOSTIC_FILTER_MEMO] Base PRODUCTS length:", PRODUCTS ? PRODUCTS.length : 'undefined');
+    console.log("[DIAGNOSTIC_FILTER_MEMO] Current activeFilters:", activeFilters);
+    console.log("[DIAGNOSTIC_FILTER_MEMO] Current initialMaxPrice (for reference in price filter):", initialMaxPrice);
+
 
     if (!PRODUCTS || PRODUCTS.length === 0) {
       console.warn("[DIAGNOSTIC_FILTER_MEMO] PRODUCTS array is empty or undefined at start of memo. Returning empty array.");
       return [];
     }
 
-    // TEMPORARILY BYPASS ALL FILTERS EXCEPT SORTING
-    // This is to isolate whether the display mechanism itself is working.
-    let productsToDisplay = [...PRODUCTS]; // Start with a copy of all products
-    console.log(`[DIAGNOSTIC_FILTER_MEMO] (TEMPORARILY BYPASSING FILTERS) Initial product count: ${productsToDisplay.length}`);
-    console.log("[DIAGNOSTIC_FILTER_MEMO] Current sortOption:", sortOption);
+    let tempProducts = [...PRODUCTS];
+    console.log(`[DIAGNOSTIC_FILTER_MEMO] Initial product count: ${tempProducts.length}`);
 
-    // Apply sorting to the full list of products
+    // Apply category filter
+    if (activeFilters.category !== 'all') {
+      tempProducts = tempProducts.filter(p => p.category === activeFilters.category);
+      console.log(`[DIAGNOSTIC_FILTER_MEMO] After category filter ('${activeFilters.category}'): ${tempProducts.length} products`);
+    }
+
+    // Apply occasion filter
+    if (activeFilters.occasion !== 'all') {
+      tempProducts = tempProducts.filter(p => p.occasion?.includes(activeFilters.occasion));
+      console.log(`[DIAGNOSTIC_FILTER_MEMO] After occasion filter ('${activeFilters.occasion}'): ${tempProducts.length} products`);
+    }
+
+    // Apply recipient filter
+    if (activeFilters.recipient !== 'all') {
+      tempProducts = tempProducts.filter(p => p.recipient?.includes(activeFilters.recipient));
+      console.log(`[DIAGNOSTIC_FILTER_MEMO] After recipient filter ('${activeFilters.recipient}'): ${tempProducts.length} products`);
+    }
+
+    // Apply price range filter
+    const [minPrice, maxPrice] = activeFilters.priceRange;
+    // Ensure minPrice and maxPrice are valid numbers before filtering
+    if (typeof minPrice === 'number' && typeof maxPrice === 'number' && !isNaN(minPrice) && !isNaN(maxPrice) && minPrice <= maxPrice) {
+        if (minPrice > 0 || maxPrice < initialMaxPrice) { // Only apply if not the default widest range
+            tempProducts = tempProducts.filter(p => p.price >= minPrice && p.price <= maxPrice);
+            console.log(`[DIAGNOSTIC_FILTER_MEMO] After price filter ([${minPrice}, ${maxPrice}]): ${tempProducts.length} products`);
+        }
+    } else {
+        console.warn(`[DIAGNOSTIC_FILTER_MEMO] Invalid priceRange in activeFilters: [${minPrice}, ${maxPrice}]. Skipping price filter.`);
+    }
+    
+    console.log(`[DIAGNOSTIC_FILTER_MEMO] Products before sorting: ${tempProducts.length}. Sort option: ${sortOption}`);
+    // Apply sorting
     switch (sortOption) {
-      case 'popularity': productsToDisplay.sort((a, b) => (b.popularity || 0) - (a.popularity || 0)); break;
-      case 'price_asc': productsToDisplay.sort((a, b) => (a.price || 0) - (b.price || 0)); break;
-      case 'price_desc': productsToDisplay.sort((a, b) => (b.price || 0) - (a.price || 0)); break;
-      case 'name_asc': productsToDisplay.sort((a, b) => a.name.localeCompare(b.name)); break;
-      case 'name_desc': productsToDisplay.sort((a, b) => b.name.localeCompare(a.name)); break;
+      case 'popularity': tempProducts.sort((a, b) => (b.popularity || 0) - (a.popularity || 0)); break;
+      case 'price_asc': tempProducts.sort((a, b) => (a.price || 0) - (b.price || 0)); break;
+      case 'price_desc': tempProducts.sort((a, b) => (b.price || 0) - (a.price || 0)); break;
+      case 'name_asc': tempProducts.sort((a, b) => a.name.localeCompare(b.name)); break;
+      case 'name_desc': tempProducts.sort((a, b) => b.name.localeCompare(a.name)); break;
       case 'trending':
-        productsToDisplay.sort((a, b) => {
+        tempProducts.sort((a, b) => {
           const trendingA = a.trending ? 1 : 0;
           const trendingB = b.trending ? 1 : 0;
           if (trendingB !== trendingA) {
-            return trendingB - trendingA; // Trending items first
+            return trendingB - trendingA; 
           }
-          return (b.popularity || 0) - (a.popularity || 0); // Then by popularity
+          return (b.popularity || 0) - (a.popularity || 0); 
         });
         break;
       default:
         console.warn(`[DIAGNOSTIC_FILTER_MEMO] Invalid sortOption: '${sortOption}'. Defaulting to popularity.`);
-        productsToDisplay.sort((a, b) => (b.popularity || 0) - (a.popularity || 0));
+        tempProducts.sort((a, b) => (b.popularity || 0) - (a.popularity || 0));
         break;
     }
-    console.log(`[DIAGNOSTIC_FILTER_MEMO] After sorting by '${sortOption}', final count for memo: ${productsToDisplay.length}`);
-    return productsToDisplay;
+    console.log(`[DIAGNOSTIC_FILTER_MEMO] After sorting by '${sortOption}', final count for memo: ${tempProducts.length}`);
+    return tempProducts;
 
-  }, [sortOption]); // Only re-calculate when sortOption changes. PRODUCTS is a top-level constant.
+  }, [activeFilters, sortOption, initialMaxPrice]); 
   
   const totalPages = Math.ceil(filteredAndSortedProducts.length / ITEMS_PER_PAGE);
   const currentProducts = filteredAndSortedProducts.slice(
@@ -204,7 +238,7 @@ export default function ProductsPage() {
       if (occasionObj) titleParts.push(occasionObj.name);
     }
     if (activeFilters.category !== 'all') {
-        const categoryObj = CATEGORIES.find(c => c.slug === activeFilters.category);
+        const categoryObj = CATEGORIES.find(c => c.slug === activeFilters.category); // Using CATEGORIES (alias for GIFT_TYPES_LIST)
         if (categoryObj) titleParts.push(categoryObj.name);
     }
     if (activeFilters.recipient !== 'all') {
@@ -212,21 +246,20 @@ export default function ProductsPage() {
       if (recipientObj) titleParts.push(`for ${recipientObj.name}`);
     }
     
-    // Even if filters are bypassed for display, title should reflect attempted navigation
-    if (titleParts.length === 0 && searchParams.toString() === '') {
+    if (titleParts.length === 0 && searchParams.toString() === '') { // Default page with no URL params
         return "All Gifts";
-    } else if (titleParts.length === 0 && searchParams.toString() !== '') {
-        // If URL has params but they don't match known occasions/categories/recipients for title
+    } else if (titleParts.length === 0 && searchParams.toString() !== '') { // Has URL params but they didn't match known filters for title
         return "Filtered Gifts";
     }
 
     const baseTitle = titleParts.join(" ");
-    return baseTitle.endsWith("Gifts") ? baseTitle : baseTitle + " Gifts";
+    // Ensure "Gifts" is appended intelligently, avoiding "Gifts Gifts"
+    return baseTitle.toLowerCase().endsWith("gifts") ? baseTitle : baseTitle + " Gifts";
   };
 
+  // More detailed check for "No products found" scenario
   if (PRODUCTS && PRODUCTS.length > 0 && currentProducts.length === 0 && filteredAndSortedProducts.length === 0) {
-    // This condition is now less likely with bypassed filters, but good to keep for general debugging
-    console.error("[DIAGNOSTIC_RENDER_ISSUE] All filters are 'all'/max range (or bypassed), PRODUCTS array is populated, but no products are displayed. This indicates a deeper issue in data loading, ProductCard rendering, or ProductList itself.");
+    console.error("[DIAGNOSTIC_RENDER_ISSUE] PRODUCTS array is populated, but no products are displayed. Active Filters:", activeFilters, "Initial Max Price:", initialMaxPrice, "Current Sort:", sortOption);
   }
 
   return (
@@ -259,7 +292,7 @@ export default function ProductsPage() {
                   // Simplified pagination display logic for brevity
                   const showPage = totalPages <= 7 || // Show all if 7 or less pages
                                    pageNum === 1 || pageNum === totalPages || // Always show first and last
-                                   (pageNum >= currentPage - 1 && pageNum <= currentPage + 1); // Show current and adjacent
+                                   (pageNum >= currentPage - 2 && pageNum <= currentPage + 2); // Show current and 2 adjacent on each side
 
                   if (showPage) {
                     return (
@@ -273,7 +306,7 @@ export default function ProductsPage() {
                         </PaginationLink>
                       </PaginationItem>
                     );
-                  } else if (totalPages > 7 && (pageNum === currentPage - 2 || pageNum === currentPage + 2)) {
+                  } else if (totalPages > 7 && (pageNum === currentPage - 3 || pageNum === currentPage + 3)) {
                      // Show ellipsis if conditions met
                      return <PaginationItem key={`ellipsis-${pageNum}`}><PaginationEllipsis /></PaginationItem>;
                   }
@@ -294,6 +327,8 @@ export default function ProductsPage() {
     </div>
   );
 }
+    
+
     
 
     
