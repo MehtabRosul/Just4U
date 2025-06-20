@@ -139,7 +139,7 @@ const HeroCarouselButton = ({ href, children, className }: { href: string; child
     className={cn(
       "shadow-lg transition-transform hover:scale-105 mt-4 sm:mt-6",
       "border-2 border-transparent focus:ring-2 focus:ring-offset-2 focus:ring-offset-transparent",
-      "bg-primary text-primary-foreground hover:bg-primary/90 focus:ring-primary", 
+      "bg-primary text-primary-foreground hover:bg-primary/90 focus:ring-primary",
       className
     )}
   >
@@ -156,7 +156,7 @@ const HeroCarousel = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prevSlide) => (prevSlide + 1) % carouselBannersData.length);
-    }, 5000); 
+    }, 5000);
     return () => clearInterval(timer);
   }, []);
 
@@ -178,33 +178,33 @@ const HeroCarousel = () => {
             bannerBaseTransition,
             index === currentSlide ? bannerAnimationActiveClasses : bannerAnimationInactiveClasses + " pointer-events-none"
           )}
-          style={{ zIndex: 1 }} 
+          style={{ zIndex: 1 }}
         >
           <Image
             src={banner.imageUrl}
-            alt="" 
+            alt=""
             fill
-            className="object-cover opacity-40 pointer-events-none" 
+            className="object-cover opacity-40 pointer-events-none"
             data-ai-hint={banner.dataAiHint}
-            priority={index === 0} 
+            priority={index === 0}
           />
         </div>
       ))}
 
       {/* Static Content Area: Title, Description, and Button */}
       <div className="absolute inset-y-0 left-0 flex items-center p-6 sm:p-10 md:p-16 z-10 w-full md:w-3/5 lg:w-1/2">
-        <div className="relative max-w-lg md:max-w-xl text-left"> 
+        <div className="relative max-w-lg md:max-w-xl text-left">
           <h2 className={cn(
             "font-headline text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold mb-3 sm:mb-4 md:mb-6",
             activeBanner.titleTextClass || "text-white",
-            "transition-opacity duration-700 ease-out" 
+            "transition-opacity duration-700 ease-out"
           )}>
             {activeBanner.title}
           </h2>
           <p className={cn(
             "text-base sm:text-lg md:text-xl mb-6 sm:mb-8 md:mb-10 leading-relaxed",
             activeBanner.descriptionTextClass || "text-neutral-100",
-             "transition-opacity duration-700 ease-out delay-100" 
+             "transition-opacity duration-700 ease-out delay-100"
           )}>
             {activeBanner.description}
           </p>
@@ -253,7 +253,7 @@ const SmartFinderPanel = () => {
   const [selectedPriceRangeKey, setSelectedPriceRangeKey] = useState<string>('all');
 
   const handleFindGifts = () => {
-    const noFiltersSelected = 
+    const noFiltersSelected =
       selectedOccasion === 'all' &&
       selectedGiftType === 'all' &&
       selectedRecipient === 'all' &&
@@ -263,9 +263,9 @@ const SmartFinderPanel = () => {
       toast({
         title: "Select Filters",
         description: "Please select at least one filter to find gifts.",
-        variant: "default", 
+        variant: "default",
       });
-      return; 
+      return;
     }
 
     const queryParams = new URLSearchParams();
@@ -273,7 +273,7 @@ const SmartFinderPanel = () => {
       queryParams.append('occasion', selectedOccasion);
     }
     if (selectedGiftType && selectedGiftType !== 'all') {
-      queryParams.append('category', selectedGiftType); 
+      queryParams.append('category', selectedGiftType);
     }
     if (selectedRecipient && selectedRecipient !== 'all') {
       queryParams.append('recipient', selectedRecipient);
@@ -455,7 +455,7 @@ const Advertisements = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentImageIndex((prevIndex) => (prevIndex + 1) % bannerImagesData.length);
-    }, 5000); 
+    }, 5000);
 
     return () => clearInterval(timer);
   }, [bannerImagesData.length]);
@@ -552,7 +552,7 @@ const TestimonialsSection = () => {
 
 
   const ITEMS_PER_SET = 8;
-  const ROTATION_INTERVAL = 15000; 
+  const ROTATION_INTERVAL = 15000;
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -680,68 +680,56 @@ const OccasionSpotlight = () => {
 };
 
 const GiftQuoteBanners = () => {
-  const quoteBanners = [
+  // Banner styles for the internal background of the banner
+  const bannerBackgroundStyles = [
     {
       id: 1,
-      text: "A truly thoughtful gift is a silent message of affection, a tangible reminder that someone holds you dear and took the time to express it beautifully.",
-      animationClasses: "bg-gradient-to-r from-sky-400 via-cyan-400 to-blue-500 bg-[length:300%_300%] animate-nebula-shift",
-      textColorClass: "text-white"
+      animationClasses: "bg-gradient-to-r from-sky-600 via-cyan-500 to-blue-600 bg-[length:300%_300%] animate-nebula-shift",
     },
     {
       id: 2,
-      text: "The joy of gifting lies not in the object itself, but in the delight it brings to another's eyes, a shared moment of happiness that echoes long after the wrapping is gone.",
-      animationClasses: "bg-gradient-to-r from-emerald-400 via-teal-400 to-green-500 bg-[length:200%_100%] animate-liquid-flow",
-      textColorClass: "text-white"
+      animationClasses: "bg-gradient-to-r from-emerald-500 via-teal-500 to-green-600 bg-[length:200%_100%] animate-liquid-flow",
     },
     {
       id: 3,
-      text: "Gifts are more than mere possessions; they are bridges between hearts, tokens of appreciation, and symbols of the unspoken bonds that connect us.",
-      animationClasses: "bg-gradient-to-r from-fuchsia-400 via-pink-400 to-purple-500 bg-[length:300%_300%] animate-bokeh-drift",
-      textColorClass: "text-white"
+      animationClasses: "bg-gradient-to-r from-fuchsia-500 via-pink-500 to-purple-600 bg-[length:300%_300%] animate-bokeh-drift",
     },
     {
       id: 4,
-      text: "In every carefully chosen gift, there's a story whispered – a tale of understanding, remembrance, and the simple, profound desire to bring a smile to someone's face.",
-      animationClasses: "bg-gradient-to-r from-amber-300 via-orange-400 to-yellow-400 bg-[length:200%_100%] animate-subtle-stripes",
-      textColorClass: "text-neutral-800" 
+      animationClasses: "bg-gradient-to-r from-orange-600 via-amber-500 to-yellow-500 bg-[length:200%_100%] animate-subtle-stripes",
     },
     {
       id: 5,
-      text: "Giving a gift is an art form where the heart guides the hand, selecting not just an item, but a piece of joy intended to brighten another's world.",
-      animationClasses: "bg-gradient-to-br from-pink-400 via-rose-400 to-red-500 bg-[length:200%_200%] animate-watercolor-flow",
-      textColorClass: "text-white"
+      animationClasses: "bg-gradient-to-br from-pink-500 via-rose-500 to-red-600 bg-[length:200%_200%] animate-watercolor-flow",
     },
   ];
 
-  const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
+  const [currentBackgroundIndex, setCurrentBackgroundIndex] = useState(0);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentBannerIndex((prevIndex) => (prevIndex + 1) % quoteBanners.length);
-    }, 10000); 
+      setCurrentBackgroundIndex((prevIndex) => (prevIndex + 1) % bannerBackgroundStyles.length);
+    }, 7000); 
 
     return () => clearInterval(timer);
-  }, [quoteBanners.length]);
+  }, [bannerBackgroundStyles.length]);
 
-  const currentBanner = quoteBanners[currentBannerIndex];
+  const currentBackgroundStyle = bannerBackgroundStyles[currentBackgroundIndex];
 
   return (
     <section className="my-8 sm:my-12">
       <div
-        key={currentBanner.id} 
+        key={currentBackgroundStyle.id}
         className={cn(
-          "w-full h-20 sm:h-24 md:h-28 flex items-center justify-center p-4 rounded-lg shadow-md relative overflow-hidden animate-breathing-scale",
-          currentBanner.animationClasses,
+          "w-full h-20 sm:h-24 md:h-28",
+          "flex items-center justify-center",
+          "rounded-lg relative", // Removed shadow-md, glow provides visual distinction
+          "animate-animated-glow-border", 
+          currentBackgroundStyle.animationClasses, 
           "transition-all duration-1000 ease-in-out" 
         )}
       >
-        <p className={cn(
-          "text-sm sm:text-base md:text-lg font-medium text-center italic relative z-10",
-           currentBanner.textColorClass,
-           "transition-opacity duration-500 ease-in-out"
-           )}>
-          "{currentBanner.text}"
-        </p>
+        {/* Content removed as per request */}
       </div>
     </section>
   );
@@ -778,10 +766,10 @@ const GiftTypeHighlight = () => {
                                 <IconComponent className="h-6 w-6 sm:h-7 text-primary mb-1 sm:mb-1.5 transition-transform duration-300 group-hover:scale-110" />
                                 ) : giftType.dataAiHint && (
                                     <Image
-                                        src={`https://placehold.co/40x40.png`} 
+                                        src={`https://placehold.co/40x40.png`}
                                         alt={giftType.name}
-                                        width={24} 
-                                        height={24} 
+                                        width={24}
+                                        height={24}
                                         className="rounded-md object-cover mb-1 sm:mb-1.5 transition-transform duration-300 group-hover:scale-110"
                                         data-ai-hint={giftType.dataAiHint}
                                     />
@@ -874,13 +862,3 @@ export default function HomePage()
     </div>
   );
 }
-    
-
-    
-
-
-
-
-
-
-

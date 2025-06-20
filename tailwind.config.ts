@@ -2,7 +2,7 @@
 import type {Config} from 'tailwindcss';
 
 export default {
-  darkMode: ['class'], 
+  darkMode: ['class'],
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -105,54 +105,71 @@ export default {
           '0%': { transform: 'translateX(-100%)' },
           '100%': { transform: 'translateX(0%)' },
         },
-        'nebula-shift': { // More vibrant colors
+        'nebula-shift': { 
           '0%': { backgroundPosition: '0% 50%' },
           '50%': { backgroundPosition: '100% 50%' },
           '100%': { backgroundPosition: '0% 50%' },
         },
-        'liquid-flow': { // More vibrant colors
+        'liquid-flow': { 
           '0%': { backgroundPosition: '0% 50%' },
           '100%': { backgroundPosition: '200% 50%' },
         },
-        'bokeh-drift': { // More vibrant colors and opacity
+        'bokeh-drift': { 
           '0%, 100%': { backgroundPosition: '0% 0%' },
           '50%': { backgroundPosition: '100% 100%' },
         },
-        'subtle-stripes': { // Brighter, more contrast
+        'subtle-stripes': { 
           '0%, 100%': { backgroundPosition: '0% 50%' },
           '50%': { backgroundPosition: '100% 50%' },
         },
-        'watercolor-flow': { // More vibrant colors and opacity
+        'watercolor-flow': { 
           '0%, 100%': { backgroundPosition: '0% 50%' },
           '50%': { backgroundPosition: '100% 50%' },
         },
-        'breathing-scale': {
+        'breathing-scale': { // Kept this as it was on the component before
           '0%, 100%': { transform: 'scale(1)' },
           '50%': { transform: 'scale(1.02)' },
+        },
+        'animated-glow-border': { // Keyframes for the glowing border
+          '0%': {
+            boxShadow: '0 0 6px hsl(var(--primary)), 0 0 12px hsl(var(--primary)), 0 0 18px hsl(var(--primary))'
+          },
+          '25%': {
+            boxShadow: '0 0 8px hsl(var(--chart-2)), 0 0 16px hsl(var(--chart-2)), 0 0 24px hsl(var(--chart-2))'
+          },
+          '50%': {
+            boxShadow: '0 0 6px hsl(var(--chart-3)), 0 0 12px hsl(var(--chart-3)), 0 0 18px hsl(var(--chart-3))'
+          },
+          '75%': {
+            boxShadow: '0 0 8px hsl(var(--chart-4)), 0 0 16px hsl(var(--chart-4)), 0 0 24px hsl(var(--chart-4))'
+          },
+          '100%': {
+            boxShadow: '0 0 6px hsl(var(--primary)), 0 0 12px hsl(var(--primary)), 0 0 18px hsl(var(--primary))'
+          },
         },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
         'marquee-text': 'marquee-text 25s linear infinite',
-        'marquee-horizontal': 'marquee-horizontal 40s linear infinite', 
+        'marquee-horizontal': 'marquee-horizontal 40s linear infinite',
         'marquee-horizontal-reverse': 'marquee-horizontal-reverse 40s linear infinite',
         'nebula-shift': 'nebula-shift 20s ease infinite',
         'liquid-flow': 'liquid-flow 15s linear infinite',
         'bokeh-drift': 'bokeh-drift 25s ease-in-out infinite',
-        'subtle-stripes': 'subtle-stripes 20s linear infinite', // Faster for more shimmer if desired
+        'subtle-stripes': 'subtle-stripes 20s linear infinite',
         'watercolor-flow': 'watercolor-flow 18s ease-in-out infinite',
         'breathing-scale': 'breathing-scale 4s ease-in-out infinite',
+        'animated-glow-border': 'animated-glow-border 6s linear infinite', // Animation for the glowing border
       },
-      height: { 
-        '6': '1.5rem', 
-        '16': '4rem', 
+      height: {
+        '6': '1.5rem',
+        '16': '4rem',
       }
     },
   },
   plugins: [
     require('tailwindcss-animate'),
-    require('tailwind-scrollbar')({ nocompatible: true }), 
+    require('tailwind-scrollbar')({ nocompatible: true }),
   ],
 } satisfies Config;
-
