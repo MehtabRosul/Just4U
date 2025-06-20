@@ -11,7 +11,7 @@ import { ProductSortControl, type SortOption } from '@/components/products/Produ
 import { SectionTitle } from '@/components/shared/SectionTitle';
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 
-const ITEMS_PER_PAGE = 60; // Increased from 12 to 60
+const ITEMS_PER_PAGE = 12; // Changed from 60 to 12
 
 interface ActiveFilters { // Renamed from ProductFilterInputs to ActiveFilters to be more generic
   category: string;
@@ -95,7 +95,7 @@ export default function ProductsPage() {
         tempProducts.sort((a, b) => a.price - b.price);
         break;
       case 'price_desc':
-        tempProducts.sort((a, b) => b.price - a.price);
+        tempProducts.sort((a, b) => b.price - b.price);
         break;
       case 'name_asc':
         tempProducts.sort((a, b) => a.name.localeCompare(b.name));
