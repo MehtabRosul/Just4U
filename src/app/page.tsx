@@ -775,7 +775,7 @@ const GiftTypeHighlight = () => {
                                 <IconComponent className="h-6 w-6 sm:h-7 text-primary mb-1 sm:mb-1.5 transition-transform duration-300 group-hover:scale-110" />
                                 ) : giftType.dataAiHint && (
                                     <Image
-                                        src={`https://placehold.co/40x40.jpg`} 
+                                        src={`https://placehold.co/40x40.png`} 
                                         alt={giftType.name}
                                         width={24} 
                                         height={24} 
@@ -820,7 +820,7 @@ const RecipientQuickLinks = () => {
                 >
                   <div className="relative w-full aspect-[1/1]">
                     <Image
-                      src={`https://placehold.co/200x200.jpg`}
+                      src={`https://placehold.co/200x200.png`}
                       alt={recipient.name}
                       fill
                       className="object-cover group-hover/item:scale-105 transition-transform duration-300"
