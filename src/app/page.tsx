@@ -156,7 +156,6 @@ const HeroCarousel = () => {
     const timer = setInterval(() => {
       setCurrentSlide((prevSlide) => (prevSlide + 1) % carouselBannersData.length);
     }, 5000); 
-
     return () => clearInterval(timer);
   }, []);
 
@@ -168,6 +167,7 @@ const HeroCarousel = () => {
 
   return (
     <section className="relative min-h-[350px] md:min-h-[450px] lg:min-h-[550px] w-full mb-8 sm:mb-12 rounded-lg overflow-hidden shadow-2xl">
+      {/* Background Image Layers */}
       {carouselBannersData.map((banner, index) => (
         <div
           key={banner.id}
@@ -183,13 +183,14 @@ const HeroCarousel = () => {
             src={banner.imageUrl}
             alt="" 
             fill
-            className="object-cover opacity-30 pointer-events-none"
+            className="object-cover opacity-40 pointer-events-none" // Increased opacity
             data-ai-hint={banner.dataAiHint}
             priority={index === 0} 
           />
         </div>
       ))}
 
+      {/* Static Content Area: Title, Description, and Button */}
       <div className="absolute inset-y-0 left-0 flex items-center p-6 sm:p-10 md:p-16 z-10 w-full md:w-3/5 lg:w-1/2">
         <div className="relative max-w-lg md:max-w-xl text-left"> 
           <h2 className={cn(
@@ -214,6 +215,7 @@ const HeroCarousel = () => {
         </div>
       </div>
 
+      {/* Navigation Dots */}
       <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex space-x-2.5">
         {carouselBannersData.map((_, index) => (
           <button
@@ -874,4 +876,5 @@ export default function HomePage()
     
 
     
+
 
