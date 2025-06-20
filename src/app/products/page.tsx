@@ -10,6 +10,8 @@ import { ProductSortControl, type SortOption } from '@/components/products/Produ
 import { SectionTitle } from '@/components/shared/SectionTitle';
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 
+console.log("Top-level: PRODUCTS imported. Length:", PRODUCTS ? PRODUCTS.length : 'undefined'); // DIAGNOSTIC
+
 const ITEMS_PER_PAGE = 50; 
 
 interface ActiveFilters { 
@@ -20,83 +22,130 @@ interface ActiveFilters {
 }
 
 export default function ProductsPage() {
+  console.log("ProductsPage rendered. Initial PRODUCTS length from within component:", PRODUCTS ? PRODUCTS.length : 'undefined'); // DIAGNOSTIC
+
   const searchParams = useSearchParams();
 
   const serverMaxPrice = useMemo(() => {
-    if (!PRODUCTS || PRODUCTS.length === 0) return Number.MAX_SAFE_INTEGER;
-    const prices = PRODUCTS.map(p => p.price).filter(p => typeof p === 'number' && !isNaN(p));
-    if (prices.length === 0) return Number.MAX_SAFE_INTEGER;
+    if (!PRODUCTS || PRODUCTS.length === 0) {
+        console.warn("serverMaxPrice: PRODUCTS array is empty or undefined."); // DIAGNOSTIC
+        return Number.MAX_SAFE_INTEGER;
+    }
+    const prices = PRODUCTS.map(p => p.price).filter(p => typeof p.price === 'number' && !isNaN(p.price));
+    if (prices.length === 0) {
+        console.warn("serverMaxPrice: No valid prices found in PRODUCTS."); // DIAGNOSTIC
+        return Number.MAX_SAFE_INTEGER;
+    }
     const maxProductPrice = Math.max(...prices);
-    return maxProductPrice > 0 ? maxProductPrice : Number.MAX_SAFE_INTEGER;
-  }, []); // PRODUCTS is static, so empty array dependency is fine.
+    const result = maxProductPrice > 0 ? maxProductPrice : Number.MAX_SAFE_INTEGER;
+    console.log("serverMaxPrice calculated:", result); // DIAGNOSTIC
+    return result;
+  }, []);
 
-  // Initialize state directly, useEffect will refine it based on params
   const [activeFilters, setActiveFilters] = useState<ActiveFilters>({
     category: 'all',
-    priceRange: [0, serverMaxPrice], // Initial guess, will be refined by useEffect
+    priceRange: [0, Number.MAX_SAFE_INTEGER], // Initial wide range, useEffect will refine
     occasion: 'all',
     recipient: 'all',
   });
+  console.log("Initial activeFilters state:", activeFilters); // DIAGNOSTIC
   
   const [sortOption, setSortOption] = useState<SortOption>('popularity');
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
+    console.log("useEffect for searchParams triggered. searchParams:", searchParams.toString()); // DIAGNOSTIC
+    console.log("useEffect: serverMaxPrice available:", serverMaxPrice); // DIAGNOSTIC
+
     const categoryFromUrl = searchParams.get('category') || 'all';
     const occasionFromUrl = searchParams.get('occasion') || 'all';
     const recipientFromUrl = searchParams.get('recipient') || 'all';
     const sortFromUrl = (searchParams.get('sort') as SortOption) || 'popularity';
 
     const priceMinQuery = searchParams.get('priceMin');
-    const parsedPriceMin = parseInt(priceMinQuery || '0', 10);
-    // Ensure safePriceMin is a valid number, defaulting to 0 if NaN
-    const safePriceMin = !isNaN(parsedPriceMin) ? parsedPriceMin : 0;
-
     const priceMaxQuery = searchParams.get('priceMax');
-    let safePriceMax;
+
+    let newMinPrice = 0;
+    if (priceMinQuery !== null) {
+        const parsed = parseInt(priceMinQuery, 10);
+        if (!isNaN(parsed)) {
+            newMinPrice = parsed;
+        } else {
+            console.warn(`useEffect: priceMinQuery '${priceMinQuery}' is NaN. Defaulting to 0.`); // DIAGNOSTIC
+        }
+    }
+
+    let newMaxPrice = serverMaxPrice; 
     if (priceMaxQuery !== null) {
-        const parsedPriceMax = parseInt(priceMaxQuery, 10);
-        // If parsedPriceMax is NaN, default to serverMaxPrice. Otherwise, use the parsed value (capped by serverMaxPrice).
-        safePriceMax = !isNaN(parsedPriceMax) ? Math.min(parsedPriceMax, serverMaxPrice) : serverMaxPrice;
-    } else {
-        safePriceMax = serverMaxPrice;
+        const parsed = parseInt(priceMaxQuery, 10);
+        if (!isNaN(parsed)) {
+            newMaxPrice = Math.min(parsed, serverMaxPrice);
+        } else {
+            console.warn(`useEffect: priceMaxQuery '${priceMaxQuery}' is NaN. Defaulting to serverMaxPrice.`); // DIAGNOSTIC
+        }
     }
     
-    setActiveFilters({
+    if (newMinPrice > newMaxPrice) {
+        console.warn(`useEffect: newMinPrice (${newMinPrice}) > newMaxPrice (${newMaxPrice}). Resetting to defaults.`); // DIAGNOSTIC
+        newMinPrice = 0; 
+        newMaxPrice = serverMaxPrice;
+    }
+    
+    const newFilters = {
         category: categoryFromUrl,
-        priceRange: [safePriceMin, safePriceMax],
+        priceRange: [newMinPrice, newMaxPrice] as [number, number],
         occasion: occasionFromUrl,
         recipient: recipientFromUrl,
-    });
+    };
+    console.log("useEffect: Setting new activeFilters:", newFilters); // DIAGNOSTIC
+    setActiveFilters(newFilters);
     setSortOption(sortFromUrl); 
     setCurrentPage(1); 
   }, [searchParams, serverMaxPrice]);
 
 
   const filteredAndSortedProducts = useMemo(() => {
+    console.log("useMemo for filteredAndSortedProducts: Base PRODUCTS length:", PRODUCTS ? PRODUCTS.length : 'undefined'); // DIAGNOSTIC
+    console.log("useMemo: current activeFilters:", activeFilters); // DIAGNOSTIC
+    console.log("useMemo: current sortOption:", sortOption); // DIAGNOSTIC
+
+    if (!PRODUCTS || PRODUCTS.length === 0) {
+      console.warn("filteredAndSortedProducts: PRODUCTS array is empty or undefined at start of memo."); // DIAGNOSTIC
+      return [];
+    }
+
     let tempProducts = [...PRODUCTS];
 
     if (activeFilters.category !== 'all') {
       tempProducts = tempProducts.filter(p => p.category === activeFilters.category);
+      console.log(`After category filter ('${activeFilters.category}'), count: ${tempProducts.length}`); // DIAGNOSTIC
     }
 
     if (activeFilters.occasion !== 'all') {
       tempProducts = tempProducts.filter(p => p.occasion?.includes(activeFilters.occasion));
+      console.log(`After occasion filter ('${activeFilters.occasion}'), count: ${tempProducts.length}`); // DIAGNOSTIC
     }
     
     if (activeFilters.recipient !== 'all') {
       tempProducts = tempProducts.filter(p => p.recipient?.includes(activeFilters.recipient));
+      console.log(`After recipient filter ('${activeFilters.recipient}'), count: ${tempProducts.length}`); // DIAGNOSTIC
     }
     
-    // Ensure priceRange values are numbers before filtering
-    const minPrice = typeof activeFilters.priceRange[0] === 'number' ? activeFilters.priceRange[0] : 0;
-    const maxPrice = typeof activeFilters.priceRange[1] === 'number' ? activeFilters.priceRange[1] : Number.MAX_SAFE_INTEGER;
+    const minPrice = activeFilters.priceRange[0];
+    const maxPrice = activeFilters.priceRange[1];
 
-    tempProducts = tempProducts.filter(p => 
-        typeof p.price === 'number' && // Ensure product price is a number
-        p.price >= minPrice && 
-        p.price <= maxPrice
-    );
+    if (typeof minPrice !== 'number' || isNaN(minPrice) || typeof maxPrice !== 'number' || isNaN(maxPrice)) {
+      console.error("filteredAndSortedProducts: Critical error: Invalid priceRange in activeFilters:", activeFilters.priceRange); // DIAGNOSTIC
+      return []; // Safety return if priceRange is corrupted
+    }
+    
+    tempProducts = tempProducts.filter(p => {
+        if (typeof p.price !== 'number' || isNaN(p.price)) {
+          return false; 
+        }
+        return p.price >= minPrice && p.price <= maxPrice;
+    });
+    console.log(`After price filter ([${minPrice}, ${maxPrice}]), count: ${tempProducts.length}`); // DIAGNOSTIC
     
     switch (sortOption) {
       case 'popularity':
@@ -115,9 +164,11 @@ export default function ProductsPage() {
         tempProducts.sort((a, b) => b.name.localeCompare(a.name));
         break;
     }
+    console.log(`After sorting by '${sortOption}', count: ${tempProducts.length}`); // DIAGNOSTIC
         
     if (sortOption === 'trending') { 
        tempProducts = tempProducts.filter(p => p.trending).sort((a,b) => b.popularity - a.popularity);
+       console.log(`After trending filter & sort, count: ${tempProducts.length}`); // DIAGNOSTIC
     }
 
     return tempProducts;
@@ -128,6 +179,7 @@ export default function ProductsPage() {
     (currentPage - 1) * ITEMS_PER_PAGE,
     currentPage * ITEMS_PER_PAGE
   );
+  console.log(`currentProducts for page ${currentPage}: ${currentProducts.length} items. Total pages: ${totalPages}`); // DIAGNOSTIC
 
   const handlePageChange = (page: number) => {
     if (page >= 1 && page <= totalPages) {
@@ -158,9 +210,7 @@ export default function ProductsPage() {
     <div className="container mx-auto px-4 py-6 sm:py-8">
       <SectionTitle className="mb-4 sm:mb-6">{generatePageTitle()}</SectionTitle>
       
-      <div className="space-y-6">
-        
-        <div className="space-y-6"> 
+      <div className="space-y-6"> 
           <div className="flex flex-col sm:flex-row justify-between items-center p-3 sm:p-4 border rounded-lg shadow-sm bg-secondary gap-2 sm:gap-4">
             <p className="text-xs sm:text-sm text-muted-foreground text-center sm:text-left">
               Showing {currentProducts.length > 0 ? ((currentPage - 1) * ITEMS_PER_PAGE) + 1 : 0}-{(Math.min(currentPage * ITEMS_PER_PAGE, filteredAndSortedProducts.length))} of {filteredAndSortedProducts.length} products
@@ -186,16 +236,16 @@ export default function ProductsPage() {
                   const showPage = pageNum === 1 || 
                                    pageNum === totalPages || 
                                    pageNum === currentPage || 
-                                   pageNum === currentPage - 1 || 
-                                   pageNum === currentPage + 1;
+                                   (pageNum >= currentPage - 1 && pageNum <= currentPage + 1 && totalPages <= 5) || // Show nearby pages if few total pages
+                                   (totalPages > 5 && (pageNum === currentPage -1 || pageNum === currentPage + 1)); // Show immediate neighbors if many pages
                   
-                  const showEllipsisBefore = pageNum === currentPage - 2 && currentPage > 3 && totalPages > 5;
-                  const showEllipsisAfter = pageNum === currentPage + 2 && currentPage < totalPages - 2 && totalPages > 5;
+                  const showEllipsisBefore = totalPages > 5 && pageNum === currentPage - 2 && currentPage > 3;
+                  const showEllipsisAfter = totalPages > 5 && pageNum === currentPage + 2 && currentPage < totalPages - 2;
 
-                  if (showEllipsisBefore && pageNum > 1 && pageNum < currentPage -1) {
+                  if (showEllipsisBefore) {
                     return <PaginationItem key={`ellipsis-before-${pageNum}`}><PaginationEllipsis /></PaginationItem>;
                   }
-                   if (showEllipsisAfter && pageNum < totalPages && pageNum > currentPage + 1) {
+                   if (showEllipsisAfter) {
                     return <PaginationItem key={`ellipsis-after-${pageNum}`}><PaginationEllipsis /></PaginationItem>;
                   }
                   if (showPage) {
@@ -225,7 +275,6 @@ export default function ProductsPage() {
             </Pagination>
           )}
         </div>
-      </div>
     </div>
   );
 }

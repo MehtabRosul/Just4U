@@ -7,8 +7,10 @@ interface ProductListProps {
 }
 
 export function ProductList({ products }: ProductListProps) {
+  console.log("[ProductList Component] Received products count:", products ? products.length : 'undefined'); // DIAGNOSTIC
   if (!products || products.length === 0) {
-    return <p className="text-center text-muted-foreground py-10">No products found.</p>;
+    // Enhanced message for clarity during debugging
+    return <p className="text-center text-muted-foreground py-10">No products found to display (message from ProductList component).</p>;
   }
 
   return (
