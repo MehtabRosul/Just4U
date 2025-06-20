@@ -24,7 +24,6 @@ interface CarouselBanner {
   description: string;
   imageUrl: string;
   dataAiHint: string;
-  // buttonText and buttonLink are no longer used directly per banner for the main button
   gradientClasses: string;
   titleTextClass?: string;
   descriptionTextClass?: string;
@@ -185,7 +184,7 @@ const HeroCarousel = () => {
             src={banner.imageUrl}
             alt="" // Decorative, as text is handled separately
             fill
-            className="object-cover opacity-30 pointer-events-none" // Increased opacity slightly
+            className="object-cover opacity-30 pointer-events-none" // Image opacity
             data-ai-hint={banner.dataAiHint}
             priority={index === 0} // Prioritize loading the first image
           />
@@ -210,6 +209,7 @@ const HeroCarousel = () => {
             {activeBanner.description}
           </p>
           <div className="transition-opacity duration-700 ease-out delay-200">
+            {/* Single "Explore More" button linking to /products */}
             <HeroCarouselButton href="/products">
               Explore More
             </HeroCarouselButton>
