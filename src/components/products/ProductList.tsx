@@ -9,12 +9,21 @@ interface ProductListProps {
 export function ProductList({ products }: ProductListProps) {
   console.log("[ProductList Component] Received products. Count:", products ? products.length : 'undefined');
   if (products && products.length > 0) {
-    console.log("[ProductList Component] First product sample:", products[0]);
+    // Log only a sample to avoid flooding console if many products
+    console.log("[ProductList Component] First product sample name:", products[0].name, "ID:", products[0].id, "Price:", products[0].price);
+  } else {
+    console.warn("[ProductList Component] Received empty or undefined products array.");
   }
 
-
   if (!products || products.length === 0) {
-    return <p className="text-center text-muted-foreground py-10">No products found to display (message from ProductList component). Check console logs for diagnostics.</p>;
+    // Adding more specific user-facing message here if this state is reached.
+    return (
+      <div className="text-center text-muted-foreground py-10">
+        <p className="text-lg font-semibold">No Products Found</p>
+        <p>We couldn't find any products matching your current filters.</p>
+        <p className="text-sm mt-2">(Diagnostic: ProductList component received no products to display.)</p>
+      </div>
+    );
   }
 
   return (
