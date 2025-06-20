@@ -10,7 +10,7 @@ import { ProductSortControl, type SortOption } from '@/components/products/Produ
 import { SectionTitle } from '@/components/shared/SectionTitle';
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 
-console.log("Top-level: PRODUCTS imported. Length:", PRODUCTS ? PRODUCTS.length : 'undefined'); // DIAGNOSTIC
+console.log("[DIAGNOSTIC] Top-level: PRODUCTS imported. Length:", PRODUCTS ? PRODUCTS.length : 'undefined');
 
 const ITEMS_PER_PAGE = 50; 
 
@@ -22,40 +22,40 @@ interface ActiveFilters {
 }
 
 export default function ProductsPage() {
-  console.log("ProductsPage rendered. Initial PRODUCTS length from within component:", PRODUCTS ? PRODUCTS.length : 'undefined'); // DIAGNOSTIC
+  console.log("[DIAGNOSTIC] ProductsPage rendered. Initial PRODUCTS length from within component:", PRODUCTS ? PRODUCTS.length : 'undefined');
 
   const searchParams = useSearchParams();
 
   const serverMaxPrice = useMemo(() => {
     if (!PRODUCTS || PRODUCTS.length === 0) {
-        console.warn("serverMaxPrice: PRODUCTS array is empty or undefined."); // DIAGNOSTIC
+        console.warn("[DIAGNOSTIC] serverMaxPrice: PRODUCTS array is empty or undefined during calculation.");
         return Number.MAX_SAFE_INTEGER;
     }
     const prices = PRODUCTS.map(p => p.price).filter(p => typeof p.price === 'number' && !isNaN(p.price));
     if (prices.length === 0) {
-        console.warn("serverMaxPrice: No valid prices found in PRODUCTS."); // DIAGNOSTIC
+        console.warn("[DIAGNOSTIC] serverMaxPrice: No valid prices found in PRODUCTS.");
         return Number.MAX_SAFE_INTEGER;
     }
     const maxProductPrice = Math.max(...prices);
     const result = maxProductPrice > 0 ? maxProductPrice : Number.MAX_SAFE_INTEGER;
-    console.log("serverMaxPrice calculated:", result); // DIAGNOSTIC
+    console.log("[DIAGNOSTIC] serverMaxPrice calculated:", result);
     return result;
   }, []);
 
   const [activeFilters, setActiveFilters] = useState<ActiveFilters>({
     category: 'all',
-    priceRange: [0, Number.MAX_SAFE_INTEGER], // Initial wide range, useEffect will refine
+    priceRange: [0, Number.MAX_SAFE_INTEGER], 
     occasion: 'all',
     recipient: 'all',
   });
-  console.log("Initial activeFilters state:", activeFilters); // DIAGNOSTIC
+  console.log("[DIAGNOSTIC] Initial activeFilters state:", activeFilters);
   
   const [sortOption, setSortOption] = useState<SortOption>('popularity');
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    console.log("useEffect for searchParams triggered. searchParams:", searchParams.toString()); // DIAGNOSTIC
-    console.log("useEffect: serverMaxPrice available:", serverMaxPrice); // DIAGNOSTIC
+    console.log("[DIAGNOSTIC] useEffect for searchParams triggered. searchParams:", searchParams.toString());
+    console.log("[DIAGNOSTIC] useEffect: serverMaxPrice available:", serverMaxPrice);
 
     const categoryFromUrl = searchParams.get('category') || 'all';
     const occasionFromUrl = searchParams.get('occasion') || 'all';
@@ -64,6 +64,7 @@ export default function ProductsPage() {
 
     const priceMinQuery = searchParams.get('priceMin');
     const priceMaxQuery = searchParams.get('priceMax');
+    console.log(`[DIAGNOSTIC] useEffect: priceMinQuery='${priceMinQuery}', priceMaxQuery='${priceMaxQuery}'`);
 
     let newMinPrice = 0;
     if (priceMinQuery !== null) {
@@ -71,7 +72,7 @@ export default function ProductsPage() {
         if (!isNaN(parsed)) {
             newMinPrice = parsed;
         } else {
-            console.warn(`useEffect: priceMinQuery '${priceMinQuery}' is NaN. Defaulting to 0.`); // DIAGNOSTIC
+            console.warn(`[DIAGNOSTIC] useEffect: priceMinQuery '${priceMinQuery}' is NaN. Defaulting to 0.`);
         }
     }
 
@@ -79,14 +80,14 @@ export default function ProductsPage() {
     if (priceMaxQuery !== null) {
         const parsed = parseInt(priceMaxQuery, 10);
         if (!isNaN(parsed)) {
-            newMaxPrice = Math.min(parsed, serverMaxPrice);
+            newMaxPrice = Math.min(parsed, serverMaxPrice); // Ensure it doesn't exceed actual max
         } else {
-            console.warn(`useEffect: priceMaxQuery '${priceMaxQuery}' is NaN. Defaulting to serverMaxPrice.`); // DIAGNOSTIC
+            console.warn(`[DIAGNOSTIC] useEffect: priceMaxQuery '${priceMaxQuery}' is NaN. Defaulting to serverMaxPrice.`);
         }
     }
     
     if (newMinPrice > newMaxPrice) {
-        console.warn(`useEffect: newMinPrice (${newMinPrice}) > newMaxPrice (${newMaxPrice}). Resetting to defaults.`); // DIAGNOSTIC
+        console.warn(`[DIAGNOSTIC] useEffect: newMinPrice (${newMinPrice}) > newMaxPrice (${newMaxPrice}). Resetting to defaults [0, ${serverMaxPrice}].`);
         newMinPrice = 0; 
         newMaxPrice = serverMaxPrice;
     }
@@ -97,7 +98,7 @@ export default function ProductsPage() {
         occasion: occasionFromUrl,
         recipient: recipientFromUrl,
     };
-    console.log("useEffect: Setting new activeFilters:", newFilters); // DIAGNOSTIC
+    console.log("[DIAGNOSTIC] useEffect: Setting new activeFilters:", newFilters);
     setActiveFilters(newFilters);
     setSortOption(sortFromUrl); 
     setCurrentPage(1); 
@@ -105,47 +106,49 @@ export default function ProductsPage() {
 
 
   const filteredAndSortedProducts = useMemo(() => {
-    console.log("useMemo for filteredAndSortedProducts: Base PRODUCTS length:", PRODUCTS ? PRODUCTS.length : 'undefined'); // DIAGNOSTIC
-    console.log("useMemo: current activeFilters:", activeFilters); // DIAGNOSTIC
-    console.log("useMemo: current sortOption:", sortOption); // DIAGNOSTIC
+    console.log("[DIAGNOSTIC] useMemo for filteredAndSortedProducts: Base PRODUCTS length:", PRODUCTS ? PRODUCTS.length : 'undefined');
+    console.log("[DIAGNOSTIC] useMemo: current activeFilters:", activeFilters);
+    console.log("[DIAGNOSTIC] useMemo: current sortOption:", sortOption);
 
     if (!PRODUCTS || PRODUCTS.length === 0) {
-      console.warn("filteredAndSortedProducts: PRODUCTS array is empty or undefined at start of memo."); // DIAGNOSTIC
+      console.warn("[DIAGNOSTIC] filteredAndSortedProducts: PRODUCTS array is empty or undefined at start of memo.");
       return [];
     }
 
     let tempProducts = [...PRODUCTS];
+    console.log(`[DIAGNOSTIC] Initial tempProducts count: ${tempProducts.length}`);
 
     if (activeFilters.category !== 'all') {
       tempProducts = tempProducts.filter(p => p.category === activeFilters.category);
-      console.log(`After category filter ('${activeFilters.category}'), count: ${tempProducts.length}`); // DIAGNOSTIC
+      console.log(`[DIAGNOSTIC] After category filter ('${activeFilters.category}'), count: ${tempProducts.length}`);
     }
 
     if (activeFilters.occasion !== 'all') {
       tempProducts = tempProducts.filter(p => p.occasion?.includes(activeFilters.occasion));
-      console.log(`After occasion filter ('${activeFilters.occasion}'), count: ${tempProducts.length}`); // DIAGNOSTIC
+      console.log(`[DIAGNOSTIC] After occasion filter ('${activeFilters.occasion}'), count: ${tempProducts.length}`);
     }
     
     if (activeFilters.recipient !== 'all') {
       tempProducts = tempProducts.filter(p => p.recipient?.includes(activeFilters.recipient));
-      console.log(`After recipient filter ('${activeFilters.recipient}'), count: ${tempProducts.length}`); // DIAGNOSTIC
+      console.log(`[DIAGNOSTIC] After recipient filter ('${activeFilters.recipient}'), count: ${tempProducts.length}`);
     }
     
     const minPrice = activeFilters.priceRange[0];
     const maxPrice = activeFilters.priceRange[1];
 
     if (typeof minPrice !== 'number' || isNaN(minPrice) || typeof maxPrice !== 'number' || isNaN(maxPrice)) {
-      console.error("filteredAndSortedProducts: Critical error: Invalid priceRange in activeFilters:", activeFilters.priceRange); // DIAGNOSTIC
-      return []; // Safety return if priceRange is corrupted
+      console.error("[DIAGNOSTIC] filteredAndSortedProducts: Critical error: Invalid priceRange in activeFilters:", activeFilters.priceRange);
+      return []; 
     }
     
     tempProducts = tempProducts.filter(p => {
         if (typeof p.price !== 'number' || isNaN(p.price)) {
+          console.warn(`[DIAGNOSTIC] Product ID ${p.id} has invalid price: ${p.price}. Filtering out.`);
           return false; 
         }
         return p.price >= minPrice && p.price <= maxPrice;
     });
-    console.log(`After price filter ([${minPrice}, ${maxPrice}]), count: ${tempProducts.length}`); // DIAGNOSTIC
+    console.log(`[DIAGNOSTIC] After price filter ([${minPrice}, ${maxPrice}]), count: ${tempProducts.length}`);
     
     switch (sortOption) {
       case 'popularity':
@@ -164,13 +167,14 @@ export default function ProductsPage() {
         tempProducts.sort((a, b) => b.name.localeCompare(a.name));
         break;
     }
-    console.log(`After sorting by '${sortOption}', count: ${tempProducts.length}`); // DIAGNOSTIC
+    console.log(`[DIAGNOSTIC] After sorting by '${sortOption}', count: ${tempProducts.length}`);
         
     if (sortOption === 'trending') { 
        tempProducts = tempProducts.filter(p => p.trending).sort((a,b) => b.popularity - a.popularity);
-       console.log(`After trending filter & sort, count: ${tempProducts.length}`); // DIAGNOSTIC
+       console.log(`[DIAGNOSTIC] After trending filter & sort, count: ${tempProducts.length}`);
     }
 
+    console.log(`[DIAGNOSTIC] Final filteredAndSortedProducts count: ${tempProducts.length}`);
     return tempProducts;
   }, [activeFilters, sortOption]); 
 
@@ -179,7 +183,7 @@ export default function ProductsPage() {
     (currentPage - 1) * ITEMS_PER_PAGE,
     currentPage * ITEMS_PER_PAGE
   );
-  console.log(`currentProducts for page ${currentPage}: ${currentProducts.length} items. Total pages: ${totalPages}`); // DIAGNOSTIC
+  console.log(`[DIAGNOSTIC] currentProducts for page ${currentPage}: ${currentProducts.length} items. Total pages: ${totalPages}`);
 
   const handlePageChange = (page: number) => {
     if (page >= 1 && page <= totalPages) {
@@ -236,8 +240,8 @@ export default function ProductsPage() {
                   const showPage = pageNum === 1 || 
                                    pageNum === totalPages || 
                                    pageNum === currentPage || 
-                                   (pageNum >= currentPage - 1 && pageNum <= currentPage + 1 && totalPages <= 5) || // Show nearby pages if few total pages
-                                   (totalPages > 5 && (pageNum === currentPage -1 || pageNum === currentPage + 1)); // Show immediate neighbors if many pages
+                                   (pageNum >= currentPage - 1 && pageNum <= currentPage + 1 && totalPages <= 5) || 
+                                   (totalPages > 5 && (pageNum === currentPage -1 || pageNum === currentPage + 1)); 
                   
                   const showEllipsisBefore = totalPages > 5 && pageNum === currentPage - 2 && currentPage > 3;
                   const showEllipsisAfter = totalPages > 5 && pageNum === currentPage + 2 && currentPage < totalPages - 2;
