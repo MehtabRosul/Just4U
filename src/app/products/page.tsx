@@ -6,7 +6,6 @@ import { useSearchParams } from 'next/navigation';
 import { PRODUCTS, CATEGORIES, OCCASIONS_LIST, RECIPIENTS_LIST } from '@/lib/data';
 import type { Product } from '@/lib/types';
 import { ProductList } from '@/components/products/ProductList';
-// import { ProductFilters, type Filters as ProductFilterInputs } from '@/components/products/ProductFilters'; // Removed
 import { ProductSortControl, type SortOption } from '@/components/products/ProductSortControl';
 import { SectionTitle } from '@/components/shared/SectionTitle';
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
@@ -24,8 +23,9 @@ export default function ProductsPage() {
   const searchParams = useSearchParams();
 
   const serverMaxPrice = useMemo(() => {
-    if (PRODUCTS.length === 0) return 1000;
-    return Math.max(...PRODUCTS.map(p => p.price), 0);
+    if (PRODUCTS.length === 0) return Number.MAX_SAFE_INTEGER; // Default to a very large number if no products
+    const maxProductPrice = Math.max(...PRODUCTS.map(p => p.price));
+    return maxProductPrice > 0 ? maxProductPrice : Number.MAX_SAFE_INTEGER; // If max price is 0, also use large number
   }, []);
 
   const initialCategory = searchParams.get('category') || 'all'; 
@@ -219,10 +219,3 @@ export default function ProductsPage() {
     </div>
   );
 }
-
-
-
-
-
-
-

@@ -195,11 +195,9 @@ export default function ProductDetailPage() {
             <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
               <WishlistButton 
                 product={product} 
-                className="w-full sm:w-auto px-6 py-3 border border-input hover:bg-accent/20 text-primary flex items-center justify-center text-base" 
+                className="w-full sm:w-auto px-6 py-3 border border-input hover:bg-accent/20 text-primary flex items-center justify-center text-base"
                 size="lg" 
-              > 
-                 <Heart className="mr-2 h-5 w-5" /> Wishlist
-              </WishlistButton>
+              />
               <Button size="lg" variant="default" className="w-full sm:w-auto px-6 py-3 bg-primary text-primary-foreground hover:bg-primary/90" onClick={handleAddToCart}> 
                 <ShoppingCart className="mr-2 h-5 w-5" /> Add to Cart
               </Button>

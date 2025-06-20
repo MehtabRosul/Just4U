@@ -41,7 +41,7 @@ export interface GiftType extends BaseCategory {
    Icon?: LucideIcon;
 }
 export interface Recipient extends BaseCategory {
-  dataAiHint?: string; 
+  Icon?: LucideIcon;
 }
 
 // Legacy Category type, maps to GiftType now
