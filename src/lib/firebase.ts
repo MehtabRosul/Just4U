@@ -13,7 +13,7 @@ const firebaseConfig = {
   authDomain: "just4u-5f0cd.firebaseapp.com",
   databaseURL: "https://just4u-5f0cd-default-rtdb.asia-southeast1.firebasedatabase.app",
   projectId: "just4u-5f0cd",
-  storageBucket: "just4u-5f0cd.appspot.com", // Corrected to .appspot.com if that's your actual bucket
+  storageBucket: "just4u-5f0cd.appspot.com", // Corrected this line
   messagingSenderId: "829916636340",
   appId: "1:829916636340:web:c606b327ef33e7d8f2e3e1",
   measurementId: "G-7SZC7BC10R"
@@ -29,7 +29,10 @@ if (!getApps().length) {
 }
 
 if (typeof window !== 'undefined') {
-  analytics = getAnalytics(app);
+  // We are guarding this because getAnalytics is not supported in a server environment
+  if ('measurementId' in firebaseConfig) {
+      analytics = getAnalytics(app);
+  }
 }
 
 const auth = getAuth(app);

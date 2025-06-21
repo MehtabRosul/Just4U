@@ -768,8 +768,19 @@ const TestimonialsSection = () => {
 };
 
 const OccasionSpotlight = () => {
-  const occasionsToDisplay = OCCASIONS_LIST.slice(0, 10);
-  const marqueeItems = [...occasionsToDisplay, ...occasionsToDisplay];
+  const [marqueeItems, setMarqueeItems] = useState<Occasion[]>([]);
+
+  const updateMarqueeItems = () => {
+    const shuffledOccasions = OCCASIONS_LIST.sort(() => 0.5 - Math.random());
+    const newMarqueeItems = shuffledOccasions.slice(0, 8);
+    setMarqueeItems([...newMarqueeItems, ...newMarqueeItems]);
+  };
+
+  useEffect(() => {
+    updateMarqueeItems(); // Initial load
+    const intervalId = setInterval(updateMarqueeItems, 5 * 60 * 60 * 1000); // Update every 5 hours
+    return () => clearInterval(intervalId); // Cleanup on unmount
+  }, []);
 
   return (
     <section className="my-8 sm:my-12">
