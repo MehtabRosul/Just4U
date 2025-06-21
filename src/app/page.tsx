@@ -366,7 +366,7 @@ const TopCurations = () => {
     { name: 'Anniversaries', Icon: Gift, slug:'anniversary', type: 'occasion' },
     { name: 'Miniatures', Icon: ToyBrick, slug:'miniatures', type: 'giftType' },
     { name: 'Photo Frames', Icon: Camera, slug:'photo-frames', type: 'giftType' },
-    { name: 'Corporate', Icon: Briefcase, slug:'corporate', type: 'giftType' },
+    { name: 'Corporate', Icon: Briefcase, slug:'corporate-gifts', type: 'giftType' },
     { name: 'Personalized', Icon: SparklesIcon, slug:'photo-gifts-general', type: 'giftType' },
   ];
   return (

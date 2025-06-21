@@ -1,6 +1,7 @@
 
 "use client";
 
+import { useState } from 'react';
 import { SectionTitle } from '@/components/shared/SectionTitle';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -8,10 +9,12 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
-import { Mail, Phone, MapPin, Send } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, Loader2 } from 'lucide-react';
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { database } from '@/lib/firebase';
+import { ref, push, set } from 'firebase/database';
 
 const contactFormSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
@@ -24,18 +27,37 @@ type ContactFormInputs = z.infer<typeof contactFormSchema>;
 
 export default function ContactPage() {
   const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { register, handleSubmit, formState: { errors }, reset } = useForm<ContactFormInputs>({
     resolver: zodResolver(contactFormSchema),
   });
 
   const onSubmit: SubmitHandler<ContactFormInputs> = async (data) => {
-    // In a real app, you would send this data to a backend API
-    console.log(data);
-    toast({
-      title: "Message Sent!",
-      description: "Thank you for contacting us. We'll get back to you soon.",
-    });
-    reset(); // Reset form fields
+    setIsSubmitting(true);
+    try {
+      const messagesRef = ref(database, 'contactMessages');
+      const newMessageRef = push(messagesRef);
+      await set(newMessageRef, {
+        ...data,
+        isRead: false,
+        timestamp: new Date().toISOString(),
+      });
+      
+      toast({
+        title: "Message Sent!",
+        description: "Thank you for contacting us. We'll get back to you soon.",
+      });
+      reset();
+    } catch (error) {
+      console.error("Error saving contact message: ", error);
+      toast({
+        title: "Submission Failed",
+        description: "Something went wrong. Please try again later.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -60,6 +82,7 @@ export default function ContactPage() {
                   placeholder="Your Name"
                   {...register("name")}
                   className={`mt-1.5 ${errors.name ? 'border-destructive focus:ring-destructive' : 'border-input'}`}
+                  disabled={isSubmitting}
                 />
                 {errors.name && <p className="text-xs text-destructive mt-1">{errors.name.message}</p>}
               </div>
@@ -72,6 +95,7 @@ export default function ContactPage() {
                   placeholder="you@example.com"
                   {...register("email")}
                   className={`mt-1.5 ${errors.email ? 'border-destructive focus:ring-destructive' : 'border-input'}`}
+                  disabled={isSubmitting}
                 />
                 {errors.email && <p className="text-xs text-destructive mt-1">{errors.email.message}</p>}
               </div>
@@ -84,6 +108,7 @@ export default function ContactPage() {
                   placeholder="How can we help?"
                   {...register("subject")}
                   className={`mt-1.5 ${errors.subject ? 'border-destructive focus:ring-destructive' : 'border-input'}`}
+                  disabled={isSubmitting}
                 />
                 {errors.subject && <p className="text-xs text-destructive mt-1">{errors.subject.message}</p>}
               </div>
@@ -96,12 +121,20 @@ export default function ContactPage() {
                   rows={5}
                   {...register("message")}
                   className={`mt-1.5 ${errors.message ? 'border-destructive focus:ring-destructive' : 'border-input'}`}
+                  disabled={isSubmitting}
                 />
                 {errors.message && <p className="text-xs text-destructive mt-1">{errors.message.message}</p>}
               </div>
 
-              <Button type="submit" size="lg" className="w-full bg-primary text-primary-foreground hover:bg-primary/90">
-                Send Message
+              <Button type="submit" size="lg" className="w-full bg-primary text-primary-foreground hover:bg-primary/90" disabled={isSubmitting}>
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Sending...
+                  </>
+                ) : (
+                  "Send Message"
+                )}
               </Button>
             </form>
           </CardContent>
