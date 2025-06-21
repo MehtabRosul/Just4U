@@ -75,6 +75,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
             addedAt: rtdbItem.addedAt,
           };
         }
+        console.warn(`[Cart] Product with ID "${productId}" not found in local data. It might be stale data from a previous session.`);
         return null;
       })
       .filter(Boolean) as CartItem[];
@@ -95,7 +96,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       const newQuantity = currentItem ? currentItem.quantity + quantity : quantity;
 
       await set(cartItemRef, { 
-        productId: product.id, // Storing productId for easier reference if needed, though key is the ID
+        productId: product.id, // Storing productId for clarity, though key is the ID
         quantity: newQuantity,
         addedAt: currentItem?.addedAt || new Date().toISOString()
       });
@@ -199,4 +200,3 @@ export function useCart() {
   }
   return context;
 }
-

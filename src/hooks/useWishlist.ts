@@ -1,9 +1,8 @@
 
 "use client";
 
-import React from 'react';
+import React, { useState, useEffect, createContext, useContext, useCallback, type ReactNode } from 'react';
 import type { Product } from '@/lib/types';
-import { useState, useEffect, createContext, useContext, useCallback, type ReactNode } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
 import { database } from '@/lib/firebase';
@@ -61,7 +60,13 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
   // Effect to populate full wishlist products from IDs
   useEffect(() => {
     const productDetails = Object.keys(wishlistProductIds)
-      .map(productId => PRODUCTS.find(p => p.id === productId))
+      .map(productId => {
+        const product = PRODUCTS.find(p => p.id === productId);
+        if (!product) {
+          console.warn(`[Wishlist] Product with ID "${productId}" not found in local data. It might be stale data from a previous session.`);
+        }
+        return product;
+      })
       .filter(Boolean) as Product[]; // Filter out any undefined products if IDs don't match
     setWishlist(productDetails);
   }, [wishlistProductIds]);
@@ -156,4 +161,3 @@ export function useWishlist() {
   }
   return context;
 }
-
