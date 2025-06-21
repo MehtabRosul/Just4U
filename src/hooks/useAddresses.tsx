@@ -47,7 +47,7 @@ export function AddressesProvider({ children }: { children: ReactNode }) {
         setAddresses([]);
         setLoading(false);
       });
-      return () => off(addressesRef, listener);
+ return () => listener();
     } else {
       setAddresses([]);
       setLoading(false);

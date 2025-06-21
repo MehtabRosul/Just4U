@@ -49,7 +49,7 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
         setWishlistProductIds({});
         setLoading(false);
       });
-      return () => off(wishlistRef, listener);
+      return () => listener();
     } else {
       setWishlistProductIds({});
       setWishlist([]); // Clear full wishlist too

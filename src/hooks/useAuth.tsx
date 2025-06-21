@@ -58,7 +58,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           setLoadingProfileDetails(false);
         });
         // Return cleanup function for the onValue listener
-        return () => off(profileDetailsRef, listener);
+        return () => listener();
       } else {
         setProfileDetails(null);
         setLoadingProfileDetails(false);

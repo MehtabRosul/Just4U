@@ -53,7 +53,7 @@ export function GiftRegistriesProvider({ children }: { children: ReactNode }) {
         setRegistries([]);
         setLoading(false);
       });
-      return () => off(registriesRef, listener);
+            return () => listener();
     } else {
       setRegistries([]);
       setLoading(false);

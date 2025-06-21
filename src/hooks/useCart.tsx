@@ -55,7 +55,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         setRtdbCartItems({});
         setLoading(false);
       });
-      return () => off(cartRef, listener);
+      return () => listener(); // Cleanup onValue
     } else {
       setRtdbCartItems({});
       setCartItems([]); // Clear enriched cart too

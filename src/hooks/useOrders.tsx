@@ -44,7 +44,7 @@ export function OrdersProvider({ children }: { children: ReactNode }) {
         setOrders([]);
         setLoading(false);
       });
-      return () => off(ordersRef, listener);
+      return () => listener(); // Call the unsubscribe function returned by onValue
     } else {
       setOrders([]);
       setLoading(false);
