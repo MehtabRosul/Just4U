@@ -7,6 +7,13 @@ interface ProductListProps {
 }
 
 export function ProductList({ products }: ProductListProps) {
+  console.log(`[ProductList Component] Received products. Count: ${products ? products.length : 0}`);
+  if (products && products.length > 0) {
+    console.log(`[ProductList Component] First product sample name: ${products[0].name} ID: ${products[0].id} Price: ${products[0].price}`);
+  } else {
+    console.log(`[ProductList Component] Received empty or undefined products array.`);
+  }
+
   if (!products || products.length === 0) {
     return (
       <div className="text-center text-muted-foreground py-10">
