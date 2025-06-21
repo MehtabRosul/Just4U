@@ -875,7 +875,7 @@ const GiftQuoteBanners = () => {
 
 const GiftTypeHighlight = () => {
     const featuredGiftTypes = GIFT_TYPES_LIST.filter(gt => [
-        'mini-you-series',
+        'mini-you-caricatures',
         '3d-crystals',
         'photo-lamps',
         'photo-frames',
@@ -999,4 +999,3 @@ export default function HomePage()
     </div>
   );
 }
-
