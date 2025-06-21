@@ -17,9 +17,9 @@ const footerSections = {
   product: [
     { name: 'Custom Gifts', href: '/products?category=photo-gifts-general' }, // Updated
     { name: 'Mini You', href: '/custom/mini-you' },
-    { name: 'Trophy', href: '/products?category=corporate-trophies' }, // Updated
-    { name: 'Memento', href: '/products?category=corporate-mementos' }, // Updated
-    { name: 'Joining Kits', href: '/products?category=corporate-joining-kits' }, // Updated
+    { name: 'Trophy', href: '/products?category=corporate-gifts' }, // Updated
+    { name: 'Memento', href: '/products?category=corporate-gifts' }, // Updated
+    { name: 'Joining Kits', href: '/products?category=corporate-gifts' }, // Updated
     { name: 'Our Anniversary Gifts', href: '/products?occasion=anniversary' },
     { name: 'Our Birthday Gifts', href: '/products?occasion=birthday' },
   ],

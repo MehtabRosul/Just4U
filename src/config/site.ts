@@ -8,7 +8,7 @@ export const SITE_DESCRIPTION = "Find the perfect gift, curated just for you wit
 
 // For Top Utility Bar
 export const TOP_UTILITY_LINKS: UtilityLink[] = [
-  { label: 'Bulk Orders', href: '/products?category=corporate-awards' }, // Point to a relevant corporate category
+  { label: 'Bulk Orders', href: '/products?category=corporate-gifts' }, // Point to a relevant corporate category
   { label: 'Track Order', href: 'https://just4ugifts.com/track' }, // External link
   { label: 'My Reminders', href: '/account/reminders' }, // Placeholder for reminders page
 ];
@@ -40,7 +40,7 @@ export const GLOBAL_NAV_LINKS: NavItem[] = [
   },
   { label: 'Personalised Gifts', href: '/products?category=photo-gifts-general', icon: Palette }, // Main personalized category
   { label: 'Mini You Series', href: '/products?category=mini-you-series', icon: ToyBrick },
-  { label: 'Corporate Gifts', href: '/products?category=corporate-awards', icon: Briefcase }, // Main corporate category
+  { label: 'Corporate Gifts', href: '/products?category=corporate-gifts', icon: Briefcase }, // Main corporate category
   // { label: 'Offers', href: '/offers', icon: Percent }, // Can be added back if an offers page exists
   // { label: 'Store Locator', href: '/store-locator', icon: MapPin },
   // { label: 'Help', href: '/help', icon: HelpCircle },

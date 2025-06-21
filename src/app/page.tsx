@@ -364,10 +364,10 @@ const TopCurations = () => {
   const curations = [
     { name: 'Birthdays', Icon: PartyPopper, slug:'birthday', type: 'occasion' },
     { name: 'Anniversaries', Icon: Gift, slug:'anniversary', type: 'occasion' },
-    { name: 'Miniatures', Icon: ToyBrick, slug:'mini-you-series', type: 'giftType' },
+ { name: 'Miniatures', Icon: ToyBrick, slug:'miniatures', type: 'giftType' },
     { name: 'Photo Frames', Icon: Camera, slug:'photo-frames', type: 'giftType' },
-    { name: 'Corporate', Icon: Briefcase, slug:'corporate-awards', type: 'giftType' },
-    { name: 'Personalized', Icon: SparklesIcon, slug:'photo-gifts-general', type: 'giftType' },
+ { name: 'Corporate', Icon: Briefcase, slug:'corporate', type: 'giftType' },
+ { name: 'Personalized', Icon: SparklesIcon, slug:'photo-gifts-general', type: 'giftType' },
   ];
   return (
     <section className="my-8 sm:my-12">

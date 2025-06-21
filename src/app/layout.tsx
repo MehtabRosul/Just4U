@@ -14,7 +14,7 @@ import { GiftRegistriesProvider } from '@/hooks/useGiftRegistries'; // Import Gi
 
 export const metadata: Metadata = {
   title: 'Just4U - Gift with Personal Touch',
-  description: 'Curated gift ideas from Just4U, with a personal touch for every occasion.',
+  description: 'Browse our collection of unique and personalized gifts for every occasion and recipient.',
 };
 
 export default function RootLayout({
