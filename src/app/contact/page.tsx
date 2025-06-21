@@ -24,8 +24,8 @@ const contactFormSchema = z.object({
 
 type ContactFormInputs = z.infer<typeof contactFormSchema>;
 
-// Initialize EmailJS with your Public Key
-// This only needs to happen once per application load.
+// Initialize EmailJS with your Public Key.
+// This should be done once per application load.
 emailjs.init({ publicKey: "6J95jhpJq1H5ujSlF" });
 
 export default function ContactPage() {
@@ -41,18 +41,17 @@ export default function ContactPage() {
     const serviceID = 'service_mmjwu98';
     const templateID = 'template_h011ksl';
     
-    // The parameters object must match the variables in your EmailJS template.
-    // e.g., your template should have variables like {{from_name}}, {{from_email}}, etc.
+    // This object's keys must match the variables in your EmailJS template.
+    // e.g., {{from_name}}, {{from_email}}, etc.
     const templateParams = {
         from_name: data.name,
         from_email: data.email,
-        to_name: 'Just4UGifts Admin',
+        to_name: 'Just4UGifts Admin', // You can customize this in your template
         subject: data.subject,
         message: data.message,
     };
 
     try {
-      // The publicKey is not passed in the send function when using init()
       await emailjs.send(serviceID, templateID, templateParams);
       
       toast({
