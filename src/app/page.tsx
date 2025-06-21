@@ -413,27 +413,65 @@ const TopCurations = () => {
 };
 
 const TrendingSpotlight = ({ products }: { products: Product[] }) => {
-  const productsToShow = products.slice(0, 8);
+  // Initially, show the first 8 products to avoid hydration mismatch.
+  const initialProducts = products.slice(0, 8);
+  const [productsToShow, setProductsToShow] = useState<Product[]>(initialProducts);
+
+  useEffect(() => {
+    // This effect runs only on the client side.
+    if (products.length === 0) {
+      return;
+    }
+
+    const ITEMS_PER_SET = 8;
+    const ROTATION_INTERVAL_MS = 5 * 60 * 60 * 1000; // 5 hours
+
+    const numberOfSets = Math.ceil(products.length / ITEMS_PER_SET);
+    
+    if (numberOfSets <= 1) {
+        setProductsToShow(products.slice(0, ITEMS_PER_SET));
+        return;
+    }
+    
+    // This calculation determines which set to show based on the current time
+    const currentSetIndex = Math.floor(Date.now() / ROTATION_INTERVAL_MS) % numberOfSets;
+    
+    const startIndex = currentSetIndex * ITEMS_PER_SET;
+    
+    const endIndex = startIndex + ITEMS_PER_SET;
+    let currentSet = products.slice(startIndex, endIndex);
+
+    // If the slice is shorter than 8 and there are enough total products, wrap around.
+    if (currentSet.length < ITEMS_PER_SET && products.length > ITEMS_PER_SET) {
+      const remaining = ITEMS_PER_SET - currentSet.length;
+      currentSet = currentSet.concat(products.slice(0, remaining));
+    }
+    
+    // Update the state with the correctly calculated client-side set.
+    setProductsToShow(currentSet);
+
+  }, [products]);
+
   return (
-  <section className="my-8 sm:my-12">
-    <SectionTitle className="text-white">Spotlight Steals</SectionTitle>
-    {productsToShow.length > 0 ? (
-      <>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-          {productsToShow.map(p => (
-             <ProductCard key={p.id} product={p} />
-          ))}
-        </div>
-        <div className="mt-8 text-center">
-            <Button asChild size="lg" className="bg-primary hover:bg-primary/80 text-primary-foreground text-base px-10 py-3 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-              <Link href="/products?sort=trending">
-                Explore Spotlight Gifts
-              </Link>
-            </Button>
-        </div>
-      </>
-    ) : <p className="text-center text-muted-foreground">No spotlight items today. Check back soon!</p>}
-  </section>
+    <section className="my-8 sm:my-12">
+      <SectionTitle className="text-white">Spotlight Steals</SectionTitle>
+      {productsToShow.length > 0 ? (
+        <>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+            {productsToShow.map(p => (
+               <ProductCard key={p.id} product={p} />
+            ))}
+          </div>
+          <div className="mt-8 text-center">
+              <Button asChild size="lg" className="bg-primary hover:bg-primary/80 text-primary-foreground text-base px-10 py-3 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                <Link href="/products?sort=trending">
+                  Explore Spotlight Gifts
+                </Link>
+              </Button>
+          </div>
+        </>
+      ) : <p className="text-center text-muted-foreground">No spotlight items today. Check back soon!</p>}
+    </section>
   );
 };
 
@@ -976,9 +1014,9 @@ const RecipientQuickLinks = () => {
 
 export default function HomePage()
 {
-  const [spotlightProducts, setSpotlightProducts] = useState<Product[]>([]);
+  const [allTrendingProducts, setAllTrendingProducts] = useState<Product[]>([]);
   useEffect(() => {
-    setSpotlightProducts(
+    setAllTrendingProducts(
       PRODUCTS.filter(p => p.trending)
               .sort((a,b) => b.popularity - a.popularity)
     );
@@ -992,7 +1030,7 @@ export default function HomePage()
       <GiftQuoteBanners />
       <TopCurations />
       <GiftTypeHighlight />
-      <TrendingSpotlight products={spotlightProducts} />
+      <TrendingSpotlight products={allTrendingProducts} />
       <RecipientQuickLinks />
       <Advertisements />
       <TestimonialsSection />
