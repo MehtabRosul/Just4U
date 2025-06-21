@@ -13,8 +13,8 @@ import { Mail, Phone, MapPin, Send, Loader2 } from 'lucide-react';
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { database } from '@/lib/firebase';
-import { ref, push, set } from 'firebase/database';
+import { firestore } from '@/lib/firebase';
+import { collection, addDoc } from 'firebase/firestore';
 
 const contactFormSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
@@ -35,12 +35,23 @@ export default function ContactPage() {
   const onSubmit: SubmitHandler<ContactFormInputs> = async (data) => {
     setIsSubmitting(true);
     try {
-      const messagesRef = ref(database, 'contactMessages');
-      const newMessageRef = push(messagesRef);
-      await set(newMessageRef, {
-        ...data,
-        isRead: false,
-        timestamp: new Date().toISOString(),
+      // This document structure is specifically for the "Trigger Email" Firebase Extension
+      const mailCollectionRef = collection(firestore, 'mail');
+      await addDoc(mailCollectionRef, {
+        to: ['just4u.eml@gmail.com'], // The email address you want to send to
+        message: {
+          subject: `New Message from ${data.name}: ${data.subject}`,
+          html: `
+            <div style="font-family: sans-serif; line-height: 1.6;">
+              <h2>New Message via Just4UGifts Contact Form</h2>
+              <p><strong>From:</strong> ${data.name} (${data.email})</p>
+              <p><strong>Subject:</strong> ${data.subject}</p>
+              <hr>
+              <p><strong>Message:</strong></p>
+              <p>${data.message.replace(/\n/g, '<br>')}</p>
+            </div>
+          `,
+        },
       });
       
       toast({
@@ -49,7 +60,7 @@ export default function ContactPage() {
       });
       reset();
     } catch (error) {
-      console.error("Error saving contact message: ", error);
+      console.error("Error sending email via Firestore: ", error);
       toast({
         title: "Submission Failed",
         description: "Something went wrong. Please try again later.",

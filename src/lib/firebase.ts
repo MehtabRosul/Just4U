@@ -5,6 +5,7 @@ import { initializeApp, getApps, type FirebaseApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getAnalytics, type Analytics } from "firebase/analytics";
 import { getDatabase } from "firebase/database"; // Import getDatabase
+import { getFirestore } from "firebase/firestore"; // Import getFirestore
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -13,7 +14,7 @@ const firebaseConfig = {
   authDomain: "just4u-5f0cd.firebaseapp.com",
   databaseURL: "https://just4u-5f0cd-default-rtdb.asia-southeast1.firebasedatabase.app",
   projectId: "just4u-5f0cd",
-  storageBucket: "just4u-5f0cd.appspot.com", // Corrected this line
+  storageBucket: "just4u-5f0cd.appspot.com",
   messagingSenderId: "829916636340",
   appId: "1:829916636340:web:c606b327ef33e7d8f2e3e1",
   measurementId: "G-7SZC7BC10R"
@@ -37,9 +38,10 @@ if (typeof window !== 'undefined') {
 
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
-const database = getDatabase(app); // Initialize Realtime Database
+const database = getDatabase(app);
+const firestore = getFirestore(app); // Initialize Cloud Firestore
 
-export { app, auth, googleProvider, database, analytics };
+export { app, auth, googleProvider, database, firestore, analytics }; // Export firestore
 
 // Remember to configure your Firebase Realtime Database security rules in the Firebase console!
 // A common rule for user-specific data is:
