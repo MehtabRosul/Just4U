@@ -1,67 +1,34 @@
 
 "use client";
 
-import { useState } from 'react';
 import { SectionTitle } from '@/components/shared/SectionTitle';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { useToast } from '@/hooks/use-toast';
-import { Mail, Phone, MapPin, Send, Loader2 } from 'lucide-react';
-import { useForm, type SubmitHandler } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import emailjs from '@emailjs/browser';
-
-const contactFormSchema = z.object({
-  name: z.string().min(2, { message: "Name must be at least 2 characters." }),
-  email: z.string().email({ message: "Please enter a valid email address." }),
-  subject: z.string().min(5, { message: "Subject must be at least 5 characters." }),
-  message: z.string().min(10, { message: "Message must be at least 10 characters." }),
-});
-
-type ContactFormInputs = z.infer<typeof contactFormSchema>;
+import { Mail, Phone, MapPin, Send, Loader2, CheckCircle } from 'lucide-react';
+import { useForm, ValidationError } from '@formspree/react';
 
 export default function ContactPage() {
-  const { toast } = useToast();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const { register, handleSubmit, formState: { errors }, reset } = useForm<ContactFormInputs>({
-    resolver: zodResolver(contactFormSchema),
-  });
+  const [state, handleSubmit] = useForm("xblyaeez");
 
-  const onSubmit: SubmitHandler<ContactFormInputs> = (data) => {
-    setIsSubmitting(true);
-    
-    const templateParams = {
-        from_name: data.name,
-        from_email: data.email,
-        to_name: 'Just4UGifts Admin',
-        subject: data.subject,
-        message: data.message,
-    };
-
-    emailjs.send('service_mmjwu98', 'template_h011ksl', templateParams, '6J95jhpJq1H5ujSlF')
-      .then((response) => {
-        console.log('SUCCESS!', response.status, response.text);
-        toast({
-          title: "Message Sent!",
-          description: "Thank you for contacting us. We'll get back to you soon.",
-        });
-        reset();
-      }, (error) => {
-        console.log('FAILED...', error);
-        console.error("Error sending email via EmailJS: ", error);
-        toast({
-          title: "Submission Failed",
-          description: "Something went wrong. Please try again later.",
-          variant: "destructive",
-        });
-      }).finally(() => {
-        setIsSubmitting(false);
-      });
-  };
+  if (state.succeeded) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <SectionTitle className="mb-10 text-center">Message Sent!</SectionTitle>
+        <Card className="bg-card border-border shadow-lg max-w-lg mx-auto text-center p-6 sm:p-8">
+          <CardHeader>
+             <CheckCircle className="mx-auto h-12 w-12 sm:h-16 sm:w-16 text-green-500 mb-4" />
+            <CardTitle className="text-xl sm:text-2xl text-card-foreground">Thank You!</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-muted-foreground">Your message has been sent successfully. We'll get back to you as soon as possible.</p>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -76,18 +43,18 @@ export default function ContactPage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+            <form onSubmit={handleSubmit} className="space-y-5">
               <div>
                 <Label htmlFor="name" className="text-sm font-medium text-foreground">Full Name</Label>
                 <Input
                   id="name"
                   type="text"
+                  name="name"
                   placeholder="Your Name"
-                  {...register("name")}
-                  className={`mt-1.5 ${errors.name ? 'border-destructive focus:ring-destructive' : 'border-input'}`}
-                  disabled={isSubmitting}
+                  className="mt-1.5 border-input"
+                  disabled={state.submitting}
+                  required
                 />
-                {errors.name && <p className="text-xs text-destructive mt-1">{errors.name.message}</p>}
               </div>
 
               <div>
@@ -95,12 +62,18 @@ export default function ContactPage() {
                 <Input
                   id="email"
                   type="email"
+                  name="email"
                   placeholder="you@example.com"
-                  {...register("email")}
-                  className={`mt-1.5 ${errors.email ? 'border-destructive focus:ring-destructive' : 'border-input'}`}
-                  disabled={isSubmitting}
+                  className="mt-1.5 border-input"
+                  disabled={state.submitting}
+                  required
                 />
-                {errors.email && <p className="text-xs text-destructive mt-1">{errors.email.message}</p>}
+                 <ValidationError 
+                    prefix="Email" 
+                    field="email"
+                    errors={state.errors}
+                    className="text-xs text-destructive mt-1"
+                />
               </div>
 
               <div>
@@ -108,29 +81,35 @@ export default function ContactPage() {
                 <Input
                   id="subject"
                   type="text"
+                  name="subject"
                   placeholder="How can we help?"
-                  {...register("subject")}
-                  className={`mt-1.5 ${errors.subject ? 'border-destructive focus:ring-destructive' : 'border-input'}`}
-                  disabled={isSubmitting}
+                  className="mt-1.5 border-input"
+                  disabled={state.submitting}
+                  required
                 />
-                {errors.subject && <p className="text-xs text-destructive mt-1">{errors.subject.message}</p>}
               </div>
 
               <div>
                 <Label htmlFor="message" className="text-sm font-medium text-foreground">Message</Label>
                 <Textarea
                   id="message"
+                  name="message"
                   placeholder="Your message..."
                   rows={5}
-                  {...register("message")}
-                  className={`mt-1.5 ${errors.message ? 'border-destructive focus:ring-destructive' : 'border-input'}`}
-                  disabled={isSubmitting}
+                  className="mt-1.5 border-input"
+                  disabled={state.submitting}
+                  required
                 />
-                {errors.message && <p className="text-xs text-destructive mt-1">{errors.message.message}</p>}
+                <ValidationError 
+                    prefix="Message" 
+                    field="message"
+                    errors={state.errors}
+                    className="text-xs text-destructive mt-1"
+                />
               </div>
 
-              <Button type="submit" size="lg" className="w-full bg-primary text-primary-foreground hover:bg-primary/90" disabled={isSubmitting}>
-                {isSubmitting ? (
+              <Button type="submit" size="lg" className="w-full bg-primary text-primary-foreground hover:bg-primary/90" disabled={state.submitting}>
+                {state.submitting ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                     Sending...
