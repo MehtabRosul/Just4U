@@ -24,9 +24,11 @@ export interface Product {
   idealGiftFor?: string[]; // Legacy, can be mapped from recipient/occasion
   customizable?: boolean; // For "Customize Now" button
   top_occasions?: string[];
+  topCurations?: string[];
   top_curations?: string[];
   features_gift_types?: string[];
   whos_it_for?: string[];
+  features?: string[];
   countdownEndTime?: string; // For "Deal of the Day"
 }
 

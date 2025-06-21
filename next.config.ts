@@ -23,6 +23,18 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'just4u.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'prestogifts.com',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
 };

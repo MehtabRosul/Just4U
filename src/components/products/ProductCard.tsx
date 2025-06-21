@@ -85,7 +85,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
           <div className="mt-1 mb-2">
             <span className="text-base sm:text-lg font-bold text-primary">
-              Rs. {product.price.toFixed(2)}
+              Rs. {typeof product.price === 'number' ? product.price.toFixed(2) : 'N/A'}
             </span>
             {product.originalPrice && product.originalPrice > product.price && (
               <span className="ml-2 text-xs text-muted-foreground line-through">
