@@ -13,8 +13,7 @@ import { Mail, Phone, MapPin, Send, Loader2 } from 'lucide-react';
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { firestore } from '@/lib/firebase';
-import { collection, addDoc } from 'firebase/firestore';
+import emailjs from '@emailjs/browser';
 
 const contactFormSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
@@ -34,25 +33,21 @@ export default function ContactPage() {
 
   const onSubmit: SubmitHandler<ContactFormInputs> = async (data) => {
     setIsSubmitting(true);
+    
+    const serviceID = 'YOUR_SERVICE_ID';
+    const templateID = 'YOUR_TEMPLATE_ID';
+    const publicKey = '6J95jhpJq1H5ujSlF';
+
+    const templateParams = {
+        from_name: data.name,
+        from_email: data.email,
+        to_name: 'Just4UGifts Admin',
+        subject: data.subject,
+        message: data.message,
+    };
+
     try {
-      // This document structure is specifically for the "Trigger Email" Firebase Extension
-      const mailCollectionRef = collection(firestore, 'mail');
-      await addDoc(mailCollectionRef, {
-        to: ['just4u.eml@gmail.com'], // The email address you want to send to
-        message: {
-          subject: `New Message from ${data.name}: ${data.subject}`,
-          html: `
-            <div style="font-family: sans-serif; line-height: 1.6;">
-              <h2>New Message via Just4UGifts Contact Form</h2>
-              <p><strong>From:</strong> ${data.name} (${data.email})</p>
-              <p><strong>Subject:</strong> ${data.subject}</p>
-              <hr>
-              <p><strong>Message:</strong></p>
-              <p>${data.message.replace(/\n/g, '<br>')}</p>
-            </div>
-          `,
-        },
-      });
+      await emailjs.send(serviceID, templateID, templateParams, publicKey);
       
       toast({
         title: "Message Sent!",
@@ -60,7 +55,7 @@ export default function ContactPage() {
       });
       reset();
     } catch (error) {
-      console.error("Error sending email via Firestore: ", error);
+      console.error("Error sending email via EmailJS: ", error);
       toast({
         title: "Submission Failed",
         description: "Something went wrong. Please try again later.",
