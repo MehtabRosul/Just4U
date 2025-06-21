@@ -24,10 +24,6 @@ const contactFormSchema = z.object({
 
 type ContactFormInputs = z.infer<typeof contactFormSchema>;
 
-// Initialize EmailJS with your Public Key.
-// This should be done once per application load.
-emailjs.init({ publicKey: "6J95jhpJq1H5ujSlF" });
-
 export default function ContactPage() {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -35,40 +31,36 @@ export default function ContactPage() {
     resolver: zodResolver(contactFormSchema),
   });
 
-  const onSubmit: SubmitHandler<ContactFormInputs> = async (data) => {
+  const onSubmit: SubmitHandler<ContactFormInputs> = (data) => {
     setIsSubmitting(true);
     
-    const serviceID = 'service_mmjwu98';
-    const templateID = 'template_h011ksl';
-    
-    // This object's keys must match the variables in your EmailJS template.
-    // e.g., {{from_name}}, {{from_email}}, etc.
     const templateParams = {
         from_name: data.name,
         from_email: data.email,
-        to_name: 'Just4UGifts Admin', // You can customize this in your template
+        to_name: 'Just4UGifts Admin',
         subject: data.subject,
         message: data.message,
     };
 
-    try {
-      await emailjs.send(serviceID, templateID, templateParams);
-      
-      toast({
-        title: "Message Sent!",
-        description: "Thank you for contacting us. We'll get back to you soon.",
+    emailjs.send('service_mmjwu98', 'template_h011ksl', templateParams, '6J95jhpJq1H5ujSlF')
+      .then((response) => {
+        console.log('SUCCESS!', response.status, response.text);
+        toast({
+          title: "Message Sent!",
+          description: "Thank you for contacting us. We'll get back to you soon.",
+        });
+        reset();
+      }, (error) => {
+        console.log('FAILED...', error);
+        console.error("Error sending email via EmailJS: ", error);
+        toast({
+          title: "Submission Failed",
+          description: "Something went wrong. Please try again later.",
+          variant: "destructive",
+        });
+      }).finally(() => {
+        setIsSubmitting(false);
       });
-      reset();
-    } catch (error) {
-      console.error("Error sending email via EmailJS: ", error);
-      toast({
-        title: "Submission Failed",
-        description: "Something went wrong. Please try again later.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
   };
 
   return (
