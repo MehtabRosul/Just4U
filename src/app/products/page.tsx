@@ -3,65 +3,38 @@
 
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { PRODUCTS, CATEGORIES, OCCASIONS_LIST, RECIPIENTS_LIST } from '@/lib/data';
 import type { Product } from '@/lib/types';
 import { ProductList } from '@/components/products/ProductList';
 import { ProductSortControl, type SortOption } from '@/components/products/ProductSortControl';
 import { SectionTitle } from '@/components/shared/SectionTitle';
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
+import { PRODUCTS } from '@/lib/data';
 
 const ITEMS_PER_PAGE = 12;
 
-// Minimal console logs for essential diagnostics
-console.log(`[DIAGNOSTIC_TOP_LEVEL] PRODUCTS imported. Length: ${PRODUCTS.length}`);
-if (PRODUCTS.length > 0) {
+console.log(`[DIAGNOSTIC_TOP_LEVEL] PRODUCTS imported. Length: ${PRODUCTS ? PRODUCTS.length : 0}`);
+if (PRODUCTS && PRODUCTS.length > 0) {
   console.log(`[DIAGNOSTIC_TOP_LEVEL] First product ID from PRODUCTS: ${PRODUCTS[0].id} Name: ${PRODUCTS[0].name} Price: ${PRODUCTS[0].price}`);
 }
 
 
 export default function ProductsPage() {
   const searchParams = useSearchParams();
-  const [hasMounted, setHasMounted] = useState(false);
-  
   const [sortOption, setSortOption] = useState<SortOption>('popularity');
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    setHasMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (!hasMounted) return;
-
-    console.log(`[DIAGNOSTIC_URL_EFFECT] Running. searchParams: ${searchParams.toString()}`);
-    
     const sortFromUrl = (searchParams.get('sort') as SortOption) || 'popularity';
-    
-    let needsReset = false;
-
     if (sortOption !== sortFromUrl) {
       setSortOption(sortFromUrl);
-      needsReset = true;
-      console.log(`[DIAGNOSTIC_URL_EFFECT] Sort option changed to: ${sortFromUrl}`);
-    }
-
-    if (needsReset) {
       setCurrentPage(1);
-      console.log(`[DIAGNOSTIC_URL_EFFECT] Resetting current page to 1`);
     }
-
-  }, [searchParams, hasMounted, sortOption]);
-
+  }, [searchParams, sortOption]);
 
   const filteredAndSortedProducts = useMemo(() => {
-    console.log(`[DIAGNOSTIC_FILTER_MEMO] Recalculating filteredAndSortedProducts.`);
-    console.log(`[DIAGNOSTIC_FILTER_MEMO] Base PRODUCTS length: ${PRODUCTS.length}`);
-    
-    let tempProducts = [...PRODUCTS]; // Start with all products
+    console.log(`[DIAGNOSTIC_FILTER_MEMO] Bypassing filters. Using all products.`);
+    let tempProducts = [...PRODUCTS];
 
-    console.log(`[DIAGNOSTIC_FILTER_MEMO] Initial product count (all products): ${tempProducts.length}`);
-    
-    // Apply sorting
     console.log(`[DIAGNOSTIC_FILTER_MEMO] Products before sorting: ${tempProducts.length}. Sort option: ${sortOption}`);
     switch (sortOption) {
       case 'popularity': tempProducts.sort((a, b) => (b.popularity || 0) - (a.popularity || 0)); break;
@@ -69,22 +42,13 @@ export default function ProductsPage() {
       case 'price_desc': tempProducts.sort((a, b) => (b.price || 0) - (a.price || 0)); break;
       case 'name_asc': tempProducts.sort((a, b) => a.name.localeCompare(b.name)); break;
       case 'name_desc': tempProducts.sort((a, b) => b.name.localeCompare(a.name)); break;
-      case 'trending':
-        tempProducts.sort((a, b) => {
-          const trendingA = a.trending ? 1 : 0;
-          const trendingB = b.trending ? 1 : 0;
-          if (trendingB !== trendingA) return trendingB - trendingA; 
-          return (b.popularity || 0) - (a.popularity || 0); 
-        });
-        break;
       default:
         tempProducts.sort((a, b) => (b.popularity || 0) - (a.popularity || 0));
         break;
     }
     console.log(`[DIAGNOSTIC_FILTER_MEMO] After sorting by '${sortOption}', final count for memo: ${tempProducts.length}`);
     return tempProducts;
-
-  }, [sortOption]); // Dependency only on sortOption as no other filters are applied
+  }, [sortOption]);
   
   const totalPages = Math.ceil(filteredAndSortedProducts.length / ITEMS_PER_PAGE);
   const currentProducts = filteredAndSortedProducts.slice(
@@ -100,17 +64,16 @@ export default function ProductsPage() {
   };
   
   const generatePageTitle = () => {
-    return "All Gifts"; // Generic title as no filters are applied
+    return "All Gifts";
   };
 
   console.log(`[DIAGNOSTIC_RENDER] currentProducts for page ${currentPage}: ${currentProducts.length} items. Total pages: ${totalPages}. Total in filteredAndSortedProducts: ${filteredAndSortedProducts.length}`);
 
-  if (filteredAndSortedProducts.length === 0 && PRODUCTS.length > 0 && hasMounted) {
+  if (filteredAndSortedProducts.length === 0 && PRODUCTS && PRODUCTS.length > 0) {
       console.error(
-        `[DIAGNOSTIC_RENDER_ISSUE] PRODUCTS array has ${PRODUCTS.length} items, but no products are displayed after sorting. Current Sort: ${sortOption}`
+        `[DIAGNOSTIC_RENDER_ISSUE] PRODUCTS array is populated, but no products are displayed. Current Sort: ${sortOption}`
       );
   }
-
 
   return (
     <div className="container mx-auto px-4 py-6 sm:py-8">
