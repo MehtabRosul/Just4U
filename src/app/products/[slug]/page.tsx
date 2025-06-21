@@ -22,8 +22,8 @@ import { useToast } from '@/hooks/use-toast';
 import { useCart } from '@/hooks/useCart'; // Import useCart
 
 export default function ProductDetailPage() {
-  const params = useParams();
-  const slug = typeof params.slug === 'string' ? params.slug : '';
+  const { slug: slugParam } = useParams();
+  const slug = Array.isArray(slugParam) ? slugParam[0] : slugParam;
   const [product, setProduct] = useState<Product | null>(null);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
