@@ -8,7 +8,7 @@ import { ProductList } from '@/components/products/ProductList';
 import { ProductSortControl, type SortOption } from '@/components/products/ProductSortControl';
 import { SectionTitle } from '@/components/shared/SectionTitle';
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
-import { PRODUCTS } from '@/lib/data';
+import { PRODUCTS, OCCASIONS_LIST, GIFT_TYPES_LIST } from '@/lib/data';
 
 const ITEMS_PER_PAGE = 12;
 
@@ -21,22 +21,22 @@ interface ActiveFilters {
 
 const calculateMaxProductPrice = () => {
     if (!PRODUCTS || PRODUCTS.length === 0) {
-        return Number.MAX_SAFE_INTEGER;
+        return 5000;
     }
     const max = Math.max(...PRODUCTS.map(p => p.price || 0));
-    return max > 0 ? max : Number.MAX_SAFE_INTEGER;
+    return max > 0 ? Math.ceil(max / 100) * 100 : 5000;
 };
 
 export default function ProductsPage() {
   const searchParams = useSearchParams();
-  const [initialMaxPrice, setInitialMaxPrice] = useState<number>(Number.MAX_SAFE_INTEGER);
+  const [initialMaxPrice, setInitialMaxPrice] = useState<number>(calculateMaxProductPrice());
   const [hasMounted, setHasMounted] = useState(false);
   
   const [activeFilters, setActiveFilters] = useState<ActiveFilters>({
     category: 'all',
     occasion: 'all',
     recipient: 'all',
-    priceRange: [0, Number.MAX_SAFE_INTEGER],
+    priceRange: [0, initialMaxPrice],
   });
 
   const [sortOption, setSortOption] = useState<SortOption>('popularity');
@@ -45,6 +45,7 @@ export default function ProductsPage() {
   useEffect(() => {
     const maxPrice = calculateMaxProductPrice();
     setInitialMaxPrice(maxPrice);
+    setActiveFilters(prev => ({ ...prev, priceRange: [0, maxPrice] }));
     setHasMounted(true);
   }, []);
 
@@ -60,7 +61,7 @@ export default function ProductsPage() {
     const newMaxPrice = parseInt(searchParams.get('priceMax') || `${initialMaxPrice}`, 10);
     
     const validMinPrice = !isNaN(newMinPrice) ? newMinPrice : 0;
-    const validMaxPrice = !isNaN(newMaxPrice) ? newMaxPrice : initialMaxPrice;
+    const validMaxPrice = !isNaN(newMaxPrice) && newMaxPrice > 0 ? newMaxPrice : initialMaxPrice;
 
     setActiveFilters({
       category: newCategory,
@@ -70,7 +71,7 @@ export default function ProductsPage() {
     });
     
     setSortOption(newSort);
-    setCurrentPage(1);
+    setCurrentPage(1); // Reset page on filter change
 
   }, [searchParams, hasMounted, initialMaxPrice]);
 
@@ -86,8 +87,10 @@ export default function ProductsPage() {
     if (activeFilters.recipient !== 'all') {
       tempProducts = tempProducts.filter(p => p.recipient?.includes(activeFilters.recipient));
     }
+    
+    // Price filter
     tempProducts = tempProducts.filter(
-      p => p.price >= activeFilters.priceRange[0] && p.price <= activeFilters.priceRange[1]
+        p => p.price >= activeFilters.priceRange[0] && p.price <= activeFilters.priceRange[1]
     );
 
     switch (sortOption) {
@@ -117,9 +120,15 @@ export default function ProductsPage() {
     }
   };
   
-  const generatePageTitle = () => {
+  const generatePageTitle = useCallback(() => {
+    if (activeFilters.category !== 'all') {
+      return GIFT_TYPES_LIST.find(c => c.slug === activeFilters.category)?.name || "Gifts";
+    }
+    if (activeFilters.occasion !== 'all') {
+      return OCCASIONS_LIST.find(o => o.slug === activeFilters.occasion)?.name || "Gifts";
+    }
     return "All Gifts";
-  };
+  }, [activeFilters]);
 
   return (
     <div className="container mx-auto px-4 py-6 sm:py-8">
@@ -184,3 +193,5 @@ export default function ProductsPage() {
     </div>
   );
 }
+
+    
