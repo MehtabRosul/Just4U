@@ -12,30 +12,84 @@ import { PRODUCTS } from '@/lib/data';
 
 const ITEMS_PER_PAGE = 12;
 
-console.log(`[DIAGNOSTIC_TOP_LEVEL] PRODUCTS imported. Length: ${PRODUCTS ? PRODUCTS.length : 0}`);
-if (PRODUCTS && PRODUCTS.length > 0) {
-  console.log(`[DIAGNOSTIC_TOP_LEVEL] First product ID from PRODUCTS: ${PRODUCTS[0].id} Name: ${PRODUCTS[0].name} Price: ${PRODUCTS[0].price}`);
+interface ActiveFilters {
+  category: string;
+  occasion: string;
+  recipient: string;
+  priceRange: [number, number];
 }
 
+const calculateMaxProductPrice = () => {
+    if (!PRODUCTS || PRODUCTS.length === 0) {
+        return Number.MAX_SAFE_INTEGER;
+    }
+    const max = Math.max(...PRODUCTS.map(p => p.price || 0));
+    return max > 0 ? max : Number.MAX_SAFE_INTEGER;
+};
 
 export default function ProductsPage() {
   const searchParams = useSearchParams();
+  const [initialMaxPrice, setInitialMaxPrice] = useState<number>(Number.MAX_SAFE_INTEGER);
+  const [hasMounted, setHasMounted] = useState(false);
+  
+  const [activeFilters, setActiveFilters] = useState<ActiveFilters>({
+    category: 'all',
+    occasion: 'all',
+    recipient: 'all',
+    priceRange: [0, Number.MAX_SAFE_INTEGER],
+  });
+
   const [sortOption, setSortOption] = useState<SortOption>('popularity');
   const [currentPage, setCurrentPage] = useState(1);
+  
+  useEffect(() => {
+    const maxPrice = calculateMaxProductPrice();
+    setInitialMaxPrice(maxPrice);
+    setHasMounted(true);
+  }, []);
 
   useEffect(() => {
-    const sortFromUrl = (searchParams.get('sort') as SortOption) || 'popularity';
-    if (sortOption !== sortFromUrl) {
-      setSortOption(sortFromUrl);
-      setCurrentPage(1);
-    }
-  }, [searchParams, sortOption]);
+    if (!hasMounted) return;
+
+    const newCategory = searchParams.get('category') || 'all';
+    const newOccasion = searchParams.get('occasion') || 'all';
+    const newRecipient = searchParams.get('recipient') || 'all';
+    const newSort = (searchParams.get('sort') as SortOption) || 'popularity';
+
+    const newMinPrice = parseInt(searchParams.get('priceMin') || '0', 10);
+    const newMaxPrice = parseInt(searchParams.get('priceMax') || `${initialMaxPrice}`, 10);
+    
+    const validMinPrice = !isNaN(newMinPrice) ? newMinPrice : 0;
+    const validMaxPrice = !isNaN(newMaxPrice) ? newMaxPrice : initialMaxPrice;
+
+    setActiveFilters({
+      category: newCategory,
+      occasion: newOccasion,
+      recipient: newRecipient,
+      priceRange: [validMinPrice, validMaxPrice],
+    });
+    
+    setSortOption(newSort);
+    setCurrentPage(1);
+
+  }, [searchParams, hasMounted, initialMaxPrice]);
 
   const filteredAndSortedProducts = useMemo(() => {
-    console.log(`[DIAGNOSTIC_FILTER_MEMO] Bypassing filters. Using all products.`);
     let tempProducts = [...PRODUCTS];
 
-    console.log(`[DIAGNOSTIC_FILTER_MEMO] Products before sorting: ${tempProducts.length}. Sort option: ${sortOption}`);
+    if (activeFilters.category !== 'all') {
+      tempProducts = tempProducts.filter(p => p.category === activeFilters.category);
+    }
+    if (activeFilters.occasion !== 'all') {
+      tempProducts = tempProducts.filter(p => p.occasion?.includes(activeFilters.occasion));
+    }
+    if (activeFilters.recipient !== 'all') {
+      tempProducts = tempProducts.filter(p => p.recipient?.includes(activeFilters.recipient));
+    }
+    tempProducts = tempProducts.filter(
+      p => p.price >= activeFilters.priceRange[0] && p.price <= activeFilters.priceRange[1]
+    );
+
     switch (sortOption) {
       case 'popularity': tempProducts.sort((a, b) => (b.popularity || 0) - (a.popularity || 0)); break;
       case 'price_asc': tempProducts.sort((a, b) => (a.price || 0) - (b.price || 0)); break;
@@ -46,9 +100,9 @@ export default function ProductsPage() {
         tempProducts.sort((a, b) => (b.popularity || 0) - (a.popularity || 0));
         break;
     }
-    console.log(`[DIAGNOSTIC_FILTER_MEMO] After sorting by '${sortOption}', final count for memo: ${tempProducts.length}`);
+    
     return tempProducts;
-  }, [sortOption]);
+  }, [activeFilters, sortOption]);
   
   const totalPages = Math.ceil(filteredAndSortedProducts.length / ITEMS_PER_PAGE);
   const currentProducts = filteredAndSortedProducts.slice(
@@ -67,14 +121,6 @@ export default function ProductsPage() {
     return "All Gifts";
   };
 
-  console.log(`[DIAGNOSTIC_RENDER] currentProducts for page ${currentPage}: ${currentProducts.length} items. Total pages: ${totalPages}. Total in filteredAndSortedProducts: ${filteredAndSortedProducts.length}`);
-
-  if (filteredAndSortedProducts.length === 0 && PRODUCTS && PRODUCTS.length > 0) {
-      console.error(
-        `[DIAGNOSTIC_RENDER_ISSUE] PRODUCTS array is populated, but no products are displayed. Current Sort: ${sortOption}`
-      );
-  }
-
   return (
     <div className="container mx-auto px-4 py-6 sm:py-8">
       <SectionTitle className="mb-4 sm:mb-6">{generatePageTitle()}</SectionTitle>
@@ -82,7 +128,7 @@ export default function ProductsPage() {
       <div className="space-y-6"> 
           <div className="flex flex-col sm:flex-row justify-between items-center p-3 sm:p-4 border rounded-lg shadow-sm bg-secondary gap-2 sm:gap-4">
             <p className="text-xs sm:text-sm text-muted-foreground text-center sm:text-left">
-              Showing {currentProducts.length > 0 ? ((currentPage - 1) * ITEMS_PER_PAGE) + 1 : 0}-{(Math.min(currentPage * ITEMS_PER_PAGE, filteredAndSortedProducts.length))} of {filteredAndSortedProducts.length} products
+              Showing {filteredAndSortedProducts.length > 0 ? ((currentPage - 1) * ITEMS_PER_PAGE) + 1 : 0}-{(Math.min(currentPage * ITEMS_PER_PAGE, filteredAndSortedProducts.length))} of {filteredAndSortedProducts.length} products
             </p>
             <ProductSortControl currentSort={sortOption} onSortChange={(newSort) => {setSortOption(newSort); setCurrentPage(1);}} />
           </div>
