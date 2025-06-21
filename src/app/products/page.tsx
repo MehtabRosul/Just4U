@@ -29,7 +29,7 @@ const calculateMaxProductPrice = () => {
 
 export default function ProductsPage() {
   const searchParams = useSearchParams();
-  const [initialMaxPrice, setInitialMaxPrice] = useState<number>(calculateMaxProductPrice());
+  const [initialMaxPrice] = useState<number>(calculateMaxProductPrice());
   const [hasMounted, setHasMounted] = useState(false);
   
   const [activeFilters, setActiveFilters] = useState<ActiveFilters>({
@@ -43,9 +43,6 @@ export default function ProductsPage() {
   const [currentPage, setCurrentPage] = useState(1);
   
   useEffect(() => {
-    const maxPrice = calculateMaxProductPrice();
-    setInitialMaxPrice(maxPrice);
-    setActiveFilters(prev => ({ ...prev, priceRange: [0, maxPrice] }));
     setHasMounted(true);
   }, []);
 
@@ -70,10 +67,11 @@ export default function ProductsPage() {
       priceRange: [validMinPrice, validMaxPrice],
     });
     
-    setSortOption(newSort);
-    setCurrentPage(1); // Reset page on filter change
+    if(newSort !== sortOption) setSortOption(newSort);
+    
+    setCurrentPage(1); 
 
-  }, [searchParams, hasMounted, initialMaxPrice]);
+  }, [searchParams, hasMounted, initialMaxPrice, sortOption]);
 
   const filteredAndSortedProducts = useMemo(() => {
     let tempProducts = [...PRODUCTS];
@@ -129,6 +127,14 @@ export default function ProductsPage() {
     }
     return "All Gifts";
   }, [activeFilters]);
+
+  if (!hasMounted) {
+    return (
+        <div className="container mx-auto px-4 py-6 sm:py-8">
+            <SectionTitle className="mb-4 sm:mb-6">Loading Gifts...</SectionTitle>
+        </div>
+    );
+  }
 
   return (
     <div className="container mx-auto px-4 py-6 sm:py-8">
@@ -193,5 +199,4 @@ export default function ProductsPage() {
     </div>
   );
 }
-
     
