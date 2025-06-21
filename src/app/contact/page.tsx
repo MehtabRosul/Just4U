@@ -34,8 +34,8 @@ export default function ContactPage() {
   const onSubmit: SubmitHandler<ContactFormInputs> = async (data) => {
     setIsSubmitting(true);
     
-    const serviceID = 'YOUR_SERVICE_ID';
-    const templateID = 'YOUR_TEMPLATE_ID';
+    const serviceID = 'service_mmjwu98';
+    const templateID = 'template_h011ksl';
     const publicKey = '6J95jhpJq1H5ujSlF';
 
     const templateParams = {
