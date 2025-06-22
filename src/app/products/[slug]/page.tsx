@@ -7,10 +7,8 @@ import Image from 'next/image';
 import { getProductBySlug, PRODUCTS } from '@/lib/data';
 import type { Product } from '@/lib/types';
 import { Button } from '@/components/ui/button';
-import { WishlistButton } from '@/components/features/WishlistButton';
 import { StarRating } from '@/components/shared/StarRating';
 import { Separator } from '@/components/ui/separator';
-import { Badge } from '@/components/ui/badge';
 import { Heart, ShoppingCart, ExternalLink } from 'lucide-react';
 import { SectionTitle } from '@/components/shared/SectionTitle';
 import Link from 'next/link';
@@ -19,7 +17,8 @@ import { SocialShareButtons } from '@/components/features/SocialShareButtons';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
-import { useCart } from '@/hooks/useCart'; // Import useCart
+import { useCart } from '@/hooks/useCart';
+import { useWishlist } from '@/hooks/useWishlist';
 
 export default function ProductDetailPage() {
   const { slug: slugParam } = useParams();
@@ -29,9 +28,14 @@ export default function ProductDetailPage() {
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [currentUrl, setCurrentUrl] = useState('');
 
+  // States for image gallery transition
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [nextImageIndex, setNextImageIndex] = useState(0);
+
   const { user } = useAuth(); 
   const { toast } = useToast(); 
-  const { addToCart } = useCart(); // Get addToCart from useCart
+  const { addToCart } = useCart();
+  const { isProductInWishlist, addToWishlist, removeFromWishlist } = useWishlist();
 
   useEffect(() => {
     if (slug) {
@@ -67,9 +71,25 @@ export default function ProductDetailPage() {
       });
       return;
     }
-    addToCart(product); // Use addToCart from context
+    addToCart(product);
   };
 
+  const handleToggleWishlist = () => {
+    if (!product) return;
+    if (!user) {
+        toast({
+            title: "Authentication Required",
+            description: "Please sign in to manage your wishlist.",
+            variant: "destructive",
+        });
+        return;
+    }
+    if (isProductInWishlist(product.id)) {
+      removeFromWishlist(product.id);
+    } else {
+      addToWishlist(product);
+    }
+  };
 
   if (!product) {
     return (
@@ -92,9 +112,23 @@ export default function ProductDetailPage() {
 
   const similarProducts = PRODUCTS.filter(p => p.category === product.category && p.id !== product.id).slice(0, 4);
 
+  const isInWishlist = isProductInWishlist(product.id);
+
   const handleThumbnailClick = (index: number) => {
-    setSelectedImageIndex(index);
+    if (index !== selectedImageIndex && !isTransitioning) {
+      setNextImageIndex(index);
+      setIsTransitioning(true); // Start the fade-out transition
+    }
   };
+
+  const handleTransitionEnd = () => {
+    // This function is called when the opacity transition ends
+    if (isTransitioning) {
+      setSelectedImageIndex(nextImageIndex); // Change image source
+      setIsTransitioning(false); // Start the fade-in transition
+    }
+  };
+
 
   return (
     <div className="container mx-auto px-2 sm:px-4 py-6 sm:py-8">
@@ -102,25 +136,25 @@ export default function ProductDetailPage() {
         {/* Image Gallery and Main Image */}
         <div className="flex flex-col-reverse md:flex-row gap-4 items-start">
           <div className="flex md:flex-col gap-3 overflow-x-auto md:overflow-y-auto max-h-[400px] md:max-h-[500px] pr-2 md:pr-0 pb-2 md:pb-0 w-full md:w-auto">
- {product.imageUrls.map((url, index) => (
- <button
- key={index}
- onClick={() => handleThumbnailClick(index)}
- className={cn(
- "border-2 rounded-lg overflow-hidden focus:outline-none focus:ring-2 focus:ring-primary shrink-0",
- selectedImageIndex === index ? "border-primary" : "border-transparent hover:border-muted"
- )}
- >
- <Image
- src={url}
- alt={`${product.name} thumbnail ${index + 1}`}
- width={80}
- height={100}
- className="object-cover w-16 h-20 cursor-pointer"
- data-ai-hint={product.dataAiHint || "product detail"}
- />
- </button>
- ))}
+            {product.imageUrls.map((url, index) => (
+            <button
+            key={index}
+            onClick={() => handleThumbnailClick(index)}
+            className={cn(
+            "border-2 rounded-lg overflow-hidden focus:outline-none focus:ring-2 focus:ring-primary shrink-0",
+            selectedImageIndex === index ? "border-primary" : "border-transparent hover:border-muted"
+            )}
+            >
+            <Image
+            src={url}
+            alt={`${product.name} thumbnail ${index + 1}`}
+            width={80}
+            height={100}
+            className="object-cover w-16 h-20 cursor-pointer"
+            data-ai-hint={product.dataAiHint || "product detail"}
+            />
+            </button>
+            ))}
           </div>
           <div className="relative aspect-[3/4] w-full md:flex-1">
             {product.imageUrls.length > 0 && selectedImageIndex < product.imageUrls.length && (
@@ -128,7 +162,11 @@ export default function ProductDetailPage() {
                 src={product.imageUrls[selectedImageIndex]}
                 alt={product.name}
                 fill
-                className="object-contain w-full h-full"
+                className={cn(
+                    "object-contain w-full h-full transition-opacity duration-300 ease-in-out",
+                    isTransitioning ? "opacity-0" : "opacity-100"
+                )}
+                onTransitionEnd={handleTransitionEnd}
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 priority
                 data-ai-hint={product.dataAiHint || "product main"}
@@ -169,7 +207,7 @@ export default function ProductDetailPage() {
 
           {product.availableColors && product.availableColors.length > 0 && (
             <div className="pt-1 sm:pt-2">
- <h3 className="text-sm font-medium text-gray-400 mb-1.5 sm:mb-2">Select Color: <span className="text-white">{selectedColor ? product.availableColors.find(c => c === selectedColor) || selectedColor : ''}</span></h3>
+                <h3 className="text-sm font-medium text-gray-400 mb-1.5 sm:mb-2">Select Color: <span className="text-white">{selectedColor ? product.availableColors.find(c => c === selectedColor) || selectedColor : ''}</span></h3>
               <div className="flex space-x-3">
                 {product.availableColors.map(color => (
                   <button
@@ -184,7 +222,7 @@ export default function ProductDetailPage() {
                     aria-label={`Select color ${color}`}
                   >
                    {!color.startsWith('#') && <span className="sr-only">{color}</span>}
- <span className="block w-full h-full rounded-full" style={{ backgroundColor: color.startsWith('#') ? color : undefined }}></span>
+                    <span className="block w-full h-full rounded-full" style={{ backgroundColor: color.startsWith('#') ? color : undefined }}></span>
                   </button>
                 ))}
               </div>
@@ -192,35 +230,15 @@ export default function ProductDetailPage() {
           )}
 
           <div className="flex space-x-4 pt-4">
-            <Button size="lg" variant="outline" className="bg-red-600 text-white hover:bg-red-700">
-              Wishlist
+            <Button size="lg" variant="outline" onClick={handleToggleWishlist} className={cn("bg-red-600 text-white hover:bg-red-700 flex items-center gap-2", isInWishlist && "bg-red-700")}>
+                <Heart className={cn("h-5 w-5", isInWishlist && "fill-current")} />
+                {isInWishlist ? 'In Wishlist' : 'Add to Wishlist'}
             </Button>
             <Button size="lg" variant="default" className="bg-indigo-600 text-white hover:bg-indigo-700" onClick={handleAddToCart}>
-              Add to Cart
+                <ShoppingCart className="mr-2 h-5 w-5" />
+                Add to Cart
             </Button>
           </div>
-          {/* Removed external buy button as it wasn't in the reference image */}
-          {/* <div className="flex flex-col space-y-2 sm:space-y-3 pt-3 sm:pt-4">
-            <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
-              <WishlistButton
-                product={product} 
-                className="w-full sm:w-auto px-6 py-3 border border-input hover:bg-accent/20 text-primary flex items-center justify-center text-base"
-                size="lg" 
-              />
-              <Button size="lg" variant="default" className="w-full sm:w-auto px-6 py-3 bg-primary text-primary-foreground hover:bg-primary/90" onClick={handleAddToCart}> 
-                <ShoppingCart className="mr-2 h-5 w-5" /> Add to Cart
-              </Button>
- </div>
-             <Button 
-              size="lg" 
-              variant="outline"
-              className="w-full sm:w-auto hover:bg-primary hover:text-primary-foreground border-primary text-primary"
-              onClick={() => window.open(`https://just4ugifts.com/product/${product.id}`, '_blank')}
-            >
-              <ExternalLink className="mr-2 h-5 w-5" />
-              Buy on Just4UGifts.com
-            </Button>
-          </div> */}
         </div>
       </div>
 
@@ -277,16 +295,13 @@ export default function ProductDetailPage() {
 
       {similarProducts.length > 0 && (
         <section className="text-white">
- <h2 className="text-2xl font-bold text-center mb-6">Similar Products</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-            {similarProducts.map((p) => (
-              <ProductCard key={p.id} product={p} />
-            ))}
-          </div>
-          {/* Removed "View More" button as it wasn't in the reference image */}
-
-
- </section>
+            <h2 className="text-2xl font-bold text-center mb-6">Similar Products</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+                {similarProducts.map((p) => (
+                <ProductCard key={p.id} product={p} />
+                ))}
+            </div>
+        </section>
       )}
     </div>
   );
