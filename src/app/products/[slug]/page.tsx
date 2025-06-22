@@ -127,7 +127,7 @@ export default function ProductDetailPage() {
     <div className="container mx-auto px-2 sm:px-4 py-6 sm:py-8">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 mb-10 sm:mb-12">
         {/* Image Gallery */}
-        <div className="flex flex-col-reverse md:flex-row gap-4 w-full">
+        <div className="flex flex-col-reverse md:flex-row gap-4">
           {/* Thumbnails */}
           <div className="flex flex-row md:flex-col gap-3 overflow-auto pb-2 md:pb-0">
             {product.imageUrls.slice(0, 5).map((url, index) => (
@@ -157,7 +157,7 @@ export default function ProductDetailPage() {
             ))}
           </div>
           {/* Main Image */}
-          <div className="relative aspect-square md:aspect-[3/4] w-full bg-card rounded-lg overflow-hidden shadow-lg">
+          <div className="relative aspect-square w-full bg-card rounded-lg overflow-hidden shadow-lg">
             <Image
                 src={product.imageUrls[selectedImageIndex]}
                 alt={product.name}
