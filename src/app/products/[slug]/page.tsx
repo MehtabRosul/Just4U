@@ -127,48 +127,70 @@ export default function ProductDetailPage() {
     <div className="container mx-auto px-2 sm:px-4 py-6 sm:py-8">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 mb-10 sm:mb-12">
         {/* Image Gallery */}
-        <div className="flex flex-col-reverse md:flex-row gap-4">
-          {/* Thumbnails */}
-          <div className="flex flex-row md:flex-col gap-3 overflow-auto pb-2 md:pb-0">
-            {product.imageUrls.slice(0, 5).map((url, index) => (
-                <button
-                    key={index}
-                    onClick={() => handleThumbnailClick(index)}
-                    className={cn(
-                        "relative w-20 h-24 shrink-0 rounded-lg overflow-hidden cursor-pointer border-2 transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary",
-                        selectedImageIndex === index
-                            ? "border-primary shadow-md"
-                            : "border-transparent hover:border-muted"
-                    )}
-                    aria-label={`View image ${index + 1}`}
-                >
-                   <Image
-                        src={url}
-                        alt={`${product.name} thumbnail ${index + 1}`}
-                        fill
-                        className="object-cover"
-                        sizes="80px"
-                   />
-                </button>
-            ))}
-            {/* Placeholder for less than 5 images */}
-            {product.imageUrls.length < 5 && Array.from({ length: 5 - product.imageUrls.length }).map((_, index) => (
-              <div key={`placeholder-${index}`} className="w-20 h-24 shrink-0 bg-muted/50 rounded-lg"></div>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-5">
+          {/* Thumbnails (Desktop) */}
+          <div className="hidden md:flex md:flex-col md:space-y-3">
+            {product.imageUrls.map((url, index) => (
+              <button
+                key={`${url}-${index}`}
+                onClick={() => handleThumbnailClick(index)}
+                className={cn(
+                  "relative aspect-square w-full rounded-lg overflow-hidden cursor-pointer border-2 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary",
+                  selectedImageIndex === index
+                    ? "border-primary shadow-lg"
+                    : "border-transparent hover:border-muted"
+                )}
+                aria-label={`View image ${index + 1}`}
+              >
+                <Image
+                  src={url}
+                  alt={`${product.name} thumbnail ${index + 1}`}
+                  fill
+                  className="object-cover"
+                  sizes="100px"
+                />
+              </button>
             ))}
           </div>
+
           {/* Main Image */}
-          <div className="relative aspect-square w-full bg-card rounded-lg overflow-hidden shadow-lg">
+          <div className="relative aspect-square w-full md:col-span-4 bg-card rounded-lg overflow-hidden shadow-lg">
             <Image
-                src={product.imageUrls[selectedImageIndex]}
-                alt={product.name}
-                fill
-                className={cn(
-                    "object-contain transition-opacity duration-300 ease-in-out",
-                    isTransitioning ? "opacity-0" : "opacity-100"
-                )}
-                sizes="(max-width: 768px) 100vw, 50vw"
-                priority
+              src={product.imageUrls[selectedImageIndex]}
+              alt={product.name}
+              fill
+              className={cn(
+                "object-contain transition-opacity duration-300 ease-in-out",
+                isTransitioning ? "opacity-0" : "opacity-100"
+              )}
+              sizes="(max-width: 768px) 100vw, 80vw"
+              priority
             />
+          </div>
+
+          {/* Thumbnails (Mobile) */}
+          <div className="flex -order-1 md:hidden space-x-3 overflow-auto pb-2">
+            {product.imageUrls.map((url, index) => (
+              <button
+                key={`${url}-${index}-mobile`}
+                onClick={() => handleThumbnailClick(index)}
+                className={cn(
+                  "relative w-20 h-20 shrink-0 rounded-lg overflow-hidden cursor-pointer border-2 transition-all duration-200",
+                  selectedImageIndex === index
+                    ? "border-primary shadow-md"
+                    : "border-transparent hover:border-muted"
+                )}
+                aria-label={`View image ${index + 1}`}
+              >
+                <Image
+                  src={url}
+                  alt={`${product.name} thumbnail ${index + 1}`}
+                  fill
+                  className="object-cover"
+                  sizes="80px"
+                />
+              </button>
+            ))}
           </div>
         </div>
 
