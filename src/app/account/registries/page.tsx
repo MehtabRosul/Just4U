@@ -11,7 +11,7 @@ import { Label } from '@/components/ui/label';
 import { SectionTitle } from '@/components/shared/SectionTitle';
 import { PlusCircle, Edit3, Trash2, Gift, CalendarDays, Users, Search, PackagePlus } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogTrigger, DialogClose } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogTrigger, DialogClose } from '@/components/ui/dialog';
 import { useForm, type SubmitHandler, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
