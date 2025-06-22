@@ -125,24 +125,31 @@ export default function ProductDetailPage() {
 
   return (
     <div className="container mx-auto px-2 sm:px-4 py-6 sm:py-8">
-      <div className="flex flex-col md:flex-row gap-8 lg:gap-12 mb-10 sm:mb-12">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 mb-10 sm:mb-12">
         {/* Image Gallery */}
-        <div className="flex flex-col-reverse md:flex-row gap-4 w-full md:w-1/2">
+        <div className="flex flex-col-reverse md:flex-row gap-4 w-full">
           {/* Thumbnails */}
           <div className="flex flex-row md:flex-col gap-3 overflow-auto pb-2 md:pb-0">
             {product.imageUrls.slice(0, 5).map((url, index) => (
-                <div
+                <button
                     key={index}
                     onClick={() => handleThumbnailClick(index)}
                     className={cn(
-                        "w-20 h-24 shrink-0 bg-cover bg-center rounded-lg cursor-pointer border-2 transition-all",
+                        "relative w-20 h-24 shrink-0 rounded-lg overflow-hidden cursor-pointer border-2 transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary",
                         selectedImageIndex === index
                             ? "border-primary shadow-md"
                             : "border-transparent hover:border-muted"
                     )}
-                    style={{ backgroundImage: `url('${url}')` }}
                     aria-label={`View image ${index + 1}`}
-                />
+                >
+                   <Image
+                        src={url}
+                        alt={`${product.name} thumbnail ${index + 1}`}
+                        fill
+                        className="object-cover"
+                        sizes="80px"
+                   />
+                </button>
             ))}
             {/* Placeholder for less than 5 images */}
             {product.imageUrls.length < 5 && Array.from({ length: 5 - product.imageUrls.length }).map((_, index) => (
@@ -166,7 +173,7 @@ export default function ProductDetailPage() {
         </div>
 
         {/* Product Info */}
-        <div className="flex flex-col space-y-3 sm:space-y-4 md:w-1/2">
+        <div className="flex flex-col space-y-3 sm:space-y-4">
           <h1 className="font-headline text-3xl sm:text-4xl font-bold text-foreground">{product.name}</h1>
           
           <div className="flex items-center space-x-3 flex-wrap gap-y-1">
