@@ -30,8 +30,7 @@ export default function ProductDetailPage() {
 
   // States for image gallery transition
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const [nextImageIndex, setNextImageIndex] = useState(0);
-
+  
   const { user } = useAuth(); 
   const { toast } = useToast(); 
   const { addToCart } = useCart();
@@ -41,8 +40,8 @@ export default function ProductDetailPage() {
     if (slug) {
       const foundProduct = getProductBySlug(slug);
       setProduct(foundProduct || null);
-      setSelectedImageIndex(0); 
-
+      setSelectedImageIndex(0); // Reset to first image
+      
       if (foundProduct && foundProduct.availableColors && foundProduct.availableColors.length > 0) {
         setSelectedColor(foundProduct.availableColors[0]);
       } else {
@@ -114,70 +113,61 @@ export default function ProductDetailPage() {
 
   const isInWishlist = isProductInWishlist(product.id);
 
-  const handleThumbnailClick = (index: number) => {
-    if (index !== selectedImageIndex && !isTransitioning) {
-      setNextImageIndex(index);
-      setIsTransitioning(true); // Start the fade-out transition
+  const handleThumbnailClick = (index: number) => { 
+    if (index !== selectedImageIndex) {
+      setIsTransitioning(true);
+      setTimeout(() => {
+        setSelectedImageIndex(index);
+        setIsTransitioning(false);
+      }, 300); // Duration of the fade transition
     }
   };
-
-  const handleTransitionEnd = () => {
-    // This function is called when the opacity transition ends
-    if (isTransitioning) {
-      setSelectedImageIndex(nextImageIndex); // Change image source
-      setIsTransitioning(false); // Start the fade-in transition
-    }
-  };
-
 
   return (
     <div className="container mx-auto px-2 sm:px-4 py-6 sm:py-8">
-      <div className="grid md:grid-cols-2 gap-6 lg:gap-12 mb-10 sm:mb-12">
-        {/* Image Gallery and Main Image */}
-        <div className="flex flex-col-reverse md:flex-row gap-4 items-start">
-          <div className="flex md:flex-col gap-3 overflow-x-auto md:overflow-y-auto max-h-[400px] md:max-h-[500px] pr-2 md:pr-0 pb-2 md:pb-0 w-full md:w-auto">
-            {product.imageUrls.map((url, index) => (
-            <button
-            key={index}
-            onClick={() => handleThumbnailClick(index)}
-            className={cn(
-            "border-2 rounded-lg overflow-hidden focus:outline-none focus:ring-2 focus:ring-primary shrink-0",
-            selectedImageIndex === index ? "border-primary" : "border-transparent hover:border-muted"
-            )}
-            >
-            <Image
-            src={url}
-            alt={`${product.name} thumbnail ${index + 1}`}
-            width={80}
-            height={100}
-            className="object-cover w-16 h-20 cursor-pointer"
-            data-ai-hint={product.dataAiHint || "product detail"}
-            />
-            </button>
+      <div className="flex flex-col md:flex-row gap-8 lg:gap-12 mb-10 sm:mb-12">
+        {/* Image Gallery */}
+        <div className="flex flex-col-reverse md:flex-row gap-4 w-full md:w-1/2">
+          {/* Thumbnails */}
+          <div className="flex flex-row md:flex-col gap-3 overflow-auto pb-2 md:pb-0">
+            {product.imageUrls.slice(0, 5).map((url, index) => (
+                <div
+                    key={index}
+                    onClick={() => handleThumbnailClick(index)}
+                    className={cn(
+                        "w-20 h-24 shrink-0 bg-cover bg-center rounded-lg cursor-pointer border-2 transition-all",
+                        selectedImageIndex === index
+                            ? "border-primary shadow-md"
+                            : "border-transparent hover:border-muted"
+                    )}
+                    style={{ backgroundImage: `url('${url}')` }}
+                    aria-label={`View image ${index + 1}`}
+                />
+            ))}
+            {/* Placeholder for less than 5 images */}
+            {product.imageUrls.length < 5 && Array.from({ length: 5 - product.imageUrls.length }).map((_, index) => (
+              <div key={`placeholder-${index}`} className="w-20 h-24 shrink-0 bg-muted/50 rounded-lg"></div>
             ))}
           </div>
-          <div className="relative aspect-[3/4] w-full md:flex-1">
-            {product.imageUrls.length > 0 && selectedImageIndex < product.imageUrls.length && (
-              <Image
+          {/* Main Image */}
+          <div className="relative aspect-square md:aspect-[3/4] w-full bg-card rounded-lg overflow-hidden shadow-lg">
+            <Image
                 src={product.imageUrls[selectedImageIndex]}
                 alt={product.name}
                 fill
                 className={cn(
-                    "object-contain w-full h-full transition-opacity duration-300 ease-in-out",
+                    "object-contain transition-opacity duration-300 ease-in-out",
                     isTransitioning ? "opacity-0" : "opacity-100"
                 )}
-                onTransitionEnd={handleTransitionEnd}
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                sizes="(max-width: 768px) 100vw, 50vw"
                 priority
-                data-ai-hint={product.dataAiHint || "product main"}
-              />
-            )}
+            />
           </div>
         </div>
 
         {/* Product Info */}
-        <div className="flex flex-col space-y-3 sm:space-y-4">
-          <h1 className="font-headline text-3xl sm:text-4xl font-bold text-white">{product.name}</h1>
+        <div className="flex flex-col space-y-3 sm:space-y-4 md:w-1/2">
+          <h1 className="font-headline text-3xl sm:text-4xl font-bold text-foreground">{product.name}</h1>
           
           <div className="flex items-center space-x-3 flex-wrap gap-y-1">
             {averageRating > 0 && (
@@ -192,12 +182,12 @@ export default function ProductDetailPage() {
           </div>
           
           <div className="flex items-baseline space-x-2">
-            <p className="text-2xl font-bold text-green-500">Rs. {product.price.toFixed(2)}</p> 
+            <p className="text-2xl font-bold text-primary">Rs. {product.price.toFixed(2)}</p>
             {product.originalPrice && product.originalPrice > product.price && (
-              <p className="text-lg text-gray-500 line-through">Rs. {product.originalPrice.toFixed(2)}</p>
+              <p className="text-lg text-muted-foreground line-through">Rs. {product.originalPrice.toFixed(2)}</p>
             )}
             {discountPercentage > 0 && (
-              <span className="text-green-500 text-sm">({discountPercentage}% off)</span>
+              <span className="text-primary text-sm">({discountPercentage}% off)</span>
             )}
           </div>
 
@@ -208,7 +198,7 @@ export default function ProductDetailPage() {
           {product.availableColors && product.availableColors.length > 0 && (
             <div className="pt-1 sm:pt-2">
                 <h3 className="text-sm font-medium text-gray-400 mb-1.5 sm:mb-2">Select Color: <span className="text-white">{selectedColor ? product.availableColors.find(c => c === selectedColor) || selectedColor : ''}</span></h3>
-              <div className="flex space-x-3">
+              <div className="flex gap-3 flex-wrap">
                 {product.availableColors.map(color => (
                   <button
                     key={color}
@@ -229,12 +219,12 @@ export default function ProductDetailPage() {
             </div>
           )}
 
-          <div className="flex space-x-4 pt-4">
-            <Button size="lg" variant="outline" onClick={handleToggleWishlist} className={cn("bg-red-600 text-white hover:bg-red-700 flex items-center gap-2", isInWishlist && "bg-red-700")}>
-                <Heart className={cn("h-5 w-5", isInWishlist && "fill-current")} />
+          <div className="flex gap-4 pt-4 flex-wrap">
+            <Button size="lg" onClick={handleToggleWishlist} variant="outline" className={cn("flex items-center gap-2", isInWishlist ? "bg-primary/10 border-primary text-primary" : "text-foreground")}>
+                <Heart className={cn("h-5 w-5", isInWishlist && "fill-primary")} />
                 {isInWishlist ? 'In Wishlist' : 'Add to Wishlist'}
             </Button>
-            <Button size="lg" variant="default" className="bg-indigo-600 text-white hover:bg-indigo-700" onClick={handleAddToCart}>
+            <Button size="lg" variant="default" className="bg-primary text-primary-foreground hover:bg-primary/90" onClick={handleAddToCart}>
                 <ShoppingCart className="mr-2 h-5 w-5" />
                 Add to Cart
             </Button>
@@ -244,7 +234,7 @@ export default function ProductDetailPage() {
 
       <Separator className="my-6 sm:my-8" />
 
-      <div className="space-y-6 sm:space-y-8 text-white">
+      <div className="space-y-6 sm:space-y-8 text-foreground">
         <div>
           <h2 className="font-headline text-lg sm:text-xl font-semibold mb-2 sm:mb-3 text-foreground">Product Details</h2>
           <p className="text-muted-foreground leading-relaxed text-sm sm:text-base">{product.description}</p>
@@ -294,7 +284,7 @@ export default function ProductDetailPage() {
       )}
 
       {similarProducts.length > 0 && (
-        <section className="text-white">
+        <section className="text-foreground">
             <h2 className="text-2xl font-bold text-center mb-6">Similar Products</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
                 {similarProducts.map((p) => (
