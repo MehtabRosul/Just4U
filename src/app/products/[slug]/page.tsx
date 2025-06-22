@@ -102,25 +102,25 @@ export default function ProductDetailPage() {
         {/* Image Gallery and Main Image */}
         <div className="flex flex-col-reverse md:flex-row gap-4 items-start">
           <div className="flex md:flex-col gap-3 overflow-x-auto md:overflow-y-auto max-h-[400px] md:max-h-[500px] pr-2 md:pr-0 pb-2 md:pb-0 w-full md:w-auto">
-            {product.imageUrls.map((url, index) => (
-              <button
-                key={index}
-                onClick={() => handleThumbnailClick(index)}
-                className={cn(
-                  "border-2 rounded-lg overflow-hidden focus:outline-none focus:ring-2 focus:ring-primary shrink-0", 
-                  selectedImageIndex === index ? "border-primary" : "border-transparent hover:border-muted"
-                )}
-              >
-                <Image
-                  src={url}
-                  alt={`${product.name} thumbnail ${index + 1}`}
-                  width={80}
-                  height={100}
-                  className="object-cover w-16 h-20 cursor-pointer"
-                  data-ai-hint={product.dataAiHint || "product detail"}
-                />
-              </button>
-            ))}
+ {product.imageUrls.map((url, index) => (
+ <button
+ key={index}
+ onClick={() => handleThumbnailClick(index)}
+ className={cn(
+ "border-2 rounded-lg overflow-hidden focus:outline-none focus:ring-2 focus:ring-primary shrink-0",
+ selectedImageIndex === index ? "border-primary" : "border-transparent hover:border-muted"
+ )}
+ >
+ <Image
+ src={url}
+ alt={`${product.name} thumbnail ${index + 1}`}
+ width={80}
+ height={100}
+ className="object-cover w-16 h-20 cursor-pointer"
+ data-ai-hint={product.dataAiHint || "product detail"}
+ />
+ </button>
+ ))}
           </div>
           <div className="relative aspect-[3/4] w-full md:flex-1">
             {product.imageUrls.length > 0 && selectedImageIndex < product.imageUrls.length && (
