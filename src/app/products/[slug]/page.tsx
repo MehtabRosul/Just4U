@@ -120,36 +120,11 @@ export default function ProductDetailPage() {
   const isInWishlist = isProductInWishlist(product.id);
 
   const ImageGallery = (
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-5">
-      {/* Thumbnails for Desktop */}
-      <div className="hidden md:flex md:flex-col md:space-y-3">
-        {product.imageUrls.map((url, index) => (
-          <button
-            key={`desktop-thumb-${index}`}
-            onClick={() => handleThumbnailClick(index)}
-            className={cn(
-              "relative aspect-square w-full rounded-lg overflow-hidden cursor-pointer border-2 transition-all duration-200",
-              "focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary",
-              selectedImageIndex === index
-                ? "border-primary shadow-lg"
-                : "border-transparent hover:border-muted"
-            )}
-            aria-label={`View image ${index + 1}`}
-          >
-            <Image
-              src={url}
-              alt={`${product.name} thumbnail ${index + 1}`}
-              fill
-              className="object-cover"
-              sizes="100px"
-            />
-          </button>
-        ))}
-      </div>
-
+    <div className="flex flex-col gap-4">
       {/* Main Image View */}
-      <div className="relative aspect-square w-full md:col-span-4 bg-card rounded-lg overflow-hidden shadow-lg">
+      <div className="relative aspect-square w-full bg-card rounded-lg overflow-hidden shadow-lg border">
         <Image
+          key={product.imageUrls[selectedImageIndex]} // Using key to force re-render on change
           src={product.imageUrls[selectedImageIndex]}
           alt={product.name}
           fill
@@ -162,30 +137,33 @@ export default function ProductDetailPage() {
         />
       </div>
       
-      {/* Thumbnails for Mobile */}
-      <div className="flex -order-1 md:hidden space-x-3 overflow-x-auto pb-2">
-        {product.imageUrls.map((url, index) => (
-          <button
-            key={`mobile-thumb-${index}`}
-            onClick={() => handleThumbnailClick(index)}
-            className={cn(
-              "relative w-20 h-20 shrink-0 rounded-lg overflow-hidden cursor-pointer border-2 transition-all duration-200",
-              selectedImageIndex === index
-                ? "border-primary shadow-md"
-                : "border-transparent hover:border-muted"
-            )}
-            aria-label={`View image ${index + 1}`}
-          >
-            <Image
-              src={url}
-              alt={`${product.name} thumbnail ${index + 1}`}
-              fill
-              className="object-cover"
-              sizes="80px"
-            />
-          </button>
-        ))}
-      </div>
+      {/* Thumbnails */}
+      {product.imageUrls.length > 1 && (
+        <div className="flex space-x-3 overflow-x-auto pb-2">
+          {product.imageUrls.map((url, index) => (
+            <button
+              key={`thumb-${index}`}
+              onClick={() => handleThumbnailClick(index)}
+              className={cn(
+                "relative w-20 h-20 shrink-0 rounded-lg overflow-hidden cursor-pointer border-2 transition-all duration-200",
+                "focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary",
+                selectedImageIndex === index
+                  ? "border-primary shadow-md"
+                  : "border-transparent hover:border-muted"
+              )}
+              aria-label={`View image ${index + 1}`}
+            >
+              <Image
+                src={url}
+                alt={`${product.name} thumbnail ${index + 1}`}
+                fill
+                className="object-cover"
+                sizes="80px"
+              />
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 

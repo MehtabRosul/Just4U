@@ -3658,7 +3658,8 @@ export const PRODUCTS: Product[] = [
     slug: '3d-miniature-fridge-magnet-face',
     description: 'Mini caricature fridge magnet sculpted with custom face.',
     price: 999,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/m/i/miniature-magnet-face.jpg'],
+    imageUrls: ['https://i.ibb.co/C59TJZvt/image.png'],
+    
     dataAiHint: 'miniature fridge magnet custom face',
     popularity: 86,
     trending: true,
