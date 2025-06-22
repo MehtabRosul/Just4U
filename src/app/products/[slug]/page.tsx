@@ -9,7 +9,7 @@ import type { Product } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import { StarRating } from '@/components/shared/StarRating';
 import { Separator } from '@/components/ui/separator';
-import { Heart, ShoppingCart, ExternalLink } from 'lucide-react';
+import { Heart, ShoppingCart } from 'lucide-react';
 import { SectionTitle } from '@/components/shared/SectionTitle';
 import Link from 'next/link';
 import { ProductCard } from '@/components/products/ProductCard';
@@ -25,14 +25,12 @@ export default function ProductDetailPage() {
   const slug = Array.isArray(slugParam) ? slugParam[0] : slugParam;
   const [product, setProduct] = useState<Product | null>(null);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-  const [selectedColor, setSelectedColor] = useState<string | null>(null);
-  const [currentUrl, setCurrentUrl] = useState('');
-
-  // States for image gallery transition
   const [isTransitioning, setIsTransitioning] = useState(false);
-  
-  const { user } = useAuth(); 
-  const { toast } = useToast(); 
+  const [currentUrl, setCurrentUrl] = useState('');
+  const [selectedColor, setSelectedColor] = useState<string | null>(null);
+
+  const { user } = useAuth();
+  const { toast } = useToast();
   const { addToCart } = useCart();
   const { isProductInWishlist, addToWishlist, removeFromWishlist } = useWishlist();
 
@@ -40,8 +38,7 @@ export default function ProductDetailPage() {
     if (slug) {
       const foundProduct = getProductBySlug(slug);
       setProduct(foundProduct || null);
-      setSelectedImageIndex(0); // Reset to first image
-      
+      setSelectedImageIndex(0);
       if (foundProduct && foundProduct.availableColors && foundProduct.availableColors.length > 0) {
         setSelectedColor(foundProduct.availableColors[0]);
       } else {
@@ -49,8 +46,6 @@ export default function ProductDetailPage() {
       }
     } else {
       setProduct(null);
-      setSelectedImageIndex(0);
-      setSelectedColor(null);
     }
   }, [slug]);
 
@@ -60,6 +55,16 @@ export default function ProductDetailPage() {
     }
   }, []);
 
+  const handleThumbnailClick = (index: number) => {
+    if (index !== selectedImageIndex) {
+      setIsTransitioning(true);
+      setTimeout(() => {
+        setSelectedImageIndex(index);
+        setIsTransitioning(false);
+      }, 300); // match transition duration
+    }
+  };
+  
   const handleAddToCart = () => {
     if (!product) return;
     if (!user) {
@@ -90,6 +95,7 @@ export default function ProductDetailPage() {
     }
   };
 
+
   if (!product) {
     return (
       <div className="container mx-auto px-4 py-8 text-center">
@@ -100,7 +106,7 @@ export default function ProductDetailPage() {
       </div>
     );
   }
-
+  
   const averageRating = product.reviews && product.reviews.length > 0
     ? product.reviews.reduce((acc, review) => acc + review.rating, 0) / product.reviews.length
     : 0;
@@ -108,92 +114,86 @@ export default function ProductDetailPage() {
   const discountPercentage = product.originalPrice && product.price < product.originalPrice
     ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
     : 0;
-
+  
   const similarProducts = PRODUCTS.filter(p => p.category === product.category && p.id !== product.id).slice(0, 4);
-
+  
   const isInWishlist = isProductInWishlist(product.id);
 
-  const handleThumbnailClick = (index: number) => { 
-    if (index !== selectedImageIndex) {
-      setIsTransitioning(true);
-      setTimeout(() => {
-        setSelectedImageIndex(index);
-        setIsTransitioning(false);
-      }, 300); // Duration of the fade transition
-    }
-  };
+  const ImageGallery = (
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-5">
+      {/* Thumbnails for Desktop */}
+      <div className="hidden md:flex md:flex-col md:space-y-3">
+        {product.imageUrls.map((url, index) => (
+          <button
+            key={`desktop-thumb-${index}`}
+            onClick={() => handleThumbnailClick(index)}
+            className={cn(
+              "relative aspect-square w-full rounded-lg overflow-hidden cursor-pointer border-2 transition-all duration-200",
+              "focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary",
+              selectedImageIndex === index
+                ? "border-primary shadow-lg"
+                : "border-transparent hover:border-muted"
+            )}
+            aria-label={`View image ${index + 1}`}
+          >
+            <Image
+              src={url}
+              alt={`${product.name} thumbnail ${index + 1}`}
+              fill
+              className="object-cover"
+              sizes="100px"
+            />
+          </button>
+        ))}
+      </div>
+
+      {/* Main Image View */}
+      <div className="relative aspect-square w-full md:col-span-4 bg-card rounded-lg overflow-hidden shadow-lg">
+        <Image
+          src={product.imageUrls[selectedImageIndex]}
+          alt={product.name}
+          fill
+          className={cn(
+            "object-contain transition-opacity duration-300 ease-in-out",
+            isTransitioning ? "opacity-0" : "opacity-100"
+          )}
+          sizes="(max-width: 768px) 100vw, 50vw"
+          priority
+        />
+      </div>
+      
+      {/* Thumbnails for Mobile */}
+      <div className="flex -order-1 md:hidden space-x-3 overflow-x-auto pb-2">
+        {product.imageUrls.map((url, index) => (
+          <button
+            key={`mobile-thumb-${index}`}
+            onClick={() => handleThumbnailClick(index)}
+            className={cn(
+              "relative w-20 h-20 shrink-0 rounded-lg overflow-hidden cursor-pointer border-2 transition-all duration-200",
+              selectedImageIndex === index
+                ? "border-primary shadow-md"
+                : "border-transparent hover:border-muted"
+            )}
+            aria-label={`View image ${index + 1}`}
+          >
+            <Image
+              src={url}
+              alt={`${product.name} thumbnail ${index + 1}`}
+              fill
+              className="object-cover"
+              sizes="80px"
+            />
+          </button>
+        ))}
+      </div>
+    </div>
+  );
 
   return (
     <div className="container mx-auto px-2 sm:px-4 py-6 sm:py-8">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 mb-10 sm:mb-12">
-        {/* Image Gallery */}
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-5">
-          {/* Thumbnails (Desktop) */}
-          <div className="hidden md:flex md:flex-col md:space-y-3">
-            {product.imageUrls.map((url, index) => (
-              <button
-                key={`${url}-${index}`}
-                onClick={() => handleThumbnailClick(index)}
-                className={cn(
-                  "relative aspect-square w-full rounded-lg overflow-hidden cursor-pointer border-2 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary",
-                  selectedImageIndex === index
-                    ? "border-primary shadow-lg"
-                    : "border-transparent hover:border-muted"
-                )}
-                aria-label={`View image ${index + 1}`}
-              >
-                <Image
-                  src={url}
-                  alt={`${product.name} thumbnail ${index + 1}`}
-                  fill
-                  className="object-cover"
-                  sizes="100px"
-                />
-              </button>
-            ))}
-          </div>
-
-          {/* Main Image */}
-          <div className="relative aspect-square w-full md:col-span-4 bg-card rounded-lg overflow-hidden shadow-lg">
-            <Image
-              src={product.imageUrls[selectedImageIndex]}
-              alt={product.name}
-              fill
-              className={cn(
-                "object-contain transition-opacity duration-300 ease-in-out",
-                isTransitioning ? "opacity-0" : "opacity-100"
-              )}
-              sizes="(max-width: 768px) 100vw, 80vw"
-              priority
-            />
-          </div>
-
-          {/* Thumbnails (Mobile) */}
-          <div className="flex -order-1 md:hidden space-x-3 overflow-auto pb-2">
-            {product.imageUrls.map((url, index) => (
-              <button
-                key={`${url}-${index}-mobile`}
-                onClick={() => handleThumbnailClick(index)}
-                className={cn(
-                  "relative w-20 h-20 shrink-0 rounded-lg overflow-hidden cursor-pointer border-2 transition-all duration-200",
-                  selectedImageIndex === index
-                    ? "border-primary shadow-md"
-                    : "border-transparent hover:border-muted"
-                )}
-                aria-label={`View image ${index + 1}`}
-              >
-                <Image
-                  src={url}
-                  alt={`${product.name} thumbnail ${index + 1}`}
-                  fill
-                  className="object-cover"
-                  sizes="80px"
-                />
-              </button>
-            ))}
-          </div>
-        </div>
-
+        {ImageGallery}
+        
         {/* Product Info */}
         <div className="flex flex-col space-y-3 sm:space-y-4">
           <h1 className="font-headline text-3xl sm:text-4xl font-bold text-foreground">{product.name}</h1>
