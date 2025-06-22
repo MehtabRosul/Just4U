@@ -229,39 +229,61 @@ export default function GiftRegistriesPage() {
           <DialogContent className="sm:max-w-lg bg-card border-border">
             <DialogHeader>
               <DialogTitle className="text-card-foreground">{editingRegistry ? 'Edit Registry' : 'Create New Registry'}</DialogTitle>
+              <DialogDescription>
+                  Fill in the details for your special occasion. You can share your registry with friends and family once it's created.
+              </DialogDescription>
             </DialogHeader>
-            <form onSubmit={handleRegistrySubmit(onRegistrySubmit)} className="space-y-4">
-              <div>
-                <Label htmlFor="name" className="text-foreground">Registry Name</Label>
+            <form onSubmit={handleRegistrySubmit(onRegistrySubmit)} className="space-y-6 pt-2">
+              <div className="space-y-2">
+                <Label htmlFor="name" className="text-foreground font-semibold">Registry Title</Label>
+                <p className="text-xs text-muted-foreground !mt-1">Give your registry a clear and exciting name, like "John & Jane's Wedding Registry".</p>
                 <Input id="name" {...registerRegistry("name")} className={`mt-1 ${registryErrors.name ? 'border-destructive' : 'border-input'}`} />
                 {registryErrors.name && <p className="text-xs text-destructive mt-1">{registryErrors.name.message}</p>}
               </div>
-              <div>
-                <Label htmlFor="eventDate" className="text-foreground">Event Date</Label>
+
+              <div className="space-y-2">
+                <Label htmlFor="eventDate" className="text-foreground font-semibold">Date of Event</Label>
+                <p className="text-xs text-muted-foreground !mt-1">When is the special day? This helps guests know the timeline.</p>
                 <Input id="eventDate" type="date" {...registerRegistry("eventDate")} className={`mt-1 ${registryErrors.eventDate ? 'border-destructive' : 'border-input'}`} />
                 {registryErrors.eventDate && <p className="text-xs text-destructive mt-1">{registryErrors.eventDate.message}</p>}
               </div>
-              <div>
-                <Label htmlFor="description" className="text-foreground">Description (Optional)</Label>
+
+              <div className="space-y-2">
+                <Label htmlFor="description" className="text-foreground font-semibold">Welcome Message (Optional)</Label>
+                <p className="text-xs text-muted-foreground !mt-1">Add a short description or a welcome message for your guests.</p>
                 <Textarea id="description" {...registerRegistry("description")} className="mt-1 border-input" />
               </div>
-              <div className="flex items-center space-x-2">
-                <Controller
-                    name="isPublic"
-                    control={registryControl}
-                    defaultValue={false}
-                    render={({ field }) => (
-                        <Switch
-                            id="isPublic"
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
-                            aria-label="Make registry public"
-                        />
-                    )}
-                />
-                <Label htmlFor="isPublic" className="text-foreground">Make Registry Public</Label>
+
+              <div className="space-y-2">
+                <Label className="text-foreground font-semibold">Registry Visibility</Label>
+                <p className="text-xs text-muted-foreground !mt-1">Control who can see your registry. You can change this setting at any time.</p>
+                <div className="flex items-start space-x-3 pt-2">
+                    <Controller
+                        name="isPublic"
+                        control={registryControl}
+                        defaultValue={false}
+                        render={({ field }) => (
+                            <Switch
+                                id="isPublic"
+                                checked={field.value}
+                                onCheckedChange={field.onChange}
+                                aria-label="Make registry public"
+                                className="mt-1"
+                            />
+                        )}
+                    />
+                    <div className="grid gap-0.5">
+                        <Label htmlFor="isPublic" className="font-medium text-foreground cursor-pointer">
+                            Public Registry
+                        </Label>
+                        <p className="text-xs text-muted-foreground">
+                            Allows your registry to be searchable on our site.
+                        </p>
+                    </div>
+                </div>
               </div>
-              <DialogFooter>
+
+              <DialogFooter className="pt-4">
                  <DialogClose asChild><Button type="button" variant="outline" onClick={() => {setIsRegistryFormOpen(false); setEditingRegistry(null);}}>Cancel</Button></DialogClose>
                 <Button type="submit">{editingRegistry ? 'Save Changes' : 'Create Registry'}</Button>
               </DialogFooter>
@@ -401,4 +423,3 @@ export default function GiftRegistriesPage() {
     </div>
   );
 }
-
