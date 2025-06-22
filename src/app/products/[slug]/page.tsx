@@ -75,7 +75,6 @@ export default function ProductDetailPage() {
     return (
       <div className="container mx-auto px-4 py-8 text-center">
         <SectionTitle className="text-foreground">Product Not Found</SectionTitle>
-        <p className="text-muted-foreground">Sorry, we couldn't find the product you're looking for.</p>
         <Button asChild className="mt-4 bg-primary text-primary-foreground hover:bg-primary/90">
           <Link href="/products">Back to All Gifts</Link>
         </Button>
@@ -100,9 +99,9 @@ export default function ProductDetailPage() {
   return (
     <div className="container mx-auto px-2 sm:px-4 py-6 sm:py-8">
       <div className="grid md:grid-cols-2 gap-6 lg:gap-12 mb-10 sm:mb-12">
-        {/* Image Gallery */}
-        <div className="flex flex-col-reverse md:flex-row gap-3 sm:gap-4 items-start">
-          <div className="flex md:flex-col gap-2 overflow-x-auto md:overflow-y-auto md:max-h-[400px] lg:max-h-[500px] pr-2 pb-2 md:pb-0 w-full md:w-auto">
+        {/* Image Gallery and Main Image */}
+        <div className="flex flex-col-reverse md:flex-row gap-4 items-start">
+          <div className="flex md:flex-col gap-3 overflow-x-auto md:overflow-y-auto max-h-[400px] md:max-h-[500px] pr-2 md:pr-0 pb-2 md:pb-0 w-full md:w-auto">
             {product.imageUrls.map((url, index) => (
               <button
                 key={index}
@@ -117,7 +116,7 @@ export default function ProductDetailPage() {
                   alt={`${product.name} thumbnail ${index + 1}`}
                   width={80}
                   height={100}
-                  className="object-cover w-16 h-20 sm:w-20 sm:h-24 cursor-pointer"
+                  className="object-cover w-16 h-20 cursor-pointer"
                   data-ai-hint={product.dataAiHint || "product detail"}
                 />
               </button>
@@ -129,7 +128,7 @@ export default function ProductDetailPage() {
                 src={product.imageUrls[selectedImageIndex]}
                 alt={product.name}
                 fill
-                className="object-contain w-full h-full rounded-lg shadow-lg"
+                className="object-contain w-full h-full"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 priority
                 data-ai-hint={product.dataAiHint || "product main"}
@@ -140,60 +139,70 @@ export default function ProductDetailPage() {
 
         {/* Product Info */}
         <div className="flex flex-col space-y-3 sm:space-y-4">
-          <h1 className="font-headline text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground">{product.name}</h1>
+          <h1 className="font-headline text-3xl sm:text-4xl font-bold text-white">{product.name}</h1>
           
-          <div className="flex items-center space-x-2 flex-wrap gap-y-1">
+          <div className="flex items-center space-x-3 flex-wrap gap-y-1">
             {averageRating > 0 && (
                 <StarRating rating={averageRating} starSize="h-5 w-5" />
             )}
-            <span className="text-sm text-muted-foreground">
+            <span className="text-sm text-gray-400">
                 {product.reviews && product.reviews.length > 0 ? `(${product.reviews.length} review${product.reviews.length === 1 ? "" : "s"})` : "(No reviews yet)"}
             </span>
             {currentUrl && product.name && (
               <SocialShareButtons url={currentUrl} title={product.name} />
             )}
           </div>
-
-          <div className="flex items-baseline space-x-2 flex-wrap">
-            <p className="text-2xl sm:text-3xl font-bold text-primary">Rs. {product.price.toFixed(2)}</p> 
+          
+          <div className="flex items-baseline space-x-2">
+            <p className="text-2xl font-bold text-green-500">Rs. {product.price.toFixed(2)}</p> 
             {product.originalPrice && product.originalPrice > product.price && (
-              <p className="text-md sm:text-lg text-muted-foreground line-through">Rs. {product.originalPrice.toFixed(2)}</p>
+              <p className="text-lg text-gray-500 line-through">Rs. {product.originalPrice.toFixed(2)}</p>
             )}
             {discountPercentage > 0 && (
-              <Badge variant="destructive" className="text-sm">Save {discountPercentage}%</Badge>
+              <span className="text-green-500 text-sm">({discountPercentage}% off)</span>
             )}
           </div>
 
           {product.soldBy && (
-            <p className="text-sm text-muted-foreground">Sold By: <span className="font-medium text-foreground">{product.soldBy}</span></p>
+            <p className="text-sm text-gray-400">Sold By: <span className="font-medium text-white">{product.soldBy}</span></p>
           )}
 
           {product.availableColors && product.availableColors.length > 0 && (
             <div className="pt-1 sm:pt-2">
-              <h3 className="text-sm font-medium text-muted-foreground mb-1.5 sm:mb-2">Select Color: <span className="text-foreground">{selectedColor ? product.availableColors.find(c => c === selectedColor) || selectedColor : ''}</span></h3>
-              <div className="flex space-x-2 flex-wrap gap-y-2">
+ <h3 className="text-sm font-medium text-gray-400 mb-1.5 sm:mb-2">Select Color: <span className="text-white">{selectedColor ? product.availableColors.find(c => c === selectedColor) || selectedColor : ''}</span></h3>
+              <div className="flex space-x-3">
                 {product.availableColors.map(color => (
                   <button
                     key={color}
                     onClick={() => setSelectedColor(color)}
                     className={cn(
-                      "h-7 w-7 sm:h-8 sm:w-8 rounded-full border-2 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring",
-                      selectedColor === color ? 'ring-2 ring-offset-2 ring-primary' : 'border-muted-foreground/50' 
+                      "w-6 h-6 rounded-full border-2 border-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2",
+                      selectedColor === color ? 'ring-2 ring-indigo-500' : '' 
                     )}
                     style={{ backgroundColor: color.startsWith('#') ? color : undefined }}
                     title={color}
                     aria-label={`Select color ${color}`}
                   >
                    {!color.startsWith('#') && <span className="sr-only">{color}</span>}
+ <span className="block w-full h-full rounded-full" style={{ backgroundColor: color.startsWith('#') ? color : undefined }}></span>
                   </button>
                 ))}
               </div>
             </div>
           )}
 
-          <div className="flex flex-col space-y-2 sm:space-y-3 pt-3 sm:pt-4">
+          <div className="flex space-x-4 pt-4">
+            <Button size="lg" variant="outline" className="bg-red-600 text-white hover:bg-red-700">
+              Wishlist
+            </Button>
+            <Button size="lg" variant="default" className="bg-indigo-600 text-white hover:bg-indigo-700" onClick={handleAddToCart}>
+              Add to Cart
+            </Button>
+          </div>
+          {/* Removed external buy button as it wasn't in the reference image */}
+          {/* <div className="flex flex-col space-y-2 sm:space-y-3 pt-3 sm:pt-4">
             <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
-              <WishlistButton 
+              <WishlistButton
                 product={product} 
                 className="w-full sm:w-auto px-6 py-3 border border-input hover:bg-accent/20 text-primary flex items-center justify-center text-base"
                 size="lg" 
@@ -201,7 +210,7 @@ export default function ProductDetailPage() {
               <Button size="lg" variant="default" className="w-full sm:w-auto px-6 py-3 bg-primary text-primary-foreground hover:bg-primary/90" onClick={handleAddToCart}> 
                 <ShoppingCart className="mr-2 h-5 w-5" /> Add to Cart
               </Button>
-            </div>
+ </div>
              <Button 
               size="lg" 
               variant="outline"
@@ -211,13 +220,13 @@ export default function ProductDetailPage() {
               <ExternalLink className="mr-2 h-5 w-5" />
               Buy on Just4UGifts.com
             </Button>
-          </div>
+          </div> */}
         </div>
       </div>
 
       <Separator className="my-6 sm:my-8" />
 
-      <div className="space-y-6 sm:space-y-8">
+      <div className="space-y-6 sm:space-y-8 text-white">
         <div>
           <h2 className="font-headline text-lg sm:text-xl font-semibold mb-2 sm:mb-3 text-foreground">Product Details</h2>
           <p className="text-muted-foreground leading-relaxed text-sm sm:text-base">{product.description}</p>
@@ -267,19 +276,17 @@ export default function ProductDetailPage() {
       )}
 
       {similarProducts.length > 0 && (
-        <section>
-          <SectionTitle className="text-xl sm:text-2xl mb-4 sm:mb-6 text-foreground">Similar Products</SectionTitle>
+        <section className="text-white">
+ <h2 className="text-2xl font-bold text-center mb-6">Similar Products</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
             {similarProducts.map((p) => (
               <ProductCard key={p.id} product={p} />
             ))}
           </div>
-           <div className="mt-6 sm:mt-8 text-center">
-            <Button asChild variant="outline" className="text-primary border-primary hover:bg-primary hover:text-primary-foreground px-5 py-2.5 sm:px-6">
-              <Link href={`/products?category=${product.category}`}>View More in {product.category}</Link>
-            </Button>
-          </div>
-        </section>
+          {/* Removed "View More" button as it wasn't in the reference image */}
+
+
+ </section>
       )}
     </div>
   );
