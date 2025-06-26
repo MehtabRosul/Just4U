@@ -115,7 +115,7 @@ export function GiftRegistriesProvider({ children }: { children: ReactNode }) {
     }
   }, [user, toast]);
 
-  const addRegistryItem = useCallback(async (registryId: string, productId: string, itemDetails: Omit<GiftRegistryItem, 'productId'>) => {
+  const addRegistryItem = useCallback(async (registryId: string, productId: string, itemDetails: Omit<GiftRegistryItem, 'productId' | 'fulfilledQuantity'>) => {
     if (!user) {
       toast({ title: "Authentication Required", variant: "destructive" });
       return;
@@ -123,7 +123,11 @@ export function GiftRegistriesProvider({ children }: { children: ReactNode }) {
     try {
       const itemRef = ref(database, `users/${user.uid}/giftRegistries/${registryId}/items/${productId}`);
       // Ensure productId is part of the item data being set
-      await set(itemRef, {productId, ...itemDetails});
+      await set(itemRef, {
+        productId,
+        ...itemDetails,
+        fulfilledQuantity: 0 // Initialize fulfilledQuantity to 0 when adding a new item
+      });
       toast({ title: "Item Added", description: "Item added to registry." });
     } catch (error) {
       console.error("Error adding item to registry: ", error);

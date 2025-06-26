@@ -2,6 +2,7 @@
 "use client";
 
 import Image from 'next/image';
+import { useState, ChangeEvent } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { SectionTitle } from '@/components/shared/SectionTitle';
@@ -14,39 +15,42 @@ import { useAuth } from '@/hooks/useAuth';
 import { useCart, type CartItem } from '@/hooks/useCart';
 import { useToast } from '@/hooks/use-toast';
 import { Skeleton } from '@/components/ui/skeleton';
-import { cn } from '@/lib/utils';
+import { useAddresses } from '@/hooks/useAddresses';
 
 export default function CartPage() {
+  const [selectedPhoto, setSelectedPhoto] = useState<File | null>(null); // State for the selected file
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
   const { user, loading: authLoading } = useAuth();
   const { cartItems, removeFromCart, updateQuantity, getCartTotal, clearCart, loading: cartLoading } = useCart();
   const { toast } = useToast();
   const router = useRouter();
+  const { addresses, loading: addressesLoading } = useAddresses(); // Fetch user addresses
+  const [selectedAddress, setSelectedAddress] = useState<string | null>(null); // State for selected address ID
 
   const isLoading = authLoading || cartLoading;
-
-  const handleCheckout = () => {
-    if (!user) {
-      toast({
-        title: "Authentication Required",
-        description: "Please log in or sign up to proceed to checkout.",
-      });
-      router.push('/auth');
-      return;
-    }
-    // Proceed with checkout logic for logged-in user
-    console.log("Proceeding to checkout for user:", user.email, "with items:", cartItems);
-    toast({
-      title: "Checkout Initiated",
-      description: "Redirecting to checkout page..." // Placeholder
-    });
-    // Example: router.push('/checkout'); // Actual checkout page
-  };
 
   const handleQuantityChange = (productId: string, newQuantity: string) => {
     const quantityNum = parseInt(newQuantity, 10);
     if (!isNaN(quantityNum)) {
       updateQuantity(productId, quantityNum > 0 ? quantityNum : 0); // Disallow negative, 0 will remove
     }
+  };
+
+  const handlePhotoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]; // Get the selected file
+    if (file) {
+      setSelectedPhoto(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewUrl(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const triggerFileUpload = () => {
+    document.getElementById('manual-photo-upload')?.click();
   };
 
 
@@ -93,7 +97,7 @@ export default function CartPage() {
       </div>
     );
   }
-  
+
   const cartSubtotal = getCartTotal();
   const shippingCost = cartSubtotal > 0 ? 50 : 0;
   const taxRate = 0.05;
@@ -101,12 +105,12 @@ export default function CartPage() {
   const orderTotal = cartSubtotal + shippingCost + taxAmount;
 
 
-  return (
+ return (
     <div className="container mx-auto px-2 sm:px-4 py-6 sm:py-8">
-      <div className="flex flex-col sm:flex-row justify-between items-center mb-6 sm:mb-8 gap-3 sm:gap-4">
-        <SectionTitle className="mb-0 text-center sm:text-left">Your Shopping Cart</SectionTitle>
-        {cartItems.length > 0 && !cartLoading && (
-          <Button 
+ <div className="flex flex-col sm:flex-row justify-between items-center mb-6 sm:mb-8 gap-3 sm:gap-4">
+ <SectionTitle className="mb-0 text-center sm:text-left">Your Shopping Cart</SectionTitle>
+ {cartItems.length > 0 && !cartLoading && (
+ <Button
             variant="outline" 
             onClick={clearCart} 
             className="text-destructive border-destructive hover:bg-destructive hover:text-destructive-foreground w-full sm:w-auto text-sm"
@@ -115,6 +119,8 @@ export default function CartPage() {
           </Button>
         )}
       </div>
+
+ {/* Manual Photo Upload Section */}
 
       {cartLoading && user ? ( // Skeleton for cart items if user is logged in but cart is loading
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
@@ -134,12 +140,12 @@ export default function CartPage() {
             </div>
         </div>
       ) : cartItems.length > 0 ? (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
-          <div className="lg:col-span-2 space-y-4">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 w-full"> {/* Added w-full here */}
+ <div className="lg:col-span-2 space-y-4">
             {cartItems.map((item: CartItem) => (
-              <Card 
-                key={item.product.id} 
-                className="bg-secondary text-secondary-foreground border-border shadow-sm hover:bg-muted transition-colors"
+ <Card
+ key={item.product.id}
+ className="bg-secondary text-secondary-foreground border-border shadow-sm hover:bg-muted transition-colors"
               >
                 <CardContent className="p-3 sm:p-4 flex flex-col sm:flex-row items-center gap-3 sm:gap-4">
                   <Link href={`/products/${item.product.slug}`} className="block shrink-0">
@@ -181,38 +187,117 @@ export default function CartPage() {
                 </CardContent>
               </Card>
             ))}
+ 
+            {/* Manual Photo Upload Section */}
+            <div className="my-8 p-6 border rounded-lg bg-card shadow-sm">
+              <h2 className="text-xl font-semibold text-card-foreground mb-4">Upload a Photo for Your Order</h2>
+              <div
+                className="border border-dashed rounded-lg p-6 text-center cursor-pointer hover:border-primary transition-colors"
+                onClick={triggerFileUpload}
+              >
+                <input
+                  id="manual-photo-upload"
+                  type="file"
+                  accept="image/*" // Accept any image format
+                  className="hidden" // Hide the default file input
+                  onChange={handlePhotoUpload} // Add the change handler here
+                />
+                {!selectedPhoto && (<p className="text-muted-foreground">Click to select a photo</p>)}
+                {previewUrl && (<img src={previewUrl} alt="Photo preview" className="mt-4 max-w-[250px] max-h-[250px] object-contain mx-auto rounded-md" />)}
+              </div>
+            </div>
           </div>
 
-          <div className="lg:col-span-1">
+ <div className="lg:col-span-1">
             <Card className="bg-card border-border shadow-lg sticky top-24">
               <CardHeader>
                 <CardTitle className="text-lg sm:text-xl text-card-foreground">Order Summary</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3 text-sm">
-                <div className="flex justify-between text-muted-foreground">
-                  <span>Subtotal ({cartItems.reduce((acc, item) => acc + item.quantity, 0)} items)</span>
-                  <span className="text-foreground font-medium">Rs. {cartSubtotal.toFixed(2)}</span>
+                {cartItems.map((item: CartItem) => (
+                  <div key={item.product.id} className="flex justify-between items-center text-black"> 
+ <span className="flex-grow pr-2 truncate">{item.product.name} ({item.quantity})</span>
+                    <span className="font-medium shrink-0 text-black">Rs. {(item.product.price * item.quantity).toFixed(2)}</span>
+                  </div>
+                ))}
+
+                {/* Display "Item(s) Total" correctly even if cartItems.length is 0 but subtotal is calculated */}
+                {cartItems.length > 0 && <Separator className="my-2 bg-border" />}
+
+                 <div className="flex justify-between text-foreground">
+ <span className="text-black">Item(s) Total</span>
+                  <span className="font-medium text-black">Rs. {cartSubtotal.toFixed(2)}</span>
+ </div>
+
+                <div className="flex justify-between text-foreground">
+                  <span className="text-black">Shipping</span>
+                  <span className="font-medium text-black">Rs. {shippingCost.toFixed(2)}</span>
                 </div>
-                <div className="flex justify-between text-muted-foreground">
-                  <span>Shipping</span>
-                  <span className="text-foreground font-medium">Rs. {shippingCost.toFixed(2)}</span>
-                </div>
-                <div className="flex justify-between text-muted-foreground">
+                {/* Display Estimated Tax only if taxAmount is greater than 0 */}
+
+                {taxAmount > 0 && (<>
+ <div className="flex justify-between text-black">
                   <span>Estimated Tax (5%)</span>
-                  <span className="text-foreground font-medium">Rs. {taxAmount.toFixed(2)}</span>
-                </div>
+                  <span className="font-medium text-black"> {/* Removed redundant span */}
+                    {taxAmount > 0 ? `Rs. ${taxAmount.toFixed(2)}` : 'Rs. 0.00'}
+                  </span>
+ </div>
+                </>)}
+
                 <Separator className="my-2 bg-border" />
-                <div className="flex justify-between font-bold text-base sm:text-lg text-foreground">
-                  <span>Order Total</span>
-                  <span>Rs. {orderTotal.toFixed(2)}</span>
+
+                {/* Address Selection Section */}
+                <div className="space-y-4">
+                  <h3 className="text-base font-semibold text-card-foreground">Delivery Address</h3>
+                  {addressesLoading ? (
+                    <Skeleton className="h-24 w-full" />
+                  ) : addresses && addresses.length > 0 ? (
+                    <div className="space-y-2 max-h-36 overflow-y-auto">
+                      {addresses.map(address => (
+                        <div
+                          key={address.id}
+                          className={`p-3 border rounded-md cursor-pointer ${selectedAddress === address.id ? 'border-primary bg-primary/10' : 'border-border hover:bg-muted'}`}
+                          onClick={() => setSelectedAddress(address.id)}
+                        >
+                          <p className="text-sm font-medium">{address.street}</p>
+                          <p className="text-xs text-muted-foreground">{`${address.city}, ${address.state} ${address.zip}`}</p>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center p-4 border rounded-md bg-muted text-muted-foreground">
+                      <p className="text-sm mb-2">No saved addresses. Please add one to proceed.</p>
+                      <Button size="sm" variant="outline" /* Add onClick to open add address form/modal */>
+                        Add New Address
+                      </Button>
+                    </div>
+                  )}
                 </div>
-                <Button 
-                    size="lg" 
-                    className="w-full mt-4 bg-primary text-primary-foreground hover:bg-primary/90 text-base py-3" 
-                    onClick={handleCheckout}
-                    disabled={cartItems.length === 0}
+
+                          <div className="flex justify-between font-bold text-base sm:text-lg text-black">
+                          <span>Order Total</span>
+                          <span className="text-black">Rs. {orderTotal.toFixed(2)}</span>
+                          </div>
+                          <Button
+                          onClick={() => {
+                              if (cartItems.length > 0 && selectedAddress) {
+                                             const orderDetailsToStore = {
+ cartItems: cartItems.map(item => ({...item, product: {...item.product}})), // Ensure product is plain object
+                                                  selectedAddress: addresses.find(addr => addr.id === selectedAddress),
+                                                  photoPreviewUrl: previewUrl,
+                                                  subtotal: cartSubtotal,
+                                                  shipping: shippingCost,
+                                                  tax: taxAmount,
+ total: orderTotal,
+ };
+ localStorage.setItem('orderDetails', JSON.stringify(orderDetailsToStore)); // Temporarily store data in localStorage
+                  router.push('/checkout');
+                  }
+                          }}
+                                  className="w-full"
+                disabled={cartItems.length === 0 || !selectedAddress}
                 >
-                  Proceed to Checkout
+                                  Proceed to Checkout
                 </Button>
               </CardContent>
             </Card>
@@ -233,5 +318,6 @@ export default function CartPage() {
         </div>
       )}
     </div>
-  );
+
+  )
 }

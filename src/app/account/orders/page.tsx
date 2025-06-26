@@ -115,7 +115,7 @@ export default function OrdersPage() {
                     ))}
                     <Separator className="my-3 bg-border" />
                     <div className="flex justify-between items-center">
-                        <p className="text-sm text-muted-foreground">Total: <span className="font-bold text-lg text-primary">Rs. {order.totalAmount.toFixed(2)}</span></p>
+                        <p className="text-sm text-muted-foreground">Total: <span className="font-bold text-lg text-primary">Rs. {typeof order.totalAmount === 'number' ? order.totalAmount.toFixed(2) : '0.00'}</span></p>
                         {order.trackingNumber && (
                              <Button variant="outline" size="sm" asChild className="text-xs">
                                 <a href={`https://just4ugifts.com/track?orderId=${order.id}`} target="_blank" rel="noopener noreferrer"> {/* Example tracking link */}
@@ -188,8 +188,10 @@ export default function OrdersPage() {
                     ))}
                     <Separator className="my-3 bg-border" />
                     <div className="flex justify-between items-center">
-                        <p className="text-sm text-muted-foreground">Total: <span className="font-bold text-lg text-primary">Rs. {order.totalAmount.toFixed(2)}</span></p>
-                        {order.trackingNumber && (
+                        <p className="text-sm text-muted-foreground">Total: <span className="font-bold text-lg text-primary">Rs. {typeof order.totalAmount === 'number' ? order.totalAmount.toFixed(2) : '0.00'}</span></p>\n
+                        {/* Only show tracking if status is Shipped or Delivered and trackingNumber exists */}
+                        {(order.status === 'Shipped' || order.status === 'Delivered') && 
+                         order.trackingNumber && (
                              <Button variant="outline" size="sm" asChild className="text-xs">
                                 <a href={`https://just4ugifts.com/track?orderId=${order.id}`} target="_blank" rel="noopener noreferrer"> {/* Example tracking link */}
                                     <PackageSearch className="mr-1.5 h-3.5 w-3.5" /> Track Package

@@ -33,7 +33,7 @@ const accountSections = [
   { title: 'My Wishlist', description: 'See your saved favorite items.', icon: Heart, href: '/wishlist' },
   { title: 'Address Book', description: 'Manage your shipping addresses.', icon: MapPinIconLucide, href: '/account/addresses' },
   { title: 'Gift Registries', description: 'Manage your gift registries for special occasions.', icon: Gift, href: '/account/registries' },
-  { title: 'Notifications', description: 'Manage your notification preferences.', icon: Bell, href: '#' }, // Placeholder for now
+ { title: 'Notifications', description: 'Manage your notification preferences.', icon: Bell, href: '/account/notifications' },
 ];
 
 const predefinedAvatarUrls = [

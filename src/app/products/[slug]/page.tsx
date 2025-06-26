@@ -25,8 +25,9 @@ export default function ProductDetailPage() {
   const slug = Array.isArray(slugParam) ? slugParam[0] : slugParam;
   const [product, setProduct] = useState<Product | null>(null);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-  const [isTransitioning, setIsTransitioning] = useState(false);
   const [currentUrl, setCurrentUrl] = useState('');
+  const [isImageLoading, setIsImageLoading] = useState(false);
+  const [animationClass, setAnimationClass] = useState('');
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
 
   const { user } = useAuth();
@@ -57,11 +58,12 @@ export default function ProductDetailPage() {
 
   const handleThumbnailClick = (index: number) => {
     if (index !== selectedImageIndex) {
-      setIsTransitioning(true);
-      setTimeout(() => {
-        setSelectedImageIndex(index);
-        setIsTransitioning(false);
-      }, 300); // match transition duration
+      setIsImageLoading(true); // Start loading state for animation
+      // Determine animation direction based on index change
+      setAnimationClass(index > selectedImageIndex ? 'slide-in-right' : 'slide-in-left');
+      setSelectedImageIndex(index);
+      // The actual image source change will trigger the loading event
+      // which will then remove the loading state and animation class
     }
   };
   
@@ -123,21 +125,38 @@ export default function ProductDetailPage() {
     <div className="flex flex-col gap-4">
       {/* Main Image View */}
       <div className="relative aspect-square w-full bg-card rounded-lg overflow-hidden shadow-lg border">
-        <Image
-          key={product.imageUrls[selectedImageIndex]} // Using key to force re-render on change
-          src={product.imageUrls[selectedImageIndex]}
-          alt={product.name}
-          fill
-          className={cn(
-            "object-contain transition-opacity duration-300 ease-in-out",
-            isTransitioning ? "opacity-0" : "opacity-100"
-          )}
-          sizes="(max-width: 768px) 100vw, 50vw"
-          priority
-        />
+        <div className={cn(
+          "absolute inset-0 transition-all duration-500 ease-out",
+          isImageLoading ? (animationClass === 'slide-in-right' ? 'translate-x-full opacity-0' : '-translate-x-full opacity-0') : 'translate-x-0 opacity-100'
+        )}>
+          <Image
+            key={product.imageUrls[selectedImageIndex]} // Using key to force re-render on change
+            src={product.imageUrls[selectedImageIndex]}
+            alt={`${product.name} - Main Image`}
+            fill
+            className={cn(
+              "object-contain",
+              // The transition and transform are now controlled by the parent div's state classes
+            )}
+            sizes="(max-width: 768px) 100vw, 50vw"
+            priority
+            onLoadingComplete={() => setIsImageLoading(false)} // Remove loading state when image is loaded
+          />
+        </div>
+        {/* Placeholder or previous image if needed during transition */}
+        {isImageLoading && (
+           <Image
+                    src={product.imageUrls[selectedImageIndex === 0 ? 0 : selectedImageIndex - 1 ]} // Show the previous image briefly
+                    alt={`${product.name} - Main Image Placeholder`}
+                    fill
+                    className="object-contain opacity-50" // Lower opacity for placeholder
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    priority
+           />
+        )}
       </div>
       
-      {/* Thumbnails */}
+              {/* Thumbnails */}
       {product.imageUrls.length > 1 && (
         <div className="flex space-x-3 overflow-x-auto pb-2">
           {product.imageUrls.map((url, index) => (
@@ -159,11 +178,11 @@ export default function ProductDetailPage() {
                 fill
                 className="object-cover"
                 sizes="80px"
-              />
+                />
             </button>
           ))}
         </div>
-      )}
+              )}
     </div>
   );
 

@@ -112,7 +112,16 @@ export interface CartRtdbItem {
 // Wishlist in RTDB will store product IDs as keys, value can be true or timestamp
 // export type WishlistRtdb = Record<string, boolean | string>;
 
-export interface OrderItem extends Product { // Or a simplified version
+export interface OrderItem {
+  dataAiHint: string;
+  name: string;
+  slug: any;
+  imageUrls: any;
+  product: { // Simplified product details for the order item
+    name: string;
+    price: number;
+    slug: string;
+  };
   quantity: number;
   priceAtPurchase: number;
 }
@@ -140,6 +149,7 @@ export interface GiftRegistry {
   description?: string;
   creatorUid: string;
   isPublic: boolean;
+  phoneNumber?: string; // Added phone number field
   items: Record<string, GiftRegistryItem>; // Product ID as key
   shippingAddress?: Address;
 }

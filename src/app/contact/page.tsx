@@ -36,14 +36,14 @@ export default function ContactPage() {
 
       <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
         {/* Contact Form */}
-        <Card className="bg-card border-border shadow-lg">
+        <Card className="bg-card border-border shadow-xl">
           <CardHeader>
             <CardTitle className="text-xl sm:text-2xl text-card-foreground font-headline flex items-center">
               <Send className="mr-3 h-6 w-6 text-primary"/> Send Us a Message
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-5">
+            <form onSubmit={handleSubmit} className="space-y-5 text-white">
               <div>
                 <Label htmlFor="name" className="text-sm font-medium text-foreground">Full Name</Label>
                 <Input
@@ -52,7 +52,7 @@ export default function ContactPage() {
                   name="name"
                   placeholder="Your Name"
                   className="mt-1.5 border-input"
-                  disabled={state.submitting}
+                  disabled={state.submitting} // Keep original styling for input appearance
                   required
                 />
               </div>
@@ -65,7 +65,7 @@ export default function ContactPage() {
                   name="email"
                   placeholder="you@example.com"
                   className="mt-1.5 border-input"
-                  disabled={state.submitting}
+                  disabled={state.submitting} // Keep original styling for input appearance
                   required
                 />
                  <ValidationError 
@@ -84,7 +84,7 @@ export default function ContactPage() {
                   name="subject"
                   placeholder="How can we help?"
                   className="mt-1.5 border-input"
-                  disabled={state.submitting}
+                  disabled={state.submitting} // Keep original styling for input appearance
                   required
                 />
               </div>
@@ -97,7 +97,7 @@ export default function ContactPage() {
                   placeholder="Your message..."
                   rows={5}
                   className="mt-1.5 border-input"
-                  disabled={state.submitting}
+                  disabled={state.submitting} // Keep original styling for textarea appearance
                   required
                 />
                 <ValidationError 
@@ -124,48 +124,48 @@ export default function ContactPage() {
 
         {/* Contact Information */}
         <div className="space-y-6">
-           <Card className="bg-card border-border shadow-md">
+           <Card className="bg-gradient-to-br from-card to-card/80 border border-primary/20 shadow-xl">
             <CardHeader>
-                <CardTitle className="text-xl sm:text-2xl text-card-foreground font-headline">Contact Information</CardTitle>
+                <CardTitle className="text-2xl sm:text-3xl text-primary font-headline font-bold">Contact Information</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-6">
                 <div className="flex items-start">
-                    <Mail className="h-5 w-5 text-primary mr-3 mt-1 flex-shrink-0" />
+                    <Mail className="h-6 w-6 text-primary mr-4 mt-0.5 flex-shrink-0" />
                     <div>
-                        <h3 className="font-semibold text-foreground">Email Us</h3>
-                        <a href="mailto:support@just4ugifts.com" className="text-sm text-muted-foreground hover:text-primary">
-                            support@just4ugifts.com
+                        <h3 className="font-semibold text-black mb-1">Email Us</h3>
+                        <a href="mailto:just4u.eml@gmail.com" className="text-base text-muted-foreground hover:text-primary transition-colors">
+                        just4u.eml@gmail.com
                         </a>
                     </div>
                 </div>
                  <div className="flex items-start">
-                    <Phone className="h-5 w-5 text-primary mr-3 mt-1 flex-shrink-0" />
+                    <Phone className="h-6 w-6 text-primary mr-4 mt-0.5 flex-shrink-0" />
                     <div>
-                        <h3 className="font-semibold text-foreground">Call Us</h3>
-                        <a href="tel:+911234567890" className="text-sm text-muted-foreground hover:text-primary">
-                            +91 123 456 7890 (Mon-Sat, 10 AM - 6 PM)
+                        <h3 className="font-semibold text-black mb-1">Call Us</h3>
+                        <a href="tel:+911234567890" className="text-base text-muted-foreground hover:text-primary transition-colors">
+                            +91 123 456 7890 (Mon - Sat, 10 AM - 8 PM)
                         </a>
                     </div>
                 </div>
                  <div className="flex items-start">
-                    <MapPin className="h-5 w-5 text-primary mr-3 mt-1 flex-shrink-0" />
+                    <MapPin className="h-6 w-6 text-primary mr-4 mt-0.5 flex-shrink-0" />
                     <div>
-                        <h3 className="font-semibold text-foreground">Our Office</h3>
-                        <p className="text-sm text-muted-foreground">
+                        <h3 className="font-semibold text-black mb-1">Our Office</h3>
+                        <p className="text-base text-muted-foreground">
                             123 Gift Lane, Celebration City, India 400001
                         </p>
                     </div>
                 </div>
             </CardContent>
           </Card>
-          
-          <Card className="bg-card border-border shadow-md">
+
+          <Card className="bg-gradient-to-br from-card to-card/80 border border-primary/20 shadow-xl">
             <CardHeader>
-                <CardTitle className="text-xl sm:text-2xl text-card-foreground font-headline">Operating Hours</CardTitle>
+                <CardTitle className="text-2xl sm:text-3xl text-primary font-headline font-bold">Operating Hours</CardTitle>
             </CardHeader>
-            <CardContent>
-                <p className="text-sm text-muted-foreground mb-1"><span className="font-medium text-foreground">Customer Support:</span> Monday - Saturday, 10:00 AM - 06:00 PM (IST)</p>
-                <p className="text-sm text-muted-foreground"><span className="font-medium text-foreground">Online Store:</span> Open 24/7 for browsing and orders!</p>
+            <CardContent className="space-y-3">
+                <p className="text-base text-muted-foreground"><span className="font-semibold text-black">Customer Support:</span> Monday - Saturday, 10:00 AM - 06:00 PM (IST)</p>
+                <p className="text-base text-muted-foreground"><span className="font-semibold text-black">Online Store:</span> Open 24/7 for browsing and orders!</p>
             </CardContent>
           </Card>
         </div>

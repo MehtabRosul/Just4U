@@ -3658,8 +3658,13 @@ export const PRODUCTS: Product[] = [
     slug: '3d-miniature-fridge-magnet-face',
     description: 'Mini caricature fridge magnet sculpted with custom face.',
     price: 999,
-    imageUrls: ['https://i.ibb.co/C59TJZvt/image.png'],
-    
+    imageUrls: [
+      'https://i.ibb.co/C59TJZvt/image.png', // This is the main image
+      'https://i.ibb.co/4RtQZnhC/20240820-131358.jpg',
+      'https://i.ibb.co/DPNS1TZF/Comes-with-magnet-6.jpg',
+      'https://i.ibb.co/1f1cT9j5/Comes-with-magnet-4.jpg',
+      'https://i.ibb.co/4ZQ2gM7z/Comes-with-magnet-5.jpg',
+    ],
     dataAiHint: 'miniature fridge magnet custom face',
     popularity: 86,
     trending: true,

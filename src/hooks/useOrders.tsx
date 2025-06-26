@@ -11,7 +11,7 @@ import { useToast } from './use-toast';
 interface OrdersContextType {
   orders: Order[];
   loading: boolean;
-  // addOrder: (orderData: Omit<Order, 'id'>) => Promise<string | null>; // Full order creation is complex
+  addOrderToDatabase: (orderData: Omit<Order, 'id'>) => Promise<string | null>;
 }
 
 const OrdersContext = createContext<OrdersContextType | undefined>(undefined);
@@ -33,9 +33,22 @@ export function OrdersProvider({ children }: { children: ReactNode }) {
       const ordersRef = ref(database, `users/${user.uid}/orders`);
       const listener = onValue(ordersRef, (snapshot) => {
         const data = snapshot.val();
-        const loadedOrders: Order[] = data 
-          ? Object.entries(data).map(([id, value]) => ({ id, ...(value as Omit<Order, 'id'>) }))
-          : [];
+        let loadedOrders: Order[] = [];
+        if (data) {
+          loadedOrders = Object.entries(data).map(([id, value]) => {
+            const orderValue = value as Omit<Order, 'id'>;
+            return {
+              // Include other necessary properties from Order
+              id,
+              ...orderValue,
+              // Ensure items is always an array
+              // Explicitly cast to any to allow accessing properties before strict type check
+              // This handles potential inconsistencies in Firebase data structure
+              // Consider adding a more robust data validation/migration strategy for production
+              items: (orderValue as any).items && Array.isArray((orderValue as any).items) ? (orderValue as any).items : [],
+            };
+          });
+        }
         setOrders(loadedOrders.sort((a,b) => new Date(b.orderDate).getTime() - new Date(a.orderDate).getTime())); // Sort by newest first
         setLoading(false);
       }, (error) => {
@@ -51,34 +64,33 @@ export function OrdersProvider({ children }: { children: ReactNode }) {
     }
   }, [user, authLoading, toast]);
 
-  // Basic addOrder (example, full implementation is more complex and typically server-side)
-  // const addOrder = useCallback(async (orderData: Omit<Order, 'id'>): Promise<string | null> => {
-  //   if (!user) {
-  //     toast({ title: "Authentication Required", variant: "destructive" });
-  //     return null;
-  //   }
-  //   try {
-  //     const ordersRef = ref(database, `users/${user.uid}/orders`);
-  //     const newOrderRef = push(ordersRef);
-  //     const newOrderId = newOrderRef.key;
-  //     if (!newOrderId) throw new Error("Failed to generate order ID.");
+  const addOrderToDatabase = useCallback(async (orderData: Omit<Order, 'id'>): Promise<string | null> => {
+    if (!user) {
+      toast({ title: "Authentication Required", variant: "destructive" });
+      return null;
+    }
+    try {
+      const ordersRef = ref(database, `users/${user.uid}/orders`);
+      const newOrderRef = push(ordersRef);
+      const newOrderId = newOrderRef.key;
+      if (!newOrderId) throw new Error("Failed to generate order ID.");
 
-  //     const newOrder: Order = {
-  //       id: newOrderId,
-  //       ...orderData,
-  //     };
-  //     await set(newOrderRef, newOrder);
-  //     toast({ title: "Order Placed", description: "Your order has been placed successfully." });
-  //     return newOrderId;
-  //   } catch (error) {
-  //     console.error("Error placing order: ", error);
-  //     toast({ title: "Error", description: "Could not place order.", variant: "destructive" });
-  //     return null;
-  //   }
-  // }, [user, toast]);
+      const newOrder: Order = {
+        id: newOrderId,
+        ...orderData,
+      };
+      await set(newOrderRef, newOrder);
+      toast({ title: "Order Placed", description: "Your order has been placed successfully." });
+      return newOrderId;
+    } catch (error) {
+      console.error("Error placing order: ", error);
+      toast({ title: "Error", description: "Could not place order.", variant: "destructive" });
+      return null;
+    }
+  }, [user, toast]);
 
   return (
-    <OrdersContext.Provider value={{ orders, loading }}>
+    <OrdersContext.Provider value={{ orders, loading, addOrderToDatabase }}>
       {children}
     </OrdersContext.Provider>
   );
