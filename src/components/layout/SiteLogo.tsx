@@ -1,6 +1,6 @@
-
 "use client";
 import Link from 'next/link';
+import Image from 'next/image';
 import { cn } from '@/lib/utils';
 
 interface SiteLogoProps {
@@ -13,26 +13,21 @@ export function SiteLogo({ className, hideTagline = false }: SiteLogoProps) {
     <Link 
       href="/" 
       className={cn(
-        "flex flex-col items-start group", 
-        "transform transition-transform duration-200 ease-in-out group-hover:scale-105", // Added scale effect
+        "inline-block group",
         className
       )}
+      aria-label="Just4U Home"
     >
-      <div className="flex items-baseline relative">
-        <span className="text-3xl sm:text-4xl font-bold text-foreground group-hover:text-primary transition-colors duration-200">
-          just
-        </span>
-        <span className="text-3xl sm:text-4xl font-bold text-primary">
-          4U
-        </span>
-      </div>
+      <Image
+        src={require('@/Logo/Just4U_Logo.png')}
+        alt="Just4U Logo"
+        width={200}
+        height={90}
+        priority
+        className="w-[130px] sm:w-[218px] h-auto transition-transform duration-200 ease-in-out group-hover:scale-105 object-contain"
+      />
       {!hideTagline && (
-        <div className="relative w-[130px] sm:w-[155px] -mt-1 sm:-mt-1.5">
-           <span className="block text-[10px] sm:text-xs text-muted-foreground tracking-wide font-medium relative z-10 bg-transparent px-1 group-hover:text-primary transition-colors duration-200">
-            gift with personal touch
-          </span>
-          {/* Underline effect can be tricky with bg-transparent. Consider if it's needed or adjust styling. */}
-          {/* <div className="absolute bottom-[5px] sm:bottom-[6px] left-0 w-full h-[2px] bg-primary/80 z-0"></div> */}
+        <div className="w-full flex justify-center mt-1">
         </div>
       )}
     </Link>

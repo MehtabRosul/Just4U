@@ -5,11 +5,14 @@ import { useEffect, useState, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useOrders } from '@/hooks/useOrders';
 import { toast } from '@/hooks/use-toast';
+import { useAuth } from '@/hooks/useAuth';
  
 
 const CheckoutPage = () => {
   const [orderDetails, setOrderDetails] = useState<any>(null);
   const { addOrderToDatabase } = useOrders(); // Get the function from the hook
+  const [confirmation, setConfirmation] = useState<{ awb: string; pickupId: string } | null>(null);
+  const { user, profileDetails } = useAuth();
 
   const handlePayment = useCallback(async () => {
     // No need to get the hook here, addOrderToDatabase is in scope
@@ -47,41 +50,85 @@ const CheckoutPage = () => {
         name: "just4u", // Your business name
         description: "Order Payment", // Order description
         order_id: order.id, // Order ID obtained from the server
-        handler: function (response: any) {
-          // Handle successful payment here
-          console.log("Payment successful:", response);
-
-          // Add order to Firebase database after successful payment
-          const orderData = {
-            ...orderDetails, // Include all order details
-            paymentDetails: response, // Include Razorpay payment response
-            orderDate: new Date().toISOString(), // Add timestamp
+        handler: async function (response: any) {
+          // ——— Delhivery Integration — Robust Version ———
+          // 1. Create Shipment
+          const address = {
+            ...orderDetails.selectedAddress,
+            name: orderDetails.selectedAddress.name || (user && user.displayName) || 'Customer Name',
+            phone: orderDetails.selectedAddress.phone || (profileDetails && profileDetails.phoneNumber) || (user && user.phoneNumber) || '9999999999',
+            email: orderDetails.email || 'support@yourdomain.com',
           };
-          addOrderToDatabase(orderData); // Call the function to add to database
-
-          // Make an API call to your backend to update the order status
-          fetch('/api/update-order-status', { // Assuming you have an endpoint for this
+          // Always send payment_mode and product for Delhivery
+          const payment_mode = 'Prepaid'; // Razorpay = prepaid
+          const product = 'D'; // 'D' for prepaid, 'C' for COD
+          const shipResp = await fetch('/api/delhivery/create-shipment', {
             method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              orderId: order.id, // Order ID from your backend order creation
-              paymentDetails: response, // Pass payment details for verification
-            }),
-          })
-            .then(updateResponse => updateResponse.json())
-            .then(updateData => {
-              console.log('Order update response:', updateData);
-              // You might handle the response here, e.g., confirm status update
-            });
-          toast({
-            title: 'Payment Successful',
-            description: 'Your payment was processed successfully.',
-            variant: 'default',
+              orderId: response.razorpay_order_id,
+              address,
+              weight: 1, // TODO: calculate total weight from orderDetails.cartItems
+              dimensions: { length: 1, width: 1, height: 1 }, // TODO: calculate combined dimensions from cartItems
+              payment_mode,
+              product
+            })
           });
-          // You might want to redirect the user to a success page
-          // router.push('/order-success');
+          const shipData = await shipResp.json();
+
+          // Always ok; check success flag
+          if (!shipData.success) {
+            console.error('Delhivery Create Shipment Failed:', shipData.rmk);
+            toast({
+              title: '🎉 Just4U — Order Placed Successfully!',
+              description: "Thank you for your order! Your order has been placed and is being processed by our team. We\'ll notify you as soon as your shipment is scheduled for pickup and share your tracking details. If you have any questions, feel free to contact our support.",
+              variant: 'default',
+            });
+            // OPTIONAL: Save this order to a "manual-fulfillment" list in your database
+            return;
+          }
+
+          const awb = shipData.shipments[0].awb;
+
+          // 2. Schedule Pickup
+          // Send product name and Razorpay payment details
+          const productName = orderDetails.cartItems && orderDetails.cartItems.length > 0 ? orderDetails.cartItems[0].product.name : 'Product';
+          const pickupResp = await fetch('/api/delhivery/create-pickup', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              shipmentIds: [awb],
+              orderPlacedDate: new Date().toISOString().slice(0,10),
+              productName,
+              razorpayPaymentId: response.razorpay_payment_id,
+              razorpayOrderId: response.razorpay_order_id,
+              razorpaySignature: response.razorpay_signature
+            })
+          });
+          const pickupData = await pickupResp.json();
+
+          if (!pickupData.pickup || !pickupData.success) {
+            console.error('Delhivery Pickup Scheduling Error:', pickupData);
+            alert('⚠️ Pickup scheduling failed');
+            return;
+          }
+
+          // 3. Persist & Confirm
+          await fetch('/api/update-order-status', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              orderId: response.razorpay_order_id,
+              awb,
+              pickupId: pickupData.pickup.pickup_id || pickupData.pickup_id
+            })
+          });
+
+          setConfirmation({
+            awb,
+            pickupId: pickupData.pickup.pickup_id || pickupData.pickup_id
+          });
+          // ————————————————————————
         },
         prefill: {
           // Pre-fill customer details if available
@@ -107,7 +154,7 @@ const CheckoutPage = () => {
         variant: 'destructive',
       });
     }
-  }, [orderDetails, addOrderToDatabase]); // Add addOrderToDatabase to dependency array
+  }, [orderDetails, addOrderToDatabase, user, profileDetails]); // Add addOrderToDatabase and user to dependency array
 
 
   useEffect(() => {
@@ -192,6 +239,15 @@ const CheckoutPage = () => {
           </button>
         </div>
       </div>
+
+      {confirmation && (
+        <div className="mt-6 p-4 border border-green-500 rounded bg-green-100 text-green-900">
+          <h3 className="font-semibold">Shipment Scheduled!</h3>
+          <p>AWB Number: <strong>{confirmation.awb}</strong></p>
+          <p>Pickup ID: <strong>{confirmation.pickupId}</strong></p>
+          <p>You can track your order with the AWB on our Order History page.</p>
+        </div>
+      )}
 
       {/* No editing or modification options on this page */}
     </div>

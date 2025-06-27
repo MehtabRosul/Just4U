@@ -1,4 +1,3 @@
-
 import Link from 'next/link';
 import { SiteLogo } from './SiteLogo';
 import { Button } from '@/components/ui/button';
@@ -9,7 +8,7 @@ const footerSections = {
   company: [
     { name: 'About Us', href: '/about' },
     { name: 'Client Testimonial', href: '/testimonials' },
-    { name: 'Track Orders', href: 'https://just4ugifts.com/track' },
+    { name: 'Track Orders', href: '/account/orders' },
     { name: 'Shop', href: '/products' },
     { name: 'Wishlist', href: '/wishlist' },
     { name: 'Profile', href: '/account' },
