@@ -1,0 +1,16 @@
+{
+  "name": "Just4U - Gift with Personal Touch",
+  "short_name": "Just4U",
+  "description": "Browse our collection of unique and personalized gifts for every occasion and recipient.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "16x16 32x32",
+      "type": "image/x-icon"
+    }
+  ]
+} 

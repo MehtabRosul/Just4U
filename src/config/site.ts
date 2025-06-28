@@ -66,6 +66,6 @@ export const FOOTER_LINKS = {
   company: [
     { name: 'About Us', href: '/about' }, // Example link
     { name: 'Contact', href: '/contact' }, // Example link
-    { name: 'Order Tracking', href: 'https://just4ugifts.com/track' }
+    { name: 'Track Orders', href: '/account/orders' },
   ]
 };

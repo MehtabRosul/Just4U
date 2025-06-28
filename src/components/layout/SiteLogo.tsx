@@ -21,8 +21,8 @@ export function SiteLogo({ className, hideTagline = false }: SiteLogoProps) {
       <Image
         src={require('@/Logo/Just4U_Logo.png')}
         alt="Just4U Logo"
-        width={200}
-        height={90}
+        width={230}
+        height={100}
         priority
         className="w-[130px] sm:w-[218px] h-auto transition-transform duration-200 ease-in-out group-hover:scale-105 object-contain"
       />

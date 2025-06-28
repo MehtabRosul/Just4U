@@ -1,4 +1,3 @@
-
 "use client";
 import { useState } from 'react';
 import Link from 'next/link';
@@ -14,15 +13,28 @@ import { GLOBAL_NAV_LINKS } from '@/config/site';
 import { useAuth } from '@/hooks/useAuth'; 
 import { cn } from '@/lib/utils';
 import { useCart } from '@/hooks/useCart';
+import { useRouter } from 'next/navigation';
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const router = useRouter();
   const { wishlist, loading: wishlistLoading } = useWishlist(); // Added loading state
   const { user, loading: authLoading } = useAuth(); 
   const { getTotalItems: getTotalCartItems, loading: cartLoading } = useCart(); // Added loading state
 
   const totalCartItems = getTotalCartItems();
   const totalWishlistItems = wishlist.length; // wishlist itself is now the array of Product objects
+
+  // Handler for search submit
+  const handleSearch = (e?: React.FormEvent | React.MouseEvent) => {
+    if (e) e.preventDefault();
+    if (searchTerm.trim()) {
+      router.push(`/products?search=${encodeURIComponent(searchTerm.trim())}`);
+      setSearchTerm('');
+      setIsMobileMenuOpen(false); // close mobile menu if open
+    }
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-[var(--primary-header-bg)] bg-opacity-75 backdrop-blur-md shadow-sm">
@@ -43,17 +55,19 @@ export default function Header() {
               </SheetHeader>
               <div className="p-4 space-y-4">
                 {/* Mobile Search Bar */}
-                <div className="relative flex items-center">
-                    <Input
-                        type="search"
-                        placeholder="Search for Gifts..."
-                        className="h-10 w-full rounded-md pl-4 pr-10 text-sm bg-input text-foreground placeholder:text-input-placeholder border-border focus:ring-primary"
-                    />
-                    <Button type="submit" size="icon" variant="ghost" className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 text-primary">
-                        <SearchIcon className="h-5 w-5" />
-                        <span className="sr-only">Search</span>
-                    </Button>
-                </div>
+                <form onSubmit={handleSearch} className="relative flex items-center">
+                  <Input
+                    type="search"
+                    placeholder="Search for Gifts..."
+                    className="h-10 w-full rounded-md pl-4 pr-10 text-sm bg-input text-foreground placeholder:text-input-placeholder border-border focus:ring-primary"
+                    value={searchTerm}
+                    onChange={e => setSearchTerm(e.target.value)}
+                  />
+                  <Button type="submit" size="icon" variant="ghost" className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 text-primary">
+                    <SearchIcon className="h-5 w-5" />
+                    <span className="sr-only">Search</span>
+                  </Button>
+                </form>
               </div>
               <div className="flex-grow p-4 overflow-y-auto">
                 <NavMenu isMobile onLinkClick={() => setIsMobileMenuOpen(false)} navLinks={GLOBAL_NAV_LINKS} />
@@ -69,16 +83,18 @@ export default function Header() {
 
         {/* Desktop Search Bar - Centered */}
         <div className="hidden lg:flex flex-1 items-center justify-center px-8">
-          <div className="relative flex items-center w-full max-w-xl">
+          <form onSubmit={handleSearch} className="relative flex items-center w-full max-w-xl">
             <Input
               type="search"
               placeholder="Search for Gifts..."
               className="h-10 w-full rounded-md pl-4 pr-12 text-sm bg-input text-foreground placeholder:text-input-placeholder border-border focus:ring-primary"
+              value={searchTerm}
+              onChange={e => setSearchTerm(e.target.value)}
             />
             <Button type="submit" size="sm" className="absolute right-1 top-1/2 -translate-y-1/2 h-8 rounded-md bg-primary hover:bg-primary/90 px-3">
               <SearchIcon className="h-4 w-4 text-primary-foreground" />
             </Button>
-          </div>
+          </form>
         </div>
         
         {/* Desktop & Mobile Quick Access Icons */}

@@ -1,4 +1,6 @@
 
+
+
 import type { Occasion, GiftType, Recipient, Product, Category } from './types';
 import {
   Gift, Shirt, Smartphone, HomeIcon as HomeIconLucide, ToyBrick, Gem, Users, ShoppingBag, Cloud, Snowflake, Book,
@@ -170,7 +172,13 @@ export const PRODUCTS: Product[] = [
     slug: 'personalised-name-metal-keychain',
     description: 'High-quality metal keychain customized with your name in stylish typography.',
     price: 349,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/personalised-name-metal-keychain.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'personalised name metal keychain',
     popularity: 95,
     trending: true,
@@ -186,7 +194,13 @@ export const PRODUCTS: Product[] = [
     slug: 'custom-3d-crystal-photo-frame',
     description: 'Laser-engraved crystal block with your favorite photo etched in beautiful 3D.',
     price: 2299,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/custom-3d-crystal-photo-frame.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'custom 3d crystal photo frame',
     popularity: 88,
     trending: true,
@@ -202,7 +216,13 @@ export const PRODUCTS: Product[] = [
     slug: 'personalised-3d-moon-lamp',
     description: '14 cm rechargeable LED moon lamp etched with your photo, with 16 color modes.',
     price: 2499,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/personalised-3d-moon-lamp.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'personalised 3d moon lamp',
     popularity: 92,
     trending: true,
@@ -218,7 +238,13 @@ export const PRODUCTS: Product[] = [
     slug: 'custom-caricature-on-canvas',
     description: 'Hand-drawn digital caricature printed on premium canvas, ready to hang.',
     price: 1799,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/custom-caricature-on-canvas.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'custom caricature canvas',
     popularity: 85,
     trending: false,
@@ -234,7 +260,13 @@ export const PRODUCTS: Product[] = [
     slug: 'personalised-wooden-photo-frame-collage',
     description: 'A4-size wooden frame holding up to 9 photos in a beautiful collage layout.',
     price: 1299,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/personalised-wooden-photo-frame-collage.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'wooden photo frame collage',
     popularity: 90,
     trending: true,
@@ -250,7 +282,13 @@ export const PRODUCTS: Product[] = [
     slug: 'spotify-code-plaque',
     description: 'Custom acrylic plaque displaying a scannable Spotify code for your special song.',
     price: 1499,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/spotify-code-plaque.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'spotify code plaque',
     popularity: 96,
     trending: true,
@@ -266,7 +304,13 @@ export const PRODUCTS: Product[] = [
     slug: 'resin-embedded-flower-photo-frame',
     description: 'Real flowers preserved in resin around your chosen photo in a 7×9″ frame.',
     price: 1399,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/resin-embedded-flower-photo-frame.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'resin flower photo frame',
     popularity: 82,
     trending: false,
@@ -282,7 +326,13 @@ export const PRODUCTS: Product[] = [
     slug: 'heart-shaped-3d-crystal-music-plaque',
     description: '3D crystal heart with embedded soundwave of your chosen song.',
     price: 2499,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/heart-shaped-3d-crystal-music-plaque.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'heart shaped 3d crystal music plaque',
     popularity: 94,
     trending: true,
@@ -298,7 +348,13 @@ export const PRODUCTS: Product[] = [
     slug: 'custom-magic-colour-changing-mug',
     description: 'Ceramic mug that reveals your photo when filled with hot beverage.',
     price: 399,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/custom-magic-colour-changing-mug.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'magic colour changing mug',
     popularity: 88,
     trending: false,
@@ -314,7 +370,13 @@ export const PRODUCTS: Product[] = [
     slug: 'personalised-wooden-bottle-opener',
     description: 'Magnetic wooden opener engraved with names or logos—perfect for your bar.',
     price: 349,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/personalised-wooden-bottle-opener.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'personalised wooden bottle opener',
     popularity: 80,
     trending: false,
@@ -330,7 +392,13 @@ export const PRODUCTS: Product[] = [
     slug: 'mini-you-series-bobblehead-single-15cm',
     description: 'A unique resin bobblehead sculpted to look exactly like you, standing 15 cm tall on a custom base.',
     price: 2799,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/mini-you-series-bobblehead-single-15cm.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'mini you bobblehead single person',
     popularity: 89,
     trending: true,
@@ -346,7 +414,13 @@ export const PRODUCTS: Product[] = [
     slug: 'wooden-plaque-with-engraved-quote-20x10cm',
     description: 'A motivational wooden plaque engraved with your chosen quote, perfect for desk or shelf display.',
     price: 499,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/wooden-plaque-engraved-quote-20x10cm.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'engraved wooden plaque motivational quote',
     popularity: 81,
     trending: false,
@@ -362,7 +436,13 @@ export const PRODUCTS: Product[] = [
     slug: 'photo-collage-canvas-12x18',
     description: 'Turn up to 9 images into a stunning 12×18″ canvas art collage, ready to hang in any space.',
     price: 1499,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/photo-collage-canvas-12x18.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'photo collage canvas 12x18',
     popularity: 93,
     trending: true,
@@ -378,7 +458,13 @@ export const PRODUCTS: Product[] = [
     slug: 'custom-photo-book-album-hardcover-30-pages',
     description: 'Premium hardcover photo book with 30 pages—upload your memories for a timeless keepsake.',
     price: 1699,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/custom-photo-book-album-hardcover.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'custom photo book album hardcover',
     popularity: 87,
     trending: false,
@@ -394,7 +480,13 @@ export const PRODUCTS: Product[] = [
     slug: 'heart-shaped-resin-art-photo-frame-6in',
     description: '6-inch heart frame made with hand-poured resin art—ideal for romantic décor.',
     price: 1099,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/heart-shaped-resin-art-photo-frame.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'heart shaped resin art frame',
     popularity: 90,
     trending: true,
@@ -410,7 +502,13 @@ export const PRODUCTS: Product[] = [
     slug: 'wooden-gifts-combo-bottle-pen-diary',
     description: 'Elegant wooden gift set including a bottle, an engraved pen, and a lined diary.',
     price: 1299,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/wooden-gifts-combo-bottle-pen-diary.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'wooden gift combo bottle pen diary',
     popularity: 85,
     trending: false,
@@ -426,7 +524,13 @@ export const PRODUCTS: Product[] = [
     slug: 'photo-to-art-digital-sketch-a4',
     description: 'Transform a photo into a digital A4 sketch—prints available in pencil or charcoal styles.',
     price: 999,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/photo-to-art-digital-sketch-a4.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'photo to digital art sketch a4',
     popularity: 84,
     trending: false,
@@ -442,7 +546,13 @@ export const PRODUCTS: Product[] = [
     slug: 'stone-tiles-photo-frame-mosaic-6x6',
     description: 'Rustic mosaic frame using natural stone tiles—holds a 6×6″ photo.',
     price: 1299,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/stone-tiles-photo-frame-mosaic.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'stone and tile mosaic frame',
     popularity: 79,
     trending: false,
@@ -458,7 +568,13 @@ export const PRODUCTS: Product[] = [
     slug: 'assorted-chocolate-hamper-12-pieces',
     description: 'Gourmet hamper of 12 premium chocolates in a decorative gift box.',
     price: 999,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/assorted-chocolate-hamper.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'assorted chocolate hamper',
     popularity: 91,
     trending: true,
@@ -474,7 +590,13 @@ export const PRODUCTS: Product[] = [
     slug: 'magnetic-glass-photo-frame-4x6',
     description: 'Contemporary 4×6″ glass frame that magnetically “floats” your photo.',
     price: 699,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/magnetic-glass-photo-frame.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'magnetic glass photo frame',
     popularity: 84,
     trending: false,
@@ -490,7 +612,13 @@ export const PRODUCTS: Product[] = [
     slug: 'framed-bobblehead-couple-15cm-each',
     description: 'A pair of custom resin bobbleheads, one for each partner, framed in a single display box.',
     price: 3999,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/framed-bobblehead-couple-15cm.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'couple framed bobblehead',
     popularity: 88,
     trending: true,
@@ -506,7 +634,13 @@ export const PRODUCTS: Product[] = [
     slug: 'personalised-wooden-coaster-set-4-pcs',
     description: 'Set of four round wooden coasters, each engraved with custom artwork or text.',
     price: 499,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/personalised-wooden-coaster-set.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'personalised wooden coasters set',
     popularity: 82,
     trending: false,
@@ -522,7 +656,13 @@ export const PRODUCTS: Product[] = [
     slug: 'custom-shadow-box-first-home-edition',
     description: 'Deep-set shadow box frame with “First Home” text—perfect for house-warming memories.',
     price: 1999,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/custom-shadow-box-first-home.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'first home shadow box',
     popularity: 90,
     trending: true,
@@ -538,7 +678,13 @@ export const PRODUCTS: Product[] = [
     slug: 'personalised-canvas-print-24x36',
     description: 'Large-format 24×36″ canvas print of your chosen image—gallery-quality finish.',
     price: 3299,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/personalised-canvas-print-24x36.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'personalised canvas print large',
     popularity: 85,
     trending: false,
@@ -554,7 +700,13 @@ export const PRODUCTS: Product[] = [
     slug: 'caricature-on-wood-single-20x30cm',
     description: 'Fun digital caricature printed on wood panel—20×30 cm size, ready to mount.',
     price: 1799,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/caricature-on-wood-single.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'caricature on wood single person',
     popularity: 88,
     trending: true,
@@ -570,7 +722,13 @@ export const PRODUCTS: Product[] = [
     slug: 'custom-metal-print-photo-20x30cm',
     description: 'Durable metal print of your photo—20×30 cm, perfect for modern décor.',
     price: 2199,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/custom-metal-print-photo.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'custom metal print photo',
     popularity: 83,
     trending: false,
@@ -586,7 +744,13 @@ export const PRODUCTS: Product[] = [
     slug: 'photo-collage-metal-tiles-set-of-9',
     description: 'Set of nine 4×4″ metal tiles, each printed with your photos for a striking display.',
     price: 1699,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/photo-collage-metal-tiles.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'photo collage metal tiles set',
     popularity: 81,
     trending: false,
@@ -602,7 +766,13 @@ export const PRODUCTS: Product[] = [
     slug: 'personalised-wooden-bookmark',
     description: 'Laser-engraved wooden bookmark with customizable text or artwork.',
     price: 249,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/personalised-wooden-bookmark.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'personalised wooden bookmark',
     popularity: 79,
     trending: false,
@@ -618,7 +788,13 @@ export const PRODUCTS: Product[] = [
     slug: 'heart-shaped-photo-collage-print-a3',
     description: 'A3-sized heart-shaped collage print featuring up to 12 of your favorite photos.',
     price: 1599,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/heart-shaped-photo-collage-a3.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'heart shaped photo collage print a3',
     popularity: 90,
     trending: true,
@@ -634,7 +810,13 @@ export const PRODUCTS: Product[] = [
     slug: 'framed-canvas-photo-print-10x12',
     description: 'Your photo printed on high-quality canvas and elegantly framed in a 10×12″ format.',
     price: 1799,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/framed-canvas-photo-print.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'framed canvas photo print',
     popularity: 88,
     trending: false,
@@ -650,7 +832,13 @@ export const PRODUCTS: Product[] = [
     slug: 'resin-embedded-flower-photo-frame-7x9',
     description: 'A breathtaking frame with real flowers embedded in clear resin around your image.',
     price: 1399,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/resin-embedded-flower-photo-frame-7x9.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'resin embedded flower frame',
     popularity: 92,
     trending: false,
@@ -666,7 +854,13 @@ export const PRODUCTS: Product[] = [
     slug: 'floating-box-photo-frame-8x10',
     description: 'This modern 8×10″ floating frame creates a 3D effect by suspending your photo between glass.',
     price: 1299,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/floating-box-photo-frame.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'floating box photo frame',
     popularity: 85,
     trending: false,
@@ -682,7 +876,13 @@ export const PRODUCTS: Product[] = [
     slug: 'metal-clip-multi-photo-frame-set-of-4',
     description: 'Set of four 4×6″ photos held by minimalist metal clips—perfect for office or home.',
     price: 999,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/metal-clip-multi-photo-frame.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'metal clip multi photo frame set',
     popularity: 83,
     trending: false,
@@ -698,7 +898,13 @@ export const PRODUCTS: Product[] = [
     slug: 'photo-frame-with-led-clock-6x8',
     description: 'Multi-functional 6×8″ frame with built-in LED clock—practical and decorative.',
     price: 1599,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/photo-frame-with-led-clock.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'photo frame with led clock',
     popularity: 88,
     trending: true,
@@ -714,7 +920,13 @@ export const PRODUCTS: Product[] = [
     slug: 'floating-photo-frame-with-shelves-10x12',
     description: 'This 10×12″ frame includes small display shelves for trinkets alongside your photo.',
     price: 2199,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/floating-photo-frame-with-shelves.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'floating photo frame with shelves',
     popularity: 86,
     trending: false,
@@ -730,7 +942,13 @@ export const PRODUCTS: Product[] = [
     slug: 'geometric-acrylic-photo-frame-7x7',
     description: 'Stylish geometric-shaped acrylic frame for a modern display of your 7×7″ photo.',
     price: 1099,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/geometric-acrylic-photo-frame.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'geometric acrylic photo frame',
     popularity: 80,
     trending: false,
@@ -746,7 +964,13 @@ export const PRODUCTS: Product[] = [
     slug: 'reclaimed-wood-photo-frame-8x10',
     description: 'Eco-friendly reclaimed wood frame for an 8×10″ photo—rustic charm meets sustainability.',
     price: 1599,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/reclaimed-wood-photo-frame.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'reclaimed wood photo frame',
     popularity: 84,
     trending: false,
@@ -762,7 +986,13 @@ export const PRODUCTS: Product[] = [
     slug: 'photo-frame-with-built-in-vase-5x7',
     description: '5×7″ frame combined with a small vase for fresh flowers—unique desk or shelf décor.',
     price: 1799,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/photo-frame-with-built-in-vase.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'photo frame with built in vase',
     popularity: 89,
     trending: false,
@@ -778,7 +1008,13 @@ export const PRODUCTS: Product[] = [
     slug: 'round-bamboo-photo-frame-8-inch',
     description: 'Minimalist round bamboo frame for an 8″ photo—eco-friendly and elegant.',
     price: 1099,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/round-bamboo-photo-frame.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'round bamboo photo frame',
     popularity: 82,
     trending: false,
@@ -794,7 +1030,13 @@ export const PRODUCTS: Product[] = [
     slug: 'personalised-spotify-code-photo-frame-6x6',
     description: '6×6″ frame pairing a favorite photo with a scannable Spotify code strip below.',
     price: 1499,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/personalised-spotify-code-photo-frame.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'spotify code photo frame 6x6',
     popularity: 95,
     trending: true,
@@ -810,7 +1052,13 @@ export const PRODUCTS: Product[] = [
     slug: 'laser-cut-metal-photo-frame-6x6',
     description: 'Intricately laser-cut metal frame for a 6×6″ photo—industrial-chic décor.',
     price: 1099,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/laser-cut-metal-photo-frame.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'laser cut metal photo frame',
     popularity: 78,
     trending: false,
@@ -826,7 +1074,13 @@ export const PRODUCTS: Product[] = [
     slug: 'pivot-double-sided-photo-frame-6x8',
     description: '6×8″ double-sided pivot frame—display two photos back-to-back.',
     price: 1899,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/pivot-double-sided-photo-frame.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'pivot double sided photo frame',
     popularity: 87,
     trending: false,
@@ -842,7 +1096,13 @@ export const PRODUCTS: Product[] = [
     slug: 'collage-frame-heart-shape-13-slots',
     description: 'Heart-shaped frame with 13 photo slots, perfect for Valentine’s Day or anniversaries.',
     price: 1499,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/collage-frame-heart-shape.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'heart shape collage frame',
     popularity: 90,
     trending: true,
@@ -858,7 +1118,13 @@ export const PRODUCTS: Product[] = [
     slug: 'floating-glass-frame-led-accent-5x7',
     description: '5×7″ floating glass frame with subtle LED backlight for a glowing effect.',
     price: 1699,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/floating-glass-frame-led.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'floating glass frame led accent',
     popularity: 88,
     trending: false,
@@ -874,7 +1140,13 @@ export const PRODUCTS: Product[] = [
     slug: 'reclaimed-wood-inset-photo-frame-8x10',
     description: '8×10″ frame inset in a block of reclaimed wood—eco chic and unique.',
     price: 1599,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/reclaimed-wood-inset-frame.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'reclaimed wood inset frame',
     popularity: 85,
     trending: false,
@@ -890,7 +1162,13 @@ export const PRODUCTS: Product[] = [
     slug: 'staggered-wood-panel-frame-4x6',
     description: 'Wall art piece with staggered wood panels, each holding a 4×6″ photo.',
     price: 1399,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/staggered-wood-panel-frame.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'staggered wood panel frame',
     popularity: 83,
     trending: false,
@@ -906,7 +1184,13 @@ export const PRODUCTS: Product[] = [
     slug: 'personalised-double-sided-pivot-frame-6x8',
     description: 'Pivot frame holding two 6×8″ photos, personalized with custom engraving.',
     price: 1899,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/personalised-double-sided-pivot-frame.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'personalised pivot frame two sided',
     popularity: 87,
     trending: false,
@@ -922,7 +1206,13 @@ export const PRODUCTS: Product[] = [
     slug: 'rustic-pallet-wood-photo-frame-12x12',
     description: '12×12″ square frame crafted from reclaimed pallet wood for farmhouse style.',
     price: 2299,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/rustic-pallet-wood-frame.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'rustic pallet wood frame',
     popularity: 86,
     trending: false,
@@ -938,7 +1228,13 @@ export const PRODUCTS: Product[] = [
     slug: 'photo-frame-with-keepsake-drawer-8x10',
     description: '8×10″ frame featuring a small drawer underneath to store tiny keepsakes.',
     price: 2199,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/keepsake-drawer-frame.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'photo frame with keepsake drawer',
     popularity: 89,
     trending: false,
@@ -954,7 +1250,13 @@ export const PRODUCTS: Product[] = [
     slug: 'stained-glass-mosaic-photo-frame-6x6',
     description: 'Vibrant 6×6″ frame with stained glass mosaic border—artistry meets function.',
     price: 2499,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/stained-glass-mosaic-frame.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'stained glass mosaic frame',
     popularity: 88,
     trending: false,
@@ -970,7 +1272,13 @@ export const PRODUCTS: Product[] = [
     slug: 'custom-engraved-leather-wallet',
     description: 'Premium genuine leather wallet engraved with initials or a short message.',
     price: 1299,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/custom-engraved-leather-wallet.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'custom engraved leather wallet',
     popularity: 90,
     trending: true,
@@ -986,7 +1294,13 @@ export const PRODUCTS: Product[] = [
     slug: 'personalised-desk-nameplate-acrylic',
     description: 'Clear acrylic desk nameplate with custom text—ideal for office or home workspace.',
     price: 799,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/personalised-desk-nameplate-acrylic.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'personalised acrylic desk nameplate',
     popularity: 88,
     trending: false,
@@ -1002,7 +1316,13 @@ export const PRODUCTS: Product[] = [
     slug: 'custom-printed-canvas-tote-bag',
     description: 'Sturdy canvas tote printed with your artwork or photo—great for everyday use.',
     price: 599,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/custom-printed-canvas-tote-bag.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'custom printed canvas tote bag',
     popularity: 82,
     trending: false,
@@ -1018,7 +1338,13 @@ export const PRODUCTS: Product[] = [
     slug: 'photo-ceramic-candle-holder',
     description: 'White ceramic candle holder personalized with your photo—creates a warm ambiance.',
     price: 549,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/photo-ceramic-candle-holder.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'photo ceramic candle holder',
     popularity: 85,
     trending: false,
@@ -1034,7 +1360,13 @@ export const PRODUCTS: Product[] = [
     slug: 'crystal-awards-trophy-clear-acrylic',
     description: 'Elegant clear acrylic trophy, perfect for recognizing top performers.',
     price: 199,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/crystal-awards-trophy.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'crystal awards trophy acrylic',
     popularity: 92,
     trending: true,
@@ -1050,7 +1382,13 @@ export const PRODUCTS: Product[] = [
     slug: 'personalised-photo-fridge-magnet-set-of-4',
     description: 'Set of four fridge magnets, each printed with your favorite photographs.',
     price: 599,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/photo-fridge-magnet-set.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'personalised photo fridge magnet',
     popularity: 80,
     trending: false,
@@ -1066,7 +1404,13 @@ export const PRODUCTS: Product[] = [
     slug: 'engraved-rubber-stamp-with-name',
     description: 'Custom rubber stamp with your name or logo—perfect for office and crafts.',
     price: 499,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/engraved-rubber-stamp.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'engraved rubber stamp',
     popularity: 78,
     trending: false,
@@ -1082,7 +1426,13 @@ export const PRODUCTS: Product[] = [
     slug: 'custom-photo-clock-wall-table',
     description: 'Multifunctional clock printed with your photo—can be hung on a wall or placed on a table.',
     price: 1199,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/custom-photo-clock.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'custom photo clock',
     popularity: 87,
     trending: false,
@@ -1098,7 +1448,13 @@ export const PRODUCTS: Product[] = [
     slug: 'personalised-desk-organizer-wooden',
     description: 'Wooden desk organizer with compartments and personalized engraving on top.',
     price: 1299,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/desk-organizer-wooden.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'wooden desk organizer personalised',
     popularity: 84,
     trending: false,
@@ -1114,7 +1470,13 @@ export const PRODUCTS: Product[] = [
     slug: 'custom-printed-phone-case',
     description: 'Durable phone case printed with your photo or design—fits all major models.',
     price: 699,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/custom-printed-phone-case.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'custom printed phone case',
     popularity: 90,
     trending: true,
@@ -1130,7 +1492,13 @@ export const PRODUCTS: Product[] = [
     slug: 'personalised-leather-journal',
     description: 'Premium leather-bound journal personalized with your name or initials.',
     price: 999,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/personalised-leather-journal.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'personalised leather journal',
     popularity: 85,
     trending: false,
@@ -1146,7 +1514,13 @@ export const PRODUCTS: Product[] = [
     slug: 'custom-3d-led-photo-lamp',
     description: '3D LED lamp carved with your photo—creates a magical nighttime display.',
     price: 1799,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/custom-3d-led-photo-lamp.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'custom 3d led photo lamp',
     popularity: 92,
     trending: true,
@@ -1162,7 +1536,13 @@ export const PRODUCTS: Product[] = [
     slug: 'personalised-name-plate-metal',
     description: 'Metal name plate for desk or door, personalized with elegant typography.',
     price: 899,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/personalised-metal-name-plate.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'personalised metal name plate',
     popularity: 88,
     trending: false,
@@ -1178,7 +1558,13 @@ export const PRODUCTS: Product[] = [
     slug: 'custom-photo-puzzle-60-pieces',
     description: '60-piece jigsaw puzzle personalized with your chosen photo—fun for all ages.',
     price: 999,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/custom-photo-puzzle.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'custom photo puzzle 60 pieces',
     popularity: 84,
     trending: false,
@@ -1194,7 +1580,13 @@ export const PRODUCTS: Product[] = [
     slug: 'engraved-wooden-watch-box',
     description: 'Handcrafted wooden box for watch storage, engraved with custom text.',
     price: 1599,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/engraved-wooden-watch-box.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'engraved wooden watch box',
     popularity: 87,
     trending: false,
@@ -1210,7 +1602,13 @@ export const PRODUCTS: Product[] = [
     slug: 'personalised-business-card-holder',
     description: 'Sleek metal card holder personalized with your name or company logo.',
     price: 799,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/personalised-business-card-holder.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'personalised business card holder',
     popularity: 82,
     trending: false,
@@ -1226,7 +1624,13 @@ export const PRODUCTS: Product[] = [
     slug: 'spotify-code-keychain',  
     description: 'Mini acrylic keychain with scannable Spotify code—carry your favorite song everywhere.',
     price: 349,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/spotify-code-keychain.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'spotify code keychain',
     popularity: 86,
     trending: true,
@@ -1242,7 +1646,13 @@ export const PRODUCTS: Product[] = [
     slug: 'custom-wooden-cutting-board',
     description: 'Bamboo cutting board engraved with family name or design—great for house-warming.',
     price: 1199,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/custom-wooden-cutting-board.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'custom wooden cutting board',
     popularity: 80,
     trending: false,
@@ -1258,7 +1668,13 @@ export const PRODUCTS: Product[] = [
     slug: 'personalised-photo-apron',
     description: 'Cotton apron printed with your photo or design—perfect gift for home chefs.',
     price: 799,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/personalised-photo-apron.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'personalised photo apron',
     popularity: 83,
     trending: false,
@@ -1274,7 +1690,13 @@ export const PRODUCTS: Product[] = [
     slug: 'custom-wooden-recipe-box',
     description: 'Wooden recipe box engraved with name, includes blank recipe cards.',
     price: 1299,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/custom-wooden-recipe-box.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'custom wooden recipe box',
     popularity: 85,
     trending: false,
@@ -1290,7 +1712,13 @@ export const PRODUCTS: Product[] = [
     slug: 'photo-embroidered-cushion-cover',
     description: 'Soft cushion cover embroidered with your favorite photo—adds comfort & style.',
     price: 699,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/photo-embroidered-cushion-cover.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],    
     dataAiHint: 'photo embroidered cushion cover',
     popularity: 88,
     trending: false,
@@ -1306,7 +1734,13 @@ export const PRODUCTS: Product[] = [
     slug: 'personalised-led-night-light',
     description: 'LED night light acrylic panel engraved with your design—touch-control & color-changing.',
     price: 1099,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/personalised-led-night-light.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'personalised LED night light',
     popularity: 91,
     trending: true,
@@ -1322,7 +1756,13 @@ export const PRODUCTS: Product[] = [
     slug: 'custom-photo-flask-stainless-steel',
     description: '500ml stainless steel flask printed with your photo—keeps beverages hot or cold.',
     price: 799,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/custom-photo-flask.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'custom photo flask stainless steel',
     popularity: 82,
     trending: false,
@@ -1338,7 +1778,13 @@ export const PRODUCTS: Product[] = [
     slug: 'personalised-wooden-key-hanger',
     description: 'Wall-mounted wooden key hanger engraved with family name—organize in style.',
     price: 999,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/personalised-wooden-key-hanger.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],    
     dataAiHint: 'personalised wooden key hanger',
     popularity: 84,
     trending: false,
@@ -1354,7 +1800,13 @@ export const PRODUCTS: Product[] = [
     slug: 'photo-collage-magnets-set-of-6',
     description: 'Set of six small magnets each printed with your chosen photos.',
     price: 699,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/photo-collage-magnets.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'photo collage magnets set',
     popularity: 80,
     trending: false,
@@ -1370,7 +1822,13 @@ export const PRODUCTS: Product[] = [
     slug: 'custom-wooden-coaster-holder-set',
     description: 'Set of four wooden coasters with holder, each coaster engraved with custom text.',
     price: 599,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/custom-wooden-coaster-holder.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'custom wooden coaster holder set',
     popularity: 86,
     trending: false,
@@ -1386,7 +1844,13 @@ export const PRODUCTS: Product[] = [
     slug: 'personalised-photo-puzzle-lamp',
     description: 'LED lamp that doubles as a photo puzzle—pieces light up when assembled.',
     price: 1899,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/photo-puzzle-lamp.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'photo puzzle lamp led',
     popularity: 89,
     trending: true,
@@ -1402,7 +1866,13 @@ export const PRODUCTS: Product[] = [
     slug: 'custom-leather-bookmark-pen-set',
     description: 'Leather bookmark paired with engraved pen in a gift box.',
     price: 799,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/leather-bookmark-pen-set.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'leather bookmark pen set',
     popularity: 83,
     trending: false,
@@ -1418,7 +1888,13 @@ export const PRODUCTS: Product[] = [
     slug: 'personalised-wooden-name-puzzle',
     description: 'Colorful wooden puzzle spelling out the child’s name—safe and educational.',
     price: 1099,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/wooden-name-puzzle.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'wooden name puzzle child',
     popularity: 90,
     trending: true,
@@ -1434,7 +1910,13 @@ export const PRODUCTS: Product[] = [
     slug: 'custom-metal-license-plate-sign',
     description: 'Decorative metal sign styled like a license plate, personalized with text.',
     price: 799,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/custom-metal-license-plate.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'custom metal license plate sign',
     popularity: 82,
     trending: false,
@@ -1450,7 +1932,13 @@ export const PRODUCTS: Product[] = [
     slug: 'personalised-wooden-photo-blocks-set-of-4',
     description: 'Set of four 3×3″ wooden blocks each printed with your photo.',
     price: 899,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/wooden-photo-blocks.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'wooden photo blocks set',
     popularity: 85,
     trending: false,
@@ -1466,7 +1954,13 @@ export const PRODUCTS: Product[] = [
     slug: 'custom-printed-notebook',
     description: 'Softcover lined notebook with your cover design—ideal for journaling.',
     price: 599,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/custom-printed-notebook.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'custom printed notebook',
     popularity: 80,
     trending: false,
@@ -1482,7 +1976,13 @@ export const PRODUCTS: Product[] = [
     slug: 'personalised-name-bracelet-metal',
     description: 'Adjustable metal bracelet engraved with your name or initials.',
     price: 549,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/personalised-name-bracelet.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'personalised metal name bracelet',
     popularity: 88,
     trending: false,
@@ -1498,7 +1998,13 @@ export const PRODUCTS: Product[] = [
     slug: 'custom-wooden-wall-clock',
     description: 'Wall clock made of wood, personalized with your family name or design.',
     price: 1799,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/custom-wooden-wall-clock.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'custom wooden wall clock',
     popularity: 86,
     trending: false,
@@ -1514,7 +2020,13 @@ export const PRODUCTS: Product[] = [
     slug: 'personalised-glass-whiskey-decanter-set',
     description: 'Whiskey decanter and two glasses engraved with custom text.',
     price: 2799,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/glass-whiskey-decanter-set.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'whiskey decanter set personalised',
     popularity: 90,
     trending: true,
@@ -1530,7 +2042,13 @@ export const PRODUCTS: Product[] = [
     slug: 'custom-printed-beach-towel',
     description: 'Large microfiber beach towel printed with your photo or design.',
     price: 799,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/custom-beach-towel.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'custom printed beach towel',
     popularity: 82,
     trending: false,
@@ -1546,7 +2064,13 @@ export const PRODUCTS: Product[] = [
     slug: 'personalised-wine-bottle-label',
     description: 'Custom label for wine bottles—perfect for weddings or corporate events.',
     price: 499,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/personalised-wine-bottle-label.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'personalised wine bottle label',
     popularity: 84,
     trending: false,
@@ -1562,7 +2086,13 @@ export const PRODUCTS: Product[] = [
     slug: 'custom-wooden-sunglasses-holder',
     description: 'Wall-mounted wooden holder for sunglasses, engraved with text or logo.',
     price: 799,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/sunglasses-holder.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'wooden sunglasses holder personalised',
     popularity: 80,
     trending: false,
@@ -1578,7 +2108,13 @@ export const PRODUCTS: Product[] = [
     slug: 'personalised-metal-bookmark-with-tassel',
     description: 'Elegant metal bookmark with tassel, engraved with custom name or quote.',
     price: 299,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/metal-bookmark-tassel.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'metal bookmark personalised tassel',
     popularity: 82,
     trending: false,
@@ -1594,7 +2130,13 @@ export const PRODUCTS: Product[] = [
     slug: 'custom-photo-canvas-clock',
     description: 'Canvas wall clock printed with your favorite photo—functional art for any room.',
     price: 1499,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/custom-photo-canvas-clock.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'photo canvas clock personalised',
     popularity: 86,
     trending: false,
@@ -1610,7 +2152,13 @@ export const PRODUCTS: Product[] = [
     slug: 'personalised-pet-portrait-on-canvas',
     description: 'Hand-painted digital pet portrait printed on canvas—lovely tribute to your pet.',
     price: 1999,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/pet-portrait-canvas.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'pet portrait on canvas',
     popularity: 92,
     trending: true,
@@ -1626,7 +2174,13 @@ export const PRODUCTS: Product[] = [
     slug: 'custom-engraved-metal-flask',
     description: 'Stainless steel hip flask engraved with initials or a short message.',
     price: 549,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/engraved-metal-flask.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'engraved metal flask',
     popularity: 84,
     trending: false,
@@ -1642,7 +2196,13 @@ export const PRODUCTS: Product[] = [
     slug: 'personalised-photo-led-cube',
     description: 'Acrylic cube lamp with your photo inside—multicolor LED base included.',
     price: 1299,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/photo-led-cube.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'photo led cube personalised',
     popularity: 90,
     trending: true,
@@ -1658,7 +2218,13 @@ export const PRODUCTS: Product[] = [
     slug: 'custom-wooden-wall-art-quote',
     description: 'Wooden wall art panel engraved with your favorite motivational quote.',
     price: 1099,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/wooden-wall-art-quote.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'wooden wall art quote personalised',
     popularity: 87,
     trending: false,
@@ -1674,7 +2240,13 @@ export const PRODUCTS: Product[] = [
     slug: 'personalised-metal-photo-plaque',
     description: 'Metal plaque printed with your photo and text—sleek and modern décor piece.',
     price: 1799,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/metal-photo-plaque.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'metal photo plaque personalised',
     popularity: 92,
     trending: true,
@@ -1690,7 +2262,13 @@ export const PRODUCTS: Product[] = [
     slug: 'custom-neon-light-sign-name',
     description: 'LED neon light sign custom-shaped into your name—plug-and-play décor.',
     price: 2499,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/custom-neon-light-sign.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'custom neon light sign',
     popularity: 94,
     trending: true,
@@ -1706,7 +2284,13 @@ export const PRODUCTS: Product[] = [
     slug: 'personalised-wooden-photo-lamp',
     description: 'Wooden base lamp with acrylic photo panel—warm LED glow and personal touch.',
     price: 1399,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/wooden-photo-lamp.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'wooden photo lamp personalised',
     popularity: 91,
     trending: false,
@@ -1722,7 +2306,13 @@ export const PRODUCTS: Product[] = [
     slug: 'custom-photo-tile-coaster-single',
     description: 'Single ceramic tile coaster printed with your photo—protects surfaces in style.',
     price: 199,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/photo-tile-coaster.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'photo tile coaster single',
     popularity: 80,
     trending: false,
@@ -1738,7 +2328,13 @@ export const PRODUCTS: Product[] = [
     slug: 'personalised-acrylic-trophy-star-shape',
     description: 'Star-shaped acrylic trophy engraved with custom text—great for recognition awards.',
     price: 1299,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/star-acrylic-trophy.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'star shaped acrylic trophy',
     popularity: 89,
     trending: false,
@@ -1754,7 +2350,13 @@ export const PRODUCTS: Product[] = [
     slug: 'custom-printed-baseball-cap',
     description: 'Classic baseball cap printed with your logo or artwork—adjustable fit.',
     price: 599,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/custom-baseball-cap.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'custom printed baseball cap',
     popularity: 87,
     trending: false,
@@ -1770,7 +2372,13 @@ export const PRODUCTS: Product[] = [
     slug: 'personalised-3d-crystal-pet-portrait',
     description: 'Laser-etched 3D crystal featuring a detailed portrait of your beloved pet.',
     price: 1999,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/3d-crystal-pet-portrait.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: '3d crystal pet portrait',
     popularity: 90,
     trending: true,
@@ -1786,7 +2394,13 @@ export const PRODUCTS: Product[] = [
     slug: 'mini-you-bobblehead-couple',
     description: 'Custom bobblehead figurine of you and a partner, hand-painted and accurate.',
     price: 3499,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/mini-you-bobblehead-couple.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'custom bobblehead couple',
     popularity: 93,
     trending: true,
@@ -1802,7 +2416,13 @@ export const PRODUCTS: Product[] = [
     slug: '3d-star-map-crystal-couple',
     description: 'A 3D crystal showing the star alignment at a special date and place.',
     price: 2299,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/3d-star-map-couple.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: '3d star map crystal couple',
     popularity: 89,
     trending: true,
@@ -1818,7 +2438,13 @@ export const PRODUCTS: Product[] = [
     slug: 'personalised-spotify-wooden-plaque',
     description: 'Handcrafted wooden plaque featuring song art and scannable Spotify code.',
     price: 1499,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/spotify-wooden-plaque.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'spotify wooden plaque',
     popularity: 92,
     trending: true,
@@ -1834,7 +2460,13 @@ export const PRODUCTS: Product[] = [
     slug: 'custom-miniature-brick-house-model',
     description: 'Detailed miniature model of your house made from interlocking bricks.',
     price: 2499,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/miniature-brick-house.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'custom house miniature',
     popularity: 87,
     trending: false,
@@ -1850,7 +2482,13 @@ export const PRODUCTS: Product[] = [
     slug: 'personalised-wood-quote-frame',
     description: 'Custom wooden wall frame with engraved inspirational quote.',
     price: 1199,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/wood-quote-frame.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'personalised wood quote frame',
     popularity: 85,
     trending: false,
@@ -1866,7 +2504,13 @@ export const PRODUCTS: Product[] = [
     slug: 'custom-acrylic-shadow-box',
     description: 'Deep-set acrylic box to display keepsakes with personalized text.',
     price: 1799,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/acrylic-shadow-box.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'custom acrylic shadow box',
     popularity: 90,
     trending: true,
@@ -1882,7 +2526,13 @@ export const PRODUCTS: Product[] = [
     slug: 'wooden-photo-calendar',
     description: 'Desktop calendar made from wood, printed with 12 personal photos.',
     price: 1299,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/wood-photo-calendar.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'wooden photo calendar',
     popularity: 88,
     trending: false,
@@ -1898,7 +2548,13 @@ export const PRODUCTS: Product[] = [
     slug: 'personalised-crystal-heart',
     description: 'Glass heart etched with photo and illuminated base.',
     price: 1499,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/crystal-heart.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'personalised crystal heart',
     popularity: 92,
     trending: true,
@@ -1914,7 +2570,13 @@ export const PRODUCTS: Product[] = [
     slug: 'custom-wooden-desk-pen-stand',
     description: 'Engraved pen stand with compartments and name on front.',
     price: 899,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/wooden-pen-stand.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'custom wooden pen stand',
     popularity: 87,
     trending: false,
@@ -1930,7 +2592,13 @@ export const PRODUCTS: Product[] = [
     slug: 'personalised-photo-luggage-tag',
     description: 'Durable luggage tag printed with photo and custom name.',
     price: 499,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/photo-luggage-tag.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'personalised photo luggage tag',
     popularity: 83,
     trending: false,
@@ -1946,7 +2614,13 @@ export const PRODUCTS: Product[] = [
     slug: 'custom-photo-wine-box',
     description: 'Wooden wine box printed with photo and custom engraving.',
     price: 1699,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/photo-wine-box.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'custom photo wine box',
     popularity: 88,
     trending: false,
@@ -1962,7 +2636,13 @@ export const PRODUCTS: Product[] = [
     slug: 'custom-engraved-leather-keychain',
     description: 'Leather keychain personalized with name or initials.',
     price: 349,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/leather-keychain.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'custom leather keychain',
     popularity: 85,
     trending: false,
@@ -1978,7 +2658,13 @@ export const PRODUCTS: Product[] = [
     slug: 'photo-kitchen-tea-towel-set',
     description: 'Set of two towels printed with personalized photo designs.',
     price: 699,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/photo-tea-towel.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'photo kitchen tea towel set',
     popularity: 80,
     trending: false,
@@ -1994,7 +2680,13 @@ export const PRODUCTS: Product[] = [
     slug: 'custom-engraved-metal-pen',
     description: 'Elegant metal pen engraved with name or logo, comes in gift box.',
     price: 499,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/engraved-metal-pen.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'engraved metal pen',
     popularity: 88,
     trending: false,
@@ -2010,7 +2702,13 @@ export const PRODUCTS: Product[] = [
     slug: 'personalised-resin-coaster-set-4pcs',
     description: 'Set of four resin coasters embedded with your photos or artwork.',
     price: 999,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/resin-coaster-set.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'resin coaster set personalised',
     popularity: 87,
     trending: false,
@@ -2026,7 +2724,13 @@ export const PRODUCTS: Product[] = [
     slug: 'custom-photo-light-box',
     description: 'Framed light box displaying your photo on LED-illuminated panel.',
     price: 1999,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/photo-light-box.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'photo light box personalized',
     popularity: 93,
     trending: true,
@@ -2042,7 +2746,13 @@ export const PRODUCTS: Product[] = [
     slug: 'engraved-wooden-wine-opener-set',
     description: 'Wooden box containing a corkscrew set with personalized engraving.',
     price: 1299,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/wooden-wine-opener-set.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'engraved wooden wine opener set',
     popularity: 86,
     trending: false,
@@ -2058,7 +2768,13 @@ export const PRODUCTS: Product[] = [
     slug: 'personalised-photo-eiffel-tower-lamp',
     description: 'LED lamp shaped like Eiffel Tower, printed with your photo design.',
     price: 1499,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/eiffel-tower-lamp.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'photo eiffel tower lamp personalised',
     popularity: 91,
     trending: false,
@@ -2074,7 +2790,13 @@ export const PRODUCTS: Product[] = [
     slug: 'custom-wooden-beer-flight-holder',
     description: 'Wooden paddle for tasting flights of beer, personalized engraving included.',
     price: 1099,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/beer-flight-holder.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/HTr8Vjnn/51-Te3u-NP3z-L-UY1100.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'wooden beer flight holder personalised',
     popularity: 84,
     trending: false,
@@ -3712,7 +4434,13 @@ export const PRODUCTS: Product[] = [
     slug: 'miniature-single-figure-fantasy',
     description: 'Custom resin miniature depicting your favorite fantasy character.',
     price: 1499,
-    imageUrls: ['https://prestogifts.com/media/catalog/product/miniature-fantasy-figure.jpg'],
+    imageUrls: [
+      'https://i.ibb.co/mCtnrKPf/13-1-3f863d29-22f2-4477-ae0d-b0f90e0f87bb.jpg', // This is the main image
+      'https://i.ibb.co/Tx3hpfQ7/71qm-G-B-LL.jpg',
+      'https://i.ibb.co/RktpD7Vh/Harsh-Sharma.png',
+      'https://i.ibb.co/wh20gVnD/images-q-tbn-ANd9-Gc-RFVXEPs-Gjtp-YMf-CTIr-VPS5r-K0-IBmb-Flpbe-IQ-s.jpg',
+      'https://i.ibb.co/MDxyPJgP/Happybirthdayhandsome-3964dfd4-fd3e-4a87-a5d4-b82757856a1d.jpg',
+    ],
     dataAiHint: 'custom fantasy miniature figure',
     popularity: 85,
     trending: true,

@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useEffect, useMemo } from 'react';
@@ -24,7 +23,6 @@ interface CarouselBanner {
   description: string;
   imageUrl: string;
   dataAiHint: string;
-  gradientClasses: string;
   titleTextClass?: string;
   descriptionTextClass?: string;
 }
@@ -34,11 +32,10 @@ const carouselBannersData: CarouselBanner[] = [
     id: 1,
     title: "Personalized Magic",
     description: "Unique gifts that tell their story. Find the perfect custom present today!",
-    imageUrl: "https://i.ibb.co/gv62ZJ0/pexels-arina-krasnikova-5422790-1.jpg",
+    imageUrl: "https://i.ibb.co/RpH1fLHb/test.png",
     dataAiHint: "personalized gift assortment",
-    gradientClasses: "bg-gradient-to-br from-purple-600 via-pink-500 to-rose-600",
     titleTextClass: "text-white",
-    descriptionTextClass: "text-rose-100",
+    descriptionTextClass: "text-sky-100",
   },
   {
     id: 2,
@@ -46,7 +43,6 @@ const carouselBannersData: CarouselBanner[] = [
     description: "Find the perfect gift for any occasion, from birthdays to anniversaries.",
     imageUrl: "https://i.ibb.co/yY5QxV1/pexels-antoni-shkraba-4347872-1.jpg",
     dataAiHint: "birthday celebration gifts",
-    gradientClasses: "bg-gradient-to-tr from-teal-500 via-cyan-500 to-sky-500",
     titleTextClass: "text-white",
     descriptionTextClass: "text-sky-100",
   },
@@ -56,9 +52,8 @@ const carouselBannersData: CarouselBanner[] = [
     description: "Lifelike miniatures and stunning crystal art that capture memories in three dimensions.",
     imageUrl: "https://i.ibb.co/3RkC7j8/pexels-ann-h-45017-16070854-1.jpg",
     dataAiHint: "3d crystal miniature",
-    gradientClasses: "bg-gradient-to-b from-indigo-500 via-purple-600 to-pink-600",
     titleTextClass: "text-white",
-    descriptionTextClass: "text-pink-100",
+    descriptionTextClass: "text-sky-100",
   },
   {
     id: 4,
@@ -66,9 +61,8 @@ const carouselBannersData: CarouselBanner[] = [
     description: "Elegant photo frames for timeless keepsakes. Personalize your favorite moments.",
     imageUrl: "https://i.ibb.co/mH9c1tH/pexels-ketut-subiyanto-4350108-1.jpg",
     dataAiHint: "photo frame collection",
-    gradientClasses: "bg-gradient-to-bl from-green-500 via-lime-500 to-yellow-400",
-    titleTextClass: "text-neutral-800",
-    descriptionTextClass: "text-green-900",
+    titleTextClass: "text-white",
+    descriptionTextClass: "text-sky-100",
   },
   {
     id: 5,
@@ -76,9 +70,8 @@ const carouselBannersData: CarouselBanner[] = [
     description: "Impress clients and reward employees with premium, branded corporate gifts.",
     imageUrl: "https://i.ibb.co/vVmsZ1f/pexels-karolina-grabowska-4491444-1.jpg",
     dataAiHint: "corporate gift basket",
-    gradientClasses: "bg-gradient-to-tl from-blue-600 via-indigo-500 to-purple-500",
     titleTextClass: "text-white",
-    descriptionTextClass: "text-purple-100",
+    descriptionTextClass: "text-sky-100",
   },
   {
     id: 6,
@@ -86,9 +79,8 @@ const carouselBannersData: CarouselBanner[] = [
     description: "Handpicked selections for every recipient. Find a gift that speaks from the heart.",
     imageUrl: "https://i.ibb.co/8XnQhBv/pexels-ron-lach-7871177-1.jpg",
     dataAiHint: "gift for her",
-    gradientClasses: "bg-gradient-to-r from-pink-500 via-fuchsia-500 to-purple-600",
     titleTextClass: "text-white",
-    descriptionTextClass: "text-purple-100",
+    descriptionTextClass: "text-sky-100",
   },
   {
     id: 7,
@@ -96,40 +88,32 @@ const carouselBannersData: CarouselBanner[] = [
     description: "Unbeatable prices on popular gifts, updated daily. Don't miss out!",
     imageUrl: "https://i.ibb.co/Jj8b0zQ/pexels-karolina-grabowska-5632345-1.jpg",
     dataAiHint: "gift sale discount",
-    gradientClasses: "bg-gradient-to-l from-orange-400 via-amber-400 to-yellow-300",
-    titleTextClass: "text-neutral-800",
-    descriptionTextClass: "text-orange-900",
-  },
+    titleTextClass: "text-white",
+    descriptionTextClass: "text-sky-100",  },
   {
     id: 8,
     title: "New Arrivals",
     description: "Fresh designs and innovative gift ideas landing every week. Be the first to explore!",
     imageUrl: "https://i.ibb.co/4p5jD9Y/pexels-nothing-ahead-4067766-1.jpg",
     dataAiHint: "new product launch",
-    gradientClasses: "bg-gradient-to-br from-rose-400 via-red-400 to-pink-400",
     titleTextClass: "text-white",
-    descriptionTextClass: "text-pink-100",
-  },
+    descriptionTextClass: "text-sky-100",  },
   {
     id: 9,
     title: "Artistic Touch",
     description: "Transform photos into unique art pieces. Personalized canvases, sketches, and more.",
     imageUrl: "https://i.ibb.co/d26pM6c/pexels-ann-h-1766938-1.jpg",
     dataAiHint: "photo to art canvas",
-    gradientClasses: "bg-gradient-to-tr from-sky-300 via-blue-400 to-indigo-500",
     titleTextClass: "text-white",
-    descriptionTextClass: "text-indigo-100",
-  },
+    descriptionTextClass: "text-sky-100",  },
   {
     id: 10,
     title: "Miniature You!",
     description: "Get a custom 3D miniature of yourself or loved ones. A unique and memorable gift.",
     imageUrl: "https://i.ibb.co/BqTmnkR/pexels-antoni-shkraba-production-8040228-1.jpg",
     dataAiHint: "3d selfie miniature",
-    gradientClasses: "bg-gradient-to-bl from-lime-300 via-green-400 to-teal-500",
-    titleTextClass: "text-neutral-800",
-    descriptionTextClass: "text-green-900",
-  },
+    titleTextClass: "text-white",
+    descriptionTextClass: "text-sky-100",  },
 ];
 
 const HeroCarouselButton = ({ href, children, className }: { href: string; children: React.ReactNode, className?: string }) => (
@@ -173,7 +157,6 @@ const HeroCarousel = () => {
           key={banner.id}
           className={cn(
             "absolute inset-0 w-full h-full",
-            banner.gradientClasses,
             bannerBaseTransition,
             index === currentSlide ? bannerAnimationActiveClasses : bannerAnimationInactiveClasses + " pointer-events-none"
           )}
@@ -664,7 +647,7 @@ const TestimonialsSection = () => {
     { id: 28, quote: "The bobblehead of my boss for his farewell was a huge laugh and a great memento.", author: "Team Innovate", tag: "Fun Farewell", tagColor: "bg-lime-600", rating: 5 },
     { id: 29, quote: "I keep coming back for the unique personalized gifts. Always a hit with my friends and family.", author: "Sonia P.", tag: "Repeat Customer", tagColor: "bg-sky-600", rating: 5 },
     { id: 30, quote: "The customer support helped me finalize the design for my photo collage. Very helpful!", author: "Vikram C.", tag: "Helpful Support", tagColor: "bg-yellow-600", rating: 5 },
-    { id: 31, quote: "Our anniversary photo frame is gorgeous. It’s a beautiful reminder of our special day.", author: "Rohan & Megha", tag: "Anniversary Love", tagColor: "bg-rose-600", rating: 5 },
+    { id: 31, quote: "Our anniversary photo frame is gorgeous. It's a beautiful reminder of our special day.", author: "Rohan & Megha", tag: "Anniversary Love", tagColor: "bg-rose-600", rating: 5 },
     { id: 32, quote: "The welcome kits for our new employees were fantastic. Made a great first impression.", author: "HR, Tech Solutions", tag: "Great Onboarding", tagColor: "bg-emerald-600", rating: 5 },
     { id: 33, quote: "Ordered a caricature for my friend's wedding. It was unique and they adored it!", author: "Simran K.", tag: "Unique Wedding Gift", tagColor: "bg-green-500", rating: 5 },
     { id: 34, quote: "The 3D crystal of our first home is a cherished keepsake. So detailed!", author: "Arjun & Priya", tag: "Home Sweet Home", tagColor: "bg-blue-500", rating: 5 },
